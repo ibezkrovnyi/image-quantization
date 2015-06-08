@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>image-quantization by igor-bezkrovny</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">image-quantization</h1>
+      <h2 class="project-tagline">Image Quantization Library with alpha support (based on https://github.com/leeoniya/RgbQuant.js, https://github.com/timoxley/neuquant and http://www.ece.mcmaster.ca/~xwu/cq.c)</h2>
+      <a href="https://github.com/igor-bezkrovny/image-quantization" class="btn">View on GitHub</a>
+      <a href="https://github.com/igor-bezkrovny/image-quantization/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/igor-bezkrovny/image-quantization/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="iqts" class="anchor" href="#iqts" aria-hidden="true"><span class="octicon octicon-link"></span></a>IQ.ts</h2>
+
+<p>Image Quantization Library in <strong>TypeScript</strong> <em>(MIT Licensed)</em>
+<img src="https://raw.githubusercontent.com/leeoniya/RgbQuant.js/master/quantization.png" alt="quantization" title="quantization"></p>
+
+<h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>This color quantization library was created because I was unable to find high-grade image quantization library with alpha support in TypeScript on the internet.</p>
+
+<p><a href="http://igor-bezkrovny.github.io/ImageQuantization">Online Demo</a><br>
+<a href="https://github.com/igor-bezkrovny/igor-bezkrovny.github.io">Demo Source</a></p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>All usage is shown in JavaScript, it will be mostly the same for TypeScript. <code>img</code> should be valid already-loaded image.</p>
+
+<h5>
+<a id="load-image-simple-example" class="anchor" href="#load-image-simple-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Load Image (simple example)</h5>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> img <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">createElement</span>(<span class="pl-s"><span class="pl-pds">"</span>img<span class="pl-pds">"</span></span>);
+<span class="pl-c1">img</span>.<span class="pl-en">onload</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+    <span class="pl-c">// image is loaded, here should be all code utilizing image</span>
+    ...
+}
+img.<span class="pl-c1">src</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-27580_640.png<span class="pl-pds">"</span></span></pre></div>
+
+<h5>
+<a id="generate-palette" class="anchor" href="#generate-palette" aria-hidden="true"><span class="octicon octicon-link"></span></a>Generate Palette</h5>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-c">// desired colors count</span>
+<span class="pl-k">var</span> targetColors <span class="pl-k">=</span> <span class="pl-c1">256</span>;
+
+<span class="pl-c">// create pointContainer and fill it with image</span>
+<span class="pl-k">var</span> pointContainer <span class="pl-k">=</span> <span class="pl-c1">IQ</span>.Utils.PointContainer.fromHTMLImageElement(img);
+
+<span class="pl-c">// create chosen distance calculator (see classes implementing `IQ.IDistanceCalculator`)</span>
+<span class="pl-k">var</span> distanceCalculator <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Color</span>.DistanceEuclidean();
+
+<span class="pl-c">// create chosen palette quantizer (see classes implementing `IQ.IPaletteQuantizer`) </span>
+<span class="pl-k">var</span> paletteQuantizer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Palette</span>.RgbQuant(distanceCalculator, targetColors);
+
+<span class="pl-c">// feed out pointContainer filled with image to paletteQuantizer</span>
+paletteQuantizer.sample(pointContainer);
+
+... (you may sample more than one image to create mutual palette) 
+
+<span class="pl-c">// take generated palette</span>
+<span class="pl-k">var</span> palette <span class="pl-k">=</span> paletteQuantizer.quantize();</pre></div>
+
+<h5>
+<a id="apply-palette-to-image-image-dithering" class="anchor" href="#apply-palette-to-image-image-dithering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Apply Palette to Image (Image Dithering)</h5>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-c">// create image ditherer (see classes implementing `IQ.IImageDitherer`)</span>
+<span class="pl-k">var</span> imageDitherer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Image</span>.NearestNeighbour(distanceCalculator);
+
+<span class="pl-c">// take generated image using given palette </span>
+<span class="pl-k">var</span> resultPointContainer <span class="pl-k">=</span> imageQuantizer.quantize(pointContainer, palette);</pre></div>
+
+<p>You may work with resultPointContainer directly or you may want to convert it to <code>Uint8Array</code>/<code>Uint32Array</code></p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> uint8array <span class="pl-k">=</span> resultPointContainer.toUint8Array();</pre></div>
+
+<h2>
+<a id="palette-quantization-algorithms" class="anchor" href="#palette-quantization-algorithms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Palette Quantization Algorithms</h2>
+
+<p>Image Quantization Library is based <strong>RgbQuant</strong> by Leon Sorokin and <strong>NeuQuant</strong> by Tim Oxley (see below).</p>
+
+<ol>
+<li>
+<a href="https://github.com/leeoniya/RgbQuant.js">RgbQuant (Leon Sorokin)</a> <code>JavaScript</code>
+</li>
+<li>
+<a href="https://github.com/jnordberg/gif.js/blob/master/src/TypedNeuQuant.js">NeuQuant (Johan Nordberg)</a> <code>TypeScript</code>
+</li>
+<li>
+<a href="https://github.com/timoxley/neuquant">NeuQuant (Tim Oxley)</a> <code>JavaScript</code>
+</li>
+<li>
+<a href="https://github.com/devongovett/neuquant">NeuQuant (Devon Govett)</a> <code>JavaScript</code>
+</li>
+<li>
+<a href="https://github.com/stuart/pngnq/blob/master/src/neuquant32.c">NeuQuant32 (Stuart Coyle)</a> <code>C</code>
+</li>
+<li>
+<a href="http://www.ece.mcmaster.ca/%7Exwu/cq.c">Xiaolin Wu (Xiaolin Wu)</a> <code>C</code> </li>
+<li>
+<a href="http://www.codeproject.com/Articles/66341/A-Simple-Yet-Quite-Powerful-Palette-Quantizer-in-C">Xiaolin Wu (Smart-K8)</a> <code>C#</code>
+</li>
+<li>Xiaolin Wu w/ Alpha (Matt Wrock) <a href="https://code.msdn.microsoft.com/windowsdesktop/Convert-32-bit-PNGs-to-81ef8c81/view/SourceCode#content">How to add Alpha</a>, <a href="https://nquant.codeplex.com">Source Code</a> <code>C#</code>
+</li>
+<li>
+<a href="https://github.com/mwcz/median-cut-js">MedianCut (mwcz)</a> <code>GPLv3</code>
+&gt; all NeuQuant implementations above are based on Anthony Dekker's implementation and thus needs to save his original copyright notice in the source code</li>
+</ol>
+
+<h2>
+<a id="image-quantization-algorithms" class="anchor" href="#image-quantization-algorithms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image Quantization Algorithms</h2>
+
+<p>Image Quantization Library supports <strong>Error Diffusion dithering</strong> and <strong>Nearest Neighbour</strong> methods. </p>
+
+<ol>
+<li><a href="http://www.imagemagick.org/Usage/quantize/#dither">All (ImageMagik doc)</a></li>
+<li><a href="http://www.tannerhelland.com/4660/dithering-eleven-algorithms-source-code">Error Diffusion dithering (Tanner Helland)</a></li>
+<li>
+<a href="http://www.compuphase.com/riemer.htm">Riemersma dithering</a> <code>TODO: Check License</code>
+</li>
+<li><a href="http://bisqwit.iki.fi/story/howto/dither/jy">Ordered dithering (Joel Yliluoma)</a></li>
+</ol>
+
+<h2>
+<a id="color-distance-formulas" class="anchor" href="#color-distance-formulas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Color Distance Formulas</h2>
+
+<p>Image Quantization Library supports <strong>Euclidean distance</strong> for RgbQuant and <strong>Manhattan distance ??</strong> for NeuQuant. <code>TODO: Check NeuQuant distance formula</code> </p>
+
+<ol>
+<li><a href="https://github.com/iuliux/CIE94.js">CIE94 (Iulius Curt)</a></li>
+<li>
+<a href="https://github.com/markusn/color-diff">CIEDE2000 Markus Ekholm</a> <code>3-clause BSD</code>
+</li>
+<li>Euclidean distance</li>
+<li>Manhattan distance ? TBD</li>
+</ol>
+
+<h2>
+<a id="color-conversion-formulas" class="anchor" href="#color-conversion-formulas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Color conversion formulas</h2>
+
+<ol>
+<li>
+<a href="http://www.easyrgb.com/?X=MATH">Pseudo-code</a> </li>
+</ol>
+
+<h2>
+<a id="image-quality-assessment" class="anchor" href="#image-quality-assessment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image Quality Assessment</h2>
+
+<ol>
+<li><a href="http://en.wikipedia.org/wiki/Structural_similarity">SSIM info</a></li>
+<li>
+<a href="https://github.com/rhys-e/structural-similarity">SSIM (Rhys-e)</a> <code>Java</code> <code>License: MIT</code>
+</li>
+<li>PSNR ? TBD</li>
+<li>MSE ? TBD</li>
+</ol>
+
+<h2>
+<a id="other" class="anchor" href="#other" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other</h2>
+
+<ol>
+<li><a href="http://www.husl-colors.org">HUSL (Boronine) - info</a></li>
+<li><a href="https://github.com/husl-colors/husl">HUSL (Boronine) - code</a></li>
+</ol>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>License MIT <a href="./src/paletteQuantizers/neuquant/neuquant.ts">(NeuQuant use also forces to add it's copyright notice into source code)</a></p>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<p>Thanks to Leon Sorokin for information share and his original RgbQuant!</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/igor-bezkrovny/image-quantization">image-quantization</a> is maintained by <a href="https://github.com/igor-bezkrovny">igor-bezkrovny</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
