@@ -7,8 +7,8 @@ Introduction
 ------------
 This color quantization library was created because I was unable to find high-grade image quantization library with alpha support in TypeScript on the internet.
  
-[Online Demo](http://igor-bezkrovny.github.io/ImageQuantization)  
-[Demo Source](https://github.com/igor-bezkrovny/igor-bezkrovny.github.io)
+[Online Demo](http://igor-bezkrovny.github.io/image-quantization-demo)  
+[Demo Source](https://github.com/igor-bezkrovny/igor-bezkrovny.github.io/image-quantization-demo)
 
 Usage
 -----
