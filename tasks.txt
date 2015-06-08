@@ -1,0 +1,12 @@
+All property/options names rename to coding style.
+
+palette format make class/interface
+pixel types - make class/interface
+make usage only for one type of input/output image
+add converters for all other types
+remove all self/_this and rewrite with typescript style
+move dithering out of main quant class
+
+think to make chaining (new Buffer().fromImage(img).toImage())
+think to make PointContainer fromXX methods static to be like Point.createFromXX methods or vice-versa
+rename Point.createFromXX methods to fromXX methods

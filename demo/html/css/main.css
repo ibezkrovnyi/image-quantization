@@ -1,0 +1,107 @@
+* {
+	font-family: "Verdana";
+	font-size: 13px;
+}
+
+.imageBox {
+	min-width: 150px;
+	border: 1px solid silver;
+	margin: 8px;
+}
+
+.imageBox h4 {
+	background: #eee;
+	padding: 2px 5px;
+	margin: 0;
+	border-bottom: 1px solid silver;
+}
+
+.box {
+	float: left;
+	min-height: 200px;
+	min-width: 150px;
+	border: 1px solid silver;
+	margin: 5px;
+}
+
+.box img,
+.box canvas {
+	vertical-align: middle;
+}
+
+.box h4 {
+	background: #eee;
+	padding: 2px 5px;
+	margin: 0;
+	border-bottom: 1px solid silver;
+}
+
+img.th:hover {
+	/*outline: 2px solid red;*/
+	border: 4px solid orange;
+	cursor: pointer;
+	transition:all 500ms;
+}
+
+img.th {
+	height: 65px;
+	border: 4px solid rgba(0,0,0,0);
+	border-radius: 8px;
+	margin: 3px;
+	transition:all 300ms;
+}
+
+.options {
+	padding: 3px;
+	font-family: "Verdana";
+	font-weight: bold;
+}
+
+.option {
+	padding: 3px;
+}
+
+input[type="text"] {
+	font-family: "Verdana";
+	padding: 2px;
+	border: none;
+	color: #7206ff;
+	font-weight: bold;
+	background: #eee;
+	max-width: 80px
+}
+
+select {
+	color: #7206ff;
+	max-width: 240px
+}
+
+#palette-container {
+	text-align: center;
+	padding: 10px;
+	min-width: 175px;
+}
+
+#reduced-image-container {
+	background-image:
+	-moz-linear-gradient(45deg, #EEE 25%, transparent 25%),
+	-moz-linear-gradient(-45deg, #EEE 25%, transparent 25%),
+	-moz-linear-gradient(45deg, transparent 75%, #EEE 75%),
+	-moz-linear-gradient(-45deg, transparent 75%, #EEE 75%);
+	background-image:
+	-webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, #EEE), color-stop(.25, transparent)),
+	-webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, #EEE), color-stop(.25, transparent)),
+	-webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, #EEE)),
+	-webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, #EEE));
+
+	-moz-background-size:20px 20px;
+	background-size:20px 20px;
+	-webkit-background-size:20px 21px; /* override value for shitty webkit */
+
+	background-position:0 0, 10px 0, 10px -10px, 0px 10px;
+}
+
+#reduced-image {
+	cursor: pointer;
+}
+
