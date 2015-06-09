@@ -10,7 +10,7 @@
  * Copyright (c) 2015, Igor Bezkrovny
  * All rights reserved. (MIT Licensed)
  *
- * rgbquant.ts - part of color quantization collection
+ * rgbquant.ts - part of Image Quantization Library
  */
 
 /// <reference path='../../utils/point.ts' />

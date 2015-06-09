@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2015, Leon Sorokin
+ * All rights reserved. (MIT Licensed)
+ *
+ * ColorHistogram.js - an image quantization lib
+ */
+
+/**
+ * @preserve TypeScript port:
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * colorHistogram.ts - part of Image Quantization Library
+ */
 /// <reference path='../../utils/hueStatistics.ts' />
 module IQ.Utils {
 

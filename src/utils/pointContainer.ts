@@ -1,3 +1,11 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * pointContainer.ts - part of Image Quantization Library
+ */
+
 /// <reference path='./point.ts' />
 module IQ.Utils {
 

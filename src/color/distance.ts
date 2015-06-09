@@ -1,3 +1,11 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * distance.ts - part of Image Quantization Library
+ */
+
 ///<reference path="common.ts"/>
 ///<reference path="conversion.ts"/>
 ///<reference path="constants.ts"/>

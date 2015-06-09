@@ -1,9 +1,9 @@
 /**
- * @preserve TypeScript port:
+ * @preserve
  * Copyright (c) 2015, Igor Bezkrovny
  * All rights reserved. (MIT Licensed)
  *
- * iq.ts - part of Image Quantization Library
+ * iq.ts - Image Quantization Library
  */
 
 /// <reference path='color/common.ts' />
@@ -17,8 +17,8 @@
 /// <reference path='utils/hueStatistics.ts' />
 
 /// <reference path='image/common.ts' />
-/// <reference path='image/errorDiffusionDithering.ts' />
-/// <reference path='image/nearest.ts' />
+/// <reference path='image/ditherErrorDiffusion.ts' />
+/// <reference path='image/nearestColor.ts' />
 
 /// <reference path="palette/common.ts"/>
 /// <reference path="palette/neuquant/neuquant.ts"/>

@@ -1,3 +1,11 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * palette.ts - part of Image Quantization Library
+ */
+
 /// <reference path='point.ts' />
 ///<reference path="../palette/rgbquant/colorHistogram.ts"/>
 // TODO: make paletteArray via pointBuffer, so, export will be available via pointBuffer.exportXXX
@@ -157,7 +165,6 @@ module IQ.Utils {
 				if (lumDiff) return -lumDiff;
 */
 
-				//var satDiff = Utils.satGroup(+hslB.s.toFixed(2)) - Utils.satGroup(+hslA.s.toFixed(2));
 				var satDiff = ((hslB.s * 100) | 0) - ((hslA.s * 100) | 0);
 				if (satDiff) return -satDiff;
 			});

@@ -1,3 +1,10 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * common.ts - part of Image Quantization Library
+ */
 module IQ.Color {
 	export interface IDistanceCalculator {
 		setMaximalColorDeltas(maxRedDelta: number, maxGreenDelta: number, maxBlueDelta: number, maxAlphaDelta: number): void;

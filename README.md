@@ -51,7 +51,7 @@ var palette = paletteQuantizer.quantize();
 ##### Apply Palette to Image (Image Dithering) 
 ```javascript
 // create image ditherer (see classes implementing `IQ.IImageDitherer`)
-var imageDitherer = new IQ.Image.NearestNeighbour(distanceCalculator);
+var imageDitherer = new IQ.Image.NearestColor(distanceCalculator);
 
 // take generated image using given palette 
 var resultPointContainer = imageQuantizer.quantize(pointContainer, palette);

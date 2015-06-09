@@ -110,9 +110,9 @@ var APP;
 
 			var imageQuantizer;
 			if (optionImageDithering === -1) {
-				imageQuantizer = new IQ.Image.NearestNeighbour(distance);
+				imageQuantizer = new IQ.Image.NearestColor(distance);
 			} else {
-				imageQuantizer = new IQ.Image.ErrorDiffusionDithering(distance, optionImageDithering);
+				imageQuantizer = new IQ.Image.DitherErrorDiffusion(distance, optionImageDithering);
 			}
 
 			img8 = imageQuantizer.quantize(pointBuffer, pal8);

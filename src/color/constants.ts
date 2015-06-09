@@ -1,3 +1,10 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * constants.ts - part of Image Quantization Library
+ */
 module IQ.Color.Constants.sRGB {
 	// sRGB (based on ITU-R Recommendation BT.709)
 	// http://en.wikipedia.org/wiki/SRGB

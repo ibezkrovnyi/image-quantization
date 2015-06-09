@@ -1,3 +1,11 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * ssim.ts - part of Image Quantization Library
+ */
+
 // based on https://github.com/rhys-e/structural-similarity
 // http://en.wikipedia.org/wiki/Structural_similarity
 module IQ.Quality {

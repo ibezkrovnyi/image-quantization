@@ -1,3 +1,10 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * wuQuant.ts - part of Image Quantization Library
+ */
 ///<reference path="../../color/common.ts"/>
 module IQ.Palette {
 

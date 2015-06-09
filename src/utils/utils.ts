@@ -1,3 +1,10 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * utils.ts - part of Image Quantization Library
+ */
 module IQ.Utils {
 
 	// Rec. 709 (sRGB) luma coef
@@ -5,7 +12,6 @@ module IQ.Utils {
 		Pg = .7152,
 		Pb = .0722,
 		Pa = 1; // TODO: (igor-bezkrovny) what should be here?
-
 
 	// test if js engine's Array#sort implementation is stable
 	function isArrSortStable() {
@@ -102,14 +108,6 @@ module IQ.Utils {
 		}
 	}
 
-	export function satGroup(sat) {
-		return sat;
-	}
-
-	export function lumGroup(lum) {
-		return lum;
-	}
-
 	export var sort = isArrSortStable() ? Array.prototype.sort : stableSort;
 
 	// must be used via stableSort.call(arr, fn)
@@ -140,19 +138,22 @@ module IQ.Utils {
 		}
 	}
 
-	// partitions a rect of wid x hgt into
-	// array of bboxes of w0 x h0 (or less)
-	export function makeBoxes(wid, hgt, w0, h0) {
-		var wnum = ~~(wid / w0), wrem = wid % w0,
-			hnum = ~~(hgt / h0), hrem = hgt % h0,
-			xend = wid - wrem, yend = hgt - hrem;
+	/**
+	 * 	partitions a rectangle of width x height into
+	 *	array of boxes stepX x stepY (or less)
+	 */
+	export function makeBoxes(width, height, stepX, stepY) {
+		var wrem = width % stepX,
+			hrem = height % stepY,
+			xend = width - wrem,
+			yend = height - hrem;
 
-		var bxs = [];
-		for (var y = 0; y < hgt; y += h0)
-			for (var x = 0; x < wid; x += w0)
-				bxs.push({x : x, y : y, w : (x == xend ? wrem : w0), h : (y == yend ? hrem : h0)});
+		var boxesArray = [];
+		for (var y = 0; y < height; y += stepY)
+			for (var x = 0; x < width; x += stepX)
+				boxesArray.push({x : x, y : y, w : (x == xend ? wrem : stepX), h : (y == yend ? hrem : stepY)});
 
-		return bxs;
+		return boxesArray;
 	}
 
 	// returns array of hash keys sorted by their values
@@ -166,122 +167,6 @@ module IQ.Utils {
 			return sort.call(keys, function (a, b) {
 				return obj[a] - obj[b];
 			});
-		}
-	}
-
-	var rd = 255,
-		gd = 255,
-		bd = 255,
-		ad = 255;
-
-/*
-	export function setMaxColorDistances(rd, gd, bd, ad) {
-		maxEuclideanDistance = Math.sqrt(Pr * rd * rd + Pg * gd * gd + Pb * bd * bd + Pa * ad * ad);
-	}
-*/
-	var maxEuclideanDistance = /*Math.sqrt*/(Pr * rd + Pg * gd + Pb * bd + Pa * ad);
-
-	// perceptual Euclidean color distance
-	export function distEuclidean(colorA : Point, colorB : Point) {
-		var rd = Math.abs(colorB.r - colorA.r),
-			gd = Math.abs(colorB.g - colorA.g),
-			bd = Math.abs(colorB.b - colorA.b),
-			ad = Math.abs(colorB.a - colorA.a);
-
-		return /*Math.sqrt*/(Pr * rd + Pg * gd + Pb * bd + Pa * ad ) / maxEuclideanDistance;
-	}
-/*
-	var maxEuclideanDistance = Math.sqrt(Pr * rd * rd + Pg * gd * gd + Pb * bd * bd + Pa * ad * ad);
-
-	// perceptual Euclidean color distance
-	export function distEuclidean(colorA : Point, colorB : Point) {
-		var rd = colorB.r - colorA.r,
-			gd = colorB.g - colorA.g,
-			bd = colorB.b - colorA.b,
-			ad = colorB.a - colorA.a;
-
-		return Math.sqrt(Pr * rd * rd + Pg * gd * gd + Pb * bd * bd + Pa * ad * ad) / maxEuclideanDistance;
-	}
-*/
-
-	export function rgb2xyz(r : number, g : number, b : number) : { x : number; y : number; z : number } {
-		r = r / 255;        //R from 0 to 255
-		g = g / 255;        //G from 0 to 255
-		b = b / 255;        //B from 0 to 255
-
-		r = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
-		g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
-		b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
-
-		r = r * 100;
-		g = g * 100;
-		b = b * 100;
-
-		//Observer. = 2°, Illuminant = D65
-		return {
-			x : r * 0.4124 + g * 0.3576 + b * 0.1805,
-			y : r * 0.2126 + g * 0.7152 + b * 0.0722,
-			z : r * 0.0193 + g * 0.1192 + b * 0.9505
-		}
-	}
-
-	function xyz2rgb(x : number, y : number, z : number) : { r : number; g : number; b : number } {
-		x = x / 100;        //X from 0 to  95.047      (Observer = 2°, Illuminant = D65)
-		y = y / 100;        //Y from 0 to 100.000
-		z = z / 100;        //Z from 0 to 108.883
-
-		var r = x * 3.2406 + y * -1.5372 + z * -0.4986,
-			g = x * -0.9689 + y * 1.8758 + z * 0.0415,
-			b = x * 0.0557 + y * -0.2040 + z * 1.0570;
-
-		r = r > 0.0031308 ? 1.055 * Math.pow(r, 1 / 2.4) - 0.055 : 12.92 * r;
-		g = g > 0.0031308 ? 1.055 * Math.pow(g, 1 / 2.4) - 0.055 : 12.92 * g;
-		b = b > 0.0031308 ? 1.055 * Math.pow(b, 1 / 2.4) - 0.055 : 12.92 * b;
-
-		return {
-			r : r * 255,
-			g : g * 255,
-			b : b * 255
-		}
-	}
-
-	var refX = 95.047,
-		refY = 100.0,
-		refZ = 108.883;
-
-	export function xyz2lab(x : number, y : number, z : number) : {l : number, a : number, b : number} {
-		x = x / refX;          //ref_X =  95.047   Observer= 2°, Illuminant= D65
-		y = y / refY;          //ref_Y = 100.000
-		z = z / refZ;          //ref_Z = 108.883
-
-		x = x > 0.008856 ? Math.pow(x, 1 / 3) : ( 7.787 * x ) + ( 16 / 116 );
-		y = y > 0.008856 ? Math.pow(y, 1 / 3) : ( 7.787 * y ) + ( 16 / 116 );
-		z = z > 0.008856 ? Math.pow(z, 1 / 3) : ( 7.787 * z ) + ( 16 / 116 );
-
-		return {
-			l : ( 116 * y ) - 16,
-			a : 500 * ( x - y ),
-			b : 200 * ( y - z )
-		}
-	}
-
-	function lab2xyz(l : number, a : number, b : number) : {x : number, y : number, z : number} {
-		var y = ( l + 16 ) / 116,
-			x = a / 500 + y,
-			z = y - b / 200;
-
-		var y3 = Math.pow(y, 3),
-			x3 = Math.pow(x, 3),
-			z3 = Math.pow(z, 3);
-
-		y = y3 > 0.008856 ? y3 : ( y - 16 / 116 ) / 7.787;
-		x = x3 > 0.008856 ? x3 : ( x - 16 / 116 ) / 7.787;
-		z = z3 > 0.008856 ? z3 : ( z - 16 / 116 ) / 7.787;
-
-		return {
-			x : refX * x,     //ref_X =  95.047     Observer= 2°, Illuminant= D65
-			y : refY * y,     //ref_Y = 100.000
-			z : refZ * z     //ref_Z = 108.883
 		}
 	}
 

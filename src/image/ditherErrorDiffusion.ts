@@ -1,7 +1,16 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * ditherErrorDiffusion.ts - part of Image Quantization Library
+ */
+
 /// <reference path='common.ts' />
 module IQ.Image {
 
-	export enum ErrorDiffusionDitheringKernel {
+	// TODO: is it the best name for this enum "kernel"?
+	export enum DitherErrorDiffusionKernel {
 		FloydSteinberg = 0,
 		FalseFloydSteinberg,
 		Stucki,
@@ -14,7 +23,7 @@ module IQ.Image {
 	}
 
 	// http://www.tannerhelland.com/4660/dithering-eleven-algorithms-source-code/
-	export class ErrorDiffusionDithering implements IImageDitherer {
+	export class DitherErrorDiffusion implements IImageDitherer {
 		private _minColorDistance : number;
 		private _serpentine : boolean;
 		private _kernel : number[][];
@@ -22,8 +31,7 @@ module IQ.Image {
 
 		private _distance : Color.IDistanceCalculator;
 
-		// TODO: is it the best name for this parameter "kernel"?
-		constructor(colorDistanceCalculator : Color.IDistanceCalculator, kernel : ErrorDiffusionDitheringKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = true) {
+		constructor(colorDistanceCalculator : Color.IDistanceCalculator, kernel : DitherErrorDiffusionKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = true) {
 			this._setKernel(kernel);
 
 			this._distance = colorDistanceCalculator;
@@ -146,9 +154,9 @@ module IQ.Image {
 			}
 		}
 
-		private _setKernel(kernel : ErrorDiffusionDitheringKernel) {
+		private _setKernel(kernel : DitherErrorDiffusionKernel) {
 			switch (kernel) {
-				case ErrorDiffusionDitheringKernel.FloydSteinberg:
+				case DitherErrorDiffusionKernel.FloydSteinberg:
 					this._kernel = [
 						[ 7 / 16, 1, 0 ],
 						[ 3 / 16, -1, 1 ],
@@ -157,7 +165,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.FalseFloydSteinberg:
+				case DitherErrorDiffusionKernel.FalseFloydSteinberg:
 					this._kernel = [
 						[ 3 / 8, 1, 0 ],
 						[ 3 / 8, 0, 1 ],
@@ -165,7 +173,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.Stucki:
+				case DitherErrorDiffusionKernel.Stucki:
 					this._kernel = [
 						[ 8 / 42, 1, 0 ],
 						[ 4 / 42, 2, 0 ],
@@ -182,7 +190,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.Atkinson:
+				case DitherErrorDiffusionKernel.Atkinson:
 					this._kernel = [
 						[ 1 / 8, 1, 0 ],
 						[ 1 / 8, 2, 0 ],
@@ -193,7 +201,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.Jarvis:
+				case DitherErrorDiffusionKernel.Jarvis:
 					this._kernel = [			// Jarvis, Judice, and Ninke / JJN?
 						[ 7 / 48, 1, 0 ],
 						[ 5 / 48, 2, 0 ],
@@ -210,7 +218,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.Burkes:
+				case DitherErrorDiffusionKernel.Burkes:
 					this._kernel = [
 						[ 8 / 32, 1, 0 ],
 						[ 4 / 32, 2, 0 ],
@@ -222,7 +230,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.Sierra:
+				case DitherErrorDiffusionKernel.Sierra:
 					this._kernel = [
 						[ 5 / 32, 1, 0 ],
 						[ 3 / 32, 2, 0 ],
@@ -237,7 +245,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.TwoSierra:
+				case DitherErrorDiffusionKernel.TwoSierra:
 					this._kernel = [
 						[ 4 / 16, 1, 0 ],
 						[ 3 / 16, 2, 0 ],
@@ -249,7 +257,7 @@ module IQ.Image {
 					];
 					break;
 
-				case ErrorDiffusionDitheringKernel.SierraLite:
+				case DitherErrorDiffusionKernel.SierraLite:
 					this._kernel = [
 						[ 2 / 4, 1, 0 ],
 						[ 1 / 4, -1, 1 ],
@@ -258,7 +266,7 @@ module IQ.Image {
 					break;
 
 				default:
-					throw new Error("ErrorDiffusionDithering: unknown kernel = " + kernel);
+					throw new Error("DitherErrorDiffusion: unknown kernel = " + kernel);
 			}
 		}
 	}

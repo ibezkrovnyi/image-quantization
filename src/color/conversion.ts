@@ -1,3 +1,10 @@
+/**
+ * @preserve
+ * Copyright (c) 2015, Igor Bezkrovny
+ * All rights reserved. (MIT Licensed)
+ *
+ * conversion.ts - part of Image Quantization Library
+ */
 module IQ.Color {
 	export class Conversion {
 		static rgb2lab(r : number, g : number, b : number) : { L : number, a : number; b: number } {

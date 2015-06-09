@@ -24,7 +24,7 @@
  * Copyright (c) 2015, Igor Bezkrovny
  * All rights reserved. (MIT Licensed)
  *
- * neuquant.ts - part of color quantization collection
+ * neuquant.ts - part of Image Quantization Library
  */
 
 ///<reference path="../common.ts"/>
