@@ -12,7 +12,6 @@ This color quantization library was created because I was unable to find high-gr
 
 Usage
 -----
-
 All usage is shown in JavaScript, it will be mostly the same for TypeScript. `img` should be valid already-loaded image.
 
 ##### Load Image (simple example)
@@ -57,7 +56,7 @@ var imageDitherer = new IQ.Image.NearestColor(distanceCalculator);
 var resultPointContainer = imageQuantizer.quantize(pointContainer, palette);
 ```
 
-You may work with resultPointContainer directly or you may want to convert it to `Uint8Array`/`Uint32Array`
+You may work with resultPointContainer directly or you may convert it to `Uint8Array`/`Uint32Array`
 ```javascript
 var uint8array = resultPointContainer.toUint8Array();
 ```
@@ -114,6 +113,15 @@ Other
 
 1. [HUSL (Boronine) - info](http://www.husl-colors.org)
 2. [HUSL (Boronine) - code](https://github.com/husl-colors/husl)
+
+Changelog
+---------
+##### 0.0.2 (2015-06-10)
++ rgb2xyz & xyz2lab fixed. CIEDE2000 works much better now.
++ CIE94 distance formula added. More investigation is needed.
+
+##### 0.0.1
++ initial
 
 License
 -------
