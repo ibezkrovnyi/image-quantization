@@ -59,7 +59,8 @@ var APP;
 			"fish.jpg",
 			"kitteh2.jpg",
 			"quantfrog.png",
-			"treefrog.jpg"
+			"treefrog.jpg",
+			"quantfrog_small.png"
 		]
 	}
 })(APP = APP || {});

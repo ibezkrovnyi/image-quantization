@@ -62,10 +62,12 @@ var APP;
 			case 2:
 				return new IQ.Color.DistanceCIEDE2000();
 			case 3:
-				return new IQ.Color.DistanceEuclideanRgbQuantWOAlpha();
+				return new IQ.Color.DistanceCIE94();
 			case 4:
-				return new IQ.Color.DistanceManhattanNeuQuant();
+				return new IQ.Color.DistanceEuclideanRgbQuantWOAlpha();
 			case 5:
+				return new IQ.Color.DistanceManhattanNeuQuant();
+			case 6:
 				return new IQ.Color.DistanceEuclideanWuQuant();
 		}
 	}
