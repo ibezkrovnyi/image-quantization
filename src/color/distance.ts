@@ -262,34 +262,58 @@ module IQ.Color {
 	 * Iulius Curt, april 2013
 	 */
 
-	/*
-	 export function CIE94Distance(colorA : Point, colorB : Point) {
+	//export var tL = 0, ta = 0, tb = 0;
+	 export class DistanceCIE94 implements IDistanceCalculator {
+		 protected _maxCIE94Distance : number;
 
-	 //var xyzA = rgb2xyz(colorA.r, colorA.g, colorA.b);
-	 //var labA = xyz2lab(xyzA.x, xyzA.y, xyzA.z);
-	 //
-	 //var xyzB = rgb2xyz(colorB.r, colorB.g, colorB.b);
-	 //var labB = xyz2lab(xyzB.x, xyzB.y, xyzB.z);
+		 constructor() {
+			 // set default maximal color component deltas (255 - 0 = 255)
+			 this.setMaximalColorDeltas(255, 255, 255, 255);
+		 }
 
-	 var labA = colorA.lab,
-	 labB = colorB.lab;
+		 public setMaximalColorDeltas(maxRedDelta : number, maxGreenDelta : number, maxBlueDelta : number, maxAlphaDelta : number) : void {
+			 this._maxCIE94Distance = 200;
+		 }
 
-	 var Kl = 2.0, K1 = 0.048, K2 = 0.014;
+		 public calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
+			 var lab1 = Conversion.rgb2lab(r1, g1, b1),
+				 lab2 = Conversion.rgb2lab(r2, g2, b2);
 
-	 var dL     = labA.l - labB.l,
-	 dA     = labA.a - labB.a,
-	 dB     = labA.b - labB.b,
-	 c1     = Math.sqrt(labA.a * labA.a + labA.b * labA.b),
-	 c2     = Math.sqrt(labB.a * labB.a + labB.b * labB.b),
-	 dC     = c1 - c2,
-	 deltaH = dA * dA + dB * dB - dC * dC;
+/*
+			 if(tL < lab1.L) {
+				 tL = lab1.L;
+				 console.log("L = " + tL);
+			 }
+			 if(ta < lab1.a) {
+				 ta = lab1.a;
+				 console.log("a = " + ta);
+			 }
+			 if(tb < lab1.b) {
+				 tb = lab1.b;
+				 console.log("b = " + tb);
+			 }
 
-	 deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
+*/
+			 var Kl = 2.0, K1 = 0.048, K2 = 0.014;
 
-	 var i = Math.pow(dL / Kl, 2) + Math.pow(dC / (1.0 + K1 * c1), 2) + Math.pow(deltaH / (1.0 + K2 * c1), 2);
-	 return i < 0 ? 0 : Math.sqrt(i) / 200;
+			 var dL     = lab1.L - lab2.L,
+				 dA     = lab1.a - lab2.a,
+				 dB     = lab1.b - lab2.b,
+				 c1     = Math.sqrt(lab1.a * lab1.a + lab1.b * lab1.b),
+				 c2     = Math.sqrt(lab2.a * lab2.a + lab2.b * lab2.b),
+				 dC     = c1 - c2,
+				 deltaH = dA * dA + dB * dB - dC * dC;
+
+			 deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
+
+			 var i = Math.pow(dL / Kl, 2) + Math.pow(dC / (1.0 + K1 * c1), 2) + Math.pow(deltaH / (1.0 + K2 * c1), 2);
+			 return i < 0 ? 0 : i;
+		 }
+
+		 public calculateNormalized(colorA : Utils.Point, colorB : Utils.Point) : number {
+			 return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._maxCIE94Distance;
+		 }
 	 }
-	 */
 
 	/*
 	 Finally, I've found it! After thorough testing and experimentation my conclusions are:

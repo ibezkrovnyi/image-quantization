@@ -171,48 +171,6 @@ module IQ.Utils {
 	}
 
 	/*
-	 * Computes CIE94 distance between 2 colors in LAB space.
-	 *
-	 * p1 = [l1, a1, b1]
-	 * p2 = [l2, a2, b2]
-	 * Returns distance:float
-	 *
-	 * Usage example:
-	 *     var d = CIE94_dist([94.0, -0.1, -0.55], [77.0, 0.5, 0.45])
-	 *
-	 * Iulius Curt, april 2013
-	 */
-
-/*
-	export function CIE94Distance(colorA : Point, colorB : Point) {
-
-		 //var xyzA = rgb2xyz(colorA.r, colorA.g, colorA.b);
-		 //var labA = xyz2lab(xyzA.x, xyzA.y, xyzA.z);
-		 //
-		 //var xyzB = rgb2xyz(colorB.r, colorB.g, colorB.b);
-		 //var labB = xyz2lab(xyzB.x, xyzB.y, xyzB.z);
-
-		var labA = colorA.lab,
-			labB = colorB.lab;
-
-		var Kl = 2.0, K1 = 0.048, K2 = 0.014;
-
-		var dL     = labA.l - labB.l,
-			dA     = labA.a - labB.a,
-			dB     = labA.b - labB.b,
-			c1     = Math.sqrt(labA.a * labA.a + labA.b * labA.b),
-			c2     = Math.sqrt(labB.a * labB.a + labB.b * labB.b),
-			dC     = c1 - c2,
-			deltaH = dA * dA + dB * dB - dC * dC;
-
-		deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
-
-		var i = Math.pow(dL / Kl, 2) + Math.pow(dC / (1.0 + K1 * c1), 2) + Math.pow(deltaH / (1.0 + K2 * c1), 2);
-		return i < 0 ? 0 : Math.sqrt(i) / 200;
-	}
-*/
-
-	/*
 	 var maxEuclideanDistance = Pr * rd + Pg * gd + Pb * bd + Pa * ad;
 	 // perceptual Euclidean color distance
 	 export function distEuclidean(rgb0, rgb1) {
