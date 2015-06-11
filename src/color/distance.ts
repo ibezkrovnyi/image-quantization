@@ -121,6 +121,7 @@ module IQ.Color {
 		}
 	}
 
+
 	// CIEDE2000 algorithm
 	export class DistanceCIEDE2000 implements IDistanceCalculator {
 		public setMaximalColorDeltas(maxRedDelta : number, maxGreenDelta : number, maxBlueDelta : number, maxAlphaDelta : number) : void {
@@ -128,12 +129,14 @@ module IQ.Color {
 
 		public calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
 			var lab1 = Conversion.rgb2lab(r1, g1, b1),
-				lab2 = Conversion.rgb2lab(r2, g2, b2);
+				lab2 = Conversion.rgb2lab(r2, g2, b2),
+				dA = a2 - a1;
 
-			return this.calculateRawInLab(lab1, a1, lab2, a2);
+			var dE = this.calculateRawInLab(lab1, lab2);
+			return dE + dA * dA;
 		}
 
-		public calculateRawInLab(Lab1 : {L : number, a : number; b : number}, alpha1 : number, Lab2 : {L : number, a : number; b : number}, alpha2 : number) : number {
+		public calculateRawInLab(Lab1 : {L : number, a : number; b : number}, Lab2 : {L : number, a : number; b : number}) : number {
 			// Get L,a,b values for color 1
 			var L1 = Lab1.L;
 			var a1 = Lab1.a;
@@ -184,6 +187,7 @@ module IQ.Color {
 				a_Cp = (C1p + C2p) / 2.0, //(13)
 
 				a_hp = this._a_hp_f(C1, C2, h1p, h2p), //(14)
+
 				T    = 1 - 0.17 * Math.cos(this._radians(a_hp - 30)) + 0.24 * Math.cos(this._radians(2 * a_hp)) + 0.32 * Math.cos(this._radians(3 * a_hp + 6)) - 0.20 * Math.cos(this._radians(4 * a_hp - 63)), //(15)
 				d_ro = 30 * Math.exp(-(Math.pow((a_hp - 275) / 25, 2))), //(16)
 				RC   = Math.sqrt((Math.pow(a_Cp, 7.0)) / (Math.pow(a_Cp, 7.0) + Math.pow(25.0, 7.0))),//(17)
@@ -191,10 +195,9 @@ module IQ.Color {
 				SC   = 1 + 0.045 * a_Cp,//(19)
 				SH   = 1 + 0.015 * a_Cp * T,//(20)
 				RT   = -2 * RC * Math.sin(this._radians(2 * d_ro)),//(21)
-				dE   = Math.sqrt(Math.pow(dLp / (SL * kL), 2) + Math.pow(dCp / (SC * kC), 2) + Math.pow(dHp / (SH * kH), 2) + RT * (dCp / (SC * kC)) * (dHp / (SH * kH))), //(22)
-				dA   = alpha2 - alpha1;
+				dE   = Math.sqrt(Math.pow(dLp / (SL * kL), 2) + Math.pow(dCp / (SC * kC), 2) + Math.pow(dHp / (SH * kH), 2) + RT * (dCp / (SC * kC)) * (dHp / (SH * kH))); //(22)
 
-			return dE * dE + dA * dA;
+			return dE * dE;
 		}
 
 		public calculateNormalized(colorA : Utils.Point, colorB : Utils.Point) : number {
@@ -314,6 +317,40 @@ module IQ.Color {
 			 return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._maxCIE94Distance;
 		 }
 	 }
+
+	// TODO: Name it: http://www.compuphase.com/cmetric.htm
+	export class DistanceCMETRIC implements IDistanceCalculator {
+		protected _max : number;
+
+		constructor() {
+			this._max = Math.sqrt(this.calculateRaw(0, 0, 0, 0,255,255,255,255));
+		}
+
+		public calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
+			var rmean = ( r1 + r2 ) >> 1,
+				r = r1 - r2,
+				g = g1 - g2,
+				b = b1 - b2;
+
+			return ((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8));
+		}
+
+		public calculateNormalized(colorA : Utils.Point, colorB : Utils.Point) : number {
+			var r = Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a));
+			if(r > this._max) {
+				this._max = r;
+				console.log(r, colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a);
+			}
+			return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._max;
+		}
+
+		/**
+		 * To simulate original RgbQuant distance you need to set `maxAlphaDelta = 0`
+		 */
+		public setMaximalColorDeltas(maxRedDelta : number, maxGreenDelta : number, maxBlueDelta : number, maxAlphaDelta : number) : void {
+			this._max = Math.sqrt(this.calculateRaw(0, 0, 0, 0, maxRedDelta, maxGreenDelta, maxBlueDelta, maxAlphaDelta));
+		}
+	}
 
 	/*
 	 Finally, I've found it! After thorough testing and experimentation my conclusions are:

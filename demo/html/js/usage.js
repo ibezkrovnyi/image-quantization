@@ -69,6 +69,8 @@ var APP;
 				return new IQ.Color.DistanceManhattanNeuQuant();
 			case 6:
 				return new IQ.Color.DistanceEuclideanWuQuant();
+			case 7:
+				return new IQ.Color.DistanceCMETRIC();
 		}
 	}
 
@@ -84,10 +86,11 @@ var APP;
 		originalPointBuffer = pointBuffer.clone();
 
 		var time = Date.now();
+        var distance = getColorDistanceCalculator(optionColorDistance);
 
 		console.log("image = " + id);
         timeMark("...sample", function () {
-			var distance = getColorDistanceCalculator(optionColorDistance);
+			//var distance = getColorDistanceCalculator(optionColorDistance);
 
 			switch(optionPaletteQuantizer) {
 				case "neuquant":
@@ -108,7 +111,7 @@ var APP;
 		});
 
 		timeMark("...dither", function () {
-			var distance = getColorDistanceCalculator(optionColorDistance);
+			//var distance = getColorDistanceCalculator(optionColorDistance);
 
 			var imageQuantizer;
 			if (optionImageDithering === -1) {

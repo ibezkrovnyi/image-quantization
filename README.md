@@ -88,17 +88,25 @@ Image Quantization Library supports **Error Diffusion dithering** and **Nearest 
 
 Color Distance Formulas
 -----------------------
-Image Quantization Library supports **Euclidean distance** for RgbQuant and **Manhattan distance ??** for NeuQuant. `TODO: Check NeuQuant distance formula` 
+Image Quantization Library supports: 
 
-1. [CIE94 (Iulius Curt)](https://github.com/iuliux/CIE94.js)
-2. [CIEDE2000 Markus Ekholm](https://github.com/markusn/color-diff) `3-clause BSD`
-3. Euclidean distance
-4. Manhattan distance ? TBD
+1. Euclidean Distance
+2. Manhattan Distance
+3. CIE94 Distance
+   - [Source Code (Iulius Curt)](https://github.com/iuliux/CIE94.js)
+4. CIEDE2000
+   - [Math and Test Data Table (PDF)](http://www.ece.rochester.edu/~gsharma/ciede2000/ciede2000noteCRNA.pdf) 
+   - [Source Code (Markus Ekholm)](https://github.com/markusn/color-diff) `3-clause BSD` 
+5. Euclidean Distance w/o Alpha (RgbQuant)
+6. Euclidean Distance w/o sRGB coefficients (Xiaolin Wu Quant)  
+7. Manhattan Distance w/o sRGB coefficients (NeuQuant)
+8. [CMETRIC](http://www.compuphase.com/cmetric.htm) `DRAFT!`
 
 Color conversion formulas
 -------------------------
+1. [Pseudo-code](http://www.easyrgb.com/?X=MATH)
 
-1. [Pseudo-code](http://www.easyrgb.com/?X=MATH) 
+> Be sure to fix rgb2xyz/xyz2lab. Issue is with strange part of code: `r = r > 0.04045 ? ...`. Check http://en.wikipedia.org/wiki/Lab_color_space   
 
 Image Quality Assessment
 ------------------------
@@ -116,6 +124,10 @@ Other
 
 Changelog
 ---------
+##### 0.0.3a (2015-06-11)
++ cleanup
++ draft of CMETRIC color distance added
+
 ##### 0.0.2 (2015-06-10)
 + rgb2xyz & xyz2lab fixed. CIEDE2000 works much better now.
 + CIE94 distance formula added. More investigation is needed.
