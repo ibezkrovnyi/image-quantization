@@ -320,35 +320,40 @@ module IQ.Color {
 
 	// TODO: Name it: http://www.compuphase.com/cmetric.htm
 	export class DistanceCMETRIC implements IDistanceCalculator {
-		protected _max : number;
+		private _maxRed: number;
+		private _maxGreen: number;
+		private _maxBlue: number;
+		private _maxAlpha: number;
+		private _maxDistance : number;
 
 		constructor() {
-			this._max = Math.sqrt(this.calculateRaw(0, 0, 0, 0,255,255,255,255));
+			this.setMaximalColorDeltas(255, 255, 255, 255);
 		}
 
 		public calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
-			var rmean = ( r1 + r2 ) >> 1,
-				r = r1 - r2,
-				g = g1 - g2,
-				b = b1 - b2;
+			var rmean = ( r1 + r2 ) / 2 * this._maxRed,
+				r = (r1 - r2) * this._maxRed,
+				g = (g1 - g2) * this._maxGreen,
+				b = (b1 - b2) * this._maxBlue,
+				dE = ((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8)),
+				dA = (a2 - a1) * this._maxAlpha;
 
-			return ((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8));
+			return (dE + dA * dA);
 		}
 
 		public calculateNormalized(colorA : Utils.Point, colorB : Utils.Point) : number {
-			var r = Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a));
-			if(r > this._max) {
-				this._max = r;
-				console.log(r, colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a);
-			}
-			return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._max;
+			return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._maxDistance;
 		}
 
 		/**
 		 * To simulate original RgbQuant distance you need to set `maxAlphaDelta = 0`
 		 */
 		public setMaximalColorDeltas(maxRedDelta : number, maxGreenDelta : number, maxBlueDelta : number, maxAlphaDelta : number) : void {
-			this._max = Math.sqrt(this.calculateRaw(0, 0, 0, 0, maxRedDelta, maxGreenDelta, maxBlueDelta, maxAlphaDelta));
+			this._maxRed = 255 / maxRedDelta;
+			this._maxGreen = 255 / maxGreenDelta;
+			this._maxBlue = 255 / maxBlueDelta;
+			this._maxAlpha = 255 / maxAlphaDelta;
+			this._maxDistance = Math.sqrt(this.calculateRaw(0,0,0,0,maxRedDelta, maxGreenDelta, maxBlueDelta, maxAlphaDelta));
 		}
 	}
 

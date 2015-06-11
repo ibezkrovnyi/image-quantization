@@ -124,6 +124,9 @@ Other
 
 Changelog
 ---------
+##### 0.0.3b (2015-06-11)
++ CMETRIC color distance fixed
+
 ##### 0.0.3a (2015-06-11)
 + cleanup
 + draft of CMETRIC color distance added
