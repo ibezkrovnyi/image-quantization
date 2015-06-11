@@ -172,7 +172,7 @@ module IQ.Palette {
 			var alphadec = 30 + ((this._sampleFactor - 1) / 3), // TODO: Type: Double
 				pointIndex = 0,
 				pointsToSample = pointsNumber / this._sampleFactor | 0,
-				delta = (pointsToSample / NeuQuant._ncycles) | 0,
+				delta = pointsToSample / NeuQuant._ncycles | 0,
 				alpha = NeuQuant._initalpha, // TODO: Type: Double
 				radius = (this._networkSize >> 3) * NeuQuant._radiusbias; // TODO: Type: Double
 
@@ -231,34 +231,18 @@ module IQ.Palette {
 		 * Insertion sort of network and building of netindex[0..255] (to do after unbias)
 		 */
 		private _inxbuild() {
-			var i, j, smallpos, smallval, p, q;
-			for (i = 0; i < this._networkSize; i++) {
-				p = this._network[i];
-				smallpos = i;
-				smallval = p.g;
-
-				/* find smallest in i..this._networkSize-1 */
-				for (j = i + 1; j < this._networkSize; j++) {
-					q = this._network[j];
-					if (q.g < smallval) {
-						smallpos = j;
-						smallval = q.g;
-					}
-				}
-
-				q = this._network[smallpos];
-				if (i != smallpos) {
-					this._network[i] = q;
-					this._network[smallpos] = p;
-				}
-			}
+			this._network = this._network.sort((a, b) => {
+				return a.g - b.g;
+			});
 		}
 
 		private _buildPalette() : Utils.Palette {
 			var palette = new Utils.Palette();
-			for (var j = 0; j < this._networkSize; j++) {
-				palette.add(this._network[j].toPoint());
-			}
+
+			this._network.forEach(neuron => {
+				palette.add(neuron.toPoint());
+			});
+
 			palette.sort();
 			return palette;
 		}
