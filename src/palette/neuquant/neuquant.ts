@@ -231,7 +231,7 @@ module IQ.Palette {
 		 * Insertion sort of network and building of netindex[0..255] (to do after unbias)
 		 */
 		private _inxbuild() {
-			this._network = this._network.sort((a, b) => {
+			this._network = this._network.sort((a : Neuron, b : Neuron) => {
 				return a.g - b.g;
 			});
 		}
