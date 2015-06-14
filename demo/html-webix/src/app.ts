@@ -1,8 +1,10 @@
 ///<reference path="../lib/webix/webix.d.ts"/>
 ///<reference path="../../../src/iq.ts"/>
 ///<reference path="usage.ts"/>
+///<reference path="data/imageList.ts"/>
 webix.ready(function () {
 
+/*
 	var imageFoldersData = [
 		{
 			id : "root", value : "Alpha", open : true, data : [
@@ -54,6 +56,7 @@ webix.ready(function () {
 			"folder" : "photo2"
 		}
 	];
+*/
 
 	var configForm = {
 		view : "form", id : "myform", width : 300, elements : [
@@ -140,9 +143,11 @@ webix.ready(function () {
 			height : 84
 		},
 		//autoheight : true,
-		height : 800,
+		//height : 800,
 		template : function (obj : any) {
-			if (obj.folder && obj.file) {
+			if(obj.dataUrl) {
+				return "<img style=\"height: 84px\" src=\"" + obj.dataUrl + "\"/>"
+			} else if (obj.folder && obj.file) {
 				return "<img style=\"height: 84px\" src=\"images/" + obj.folder + "/" + obj.file + "\"/>"
 			} else {
 				return "<div style=\"line-height: 84px\">" + obj.value + "</div>";
@@ -150,7 +155,7 @@ webix.ready(function () {
 		},
 		select : true,
 		//scroll : false,
-		data : imageFoldersData,
+		data : Data.imageData,
 		on : {
 			"onafterselect" : (id) => {
 				update();
@@ -278,9 +283,17 @@ webix.ready(function () {
 		view : "tabview", gravity : 3,
 		tabbar : {
 			optionWidth : 200, value : "clickToCompare", options : [
-				{value : 'Click-to-Compare', id : 'clickToCompare'},
+				{value : 'Click-to-Compare', id : 'clickToCompare' },
 				{value : 'Original-vs-Quantized', id : 'originalVsQuantized'}
-			]
+			],
+			on : {
+				onAfterTabClick : (id) => {
+					if(quantizeResult) {
+						fillClickToCompare(quantizeResult);
+						fillOriginalVsQuantized(quantizeResult);
+					}
+				}
+			}
 		},
 		cells : [
 			quantizedImageClickToCompare,
@@ -301,10 +314,7 @@ webix.ready(function () {
 		]
 	});
 
-	setTimeout(() => {
-		update();
-	}, 1000);
-
+	var quantizeResult = null;
 	function update() {
 		var imageFoldersControl = (<webix.ui.grouplist>$$("image"));
 		var selectedId = imageFoldersControl.getSelectedId(true);
@@ -320,6 +330,7 @@ webix.ready(function () {
 						colorDistanceMethod = parseInt((<webix.ui.richselect>$$("option-distance")).getValue(), 10);
 
 					var result = Usage.quantize(img, colors, paletteQuantizerMethod, imageQuantizerMethod, colorDistanceMethod);
+					quantizeResult = result;
 					fillClickToCompare(result);
 					fillOriginalVsQuantized(result);
 				}
@@ -328,13 +339,15 @@ webix.ready(function () {
 	}
 
 	function fillOriginalVsQuantized(result) {
+		var prefix = "id-imageView2-";
 		// CLEANUP
 		//container.innerHTML = "";
 		$$("imageView2-statistics").getNode().firstElementChild.innerHTML = " (SSIM: " + result.ssim.toFixed(2) + ", Time: " + result.time + " )";
 
 		// DRAW ORIGINAL IMAGE
 		var canvas = Usage.drawPixels(result.original, result.original.getWidth());
-		canvas.id = "original-image";
+		canvas.id = prefix + "original-image";
+		canvas.className = "image-semi-transparent-background";
 		//canvas.style.display = "none";
 		var container = $$("imageView2-image-original").getNode().firstElementChild;
 		container.innerHTML = "";
@@ -342,7 +355,8 @@ webix.ready(function () {
 
 		// DRAW REDUCED/DITHERED IMAGE
 		canvas = Usage.drawPixels(result.image, result.image.getWidth());
-		canvas.id = "reduced-image";
+		canvas.id = prefix + "reduced-image";
+		canvas.className = "image-semi-transparent-background";
 		container = $$("imageView2-image-quantized").getNode().firstElementChild;
 		container.innerHTML = "";
 		container.appendChild(canvas);
@@ -355,29 +369,67 @@ webix.ready(function () {
 	}
 
 	function fillClickToCompare(result) {
+		var prefix = "id-imageView2-";
 		// CLEANUP
-		//container.innerHTML = "";
 		$$("imageView1-statistics").getNode().firstElementChild.innerHTML = " (SSIM: " + result.ssim.toFixed(2) + ", Time: " + result.time + " )";
 
 		// DRAW ORIGINAL IMAGE
-		var canvas = Usage.drawPixels(result.original, result.original.getWidth());
-		canvas.id = "original-image";
-		//canvas.style.display = "none";
+		var canvasOriginal = Usage.drawPixels(result.original, result.original.getWidth());
+		canvasOriginal.id = prefix + "original-image";
+		canvasOriginal.className = "image-semi-transparent-background";
+		canvasOriginal.style.display = "none";
 		var container = $$("imageView1-image").getNode().firstElementChild;
 		container.innerHTML = "";
-		container.appendChild(canvas);
+		container.appendChild(canvasOriginal);
 
 		// DRAW REDUCED/DITHERED IMAGE
-		canvas = Usage.drawPixels(result.image, result.image.getWidth());
-		canvas.id = "reduced-image";
+		var canvasReduced = Usage.drawPixels(result.image, result.image.getWidth());
+		canvasReduced.id = prefix + "reduced-image";
+		canvasReduced.className = "image-semi-transparent-background";
 		container = $$("imageView1-image").getNode().firstElementChild;
-		container.innerHTML = "";
-		container.appendChild(canvas);
+		container.appendChild(canvasReduced);
+
+		// Add Container handlers
+		container.onmousedown = () => {
+			canvasOriginal.style.display = "";
+			canvasReduced.style.display = "none";
+		};
+		container.onmouseup = () => {
+			canvasOriginal.style.display = "none";
+			canvasReduced.style.display = "";
+		};
 
 		// DRAW PALETTE
-		canvas = Usage.drawPixels(result.palette.getPointContainer(), 16, 128);
+		var canvasPalette = Usage.drawPixels(result.palette.getPointContainer(), 16, 128);
 		container = $$("imageView1-palette").getNode().firstElementChild;
 		container.innerHTML = "";
-		container.appendChild(canvas);
+		container.appendChild(canvasPalette);
 	}
+
+	function processDrag(file) {
+		var reader = new FileReader();
+		reader.onload = function (event) {
+			(<webix.ui.grouplist>$$("image")).add({
+				id : 'image-' + file.name,
+				dataUrl : (<any>event.target).result
+			});
+		};
+
+		reader.readAsDataURL(file);
+	}
+
+	document.body.ondrop = event=> {
+		event.preventDefault();
+
+		var files = event.dataTransfer.files;
+		for(var i = 0; i < files.length; i++) {
+			processDrag(files[i]);
+		}
+		//readfiles(event.dataTransfer.files);
+		console.log(event);
+	};
+
+	document.body.ondragover = event=> {
+		event.preventDefault();
+	};
 });
