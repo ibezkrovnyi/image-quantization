@@ -29,6 +29,14 @@ module IQ.Utils {
 			this._pointContainer.setWidth(this._pointArray.length);
 		}
 
+		public has(color : Point) {
+			for(var i = this._pointArray.length - 1; i >= 0; i--) {
+				if(color.uint32 === this._pointArray[i].uint32) return true;
+			}
+
+			return false;
+		}
+
 		// TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
 		public getNearestColor(colorDistanceCalculator : Color.IDistanceCalculator, color : Point) : Point {
 			return this._pointArray[this.getNearestIndex(colorDistanceCalculator, color) | 0];
