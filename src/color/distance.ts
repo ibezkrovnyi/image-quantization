@@ -124,6 +124,21 @@ module IQ.Color {
 
 	// CIEDE2000 algorithm
 	export class DistanceCIEDE2000 implements IDistanceCalculator {
+		private static _kL : number = 1;
+		private static _kC : number = 1;
+		private static _kH : number = 1;
+		private static _pow25to7 : number = Math.pow(25, 7);
+		private static _deg360InRad : number = DistanceCIEDE2000._degrees2radians(360);
+		private static _deg180InRad : number = DistanceCIEDE2000._degrees2radians(180);
+
+		private static _degrees2radians(n : number) : number {
+			return n * (Math.PI / 180);
+		}
+
+		private static _radians2degrees(n : number) : number {
+			return n * (180 / Math.PI);
+		}
+
 		public setMaximalColorDeltas(maxRedDelta : number, maxGreenDelta : number, maxBlueDelta : number, maxAlphaDelta : number) : void {
 		}
 
@@ -148,25 +163,21 @@ module IQ.Color {
 			var b2 = Lab2.b;
 
 			// Weight factors
-			var kL = 1;
-			var kC = 1;
-			var kH = 1;
-
 			/**
 			 * Step 1: Calculate C1p, C2p, h1p, h2p
 			 */
-			var C1      = Math.sqrt(Math.pow(a1, 2) + Math.pow(b1, 2)), //(2)
-				C2      = Math.sqrt(Math.pow(a2, 2) + Math.pow(b2, 2)), //(2)
+			var C1      = Math.sqrt(a1*a1 + b1*b1), //(2)
+				C2      = Math.sqrt(a2*a2 + b2*b2), //(2)
 
-				a_C1_C2 = (C1 + C2) / 2.0,             //(3)
+				pow_a_C1_C2_to_7 = Math.pow((C1 + C2) / 2.0, 7.0),             //(3)
 
-				G       = 0.5 * (1 - Math.sqrt(Math.pow(a_C1_C2, 7.0) / (Math.pow(a_C1_C2, 7.0) + Math.pow(25.0, 7.0)))), //(4)
+				G       = 0.5 * (1 - Math.sqrt(pow_a_C1_C2_to_7 / (pow_a_C1_C2_to_7 + DistanceCIEDE2000._pow25to7))), //(4)
 
 				a1p     = (1.0 + G) * a1, //(5)
 				a2p     = (1.0 + G) * a2, //(5)
 
-				C1p     = Math.sqrt(Math.pow(a1p, 2) + Math.pow(b1, 2)), //(6)
-				C2p     = Math.sqrt(Math.pow(a2p, 2) + Math.pow(b2, 2)), //(6)
+				C1p     = Math.sqrt(a1p*a1p + b1*b1), //(6)
+				C2p     = Math.sqrt(a2p*a2p + b2*b2), //(6)
 
 				h1p     = this._hp_f(b1, a1p), //(7)
 				h2p     = this._hp_f(b2, a2p); //(7)
@@ -178,7 +189,7 @@ module IQ.Color {
 				dCp = C2p - C1p, //(9)
 
 				dhp = this._dhp_f(C1, C2, h1p, h2p), //(10)
-				dHp = 2 * Math.sqrt(C1p * C2p) * Math.sin(this._radians(dhp) / 2.0); //(11)
+				dHp = 2 * Math.sqrt(C1p * C2p) * Math.sin(DistanceCIEDE2000._degrees2radians(dhp) / 2.0); //(11)
 
 			/**
 			 * Step 3: Calculate CIEDE2000 Color-Difference
@@ -188,14 +199,14 @@ module IQ.Color {
 
 				a_hp = this._a_hp_f(C1, C2, h1p, h2p), //(14)
 
-				T    = 1 - 0.17 * Math.cos(this._radians(a_hp - 30)) + 0.24 * Math.cos(this._radians(2 * a_hp)) + 0.32 * Math.cos(this._radians(3 * a_hp + 6)) - 0.20 * Math.cos(this._radians(4 * a_hp - 63)), //(15)
+				T    = 1 - 0.17 * Math.cos(DistanceCIEDE2000._degrees2radians(a_hp - 30)) + 0.24 * Math.cos(DistanceCIEDE2000._degrees2radians(2 * a_hp)) + 0.32 * Math.cos(DistanceCIEDE2000._degrees2radians(3 * a_hp + 6)) - 0.20 * Math.cos(DistanceCIEDE2000._degrees2radians(4 * a_hp - 63)), //(15)
 				d_ro = 30 * Math.exp(-(Math.pow((a_hp - 275) / 25, 2))), //(16)
-				RC   = Math.sqrt((Math.pow(a_Cp, 7.0)) / (Math.pow(a_Cp, 7.0) + Math.pow(25.0, 7.0))),//(17)
+				RC   = Math.sqrt((Math.pow(a_Cp, 7.0)) / (Math.pow(a_Cp, 7.0) + DistanceCIEDE2000._pow25to7)),//(17)
 				SL   = 1 + ((0.015 * Math.pow(a_L - 50, 2)) / Math.sqrt(20 + Math.pow(a_L - 50, 2.0))),//(18)
 				SC   = 1 + 0.045 * a_Cp,//(19)
 				SH   = 1 + 0.015 * a_Cp * T,//(20)
-				RT   = -2 * RC * Math.sin(this._radians(2 * d_ro)),//(21)
-				dE   = Math.sqrt(Math.pow(dLp / (SL * kL), 2) + Math.pow(dCp / (SC * kC), 2) + Math.pow(dHp / (SH * kH), 2) + RT * (dCp / (SC * kC)) * (dHp / (SH * kH))); //(22)
+				RT   = -2 * RC * Math.sin(DistanceCIEDE2000._degrees2radians(2 * d_ro)),//(21)
+				dE   = Math.sqrt(Math.pow(dLp / (SL * DistanceCIEDE2000._kL), 2) + Math.pow(dCp / (SC * DistanceCIEDE2000._kC), 2) + Math.pow(dHp / (SH * DistanceCIEDE2000._kH), 2) + RT * (dCp / (SC * DistanceCIEDE2000._kC)) * (dHp / (SH * DistanceCIEDE2000._kH))); //(22)
 
 			return dE * dE;
 		}
@@ -204,25 +215,17 @@ module IQ.Color {
 			return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a));
 		}
 
-		private _degrees(n : number) : number {
-			return n * (180 / Math.PI);
-		}
-
-		private _radians(n : number) : number {
-			return n * (Math.PI / 180);
-		}
-
-		private _hp_f(x : number, y : number) { //(7)
-			if (x === 0 && y === 0) {
+		private _hp_f(b : number, aPrime : number) { //(7)
+			if (b === 0 && aPrime === 0) {
 				return 0;
-			} else {
-				var tmphp = this._degrees(Math.atan2(x, y));
-				if (tmphp >= 0) {
-					return tmphp
-				} else {
-					return tmphp + 360;
-				}
 			}
+
+			var tmphp = DistanceCIEDE2000._radians2degrees(Math.atan2(b, aPrime));
+			if (tmphp >= 0) {
+				return tmphp
+			}
+
+			return tmphp + 360;
 		}
 
 		private _a_hp_f(C1 : number, C2 : number, h1p : number, h2p : number) : number { //(14)
@@ -240,15 +243,19 @@ module IQ.Color {
 		private _dhp_f(C1 : number, C2 : number, h1p : number, h2p : number) : number { //(10)
 			if (C1 * C2 === 0) {
 				return 0;
-			} else if (Math.abs(h2p - h1p) <= 180) {
-				return h2p - h1p;
-			} else if (h2p - h1p > 180) {
-				return (h2p - h1p) - 360;
-			} else if (h2p - h1p < -180) {
-				return (h2p - h1p) + 360;
-			} else {
-				throw new Error();
 			}
+
+			var h2p_minus_h1p = h2p - h1p;
+
+			if (h2p_minus_h1p > 180) {
+				return h2p_minus_h1p - 360;
+			}
+
+			if (h2p_minus_h1p < -180) {
+				return h2p_minus_h1p + 360;
+			}
+
+			return h2p_minus_h1p;
 		}
 	}
 

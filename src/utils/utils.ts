@@ -53,8 +53,8 @@ module IQ.Utils {
 	}
 
 	export function intInRange(value, low, high) {
-		(value > high) && (value = high);
-		(value < low) && (value = low);
+		if (value > high) value = high;
+		if (value < low) value = low;
 		return value | 0;
 	}
 	// http://rgb2hsl.nichabi.com/javascript-function.php

@@ -44,6 +44,7 @@ module IQ.Image {
 		// fixed version. it doesn't use image pixels as error storage, also it doesn't have 0.3 + 0.3 + 0.3 + 0.3 = 0 error
 		public quantize(pointBuffer : Utils.PointContainer, palette : Utils.Palette) : Utils.PointContainer {
 			var pointArray = pointBuffer.getPointArray(),
+				originalPoint = new Utils.Point(),
 				width = pointBuffer.getWidth(),
 				height = pointBuffer.getHeight(),
 				dir = 1,
@@ -75,7 +76,7 @@ module IQ.Image {
 				for (var x = xStart, idx = lni + xStart; x !== xEnd; x += dir, idx += dir) {
 					// Image pixel
 					var point = pointArray[ idx ],
-						originalPoint = new Utils.Point(),
+						//originalPoint = new Utils.Point(),
 						error = errorLine[ x ];
 
 					originalPoint.from(point);
