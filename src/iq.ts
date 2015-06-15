@@ -29,7 +29,7 @@
 
 /// <reference path='utils/utils.ts' />
 
-	function test() {
+function test() {
 
 	var distance = new IQ.Color.DistanceCIEDE2000();
 	window["fastDelta"] = 0;

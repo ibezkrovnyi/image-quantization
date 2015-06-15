@@ -124,12 +124,14 @@ Other
 
 TODO
 ----
-
 1. notification about progress
 2. riemersma dithering
 
 Changelog
 ---------
+##### 0.0.4 (2015-06-15)
++ CIEDE2000 color distance equation optimized (original CIEDE2000 equation is available as class `CIEDE2000_Original`) 
+
 ##### 0.0.3b (2015-06-11)
 + CMETRIC color distance fixed
 
