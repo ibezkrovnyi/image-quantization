@@ -1,7 +1,8 @@
 /// <reference path='../../src/iq.ts' />
-var width = 64,
-	height = 64,
-	imageArray = [];
+var width = 16,
+	height = 16,
+	imageArray = [],
+	distance = new IQ.Color.DistanceCIEDE2000();
 
 for(var i = 0; i < width * height * 4; i++) {
 	imageArray[i] = (Math.random() * 256) | 0;
@@ -23,26 +24,26 @@ for(var i = 0; i < 1; i++) {
 
 	// quantize palette
 	timeMark("palette: neuquant", function() {
-		iqPalette = new IQ.Palette.NeuQuant(256);
+		iqPalette = new IQ.Palette.NeuQuant(distance, 256);
 		iqPalette.sample(pointBuffer);
 		palette = iqPalette.quantize();
 	});
 
 	timeMark("palette: rgbquant", function() {
-		iqPalette = new IQ.Palette.RgbQuant(256);
+		iqPalette = new IQ.Palette.RgbQuant(distance, 256);
 		iqPalette.sample(pointBuffer);
 		palette = iqPalette.quantize();
 	});
 
 	timeMark("palette: wuquant", function() {
-		iqPalette = new IQ.Palette.WuQuant(256);
+		iqPalette = new IQ.Palette.WuQuant(distance, 256);
 		iqPalette.sample(pointBuffer);
 		palette = iqPalette.quantize();
 	});
 
 	// quantize image
 	timeMark("image: error diffusion: sierra lite", function() {
-		iqImage = new IQ.Image.DitherErrorDiffusion(IQ.Image.DitherErrorDiffusionKernel.SierraLite);
+		iqImage = new IQ.Image.DitherErrorDiffusion(distance, IQ.Image.DitherErrorDiffusionKernel.SierraLite);
 		iqImage.quantize(pointBuffer, palette);
 	});
 }

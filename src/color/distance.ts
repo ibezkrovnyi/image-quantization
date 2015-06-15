@@ -308,11 +308,10 @@ module IQ.Color {
 		/**
 		 * @description
 		 *   minDistance between any color (CIEDE2000 low limit) = 0.00021155740497634713 (Chrome 46, JavaScript)
-		 *   max (RT * (dCp / (SC * DistanceCIEDE2000._kC)) * (dHp / (SH * DistanceCIEDE2000._kH))) 0.0000019135101965161994
-		 *
+		 *   !!!!!! max (RT * (dCp / (SC * DistanceCIEDE2000._kC)) * (dHp / (SH * DistanceCIEDE2000._kH))) 0.0000019135101965161994
 		 *   max (abs(dE (correct RT) - dE (RT = 0) ) ) is always less than minDistance (0.0000019135101965161994)
 		 *
-		 *   So, we can remove RT, SC, dCp, dHp, SH from equation.
+		 *   So, we can remove RT from equation.
 		 */
 		public calculateRawInLab(Lab1 : {L : number, a : number; b : number}, Lab2 : {L : number, a : number; b : number}) : number {
 			// Get L,a,b values for color 1

@@ -96,7 +96,7 @@ Image Quantization Library supports:
    - [Source Code (Iulius Curt)](https://github.com/iuliux/CIE94.js)
 4. CIEDE2000
    - [Math and Test Data Table (PDF)](http://www.ece.rochester.edu/~gsharma/ciede2000/ciede2000noteCRNA.pdf) 
-   - [Source Code (Markus Ekholm)](https://github.com/markusn/color-diff) `3-clause BSD` 
+   - [Source Code (Greg Fiumara)](https://github.com/gfiumara/CIEDE2000) `C` 
 5. Euclidean Distance w/o Alpha (RgbQuant)
 6. Euclidean Distance w/o sRGB coefficients (Xiaolin Wu Quant)  
 7. Manhattan Distance w/o sRGB coefficients (NeuQuant)
@@ -121,6 +121,12 @@ Other
 
 1. [HUSL (Boronine) - info](http://www.husl-colors.org)
 2. [HUSL (Boronine) - code](https://github.com/husl-colors/husl)
+
+TODO
+----
+
+1. notification about progress
+2. riemersma dithering
 
 Changelog
 ---------
