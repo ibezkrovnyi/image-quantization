@@ -2,7 +2,7 @@
 var width = 16,
 	height = 16,
 	imageArray = [],
-	distance = new IQ.Color.DistanceCIEDE2000();
+	distance = new IQ.Distance.DistanceCIEDE2000();
 
 for(var i = 0; i < width * height * 4; i++) {
 	imageArray[i] = (Math.random() * 256) | 0;

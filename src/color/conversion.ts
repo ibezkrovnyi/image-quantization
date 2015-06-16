@@ -7,12 +7,12 @@
  */
 module IQ.Color {
 	export class Conversion {
-		static rgb2lab(r : number, g : number, b : number) : { L : number, a : number; b: number } {
+		static rgb2lab(r : number, g : number, b : number) : { L : number; a : number; b: number } {
 			var xyz = Conversion.rgb2xyz(r, g, b);
 			return Conversion.xyz2lab(xyz.x, xyz.y, xyz.z);
 		}
 
-		static lab2rgb(L : number, a : number, b : number) : { r : number, g : number; b: number } {
+		static lab2rgb(L : number, a : number, b : number) : { r : number; g : number; b: number } {
 			var xyz = Conversion.lab2xyz(L, a, b);
 			return Conversion.xyz2rgb(xyz.x, xyz.y, xyz.z);
 		}
@@ -78,7 +78,7 @@ module IQ.Color {
 		private static _xyz2lab_helper(value  : number) : number {
 			return value > 0.008856451679035631 ? Math.pow(value, 1 / 3) : ( 7.787037037037037 * value + 0.13793103448275862);
 		}
-		static xyz2lab(x : number, y : number, z : number) : {L : number, a : number, b : number} {
+		static xyz2lab(x : number, y : number, z : number) : {L : number; a : number; b : number} {
 			x = x / Conversion._refX;          //ref_X =  95.047   Observer= 2°, Illuminant= D65
 			y = y / Conversion._refY;          //ref_Y = 100.000
 			z = z / Conversion._refZ;          //ref_Z = 108.883
@@ -95,7 +95,7 @@ module IQ.Color {
 		}
 
 		// TODO: fix like xyz2lab fixed
-		static lab2xyz(L : number, a : number, b : number) : {x : number, y : number, z : number} {
+		static lab2xyz(L : number, a : number, b : number) : {x : number; y : number; z : number} {
 			var y = ( L + 16 ) / 116, x = a / 500 + y, z = y - b / 200;
 
 			var y3 = Math.pow(y, 3), x3 = Math.pow(x, 3), z3 = Math.pow(z, 3);

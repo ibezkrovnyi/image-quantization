@@ -24,7 +24,7 @@ module IQ.Utils {
 		public a : number;
 		public uint32 : number;
 		public rgba : number[]; // TODO: better name is quadruplet or quad may be?
-		public Lab : { L : number, a : number, b : number };
+		public Lab : { L : number; a : number; b : number };
 
 		static createByQuadruplet(quadruplet : number[]) : Point {
 			var point : Point = new Point();

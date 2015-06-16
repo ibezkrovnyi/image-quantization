@@ -38,7 +38,7 @@ module IQ.Utils {
 		}
 
 		// TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
-		public getNearestColor(colorDistanceCalculator : Color.IDistanceCalculator, color : Point) : Point {
+		public getNearestColor(colorDistanceCalculator : Distance.IDistanceCalculator, color : Point) : Point {
 			return this._pointArray[this.getNearestIndex(colorDistanceCalculator, color) | 0];
 		}
 
@@ -80,7 +80,7 @@ module IQ.Utils {
 			return typeof this._i32idx[key] === "number" ? this._i32idx[key] : -1;
 		}
 
-		private getNearestIndex(colorDistanceCalculator : Color.IDistanceCalculator, point : Point) : number {
+		private getNearestIndex(colorDistanceCalculator : Distance.IDistanceCalculator, point : Point) : number {
 			var idx : number = this._nearestPointFromCache("" + point.uint32);
 			if (idx >= 0) return idx;
 

@@ -7,6 +7,7 @@ Introduction
 ------------
 This color quantization library was created because I was unable to find high-grade image quantization library with alpha support in TypeScript on the internet.
  
+[API](http://igor-bezkrovny.github.io/image-quantization/doc)  
 [Online Demo](http://igor-bezkrovny.github.io/image-quantization-demo)  
 [Demo Source](https://github.com/igor-bezkrovny/igor-bezkrovny.github.io/image-quantization-demo)
 
@@ -33,7 +34,7 @@ var targetColors = 256;
 var pointContainer = IQ.Utils.PointContainer.fromHTMLImageElement(img);
 
 // create chosen distance calculator (see classes implementing `IQ.IDistanceCalculator`)
-var distanceCalculator = new IQ.Color.DistanceEuclidean();
+var distanceCalculator = new IQ.Distance.DistanceEuclidean();
 
 // create chosen palette quantizer (see classes implementing `IQ.IPaletteQuantizer`) 
 var paletteQuantizer = new IQ.Palette.RgbQuant(distanceCalculator, targetColors);
@@ -130,14 +131,18 @@ TODO
 Changelog
 ---------
 
+##### 0.1.1 (2015-06-16)
++ Auto-generated documentation added
++ Refactoring 
+
 ##### 0.1.0 (2015-06-16)
-+ code cleanup, removed unnecessary files
++ Code cleanup, removed unnecessary files
 
 ##### 0.0.5 (2015-06-16)
 + PNGQUANT color distance added, need to check its quality
 + CIEDE2000 and CIE94 fixed for use in NeuQuant
 + NeuQuant is fixed according to original Anthony Dekker source code (all values should be integer) 
-+ code refactoring and cleanup
++ Code refactoring and cleanup
 * We have some slowdown because of red/green/blue/alpha normalization according to white point per each calculateRaw/calculateNormalized call 
 
 ##### 0.0.4 (2015-06-15)
@@ -147,15 +152,15 @@ Changelog
 + CMETRIC color distance fixed
 
 ##### 0.0.3a (2015-06-11)
-+ cleanup
-+ draft of CMETRIC color distance added
++ Cleanup
++ Draft of CMETRIC color distance added
 
 ##### 0.0.2 (2015-06-10)
 + rgb2xyz & xyz2lab fixed. CIEDE2000 works much better now.
 + CIE94 distance formula added. More investigation is needed.
 
 ##### 0.0.1
-+ initial
++ Initial
 
 License
 -------

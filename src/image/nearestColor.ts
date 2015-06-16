@@ -10,9 +10,9 @@
 module IQ.Image {
 
 	export class NearestColor implements IImageDitherer {
-		private _distance : Color.IDistanceCalculator;
+		private _distance : Distance.IDistanceCalculator;
 
-		constructor(colorDistanceCalculator : Color.IDistanceCalculator) {
+		constructor(colorDistanceCalculator : Distance.IDistanceCalculator) {
 			this._distance = colorDistanceCalculator;
 		}
 

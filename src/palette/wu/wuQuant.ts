@@ -5,7 +5,7 @@
  *
  * wuQuant.ts - part of Image Quantization Library
  */
-///<reference path="../../color/common.ts"/>
+///<reference path="../../distance/common.ts"/>
 module IQ.Palette {
 
 	function createArray1D(dimension1) {
@@ -109,9 +109,9 @@ module IQ.Palette {
 		private _sideSize: number;
 		private _alphaSideSize: number;
 
-		private _distance : Color.IDistanceCalculator;
+		private _distance : Distance.IDistanceCalculator;
 
-		constructor(colorDistanceCalculator : Color.IDistanceCalculator, colors : number = 256, significantBitsPerChannel : number = 5) {
+		constructor(colorDistanceCalculator : Distance.IDistanceCalculator, colors : number = 256, significantBitsPerChannel : number = 5) {
 			this._distance = colorDistanceCalculator;
 			this._setQuality(significantBitsPerChannel);
 			this._initialize(colors);
@@ -498,7 +498,7 @@ module IQ.Palette {
 		/**
 		 * Finds the optimal (maximal) position for the cut.
 		 */
-		private _maximize(cube : WuColorCube, direction : number, first : number, last : number, wholeRed : number, wholeGreen : number, wholeBlue : number, wholeAlpha : number, wholeWeight : number) : {max : number, position : number} {
+		private _maximize(cube : WuColorCube, direction : number, first : number, last : number, wholeRed : number, wholeGreen : number, wholeBlue : number, wholeAlpha : number, wholeWeight : number) : {max : number; position : number} {
 			var bottomRed    = WuQuant._bottom(cube, direction, this._momentsRed) | 0,
 				bottomGreen  = WuQuant._bottom(cube, direction, this._momentsGreen) | 0,
 				bottomBlue   = WuQuant._bottom(cube, direction, this._momentsBlue) | 0,

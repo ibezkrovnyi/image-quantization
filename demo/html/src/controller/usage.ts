@@ -69,7 +69,7 @@ module Usage {
 
 			console.log("image = " + id);
 			this._timeMark("...sample", () => {
-				var distance : IQ.Color.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+				var distance : IQ.Distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
 
 				switch (optionPaletteQuantizer) {
 					case 1:
@@ -90,7 +90,7 @@ module Usage {
 			});
 
 			this._timeMark("...dither", ()  => {
-				var distance : IQ.Color.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+				var distance : IQ.Distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
 
 				var imageQuantizer;
 				if (optionImageDithering === -1) {
@@ -116,26 +116,26 @@ module Usage {
 			};
 		}
 
-		private _getColorDistanceCalculator(option) : IQ.Color.IDistanceCalculator {
+		private _getColorDistanceCalculator(option) : IQ.Distance.IDistanceCalculator {
 			switch (option) {
 				case 1:
-					return new IQ.Color.DistanceEuclidean();
+					return new IQ.Distance.DistanceEuclidean();
 				case 2:
-					return new IQ.Color.DistanceManhattan();
+					return new IQ.Distance.DistanceManhattan();
 				case 3:
-					return new IQ.Color.DistanceCIEDE2000();
+					return new IQ.Distance.DistanceCIEDE2000();
 				case 4:
-					return new IQ.Color.DistanceCIE94();
+					return new IQ.Distance.DistanceCIE94();
 				case 5:
-					return new IQ.Color.DistanceEuclideanRgbQuantWOAlpha();
+					return new IQ.Distance.DistanceEuclideanRgbQuantWOAlpha();
 				case 6:
-					return new IQ.Color.DistanceManhattanNeuQuant();
+					return new IQ.Distance.DistanceManhattanNeuQuant();
 				case 7:
-					return new IQ.Color.DistanceEuclideanWuQuant();
+					return new IQ.Distance.DistanceEuclideanWuQuant();
 				case 8:
-					return new IQ.Color.DistanceCMETRIC();
+					return new IQ.Distance.DistanceCMETRIC();
 				case 9:
-					return new IQ.Color.DistancePNGQUANT();
+					return new IQ.Distance.DistancePNGQUANT();
 			}
 		}
 

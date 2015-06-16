@@ -28,7 +28,7 @@
  */
 
 ///<reference path="../common.ts"/>
-///<reference path="../../color/common.ts"/>
+///<reference path="../../distance/common.ts"/>
 module IQ.Palette {
 	"use strict";
 
@@ -143,9 +143,9 @@ module IQ.Palette {
 
 		/* for network lookup - really 256 */
 		private _bias : number[]; // TODO: Type: Double
-		private _distance : Color.IDistanceCalculator;
+		private _distance : Distance.IDistanceCalculator;
 
-		constructor(colorDistanceCalculator : Color.IDistanceCalculator, colors : number = 256) {
+		constructor(colorDistanceCalculator : Distance.IDistanceCalculator, colors : number = 256) {
 			this._distance = colorDistanceCalculator;
 			this._pointArray = [];
 			this._sampleFactor = 1;

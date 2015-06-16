@@ -13,7 +13,7 @@
  * colorHistogram.ts - part of Image Quantization Library
  */
 /// <reference path='../../utils/hueStatistics.ts' />
-module IQ.Utils {
+module IQ.Palette {
 
 	export class ColorHistogram {
 		private static _boxSize = [64, 64];
@@ -24,7 +24,7 @@ module IQ.Utils {
 		private _method : number;
 
 		// HueStatistics instance
-		private _hueStats : HueStatistics;
+		private _hueStats : Utils.HueStatistics;
 
 		private _histogram : {[color : string] : number};
 
@@ -45,12 +45,12 @@ module IQ.Utils {
 			this._initColors = colors << 2;
 
 			// HueStatistics instance
-			this._hueStats = new HueStatistics(ColorHistogram._hueGroups, this._minHueCols);
+			this._hueStats = new Utils.HueStatistics(ColorHistogram._hueGroups, this._minHueCols);
 
 			this._histogram = {};
 		}
 
-		public sample(pointBuffer : PointContainer) : void {
+		public sample(pointBuffer : Utils.PointContainer) : void {
 			switch (this._method) {
 				case 1:
 					this._colorStats1D(pointBuffer);

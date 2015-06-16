@@ -17,7 +17,7 @@
 /// <reference path='../../utils/palette.ts' />
 /// <reference path='../../utils/pointContainer.ts' />
 /// <reference path='../../utils/utils.ts' />
-///<reference path="../../color/common.ts"/>
+///<reference path="../../distance/common.ts"/>
 ///<reference path="colorHistogram.ts"/>
 module IQ.Palette {
 
@@ -44,16 +44,16 @@ module IQ.Palette {
 		private _distanceIncrement : number;
 
 		// accumulated histogram
-		private _histogram : Utils.ColorHistogram;
-		private _distance : Color.IDistanceCalculator;
+		private _histogram : ColorHistogram;
+		private _distance : Distance.IDistanceCalculator;
 
-		constructor(colorDistanceCalculator : Color.IDistanceCalculator, colors : number = 256, method : number = 2) {
+		constructor(colorDistanceCalculator : Distance.IDistanceCalculator, colors : number = 256, method : number = 2) {
 			this._distance = colorDistanceCalculator;
 			// desired final palette size
 			this._colors = colors;
 
 			// histogram to accumulate
-			this._histogram = new Utils.ColorHistogram(method, colors);
+			this._histogram = new ColorHistogram(method, colors);
 
 			this._initialDistance = 0.01;
 			this._distanceIncrement = 0.005;

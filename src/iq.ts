@@ -6,10 +6,22 @@
  * iq.ts - Image Quantization Library
  */
 
-/// <reference path='color/common.ts' />
+/// <reference path='distance/common.ts' />
 /// <reference path='color/constants.ts' />
 /// <reference path='color/conversion.ts' />
-/// <reference path='color/distance.ts' />
+
+///<reference path="utils/arithmetic.ts"/>
+/// <reference path='distance/common.ts' />
+/// <reference path='distance/euclidean.ts' />
+/// <reference path='distance/euclideanRgbQuant_.ts' />
+/// <reference path='distance/euclideanWuQuant.ts' />
+/// <reference path='distance/manhattan.ts' />
+/// <reference path='distance/manhattanNeuQuant_.ts' />
+/// <reference path='distance/cie94.ts' />
+/// <reference path='distance/ciede2000.ts' />
+/// <reference path='distance/ciede2000_original.ts' />
+/// <reference path='distance/cmetric.ts' />
+/// <reference path='distance/pngQuant.ts' />
 
 /// <reference path='utils/point.ts' />
 /// <reference path='utils/palette.ts' />
