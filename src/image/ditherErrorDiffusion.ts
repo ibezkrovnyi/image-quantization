@@ -31,7 +31,7 @@ module IQ.Image {
 
 		private _distance : Color.IDistanceCalculator;
 
-		constructor(colorDistanceCalculator : Color.IDistanceCalculator, kernel : DitherErrorDiffusionKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = true) {
+		constructor(colorDistanceCalculator : Color.IDistanceCalculator, kernel : DitherErrorDiffusionKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = false) {
 			this._setKernel(kernel);
 
 			this._distance = colorDistanceCalculator;

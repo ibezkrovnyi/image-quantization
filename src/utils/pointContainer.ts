@@ -9,25 +9,10 @@
 /// <reference path='./point.ts' />
 module IQ.Utils {
 
-	// TODO: http://www.javascripture.com/Uint8ClampedArray
-	// TODO: Uint8ClampedArray is better than Uint8Array to avoid checking for out of bounds
-	// TODO: check performance (it seems identical) http://jsperf.com/uint8-typed-array-vs-imagedata/4
-	/*
-
-	 TODO: Examples:
-
-	 var x = new Uint8ClampedArray([17, -45.3]);
-	 console.log(x[0]); // 17
-	 console.log(x[1]); // 0
-	 console.log(x.length); // 2
-
-	 var x = new Uint8Array([17, -45.3]);
-	 console.log(x[0]); // 17
-	 console.log(x[1]); // 211
-	 console.log(x.length); // 2
-
+	/**
+	 * v8 optimizations done.
+	 * fromXXX methods are static to move out polymorphic code from class instance itself.
 	 */
-
 	export class PointContainer {
 		private _pointArray : Point[];
 		private _width : number;

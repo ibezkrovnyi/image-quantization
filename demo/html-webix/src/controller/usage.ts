@@ -134,6 +134,8 @@ module Usage {
 					return new IQ.Color.DistanceEuclideanWuQuant();
 				case 8:
 					return new IQ.Color.DistanceCMETRIC();
+				case 9:
+					return new IQ.Color.DistancePNGQUANT();
 			}
 		}
 

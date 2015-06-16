@@ -72,7 +72,7 @@ module IQ.Palette {
 				}
 			}
 			var rd = max[0] - min[0], gd = max[1] - min[1], bd = max[2] - min[2], ad = max[3] - min[3];
-			this._distance.setMaximalColorDeltas(rd, gd, bd, ad);
+			this._distance.setWhitePoint(rd, gd, bd, ad);
 
 			this._initialDistance = (Math.sqrt(rd * rd + gd * gd + bd * bd + ad * ad) / Math.sqrt(255 * 255 + 255 * 255 + 255 * 255)) * 0.01;
 */

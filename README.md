@@ -129,6 +129,14 @@ TODO
 
 Changelog
 ---------
+
+##### 0.0.5 (2015-06-16)
++ PNGQUANT color distance added, need to check its quality
++ CIEDE2000 and CIE94 fixed for use in NeuQuant
++ NeuQuant is fixed according to original Anthony Dekker source code (all values should be integer) 
++ code refactoring and cleanup
+* We have some slowdown because of red/green/blue/alpha normalization according to white point per each calculateRaw/calculateNormalized call 
+
 ##### 0.0.4 (2015-06-15)
 + CIEDE2000 color distance equation optimized (original CIEDE2000 equation is available as class `CIEDE2000_Original`) 
 

@@ -34,7 +34,8 @@ module UI {
 					{id : 5, value : "RgbQuant Euclidean (w/o ALPHA)"},
 					{id : 6, value : "NeuQuant Manhattan (w/o sRGB coef)"},
 					{id : 7, value : "WuQuant Euclidean (w/o sRGB coef)"},
-					{id : 8, value : "CMETRIC"}
+					{id : 8, value : "CMETRIC"},
+					{id : 9, value : "PNGQUANT"}
 				]
 			},
 			{
