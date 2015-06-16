@@ -13,10 +13,10 @@
 ///<reference path="utils/arithmetic.ts"/>
 /// <reference path='distance/common.ts' />
 /// <reference path='distance/euclidean.ts' />
-/// <reference path='distance/euclideanRgbQuant_.ts' />
+/// <reference path='distance/euclideanRgbQuant.ts' />
 /// <reference path='distance/euclideanWuQuant.ts' />
 /// <reference path='distance/manhattan.ts' />
-/// <reference path='distance/manhattanNeuQuant_.ts' />
+/// <reference path='distance/manhattanNeuQuant.ts' />
 /// <reference path='distance/cie94.ts' />
 /// <reference path='distance/ciede2000.ts' />
 /// <reference path='distance/ciede2000_original.ts' />
