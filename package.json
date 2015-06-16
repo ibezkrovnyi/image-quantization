@@ -1,7 +1,7 @@
 {
 	"author" : "Igor Bezkrovny",
 	"name" : "image-q",
-	"version" : "0.0.5",
+	"version" : "0.1.0",
 	"description" : "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
 	"contributors" : [],
 	"homepage" : "https://github.com/igor-bezkrovny/image-quantization",

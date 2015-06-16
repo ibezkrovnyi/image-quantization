@@ -130,6 +130,9 @@ TODO
 Changelog
 ---------
 
+##### 0.1.0 (2015-06-16)
++ code cleanup, removed unnecessary files
+
 ##### 0.0.5 (2015-06-16)
 + PNGQUANT color distance added, need to check its quality
 + CIEDE2000 and CIE94 fixed for use in NeuQuant

@@ -1,5 +1,5 @@
 .idea
 _build
 demo/node.js/_build
-demo/html-webix/_build
+demo/html/build
 
