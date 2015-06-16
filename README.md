@@ -131,6 +131,10 @@ TODO
 Changelog
 ---------
 
+##### 0.1.2 (2015-06-16)
++ Documentation generation fixed
++ File name case problem fixed
+
 ##### 0.1.1 (2015-06-16)
 + Auto-generated documentation added
 + Refactoring 
