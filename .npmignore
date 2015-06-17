@@ -1,1 +1,5 @@
+.idea
+_build
+demo/html/build
+demo/node.js/_build
 node_modules
