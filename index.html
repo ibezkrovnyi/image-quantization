@@ -1,25 +1,34 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>image-quantization by igor-bezkrovny</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">image-quantization</h1>
-      <h2 class="project-tagline">Image Quantization Library with alpha support (based on https://github.com/leeoniya/RgbQuant.js, https://github.com/timoxley/neuquant and http://www.ece.mcmaster.ca/~xwu/cq.c)</h2>
-      <a href="https://github.com/igor-bezkrovny/image-quantization" class="btn">View on GitHub</a>
-      <a href="https://github.com/igor-bezkrovny/image-quantization/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/igor-bezkrovny/image-quantization/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-    <section class="main-content">
-      <h2>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>image-quantization by igor-bezkrovny</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>image-quantization</h1>
+        <h2>Image Quantization Library with alpha support (based on https://github.com/leeoniya/RgbQuant.js, https://github.com/timoxley/neuquant and http://www.ece.mcmaster.ca/~xwu/cq.c)</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/igor-bezkrovny/image-quantization/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/igor-bezkrovny/image-quantization/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/igor-bezkrovny/image-quantization" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2>
 <a id="iqts" class="anchor" href="#iqts" aria-hidden="true"><span class="octicon octicon-link"></span></a>IQ.ts</h2>
 
 <p>Image Quantization Library in <strong>TypeScript</strong> <em>(MIT Licensed)</em>
@@ -30,8 +39,9 @@
 
 <p>This color quantization library was created because I was unable to find high-grade image quantization library with alpha support in TypeScript on the internet.</p>
 
-<p><a href="http://igor-bezkrovny.github.io/ImageQuantization">Online Demo</a><br>
-<a href="https://github.com/igor-bezkrovny/igor-bezkrovny.github.io">Demo Source</a></p>
+<p><a href="http://igor-bezkrovny.github.io/image-quantization/doc">API</a><br>
+<a href="http://igor-bezkrovny.github.io/image-quantization-demo">Online Demo</a><br>
+<a href="https://github.com/igor-bezkrovny/igor-bezkrovny.github.io/image-quantization-demo">Demo Source</a></p>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -58,7 +68,7 @@ img.<span class="pl-c1">src</span> <span class="pl-k">=</span> <span class="pl-s
 <span class="pl-k">var</span> pointContainer <span class="pl-k">=</span> <span class="pl-c1">IQ</span>.Utils.PointContainer.fromHTMLImageElement(img);
 
 <span class="pl-c">// create chosen distance calculator (see classes implementing `IQ.IDistanceCalculator`)</span>
-<span class="pl-k">var</span> distanceCalculator <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Color</span>.DistanceEuclidean();
+<span class="pl-k">var</span> distanceCalculator <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Distance</span>.DistanceEuclidean();
 
 <span class="pl-c">// create chosen palette quantizer (see classes implementing `IQ.IPaletteQuantizer`) </span>
 <span class="pl-k">var</span> paletteQuantizer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Palette</span>.RgbQuant(distanceCalculator, targetColors);
@@ -75,12 +85,12 @@ paletteQuantizer.sample(pointContainer);
 <a id="apply-palette-to-image-image-dithering" class="anchor" href="#apply-palette-to-image-image-dithering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Apply Palette to Image (Image Dithering)</h5>
 
 <div class="highlight highlight-javascript"><pre><span class="pl-c">// create image ditherer (see classes implementing `IQ.IImageDitherer`)</span>
-<span class="pl-k">var</span> imageDitherer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Image</span>.NearestNeighbour(distanceCalculator);
+<span class="pl-k">var</span> imageDitherer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Image</span>.NearestColor(distanceCalculator);
 
 <span class="pl-c">// take generated image using given palette </span>
 <span class="pl-k">var</span> resultPointContainer <span class="pl-k">=</span> imageQuantizer.quantize(pointContainer, palette);</pre></div>
 
-<p>You may work with resultPointContainer directly or you may want to convert it to <code>Uint8Array</code>/<code>Uint32Array</code></p>
+<p>You may work with resultPointContainer directly or you may convert it to <code>Uint8Array</code>/<code>Uint32Array</code></p>
 
 <div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> uint8array <span class="pl-k">=</span> resultPointContainer.toUint8Array();</pre></div>
 
@@ -134,24 +144,45 @@ paletteQuantizer.sample(pointContainer);
 <h2>
 <a id="color-distance-formulas" class="anchor" href="#color-distance-formulas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Color Distance Formulas</h2>
 
-<p>Image Quantization Library supports <strong>Euclidean distance</strong> for RgbQuant and <strong>Manhattan distance ??</strong> for NeuQuant. <code>TODO: Check NeuQuant distance formula</code> </p>
+<p>Image Quantization Library supports: </p>
 
 <ol>
-<li><a href="https://github.com/iuliux/CIE94.js">CIE94 (Iulius Curt)</a></li>
-<li>
-<a href="https://github.com/markusn/color-diff">CIEDE2000 Markus Ekholm</a> <code>3-clause BSD</code>
+<li>Euclidean Distance</li>
+<li>Manhattan Distance</li>
+<li>CIE94 Distance
+
+<ul>
+<li><a href="https://github.com/iuliux/CIE94.js">Source Code (Iulius Curt)</a></li>
+</ul>
 </li>
-<li>Euclidean distance</li>
-<li>Manhattan distance ? TBD</li>
+<li>CIEDE2000
+
+<ul>
+<li>
+<a href="http://www.ece.rochester.edu/%7Egsharma/ciede2000/ciede2000noteCRNA.pdf">Math and Test Data Table (PDF)</a> </li>
+<li>
+<a href="https://github.com/gfiumara/CIEDE2000">Source Code (Greg Fiumara)</a> <code>C</code> </li>
+</ul>
+</li>
+<li>Euclidean Distance w/o Alpha (RgbQuant)</li>
+<li>Euclidean Distance w/o sRGB coefficients (Xiaolin Wu Quant)<br>
+</li>
+<li>Manhattan Distance w/o sRGB coefficients (NeuQuant)</li>
+<li>
+<a href="http://www.compuphase.com/cmetric.htm">CMETRIC</a> <code>DRAFT!</code>
+</li>
 </ol>
 
 <h2>
 <a id="color-conversion-formulas" class="anchor" href="#color-conversion-formulas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Color conversion formulas</h2>
 
 <ol>
-<li>
-<a href="http://www.easyrgb.com/?X=MATH">Pseudo-code</a> </li>
+<li><a href="http://www.easyrgb.com/?X=MATH">Pseudo-code</a></li>
 </ol>
+
+<blockquote>
+<p>Be sure to fix rgb2xyz/xyz2lab. Issue is with strange part of code: <code>r = r &gt; 0.04045 ? ...</code>. Check <a href="http://en.wikipedia.org/wiki/Lab_color_space">http://en.wikipedia.org/wiki/Lab_color_space</a>   </p>
+</blockquote>
 
 <h2>
 <a id="image-quality-assessment" class="anchor" href="#image-quality-assessment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image Quality Assessment</h2>
@@ -174,6 +205,88 @@ paletteQuantizer.sample(pointContainer);
 </ol>
 
 <h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h2>
+
+<ol>
+<li>notification about progress</li>
+<li>riemersma dithering</li>
+</ol>
+
+<h2>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<h5>
+<a id="012-2015-06-16" class="anchor" href="#012-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.2 (2015-06-16)</h5>
+
+<ul>
+<li>Documentation generation fixed</li>
+<li>File name case problem fixed</li>
+</ul>
+
+<h5>
+<a id="011-2015-06-16" class="anchor" href="#011-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.1 (2015-06-16)</h5>
+
+<ul>
+<li>Auto-generated documentation added</li>
+<li>Refactoring </li>
+</ul>
+
+<h5>
+<a id="010-2015-06-16" class="anchor" href="#010-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.0 (2015-06-16)</h5>
+
+<ul>
+<li>Code cleanup, removed unnecessary files</li>
+</ul>
+
+<h5>
+<a id="005-2015-06-16" class="anchor" href="#005-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.5 (2015-06-16)</h5>
+
+<ul>
+<li>PNGQUANT color distance added, need to check its quality</li>
+<li>CIEDE2000 and CIE94 fixed for use in NeuQuant</li>
+<li>NeuQuant is fixed according to original Anthony Dekker source code (all values should be integer) </li>
+<li>Code refactoring and cleanup</li>
+<li>We have some slowdown because of red/green/blue/alpha normalization according to white point per each calculateRaw/calculateNormalized call </li>
+</ul>
+
+<h5>
+<a id="004-2015-06-15" class="anchor" href="#004-2015-06-15" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.4 (2015-06-15)</h5>
+
+<ul>
+<li>CIEDE2000 color distance equation optimized (original CIEDE2000 equation is available as class <code>CIEDE2000_Original</code>) </li>
+</ul>
+
+<h5>
+<a id="003b-2015-06-11" class="anchor" href="#003b-2015-06-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.3b (2015-06-11)</h5>
+
+<ul>
+<li>CMETRIC color distance fixed</li>
+</ul>
+
+<h5>
+<a id="003a-2015-06-11" class="anchor" href="#003a-2015-06-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.3a (2015-06-11)</h5>
+
+<ul>
+<li>Cleanup</li>
+<li>Draft of CMETRIC color distance added</li>
+</ul>
+
+<h5>
+<a id="002-2015-06-10" class="anchor" href="#002-2015-06-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.2 (2015-06-10)</h5>
+
+<ul>
+<li>rgb2xyz &amp; xyz2lab fixed. CIEDE2000 works much better now.</li>
+<li>CIE94 distance formula added. More investigation is needed.</li>
+</ul>
+
+<h5>
+<a id="001" class="anchor" href="#001" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.1</h5>
+
+<ul>
+<li>Initial</li>
+</ul>
+
+<h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>License MIT <a href="./src/paletteQuantizers/neuquant/neuquant.ts">(NeuQuant use also forces to add it's copyright notice into source code)</a></p>
@@ -182,16 +295,9 @@ paletteQuantizer.sample(pointContainer);
 <a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
 
 <p>Thanks to Leon Sorokin for information share and his original RgbQuant!</p>
+      </section>
+    </div>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/igor-bezkrovny/image-quantization">image-quantization</a> is maintained by <a href="https://github.com/igor-bezkrovny">igor-bezkrovny</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-  
+    
   </body>
 </html>
-
