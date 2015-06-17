@@ -27,6 +27,9 @@ module IQ.Image {
 		private _minColorDistance : number;
 		private _serpentine : boolean;
 		private _kernel : number[][];
+		/**
+		 * true = GIMP, false = XNVIEW
+		 */
 		private _calculateErrorLikeGIMP : boolean;
 
 		private _distance : Distance.IDistanceCalculator;

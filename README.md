@@ -131,6 +131,11 @@ TODO
 Changelog
 ---------
 
+##### 0.1.3 (2015-06-16)
++ NeuQuant is fixed (again) according to original Anthony Dekker source code (all values should be integer)
++ Error Diffusion Dithering is now calculates error like XNVIEW
++ Refactoring
+
 ##### 0.1.2 (2015-06-16)
 + Documentation generation fixed
 + File name case problem fixed

@@ -33,41 +33,51 @@ module IQ.Palette {
 	"use strict";
 
 	// bias for colour values
-	var networkBiasShift = 8;
+	var networkBiasShift = 3;
 	
 	class Neuron {
-		public r; // TODO: Type: Double
-		public g; // TODO: Type: Double
-		public b; // TODO: Type: Double
-		public a; // TODO: Type: Double
+		public r;
+		public g;
+		public b;
+		public a;
 
 		constructor(defaultValue) {
 			this.r = this.g = this.b = this.a = defaultValue;
 		}
 
+		/**
+		 * There is a fix in original NEUQUANT by Anthony Dekker (http://members.ozemail.com.au/~dekker/NEUQUANT.HTML)
+		 * @example
+		 * r = Math.min(255, (neuron.r + (1 << (networkBiasShift - 1))) >> networkBiasShift);
+		 */
 		public toPoint() : Utils.Point {
-			/*
-			 TODO: fix came from original NEUQUANT by Anthony Dekker (http://members.ozemail.com.au/~dekker/NEUQUANT.HTML)
-			 TODO: can't find any difference, investigate
-			 var temp = (neuron.r + (1 << (networkBiasShift - 1))) >> networkBiasShift;
-			 if (temp > 255) temp = 255;
-			 neuron.r = temp;
-			 */
 			return Utils.Point.createByRGBA(this.r >> networkBiasShift, this.g >> networkBiasShift, this.b >> networkBiasShift, this.a >> networkBiasShift);
 		}
 
 		public subtract(r : number, g : number, b : number, a : number) : void {
-			this.r -= r;
-			this.g -= g;
-			this.b -= b;
-			this.a -= a;
-/*
 			this.r -= r | 0;
 			this.g -= g | 0;
 			this.b -= b | 0;
 			this.a -= a | 0;
-*/
 		}
+/*
+		public subtract(r : number, g : number, b : number, a : number) : void {
+			this.r = (-r + this.r) | 0;
+			this.g = (-g + this.g) | 0;
+			this.b = (-b + this.b) | 0;
+			this.a = (-a + this.a) | 0;
+
+			this.r -= r;
+			this.g -= g;
+			this.b -= b;
+			this.a -= a;
+
+			this.r -= r | 0;
+			this.g -= g | 0;
+			this.b -= b | 0;
+			this.a -= a | 0;
+		}
+*/
 	}
 
 	export class NeuQuant implements IPaletteQuantizer {
@@ -91,13 +101,13 @@ module IQ.Palette {
 		private static _initialBias : number = (1 << NeuQuant._initialBiasShift);
 		private static _gammaShift : number = 10;
 
-		// _gamma = 1024
-		private static _gamma : number = (1 << NeuQuant._gammaShift); // TODO: Type: Double
+		// gamma = 1024
+		private static _gamma : number = (1 << NeuQuant._gammaShift);
 		private static _betaShift : number = 10;
-		private static _beta : number = (NeuQuant._initialBias >> NeuQuant._betaShift); // TODO: Type: Double
+		private static _beta : number = (NeuQuant._initialBias >> NeuQuant._betaShift);
 
-		// _beta = 1/1024
-		private static _betaGamma : number = (NeuQuant._initialBias << (NeuQuant._gammaShift - NeuQuant._betaShift)); // TODO: Type: Double
+		// beta = 1/1024
+		private static _betaGamma : number = (NeuQuant._initialBias << (NeuQuant._gammaShift - NeuQuant._betaShift));
 
 		/*
 		 * for 256 cols, radius starts
@@ -107,13 +117,7 @@ module IQ.Palette {
 		// at 32.0 biased by 6 bits
 		private static _radiusBias : number = 1 << NeuQuant._radiusBiasShift;
 
-		/*
-		 * and
-		 * decreases
-		 * by a
-		 */
-
-		// factor of 1/30 each cycle
+		// and decreases by a factor of 1/30 each cycle
 		private static _radiusDecrease : number = 30;
 
 		/* defs for decreasing alpha factor */
@@ -122,13 +126,13 @@ module IQ.Palette {
 		private static _alphaBiasShift : number = 10;
 
 		// biased by 10 bits
-		private static _initAlpha : number = (1 << NeuQuant._alphaBiasShift); // TODO: Type: Double
+		private static _initAlpha : number = (1 << NeuQuant._alphaBiasShift);
 
-		/* _radBias and _alphaRadBias used for radpower calculation */
+		/* radBias and alphaRadBias used for radpower calculation */
 		private static _radBiasShift : number = 8;
 		private static _radBias : number = 1 << NeuQuant._radBiasShift;
 		private static _alphaRadBiasShift : number = NeuQuant._alphaBiasShift + NeuQuant._radBiasShift;
-		private static _alphaRadBias : number = 1 << NeuQuant._alphaRadBiasShift; // TODO: Type: Double
+		private static _alphaRadBias : number = 1 << NeuQuant._alphaRadBiasShift;
 
 		private _pointArray : Utils.Point[];
 		private _networkSize : number;
@@ -136,13 +140,13 @@ module IQ.Palette {
 
 		/** sampling factor 1..30 */
 		private _sampleFactor : number;
-		private _radPower : number[]; // TODO: Type: Double
+		private _radPower : number[];
 
 		// bias and freq arrays for learning
-		private _freq : number[]; // TODO: Type: Double
+		private _freq : number[];
 
 		/* for network lookup - really 256 */
-		private _bias : number[]; // TODO: Type: Double
+		private _bias : number[];
 		private _distance : Distance.IDistanceCalculator;
 
 		constructor(colorDistanceCalculator : Distance.IDistanceCalculator, colors : number = 256) {
@@ -161,7 +165,6 @@ module IQ.Palette {
 		public quantize() : Utils.Palette {
 			this._init();
 			this._learn();
-			this._inxbuild();
 
 			return this._buildPalette();
 		}
@@ -172,7 +175,7 @@ module IQ.Palette {
 			this._radPower = [];
 			this._network = [];
 			for (var i = 0; i < this._networkSize; i++) {
-				this._network[i] = new Neuron((i << networkBiasShift + 8) / this._networkSize | 0);
+				this._network[i] = new Neuron((i << (networkBiasShift + 8)) / this._networkSize | 0);
 
 				// 1/this._networkSize
 				this._freq[i] = NeuQuant._initialBias / this._networkSize | 0;
@@ -189,12 +192,12 @@ module IQ.Palette {
 			var pointsNumber = this._pointArray.length;
 			if (pointsNumber < NeuQuant._minpicturebytes) this._sampleFactor = 1;
 
-			var alphadec = 30 + (this._sampleFactor - 1) / 3, // TODO: Type: Double
+			var alphadec = 30 + (this._sampleFactor - 1) / 3 | 0,
 				pointIndex = 0,
 				pointsToSample = pointsNumber / this._sampleFactor | 0,
 				delta = pointsToSample / NeuQuant._nCycles | 0,
-				alpha = NeuQuant._initAlpha, // TODO: Type: Double
-				radius = (this._networkSize >> 3) * NeuQuant._radiusBias; // TODO: Type: Double
+				alpha = NeuQuant._initAlpha,
+				radius = (this._networkSize >> 3) * NeuQuant._radiusBias;
 
 			var rad = radius >> NeuQuant._radiusBiasShift;
 			if (rad <= 1) rad = 0;
@@ -247,15 +250,6 @@ module IQ.Palette {
 
 		}
 
-		/**
-		 * Insertion sort of network and building of netindex[0..255] (to do after unbias)
-		 */
-		private _inxbuild() {
-			this._network = this._network.sort((a : Neuron, b : Neuron) => {
-				return a.g - b.g;
-			});
-		}
-
 		private _buildPalette() : Utils.Palette {
 			var palette = new Utils.Palette();
 
@@ -284,9 +278,9 @@ module IQ.Palette {
 			k = i - 1;
 			m = 1;
 
-			while ((j < hi) || (k > lo)) {
+			while (j < hi || k > lo) {
 
-				var a = this._radPower[m++] / NeuQuant._alphaRadBias; // TODO: Type: Double
+				var a = this._radPower[m++] / NeuQuant._alphaRadBias;
 				if (j < hi) {
 					p = this._network[j++];
 					p.subtract(
@@ -313,13 +307,15 @@ module IQ.Palette {
 		 * Move neuron i towards biased (b,g,r) by factor alpha
 		 */
 		private _alterSingle(alpha, i, b, g, r, a) : void {
+			alpha /= NeuQuant._initAlpha;
+
 			/* alter hit neuron */
 			var n = this._network[i];
 			n.subtract(
-				(alpha * (n.r - r)) / NeuQuant._initAlpha,
-				(alpha * (n.g - g)) / NeuQuant._initAlpha,
-				(alpha * (n.b - b)) / NeuQuant._initAlpha,
-				(alpha * (n.a - a)) / NeuQuant._initAlpha
+				alpha * (n.r - r),
+				alpha * (n.g - g),
+				alpha * (n.b - b),
+				alpha * (n.a - a)
 			);
 		}
 
@@ -332,29 +328,19 @@ module IQ.Palette {
 		 *    bias[i] = _gamma*((1/this._networkSize)-freq[i])
 		 *
 		 * Original distance equation:
-		 *        dist = n.b - b;
-		 *        if (dist < 0) dist = -dist;
-		 *        a = n.g - g;
-		 *        if (a < 0) a = -a;
-		 *        dist += a;
-		 *        a = n.r - r;
-		 *        if (a < 0) a = -a;
-		 *        dist += a;
-		 *        a = (n.a - al);
-		 *        if (a < 0) a = -a;
-		 *        dist += a;
+		 *        dist = abs(dR) + abs(dG) + abs(dB)
 		 */
 		private _contest(b, g, r, al) : number {
 			var multiplier = (255 * 4) << networkBiasShift,
-				bestd = ~(1 << 31), // TODO: Type: Double
-				bestbiasd = bestd, // TODO: Type: Double
+				bestd = ~(1 << 31),
+				bestbiasd = bestd,
 				bestpos = -1,
 				bestbiaspos = bestpos;
 
 			for (var i = 0; i < this._networkSize; i++) {
 				var n = this._network[i];
 
-				var dist = this._distance.calculateNormalized(<any>n, <any>{r : r, g : g, b : b, a : al}) * multiplier | 0; // TODO: Type: Double
+				var dist = this._distance.calculateNormalized(<any>n, <any>{r : r, g : g, b : b, a : al}) * multiplier | 0;
 
 				if (dist < bestd) {
 					bestd = dist;
@@ -366,13 +352,13 @@ module IQ.Palette {
 					bestbiasd = biasdist;
 					bestbiaspos = i;
 				}
-				var betafreq = (this._freq[i] >> NeuQuant._betaShift); // TODO: Type: Double
+				var betafreq = (this._freq[i] >> NeuQuant._betaShift);
 				this._freq[i] -= betafreq;
 				this._bias[i] += (betafreq << NeuQuant._gammaShift);
 			}
 			this._freq[bestpos] += NeuQuant._beta;
 			this._bias[bestpos] -= NeuQuant._betaGamma;
-			return (bestbiaspos);
+			return bestbiaspos;
 		}
 	}
 }
