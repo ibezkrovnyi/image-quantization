@@ -82,10 +82,10 @@ module IQ.Image {
 					originalPoint.from(point);
 
 					var correctedPoint = Utils.Point.createByRGBA(
-						Utils.intInRange(point.r + error[0], 0, 255),
-						Utils.intInRange(point.g + error[1], 0, 255),
-						Utils.intInRange(point.b + error[2], 0, 255),
-						Utils.intInRange(point.a + error[3], 0, 255)
+						Arithmetic.intInRange(point.r + error[0], 0, 255),
+						Arithmetic.intInRange(point.g + error[1], 0, 255),
+						Arithmetic.intInRange(point.b + error[2], 0, 255),
+						Arithmetic.intInRange(point.a + error[3], 0, 255)
 					);
 
 					// Reduced pixel

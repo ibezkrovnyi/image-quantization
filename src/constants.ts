@@ -5,7 +5,7 @@
  *
  * constants.ts - part of Image Quantization Library
  */
-module IQ.Color.Constants.sRGB {
+module IQ.Constants.sRGB {
 	// sRGB (based on ITU-R Recommendation BT.709)
 	// http://en.wikipedia.org/wiki/SRGB
 	// luma coef

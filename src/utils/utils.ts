@@ -7,91 +7,22 @@
  */
 module IQ.Utils {
 
-	// Rec. 709 (sRGB) luma coef
-	var Pr = .2126,
-		Pg = .7152,
-		Pb = .0722,
-		Pa = 1; // TODO: (igor-bezkrovny) what should be here?
-
 	// test if js engine's Array#sort implementation is stable
+/*
 	function isArrSortStable() {
 		var str = "abcdefghijklmnopqrstuvwxyz";
 
-		return "xyzvwtursopqmnklhijfgdeabc" == str.split("").sort(function (a, b) {
+		var result = "xyzvwtursopqmnklhijfgdeabc" == str.split("").sort(function (a, b) {
 				return ~~(str.indexOf(b) / 2.3) - ~~(str.indexOf(a) / 2.3);
 			}).join("");
+
+		return result;
 	}
 
+*/
 	// TODO: move to separate file like "utils.ts" - it is used by colorQuant too!
 	export function typeOf(val) {
 		return Object.prototype.toString.call(val).slice(8, -1);
-	}
-
-	// http://alienryderflex.com/hsp.html
-	export function rgb2lum(r, g, b) {
-		// TODO: luma = point.r * RED_COEFFICIENT + point.g * GREEN_COEFFICIENT + point.b * BLUE_COEFFICIENT
-		// TODO: why here another equation??
-		return Math.sqrt(
-			Pr * r * r +
-			Pg * g * g +
-			Pb * b * b
-		);
-	}
-
-	export function max3(a,b,c) {
-		var m = a;
-		(m < b) && (m = b);
-		(m < c) && (m = c);
-		return m;
-	}
-
-	export function min3(a,b,c) {
-		var m = a;
-		(m > b) && (m = b);
-		(m > c) && (m = c);
-		return m;
-	}
-
-	export function intInRange(value, low, high) {
-		if (value > high) value = high;
-		if (value < low) value = low;
-		return value | 0;
-	}
-	// http://rgb2hsl.nichabi.com/javascript-function.php
-	export function rgb2hsl(r, g, b) {
-		var max, min, h, s, l, d;
-		r /= 255;
-		g /= 255;
-		b /= 255;
-		max = max3(r, g, b);
-		min = min3(r, g, b);
-		l = (max + min) / 2;
-		if (max == min) {
-			h = s = 0;
-		} else {
-			d = max - min;
-			s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-			switch (max) {
-				case r:
-					h = (g - b) / d + (g < b ? 6 : 0);
-					break;
-				case g:
-					h = (b - r) / d + 2;
-					break;
-				case b:
-					h = (r - g) / d + 4;
-					break
-			}
-			h /= 6;
-		}
-//		h = Math.floor(h * 360)
-//		s = Math.floor(s * 100)
-//		l = Math.floor(l * 100)
-		return {
-			h : h,
-			s : s,
-			l : rgb2lum(r, g, b)
-		};
 	}
 
 	export function hueGroup(hue, segs) {
@@ -108,9 +39,10 @@ module IQ.Utils {
 		}
 	}
 
-	export var sort = isArrSortStable() ? Array.prototype.sort : stableSort;
+	//export var sort = isArrSortStable() ? Array.prototype.sort : stableSort;
 
 	// must be used via stableSort.call(arr, fn)
+/*
 	export function stableSort(fn) {
 		var type = typeOf(this[0]);
 
@@ -137,6 +69,7 @@ module IQ.Utils {
 			});
 		}
 	}
+*/
 
 	/**
 	 * 	partitions a rectangle of width x height into
@@ -157,16 +90,20 @@ module IQ.Utils {
 	}
 
 	// returns array of hash keys sorted by their values
+/*
 	export function sortedHashKeys(obj, desc) {
 		var keys = Object.keys(obj);
 		if (desc) {
-			return sort.call(keys, function (a, b) {
+			var k = sort.call(keys, function (a, b) {
 				return obj[b] - obj[a];
 			});
+			return k;
+
 		} else {
 			return sort.call(keys, function (a, b) {
 				return obj[a] - obj[b];
 			});
 		}
 	}
+*/
 }

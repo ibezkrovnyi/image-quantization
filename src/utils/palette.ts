@@ -154,8 +154,8 @@ module IQ.Utils {
 		public sort() {
 			this._i32idx = {};
 			this._pointArray.sort((a : Point, b : Point) => {
-				var hslA = Utils.rgb2hsl(a.r, a.g, a.b),
-					hslB = Utils.rgb2hsl(b.r, b.g, b.b);
+				var hslA = Conversion.rgb2hsl(a.r, a.g, a.b),
+					hslB = Conversion.rgb2hsl(b.r, b.g, b.b);
 
 				// sort all grays + whites together
 				var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);

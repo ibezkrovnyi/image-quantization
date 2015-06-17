@@ -47,7 +47,7 @@ module IQ.Palette {
 			// HueStatistics instance
 			this._hueStats = new Utils.HueStatistics(ColorHistogram._hueGroups, this._minHueCols);
 
-			this._histogram = {};
+			this._histogram = Object.create(null);
 		}
 
 		public sample(pointBuffer : Utils.PointContainer) : void {
@@ -62,7 +62,9 @@ module IQ.Palette {
 		}
 
 		public getImportanceSortedColorsIDXI32() {
-			var sorted = Utils.sortedHashKeys(this._histogram, true);
+			var sorted = Arithmetic.stableSort(Object.keys(this._histogram), (a, b) => this._histogram[b] - this._histogram[a]);
+			//var sorted = Object.keys(this._histogram).sort((a, b) => this._histogram[b] - this._histogram[a]);
+			//var sorted = Utils.sortedHashKeys(this._histogram, true);
 
 			// TODO: check that other code waits for null
 			if (sorted.length == 0) {
@@ -92,11 +94,9 @@ module IQ.Palette {
 			}
 
 			// int32-ify values
-			idxi32 = idxi32.map(function (v) {
+			return idxi32.map(function (v) {
 				return +v;
 			});
-
-			return idxi32;
 		}
 
 		// global top-population

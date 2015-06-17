@@ -42,7 +42,7 @@ module IQ.Utils {
 				g = (i32 >>> 8) & 0xff,
 				b = (i32 >>> 16) & 0xff,
 				a = (i32 >>> 24) & 0xff,
-				hg = (r == g && g == b) ? 0 : 1 + Utils.hueGroup(Utils.rgb2hsl(r, g, b).h, this._numGroups),
+				hg = (r == g && g == b) ? 0 : 1 + Utils.hueGroup(Conversion.rgb2hsl(r, g, b).h, this._numGroups),
 				gr : HueGroup = this._stats[ hg ],
 				min = this._minCols;
 

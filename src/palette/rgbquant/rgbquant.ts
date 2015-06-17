@@ -141,7 +141,7 @@ module IQ.Palette {
 			// if palette is over-reduced, re-add removed colors with largest distances from last round
 			if (palLen < this._colors) {
 				// sort descending
-				Utils.sort.call(memDist, function (a : RemovedColor, b : RemovedColor) {
+				Arithmetic.stableSort(memDist, function (a : RemovedColor, b : RemovedColor) {
 					return b.distance - a.distance;
 				});
 

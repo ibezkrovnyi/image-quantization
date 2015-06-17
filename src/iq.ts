@@ -7,8 +7,15 @@
  */
 
 /// <reference path='distance/common.ts' />
-/// <reference path='color/constants.ts' />
-/// <reference path='color/conversion.ts' />
+/// <reference path='constants.ts' />
+
+/// <reference path='conversion/rgb2xyz.ts' />
+/// <reference path='conversion/rgb2hsl.ts' />
+/// <reference path='conversion/rgb2lab.ts' />
+/// <reference path='conversion/lab2xyz.ts' />
+/// <reference path='conversion/lab2rgb.ts' />
+/// <reference path='conversion/xyz2lab.ts' />
+/// <reference path='conversion/xyz2rgb.ts' />
 
 ///<reference path="utils/arithmetic.ts"/>
 /// <reference path='distance/common.ts' />
