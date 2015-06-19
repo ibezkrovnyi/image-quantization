@@ -75,11 +75,11 @@ module Usage {
 					case 1:
 						paletteQuantizer = new IQ.Palette.NeuQuant(distance, optionColors);
 						break;
+                    case 2:
+                        paletteQuantizer = new IQ.Palette.RgbQuant(distance, optionColors);
+                        break;
 					case 3:
 						paletteQuantizer = new IQ.Palette.WuQuant(distance, optionColors);
-						break;
-					case 2:
-						paletteQuantizer = new IQ.Palette.RgbQuant(distance, optionColors);
 						break;
                     case 4:
                         paletteQuantizer = new IQ.Palette.NeuQuantFloat(distance, optionColors);

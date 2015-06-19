@@ -116,16 +116,20 @@ module IQ.Utils {
 			 */
 		}
 
-		static fromArray(data : number[], width : number, height : number) : PointContainer {
-			var uint8array = new Uint8Array(data);
-			return PointContainer.fromUint32Array(new Uint32Array(uint8array.buffer), width, height);
+		static fromArray(byteArray : number[], width : number, height : number) : PointContainer {
+			var uint8array = new Uint8Array(byteArray);
+			return PointContainer.fromUint8Array(uint8array, width, height);
 		}
 
 		static fromCanvasPixelArray(data : any, width : number, height : number) : PointContainer {
 			return PointContainer.fromArray(data, width, height);
 		}
 
-		static fromUint32Array(uint32array : Uint32Array, width : number, height : number) : PointContainer {
+        static fromUint8Array(uint8array : Uint8Array, width : number, height : number) : PointContainer {
+            return PointContainer.fromUint32Array(new Uint32Array(uint8array.buffer), width, height);
+        }
+
+        static fromUint32Array(uint32array : Uint32Array, width : number, height : number) : PointContainer {
 			var container = new PointContainer();
 
 			container._width = width;
