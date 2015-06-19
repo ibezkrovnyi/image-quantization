@@ -10,7 +10,7 @@ module IQ.Distance {
 	/**
 	 * TODO: Name it: http://www.compuphase.com/cmetric.htm
 	 */
-	export class DistanceCMETRIC implements IDistanceCalculator {
+	export class CMETRIC implements IDistanceCalculator {
 		private _rCoefficient : number;
 		private _gCoefficient : number;
 		private _bCoefficient : number;

@@ -14,7 +14,7 @@ module IQ.Distance {
 	 * {@link http://stackoverflow.com/questions/4754506/color-similarity-distance-in-rgba-color-space/8796867#8796867}
 	 * {@link https://github.com/pornel/pngquant/blob/cc39b47799a7ff2ef17b529f9415ff6e6b213b8f/lib/pam.h#L148}
 	 */
-	export class DistancePNGQUANT implements IDistanceCalculator {
+	export class PNGQUANT implements IDistanceCalculator {
 
 		private _whitePoint : {r : number; g : number; b : number; a : number};
 		private _maxDistance : number;

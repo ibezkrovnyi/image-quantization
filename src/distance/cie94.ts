@@ -19,7 +19,7 @@ module IQ.Distance {
 	 *
 	 * Iulius Curt, april 2013
 	 */
-	export class DistanceCIE94 implements IDistanceCalculator {
+	export class CIE94 implements IDistanceCalculator {
 		private static _Kl = 2.0;
 		private static _K1 = 0.048;
 		private static _K2 = 0.014;
@@ -51,7 +51,7 @@ module IQ.Distance {
 
 			deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
 
-			var i = Math.pow(dL / DistanceCIE94._Kl, 2) + Math.pow(dC / (1.0 + DistanceCIE94._K1 * c1), 2) + Math.pow(deltaH / (1.0 + DistanceCIE94._K2 * c1), 2);
+			var i = Math.pow(dL / CIE94._Kl, 2) + Math.pow(dC / (1.0 + CIE94._K1 * c1), 2) + Math.pow(deltaH / (1.0 + CIE94._K2 * c1), 2);
 			return i < 0 ? 0 : i;
 		}
 

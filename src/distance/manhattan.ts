@@ -10,7 +10,7 @@ module IQ.Distance {
 	/**
 	 * Manhattan distance
 	 */
-	export class DistanceManhattan implements IDistanceCalculator {
+	export class Manhattan implements IDistanceCalculator {
 		protected _Pr : number;
 		protected _Pg : number;
 		protected _Pb : number;

@@ -34,7 +34,7 @@ var targetColors = 256;
 var pointContainer = IQ.Utils.PointContainer.fromHTMLImageElement(img);
 
 // create chosen distance calculator (see classes implementing `IQ.IDistanceCalculator`)
-var distanceCalculator = new IQ.Distance.DistanceEuclidean();
+var distanceCalculator = new IQ.Distance.Euclidean();
 
 // create chosen palette quantizer (see classes implementing `IQ.IPaletteQuantizer`) 
 var paletteQuantizer = new IQ.Palette.RgbQuant(distanceCalculator, targetColors);

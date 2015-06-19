@@ -45,9 +45,10 @@ module UI {
 				labelWidth : 175,
 				value : "1",
 				options : [
-					{id : 1, value : "neuquant"},
+					{id : 1, value : "neuquant (Original, Integer)"},
 					{id : 2, value : "rgbquant"},
-					{id : 3, value : "wuquant"}
+					{id : 3, value : "wuquant"},
+                    {id : 4, value : "neuquant (Floating Point)"}
 				]
 			},
 			{

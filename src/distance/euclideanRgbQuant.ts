@@ -10,7 +10,7 @@ module IQ.Distance {
 	/**
 	 * Euclidean color distance (RgbQuant modification w/o Alpha)
 	 */
-	export class DistanceEuclideanRgbQuantWOAlpha extends DistanceEuclidean implements IDistanceCalculator {
+	export class EuclideanRgbQuantWOAlpha extends Euclidean implements IDistanceCalculator {
 		protected _setDefaults() : void {
 			this._Pr = Constants.sRGB.Y.RED;
 			this._Pg = Constants.sRGB.Y.GREEN;

@@ -10,7 +10,7 @@ module IQ.Distance {
 	/**
 	 * Perceptual Euclidean color distance
 	 */
-	export class DistanceEuclidean implements Distance.IDistanceCalculator {
+	export class Euclidean implements Distance.IDistanceCalculator {
 		protected _Pr : number;
 		protected _Pg : number;
 		protected _Pb : number;

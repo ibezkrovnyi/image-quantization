@@ -81,6 +81,9 @@ module Usage {
 					case 2:
 						paletteQuantizer = new IQ.Palette.RgbQuant(distance, optionColors);
 						break;
+                    case 4:
+                        paletteQuantizer = new IQ.Palette.NeuQuantFloat(distance, optionColors);
+                        break;
 				}
 				paletteQuantizer.sample(pointBuffer);
 			});
@@ -119,23 +122,23 @@ module Usage {
 		private _getColorDistanceCalculator(option) : IQ.Distance.IDistanceCalculator {
 			switch (option) {
 				case 1:
-					return new IQ.Distance.DistanceEuclidean();
+					return new IQ.Distance.Euclidean();
 				case 2:
-					return new IQ.Distance.DistanceManhattan();
+					return new IQ.Distance.Manhattan();
 				case 3:
-					return new IQ.Distance.DistanceCIEDE2000();
+					return new IQ.Distance.CIEDE2000();
 				case 4:
-					return new IQ.Distance.DistanceCIE94();
+					return new IQ.Distance.CIE94();
 				case 5:
-					return new IQ.Distance.DistanceEuclideanRgbQuantWOAlpha();
+					return new IQ.Distance.EuclideanRgbQuantWOAlpha();
 				case 6:
-					return new IQ.Distance.DistanceManhattanNeuQuant();
+					return new IQ.Distance.ManhattanNeuQuant();
 				case 7:
-					return new IQ.Distance.DistanceEuclideanWuQuant();
+					return new IQ.Distance.EuclideanWuQuant();
 				case 8:
-					return new IQ.Distance.DistanceCMETRIC();
+					return new IQ.Distance.CMETRIC();
 				case 9:
-					return new IQ.Distance.DistancePNGQUANT();
+					return new IQ.Distance.PNGQUANT();
 			}
 		}
 

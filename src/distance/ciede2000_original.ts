@@ -10,7 +10,7 @@ module IQ.Distance {
 	/**
 	 * CIEDE2000 algorithm (Original)
 	 */
-	export class DistanceCIEDE2000_Original implements IDistanceCalculator {
+	export class CIEDE2000_Original implements IDistanceCalculator {
 		private static _kL : number = 1;
 		private static _kC : number = 1;
 		private static _kH : number = 1;
@@ -62,7 +62,7 @@ module IQ.Distance {
 
 				pow_a_C1_C2_to_7 = Math.pow((C1 + C2) / 2.0, 7.0),             //(3)
 
-				G = 0.5 * (1 - Math.sqrt(pow_a_C1_C2_to_7 / (pow_a_C1_C2_to_7 + DistanceCIEDE2000_Original._pow25to7))), //(4)
+				G = 0.5 * (1 - Math.sqrt(pow_a_C1_C2_to_7 / (pow_a_C1_C2_to_7 + CIEDE2000_Original._pow25to7))), //(4)
 
 				a1p = (1.0 + G) * a1, //(5)
 				a2p = (1.0 + G) * a2, //(5)
@@ -90,20 +90,20 @@ module IQ.Distance {
 
 				a_hp = this._a_hp_f(C1, C2, h1p, h2p), //(14)
 
-				T = 1 - 0.17 * Math.cos(a_hp - DistanceCIEDE2000_Original._deg30InRad) +
+				T = 1 - 0.17 * Math.cos(a_hp - CIEDE2000_Original._deg30InRad) +
 					0.24 * Math.cos(2 * a_hp) +
-					0.32 * Math.cos(3 * a_hp + DistanceCIEDE2000_Original._deg6InRad) -
-					0.20 * Math.cos(4 * a_hp - DistanceCIEDE2000_Original._deg63InRad), //(15)
+					0.32 * Math.cos(3 * a_hp + CIEDE2000_Original._deg6InRad) -
+					0.20 * Math.cos(4 * a_hp - CIEDE2000_Original._deg63InRad), //(15)
 
-				d_ro = DistanceCIEDE2000_Original._deg30InRad * Math.exp(-Math.pow((a_hp - DistanceCIEDE2000_Original._deg275InRad) / DistanceCIEDE2000_Original._deg25InRad, 2)), //(16),
+				d_ro = CIEDE2000_Original._deg30InRad * Math.exp(-Math.pow((a_hp - CIEDE2000_Original._deg275InRad) / CIEDE2000_Original._deg25InRad, 2)), //(16),
 				pow_a_Cp_to_7 = Math.pow(a_Cp, 7.0),
-				RC = Math.sqrt(pow_a_Cp_to_7 / (pow_a_Cp_to_7 + DistanceCIEDE2000_Original._pow25to7)),//(17)
+				RC = Math.sqrt(pow_a_Cp_to_7 / (pow_a_Cp_to_7 + CIEDE2000_Original._pow25to7)),//(17)
 				pow_a_L_minus_50_to_2 = Math.pow(a_L - 50, 2),
 				SL = 1 + ((0.015 * pow_a_L_minus_50_to_2) / Math.sqrt(20 + pow_a_L_minus_50_to_2)),//(18)
 				SC = 1 + 0.045 * a_Cp,//(19)
 				SH = 1 + 0.015 * a_Cp * T,//(20)
 				RT = -2 * RC * Math.sin(2 * d_ro),//(21)
-				dE = Math.sqrt(Math.pow(dLp / (SL * DistanceCIEDE2000_Original._kL), 2) + Math.pow(dCp / (SC * DistanceCIEDE2000_Original._kC), 2) + Math.pow(dHp / (SH * DistanceCIEDE2000_Original._kH), 2) + RT * (dCp / (SC * DistanceCIEDE2000_Original._kC)) * (dHp / (SH * DistanceCIEDE2000_Original._kH))); //(22)
+				dE = Math.sqrt(Math.pow(dLp / (SL * CIEDE2000_Original._kL), 2) + Math.pow(dCp / (SC * CIEDE2000_Original._kC), 2) + Math.pow(dHp / (SH * CIEDE2000_Original._kH), 2) + RT * (dCp / (SC * CIEDE2000_Original._kC)) * (dHp / (SH * CIEDE2000_Original._kH))); //(22)
 
 			return dE * dE;
 		}
@@ -122,7 +122,7 @@ module IQ.Distance {
 				return hPrime;
 			}
 
-			return hPrime + DistanceCIEDE2000_Original._deg360InRad;
+			return hPrime + CIEDE2000_Original._deg360InRad;
 		}
 
 		private _a_hp_f(C1 : number, C2 : number, h1p : number, h2p : number) : number { //(14)
@@ -131,15 +131,15 @@ module IQ.Distance {
 				return hPrimeSum;
 			}
 
-			if (Math.abs(h1p - h2p) <= DistanceCIEDE2000_Original._deg180InRad) {
+			if (Math.abs(h1p - h2p) <= CIEDE2000_Original._deg180InRad) {
 				return hPrimeSum / 2.0;
 			}
 
-			if (hPrimeSum < DistanceCIEDE2000_Original._deg360InRad) {
-				return (hPrimeSum + DistanceCIEDE2000_Original._deg360InRad) / 2.0;
+			if (hPrimeSum < CIEDE2000_Original._deg360InRad) {
+				return (hPrimeSum + CIEDE2000_Original._deg360InRad) / 2.0;
 			}
 
-			return (hPrimeSum - DistanceCIEDE2000_Original._deg360InRad) / 2.0;
+			return (hPrimeSum - CIEDE2000_Original._deg360InRad) / 2.0;
 		}
 
 		private _dhp_f(C1 : number, C2 : number, h1p : number, h2p : number) : number { //(10)
@@ -149,12 +149,12 @@ module IQ.Distance {
 
 			var h2p_minus_h1p = h2p - h1p;
 
-			if (h2p_minus_h1p < -DistanceCIEDE2000_Original._deg180InRad) {
-				return h2p_minus_h1p + DistanceCIEDE2000_Original._deg360InRad;
+			if (h2p_minus_h1p < -CIEDE2000_Original._deg180InRad) {
+				return h2p_minus_h1p + CIEDE2000_Original._deg360InRad;
 			}
 
-			if (h2p_minus_h1p > DistanceCIEDE2000_Original._deg180InRad) {
-				return h2p_minus_h1p - DistanceCIEDE2000_Original._deg360InRad;
+			if (h2p_minus_h1p > CIEDE2000_Original._deg180InRad) {
+				return h2p_minus_h1p - CIEDE2000_Original._deg360InRad;
 			}
 
 			return h2p_minus_h1p;

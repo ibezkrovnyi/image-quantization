@@ -10,7 +10,7 @@ module IQ.Distance {
 	/**
 	 * Euclidean color distance (WuQuant modification)
  	 */
-	export class DistanceEuclideanWuQuant extends DistanceEuclidean implements IDistanceCalculator {
+	export class EuclideanWuQuant extends Euclidean implements IDistanceCalculator {
 		protected _setDefaults() : void {
 			this._Pr = this._Pg = this._Pb = this._Pa = 1;
 		}

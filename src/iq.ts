@@ -41,6 +41,7 @@
 
 /// <reference path="palette/common.ts"/>
 /// <reference path="palette/neuquant/neuquant.ts"/>
+/// <reference path="palette/neuquant/neuquant-float.ts"/>
 /// <reference path="palette/rgbquant/rgbquant.ts"/>
 /// <reference path="palette/wu/wuQuant.ts"/>
 
