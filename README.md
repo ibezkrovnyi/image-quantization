@@ -5,7 +5,7 @@ Image Quantization Library in **TypeScript** _(MIT Licensed)_
 
 Introduction
 ------------
-This color quantization library was created because I was unable to find high-grade image quantization library with alpha support in TypeScript on the internet.
+Image Color Number Reduction with alpha support using RgbQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
  
 [API](http://igor-bezkrovny.github.io/image-q/doc)  
 [Online Demo](http://igor-bezkrovny.github.io/image-q/demo)  

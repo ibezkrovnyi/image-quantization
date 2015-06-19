@@ -160,21 +160,26 @@ module IQ.Utils {
 				// sort all grays + whites together
 				var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);
 				var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + Utils.hueGroup(hslB.h, hueGroups);
+/*
+				var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);
+				var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + Utils.hueGroup(hslB.h, hueGroups);
+*/
 
 				var hueDiff = hueB - hueA;
 				if (hueDiff) return -hueDiff;
 
-				var lA = a.getLuminosity(true),
-					lB = b.getLuminosity(true);
-
-				if(lB - lA !== 0) return lB - lA;
 /*
 				var lumDiff = Utils.lumGroup(+hslB.l.toFixed(2)) - Utils.lumGroup(+hslA.l.toFixed(2));
 				if (lumDiff) return -lumDiff;
 */
+                var lA = a.getLuminosity(true),
+                    lB = b.getLuminosity(true);
+
+                if(lB - lA !== 0) return lB - lA;
 
 				var satDiff = ((hslB.s * 100) | 0) - ((hslA.s * 100) | 0);
 				if (satDiff) return -satDiff;
+
 			});
 		}
 	}

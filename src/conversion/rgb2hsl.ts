@@ -9,9 +9,9 @@ module IQ.Conversion {
 
 	/**
 	 * Calculate HSL from RGB
-	 * Hue is between 0 and 1 (degrees = hue * 360)
-	 * Lightness is between 0 and 1
-	 * Saturation is between 0 and 1
+	 * Hue is in degrees [0..360]
+	 * Lightness: [0..1]
+	 * Saturation: [0..1]
 	 * http://web.archive.org/web/20060914040436/http://local.wasp.uwa.edu.au/~pbourke/colour/hsl/
 	 */
 	export function rgb2hsl(r : number, g : number, b : number) : {h : number; s : number; l : number} {
@@ -26,14 +26,16 @@ module IQ.Conversion {
 
 		var h = 0;
 		if (delta > 0) {
-			if (max == r && max != g)
-				h += (g - b) / delta;
-			if (max == g && max != b)
-				h += (2 + (b - r) / delta);
-			if (max == b && max != r)
-				h += (4 + (r - g) / delta);
+			if (max === r) {
+				h = (g - b) / delta;
+			} else if (max === g) {
+				h = (2 + (b - r) / delta);
+			} else {
+				h = (4 + (r - g) / delta);
+			}
 
-			h /= 6;
+			h *= 60;
+			if (h < 0) h += 360;
 		}
 		return {h : h, s : s, l : l};
 	}

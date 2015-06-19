@@ -20,23 +20,15 @@ module IQ.Utils {
 	}
 
 */
-	// TODO: move to separate file like "utils.ts" - it is used by colorQuant too!
-	export function typeOf(val) {
-		return Object.prototype.toString.call(val).slice(8, -1);
-	}
+	export function hueGroup(hue, segmentsNumber) {
+		var maxHue = 360,
+			seg = maxHue / segmentsNumber,
+			half = seg / 2;
 
-	export function hueGroup(hue, segs) {
-		var seg = 1 / segs,
-			haf = seg / 2;
-
-		if (hue >= 1 - haf || hue <= haf)
-			return 0;
-
-		for (var i = 1; i < segs; i++) {
-			var mid = i * seg;
-			if (hue >= mid - haf && hue <= mid + haf)
-				return i;
+		for (var i = 1, mid = seg - half; i < segmentsNumber; i++, mid+=seg) {
+			if (hue >= mid && hue < mid + seg) return i;
 		}
+		return 0;
 	}
 
 	//export var sort = isArrSortStable() ? Array.prototype.sort : stableSort;
@@ -70,24 +62,6 @@ module IQ.Utils {
 		}
 	}
 */
-
-	/**
-	 * 	partitions a rectangle of width x height into
-	 *	array of boxes stepX x stepY (or less)
-	 */
-	export function makeBoxes(width, height, stepX, stepY) {
-		var wrem = width % stepX,
-			hrem = height % stepY,
-			xend = width - wrem,
-			yend = height - hrem;
-
-		var boxesArray = [];
-		for (var y = 0; y < height; y += stepY)
-			for (var x = 0; x < width; x += stepX)
-				boxesArray.push({x : x, y : y, w : (x == xend ? wrem : stepX), h : (y == yend ? hrem : stepY)});
-
-		return boxesArray;
-	}
 
 	// returns array of hash keys sorted by their values
 /*
