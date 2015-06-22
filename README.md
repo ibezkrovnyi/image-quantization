@@ -21,9 +21,25 @@ Palette | **NeuQuant, RgbQuant, Xiaolin Wu's method**
 Image   | **Nearest Color, Error Diffusion Dithering**  
 Export  | **Uint32Array, Uint8Array**  
 
+Include IQ Library into your project
+------------------------------------
+##### TypeScript + Node.js/Browser project 
+```javascript
+/// <reference path='<path-to-iq>/src/iq.ts' />
+```
+
+##### JavaScript + Node.js project
+```javascript
+var iq = require("<path-to-iq>/dist/node-iq.js");
+```
+
+##### JavaScript + Browser project
+```html
+<script src="<path-to-iq>/dist/browser-iq.js" type="text/javascript" charset="utf-8"></script>
+```
+
 Usage Example
 -------------
-All usage is shown in JavaScript, it will be mostly the same for TypeScript. `img` should be valid already-loaded image.
 
 ##### Load Image (simple example)
 ```javascript
@@ -60,10 +76,10 @@ var palette = paletteQuantizer.quantize();
 
 ##### Apply Palette to Image (Image Dithering) 
 ```javascript
-// create image ditherer (see classes implementing `IQ.Image.IImageDitherer`)
+// create image quantizer (see classes implementing `IQ.Image.IImageDitherer`)
 var imageDitherer = new IQ.Image.NearestColor(distanceCalculator);
 
-// take generated image using given palette 
+// apply palette to image
 var resultPointContainer = imageQuantizer.quantize(pointContainer, palette);
 ```
 
@@ -80,6 +96,10 @@ TODO
 
 Changelog
 ---------
+
+##### 0.1.4 (2015-06-22)
+	+ Readme.md updated
+	+ build.cmd updated
 
 ##### 0.1.3 (2015-06-16)
 	+ NeuQuant is fixed (again) according to original Anthony Dekker source code (all values should be integer)

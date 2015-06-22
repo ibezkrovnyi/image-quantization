@@ -1,6 +1,6 @@
 /**
  * @preserve
- * Copyright (c) 2015, Igor Bezkrovny
+ * Copyright 2015 Igor Bezkrovny
  * All rights reserved. (MIT Licensed)
  *
  * iq.ts - Image Quantization Library
@@ -37,6 +37,7 @@
 
 /// <reference path='image/common.ts' />
 /// <reference path='image/ditherErrorDiffusion.ts' />
+/// <reference path='image/riemersma.ts' />
 /// <reference path='image/nearestColor.ts' />
 
 /// <reference path="palette/common.ts"/>

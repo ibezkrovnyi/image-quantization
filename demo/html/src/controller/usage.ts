@@ -98,6 +98,8 @@ module Usage {
 				var imageQuantizer;
 				if (optionImageDithering === -1) {
 					imageQuantizer = new IQ.Image.NearestColor(distance);
+				} else if (optionImageDithering === 9) {
+					imageQuantizer = new IQ.Image.DitherRiemersma(distance);
 				} else {
 					imageQuantizer = new IQ.Image.DitherErrorDiffusion(distance, optionImageDithering, true, 0, false);
 				}

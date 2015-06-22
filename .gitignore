@@ -1,6 +1,6 @@
 .idea
-_build
-demo/node.js/_build
+dist
+demo/node.js/build
 demo/html/build
 node_modules
 

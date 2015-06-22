@@ -1,11 +1,11 @@
 {
-	"author" : "Igor Bezkrovny",
-	"name" : "image-q",
-	"version" : "0.1.3",
-	"description" : "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
-	"contributors" : [],
-	"homepage" : "https://github.com/igor-bezkrovny/image-quantization",
-	"keywords" : [
+	"author"         : "Igor Bezkrovny",
+	"name"           : "image-q",
+	"version"        : "0.1.3",
+	"description"    : "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
+	"contributors"   : [],
+	"homepage"       : "https://github.com/igor-bezkrovny/image-quantization",
+	"keywords"       : [
 		"image",
 		"palette",
 		"quantization",
@@ -19,21 +19,24 @@
 		"dithering",
 		"floyd-steinberg"
 	],
-	"engines" : {
-		"node" : ">=0.9.0"
+	"engines"        : {
+		"node": ">=0.9.0"
 	},
-	"main" : "./_builds/node-iq.js",
-	"repository" : {
-		"type" : "git",
+	"main"           : "./_builds/node-iq.js",
+	"scripts" : {
+		"prepublish" : "./build.cmd"
+	},
+	"repository"     : {
+		"type": "git",
 		"url" : "https://github.com/igor-bezkrovny/image-quantization"
 	},
-	"bugs" : {
-		"url" : "https://github.com/igor-bezkrovny/image-quantization/issues"
+	"bugs"           : {
+		"url": "https://github.com/igor-bezkrovny/image-quantization/issues"
 	},
-	"dependencies" : {},
-	"preferGlobal" : "false",
-	"license" : "MIT",
-	"devDependencies" : {
-		"typescript" : "^1.5.0-beta"
+	"dependencies"   : {},
+	"preferGlobal"   : "false",
+	"license"        : "MIT",
+	"devDependencies": {
+		"typedoc": "^0.3.4"
 	}
 }

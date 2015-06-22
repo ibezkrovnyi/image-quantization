@@ -67,7 +67,8 @@ module UI {
 					{id : 8, value : "ErrorDiffusion: Sierra"},
 					{id : 9, value : "ErrorDiffusion: TwoSierra"},
 					{id : 10, value : "ErrorDiffusion: SierraLite"},
-					{id : 3, value : "ErrorDiffusion: False Floyd-Steinberg"}
+					{id : 3, value : "ErrorDiffusion: False Floyd-Steinberg"},
+					{id : 11, value : "Riemersma: Hilbert Curve"}
 				]
 			},
 			{
