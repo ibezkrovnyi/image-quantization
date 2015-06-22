@@ -29,113 +29,88 @@
 ///<reference path="spaceFillingCurves/hilbertCurve.ts"/>
 module IQ.Image {
 
-    export class DitherRiemersma implements IImageDitherer {
-        private _distance : Distance.IDistanceCalculator;
+	export class DitherRiemersma implements IImageDitherer {
+		private static _errorQueueSize : number = 16;
+		private static _max : number = 16;
 
-        constructor (colorDistanceCalculator : Distance.IDistanceCalculator) {
-            this._distance = colorDistanceCalculator;
-        }
+		private _distance : Distance.IDistanceCalculator;
+		private _weights : number[];
 
-        public quantize(pointBuffer:Utils.PointContainer, palette:Utils.Palette):Utils.PointContainer {
-            var pointArray = pointBuffer.getPointArray(),
-                width = pointBuffer.getWidth(),
-                height = pointBuffer.getHeight(),
-                errorArray = [],
-                weightsArray = [25/100, 40/100, 63/100, 100/100];
-                //weightsArray = [1/16, 2/16, 3/16, 4/16, 5/16, 6/16, 7/16, 8/16, 9/16, 10/16, 11/16, 12/16, 13/16, 14/16, 15/16, 16/16];
-                //weightsArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+		constructor(colorDistanceCalculator : Distance.IDistanceCalculator) {
+			this._distance = colorDistanceCalculator;
+			this._createWeights();
+		}
 
-/*
-            var sum = 0;
-            for (var i = 0; i < weightsArray.length; i++) {
-                sum += weightsArray[i];
-            }
-            for (var i = 0; i < weightsArray.length; i++) {
-                weightsArray[i] /= sum;
-            }
-*/
+		public quantize(pointBuffer : Utils.PointContainer, palette : Utils.Palette) : Utils.PointContainer {
+			var curve                                                           = new SpaceFillingCurves.HilbertCurveBase(),
+				pointArray                                                      = pointBuffer.getPointArray(),
+				width                                                           = pointBuffer.getWidth(),
+				height                                                          = pointBuffer.getHeight(),
+				errorQueue : {r : number, g : number, b : number, a : number}[] = [],
+				head                                                            = 0;
 
-            for (var i = 0; i < 4; i++) {
-                errorArray[i] = [];
-                for (var j = 0; j < weightsArray.length; j++) {
-                    errorArray[i].push(0);
-                }
-            }
+			for (var i = 0; i < DitherRiemersma._errorQueueSize; i++) {
+				errorQueue[i] = {r : 0, g : 0, b : 0, a : 0};
+			}
 
-            var curve = new SpaceFillingCurves.HilbertCurveBase();
+			// just for test!!
+			var testArray = new Array(height * width);
+			for (var i = 0; i < testArray.length; i++) {
+				testArray[i] = 0;
+			}
 
-            var t = new Array(height * width);
-            for(var i = 0; i < t.length; i++) {
-                t[i] = 0;
-            }
-            curve.walk(width, height, (x, y) => {
-                t[x + y * width]++;
-                var p = pointArray[x + y * width],
-                    originalPoint = Utils.Point.createByUint32(p.uint32);
+			curve.walk(width, height, (x, y) => {
+				// just for test
+				testArray[x + y * width]++;
 
-                for (var componentIndex = 0; componentIndex < errorArray.length; componentIndex++) {
-                    var sum = 0;
-                    for (var errorArrayIndex = 0; errorArrayIndex < errorArray.length; errorArrayIndex++) {
-                        sum += errorArray[componentIndex][errorArrayIndex] * weightsArray[errorArrayIndex];
-                    }
+				var p = pointArray[x + y * width], r = p.r, g = p.g, b = p.b, a = p.a;
+				for (var i = 0; i < DitherRiemersma._errorQueueSize; i++) {
+					var weight = this._weights[i],
+						e      = errorQueue[(i + head) % DitherRiemersma._errorQueueSize];
 
-                    p.rgba[componentIndex] = Math.max(0, Math.min(255, (p.rgba[componentIndex] + sum) | 0));
-                }
+					r += e.r * weight;
+					g += e.g * weight;
+					b += e.b * weight;
+					a += e.a * weight;
+				}
 
-                var correctedPoint = Utils.Point.createByQuadruplet(p.rgba),
-                    palettePoint = palette.getNearestColor(this._distance, correctedPoint);
+				var correctedPoint = Utils.Point.createByRGBA(
+						Arithmetic.intInRange(r, 0, 255),
+						Arithmetic.intInRange(g, 0, 255),
+						Arithmetic.intInRange(b, 0, 255),
+						Arithmetic.intInRange(a, 0, 255)
+					),
+					quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
 
-                for (var quadrupletIndex = 0; quadrupletIndex < errorArray.length; quadrupletIndex++) {
-                    var componentErrorArray = errorArray[quadrupletIndex];
-                    componentErrorArray.shift();
-                    componentErrorArray.push(originalPoint.rgba[quadrupletIndex] - palettePoint.rgba[quadrupletIndex]);
-                }
+				// update head and calculate tail
+				head = (head + 1) % DitherRiemersma._errorQueueSize;
+				var tail = (head + DitherRiemersma._errorQueueSize - 1) % DitherRiemersma._errorQueueSize;
 
-                p.from(palettePoint);
-            });
+				// update error with new value
+				errorQueue[tail].r = p.r - quantizedPoint.r;
+				errorQueue[tail].g = p.g - quantizedPoint.g;
+				errorQueue[tail].b = p.b - quantizedPoint.b;
+				errorQueue[tail].a = p.a - quantizedPoint.a;
 
-            for(var i = 0; i < t.length; i++) {
-                if(t[i] !== 1) throw new Error("x");
-            }
+				// update point
+				p.from(quantizedPoint);
+			});
 
+			// just for test
+			for (var i = 0; i < testArray.length; i++) {
+				if (testArray[i] !== 1) throw new Error("x");
+			}
+			return pointBuffer;
+		}
 
-            /*
-                        function simpleCurve(width, height, callback:(x:number, y:number, index:number) => void) {
-                            for (var y = 0, index = 0; y < height; y++) {
-                                for (var x = 0; x < width; x++, index++) {
-                                    callback(x, y, index);
-                                }
+		private _createWeights() : void {
+			this._weights = [];
 
-                            }
-                        }
-            */
-
-/*
-            simpleCurve(width, height, (x, y, index) => {
-                var p = pointArray[index];
-
-                for (var quadrupletIndex = 0; quadrupletIndex < errorArray.length; quadrupletIndex++) {
-                    var sum = 0;
-                    for (var errorArrayIndex = 0; errorArrayIndex < errorArray.length; errorArrayIndex++) {
-                        sum += errorArray[quadrupletIndex][errorArrayIndex] * weightsArray[errorArrayIndex];
-                    }
-
-                    p.rgba[quadrupletIndex] = Math.max(0, Math.min(255, (p.rgba[quadrupletIndex] + sum) | 0));
-                }
-
-                var correctedPoint = Point.createByQuadruplet(p.rgba),
-                    palettePoint = palette.nearestColor(correctedPoint);
-
-                for (var quadrupletIndex = 0; quadrupletIndex < errorArray.length; quadrupletIndex++) {
-                    var componentErrorArray = errorArray[quadrupletIndex];
-                    componentErrorArray.shift();
-                    componentErrorArray.push(p.rgba[quadrupletIndex] - palettePoint.rgba[quadrupletIndex]);
-                }
-
-                p.from(palettePoint);
-            });
-*/
-            return pointBuffer;
-        }
-    }
+			var multiplier = Math.exp(Math.log(DitherRiemersma._max) / (DitherRiemersma._errorQueueSize - 1));
+			for (var i = 0, next = 1; i < DitherRiemersma._errorQueueSize; i++) {
+				this._weights[i] = ((next + 0.5) | 0) / DitherRiemersma._max;
+				next *= multiplier;
+			}
+		}
+	}
 }

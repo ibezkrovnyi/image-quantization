@@ -98,6 +98,7 @@ Changelog
 ---------
 
 ##### 0.1.4 (2015-06-22)
+	+ Riemersma dithering added (Hilbert Curve)
 	+ Readme.md updated
 	+ build.cmd updated
 

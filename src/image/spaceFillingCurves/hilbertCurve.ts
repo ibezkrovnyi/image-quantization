@@ -26,6 +26,7 @@ module IQ.Image.SpaceFillingCurves {
             this._height = height;
             this._callback = visitorCallback;
 
+/*
             var maxBound = Math.max(width, height),
                 depth = 0;
 
@@ -38,6 +39,10 @@ module IQ.Image.SpaceFillingCurves {
                 depth++;
                 throw new Error("Strange?");
             }
+
+*/
+            var maxBound = Math.max(width, height),
+                depth = (Math.log(maxBound) / Math.log(2) + 1) | 0;
 
             if (depth > 1) {
                 this._level = depth;
@@ -113,69 +118,5 @@ module IQ.Image.SpaceFillingCurves {
                 case Direction.DOWN: this._y++; break;
             }
         }
-
-        /*
-         protected _visiter(x:number, y:number, d:number):void {
-         throw new Error("HilbertCurveBase#_visiter method should be implemented");
-         }
-
-         // convert (x,y) to d
-         public xy2d(n:number, x:number, y:number):number {
-         var d = 0;
-         for (var s = n / 2; s > 0; s /= 2) {
-         var rx = (x & s) > 0,
-         ry = (y & s) > 0;
-
-         d += s * s * ((3 * rx) ^ ry);
-         var rotateResult = this._rotate(s, x, y, rx, ry);
-         x = rotateResult.x;
-         y = rotateResult.y;
-         }
-         return d;
-         }
-
-         //convert d to (x,y)
-         public d2xy(n:number, d:number):{x : number; y : number} {
-         var t = d,
-         x = 0, y = 0;
-
-         for (var s = 1; s < n; s *= 2) {
-         var rx = 1 & (t / 2),
-         ry = 1 & (t ^ rx),
-         rotateResult = this._rotate(s, x, y, rx, ry);
-
-         x = rotateResult.x;
-         y = rotateResult.y;
-         x += s * rx;
-         y += s * ry;
-         t /= 4;
-         }
-
-         return {
-         x: x,
-         y: y
-         };
-         }
-
-         // rotate/flip a quadrant appropriately
-         private _rotate(n:number, x:number, y:number, rx:number, ry:number):{x : number; y : number} {
-         if (ry == 0) {
-         if (rx == 1) {
-         x = n - 1 - x;
-         y = n - 1 - y;
-         }
-
-         //Swap x and y
-         var t = x;
-         x = y;
-         y = t;
-         }
-
-         return {
-         x: x,
-         y: y
-         };
-         }
-         */
     }
 }
