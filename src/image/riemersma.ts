@@ -29,15 +29,18 @@
 ///<reference path="spaceFillingCurves/hilbertCurve.ts"/>
 module IQ.Image {
 
-	export class DitherRiemersma implements IImageDitherer {
-		private static _errorQueueSize : number = 16;
-		private static _max : number = 16;
-
+	export class ErrorDiffusionRiemersma implements IImageDitherer {
 		private _distance : Distance.IDistanceCalculator;
 		private _weights : number[];
+		private _errorQueueSize : number;
+		private _errorPropagation : number;
+		private _max : number;
 
-		constructor(colorDistanceCalculator : Distance.IDistanceCalculator) {
+		constructor(colorDistanceCalculator : Distance.IDistanceCalculator, errorQueueSize : number = 16, errorPropagation : number = 1) {
 			this._distance = colorDistanceCalculator;
+			this._errorPropagation = errorPropagation;
+			this._errorQueueSize = errorQueueSize;
+			this._max = this._errorQueueSize;
 			this._createWeights();
 		}
 
@@ -49,7 +52,7 @@ module IQ.Image {
 				errorQueue : {r : number, g : number, b : number, a : number}[] = [],
 				head                                                            = 0;
 
-			for (var i = 0; i < DitherRiemersma._errorQueueSize; i++) {
+			for (var i = 0; i < this._errorQueueSize; i++) {
 				errorQueue[i] = {r : 0, g : 0, b : 0, a : 0};
 			}
 
@@ -64,9 +67,9 @@ module IQ.Image {
 				testArray[x + y * width]++;
 
 				var p = pointArray[x + y * width], r = p.r, g = p.g, b = p.b, a = p.a;
-				for (var i = 0; i < DitherRiemersma._errorQueueSize; i++) {
+				for (var i = 0; i < this._errorQueueSize; i++) {
 					var weight = this._weights[i],
-						e      = errorQueue[(i + head) % DitherRiemersma._errorQueueSize];
+						e      = errorQueue[(i + head) % this._errorQueueSize];
 
 					r += e.r * weight;
 					g += e.g * weight;
@@ -83,8 +86,8 @@ module IQ.Image {
 					quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
 
 				// update head and calculate tail
-				head = (head + 1) % DitherRiemersma._errorQueueSize;
-				var tail = (head + DitherRiemersma._errorQueueSize - 1) % DitherRiemersma._errorQueueSize;
+				head = (head + 1) % this._errorQueueSize;
+				var tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
 
 				// update error with new value
 				errorQueue[tail].r = p.r - quantizedPoint.r;
@@ -106,9 +109,9 @@ module IQ.Image {
 		private _createWeights() : void {
 			this._weights = [];
 
-			var multiplier = Math.exp(Math.log(DitherRiemersma._max) / (DitherRiemersma._errorQueueSize - 1));
-			for (var i = 0, next = 1; i < DitherRiemersma._errorQueueSize; i++) {
-				this._weights[i] = ((next + 0.5) | 0) / DitherRiemersma._max;
+			var multiplier = Math.exp(Math.log(this._max) / (this._errorQueueSize - 1));
+			for (var i = 0, next = 1; i < this._errorQueueSize; i++) {
+				this._weights[i] = (((next + 0.5) | 0) / this._max) * this._errorPropagation;
 				next *= multiplier;
 			}
 		}

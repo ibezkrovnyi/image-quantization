@@ -99,9 +99,9 @@ module Usage {
 				if (optionImageDithering === -1) {
 					imageQuantizer = new IQ.Image.NearestColor(distance);
 				} else if (optionImageDithering === 9) {
-					imageQuantizer = new IQ.Image.DitherRiemersma(distance);
+					imageQuantizer = new IQ.Image.ErrorDiffusionRiemersma(distance);
 				} else {
-					imageQuantizer = new IQ.Image.DitherErrorDiffusion(distance, optionImageDithering, true, 0, false);
+					imageQuantizer = new IQ.Image.ErrorDiffusionArray(distance, optionImageDithering, true, 0, false);
 				}
 
 				image = imageQuantizer.quantize(pointBuffer, palette);

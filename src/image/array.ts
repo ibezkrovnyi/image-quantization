@@ -3,14 +3,14 @@
  * Copyright 2015 Igor Bezkrovny
  * All rights reserved. (MIT Licensed)
  *
- * ditherErrorDiffusion.ts - part of Image Quantization Library
+ * ditherErrorDiffusionArray.ts - part of Image Quantization Library
  */
 
 /// <reference path='common.ts' />
 module IQ.Image {
 
 	// TODO: is it the best name for this enum "kernel"?
-	export enum DitherErrorDiffusionKernel {
+	export enum ErrorDiffusionArrayKernel {
 		FloydSteinberg = 0,
 		FalseFloydSteinberg,
 		Stucki,
@@ -23,7 +23,7 @@ module IQ.Image {
 	}
 
 	// http://www.tannerhelland.com/4660/dithering-eleven-algorithms-source-code/
-	export class DitherErrorDiffusion implements IImageDitherer {
+	export class ErrorDiffusionArray implements IImageDitherer {
 		private _minColorDistance : number;
 		private _serpentine : boolean;
 		private _kernel : number[][];
@@ -34,7 +34,7 @@ module IQ.Image {
 
 		private _distance : Distance.IDistanceCalculator;
 
-		constructor(colorDistanceCalculator : Distance.IDistanceCalculator, kernel : DitherErrorDiffusionKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = false) {
+		constructor(colorDistanceCalculator : Distance.IDistanceCalculator, kernel : ErrorDiffusionArrayKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = false) {
 			this._setKernel(kernel);
 
 			this._distance = colorDistanceCalculator;
@@ -62,7 +62,6 @@ module IQ.Image {
 				this._fillErrorLine(errorLines[ i ] = [], width);
 			}
 
-			//(<any>console).profile("dither");
 			for (var y = 0; y < height; y++) {
 				// always serpentine
 				if (this._serpentine) dir = dir * -1;
@@ -135,7 +134,6 @@ module IQ.Image {
 				}
 			}
 
-			//(<any>console).profileEnd("dither");
 			return pointBuffer;
 		}
 
@@ -158,9 +156,9 @@ module IQ.Image {
 			}
 		}
 
-		private _setKernel(kernel : DitherErrorDiffusionKernel) {
+		private _setKernel(kernel : ErrorDiffusionArrayKernel) {
 			switch (kernel) {
-				case DitherErrorDiffusionKernel.FloydSteinberg:
+				case ErrorDiffusionArrayKernel.FloydSteinberg:
 					this._kernel = [
 						[ 7 / 16, 1, 0 ],
 						[ 3 / 16, -1, 1 ],
@@ -169,7 +167,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.FalseFloydSteinberg:
+				case ErrorDiffusionArrayKernel.FalseFloydSteinberg:
 					this._kernel = [
 						[ 3 / 8, 1, 0 ],
 						[ 3 / 8, 0, 1 ],
@@ -177,7 +175,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.Stucki:
+				case ErrorDiffusionArrayKernel.Stucki:
 					this._kernel = [
 						[ 8 / 42, 1, 0 ],
 						[ 4 / 42, 2, 0 ],
@@ -194,7 +192,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.Atkinson:
+				case ErrorDiffusionArrayKernel.Atkinson:
 					this._kernel = [
 						[ 1 / 8, 1, 0 ],
 						[ 1 / 8, 2, 0 ],
@@ -205,7 +203,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.Jarvis:
+				case ErrorDiffusionArrayKernel.Jarvis:
 					this._kernel = [			// Jarvis, Judice, and Ninke / JJN?
 						[ 7 / 48, 1, 0 ],
 						[ 5 / 48, 2, 0 ],
@@ -222,7 +220,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.Burkes:
+				case ErrorDiffusionArrayKernel.Burkes:
 					this._kernel = [
 						[ 8 / 32, 1, 0 ],
 						[ 4 / 32, 2, 0 ],
@@ -234,7 +232,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.Sierra:
+				case ErrorDiffusionArrayKernel.Sierra:
 					this._kernel = [
 						[ 5 / 32, 1, 0 ],
 						[ 3 / 32, 2, 0 ],
@@ -249,7 +247,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.TwoSierra:
+				case ErrorDiffusionArrayKernel.TwoSierra:
 					this._kernel = [
 						[ 4 / 16, 1, 0 ],
 						[ 3 / 16, 2, 0 ],
@@ -261,7 +259,7 @@ module IQ.Image {
 					];
 					break;
 
-				case DitherErrorDiffusionKernel.SierraLite:
+				case ErrorDiffusionArrayKernel.SierraLite:
 					this._kernel = [
 						[ 2 / 4, 1, 0 ],
 						[ 1 / 4, -1, 1 ],
@@ -270,7 +268,7 @@ module IQ.Image {
 					break;
 
 				default:
-					throw new Error("DitherErrorDiffusion: unknown kernel = " + kernel);
+					throw new Error("ErrorDiffusionArray: unknown kernel = " + kernel);
 			}
 		}
 	}

@@ -59,16 +59,16 @@ module UI {
 				value : "1",
 				options : [
 					{id : 1, value : "Nearest (Simple)"},
-					{id : 2, value : "ErrorDiffusion: Floyd-Steinberg"},
-					{id : 4, value : "ErrorDiffusion: Stucki"},
-					{id : 5, value : "ErrorDiffusion: Atkinson"},
-					{id : 6, value : "ErrorDiffusion: Jarvis"},
-					{id : 7, value : "ErrorDiffusion: Burkes"},
-					{id : 8, value : "ErrorDiffusion: Sierra"},
-					{id : 9, value : "ErrorDiffusion: TwoSierra"},
-					{id : 10, value : "ErrorDiffusion: SierraLite"},
-					{id : 3, value : "ErrorDiffusion: False Floyd-Steinberg"},
-					{id : 11, value : "Riemersma: Hilbert Curve"}
+					{id : 2, value : "ErrorDiffusion: Array (Floyd-Steinberg)"},
+					{id : 4, value : "ErrorDiffusion: Array (Stucki)"},
+					{id : 5, value : "ErrorDiffusion: Array (Atkinson)"},
+					{id : 6, value : "ErrorDiffusion: Array (Jarvis)"},
+					{id : 7, value : "ErrorDiffusion: Array (Burkes)"},
+					{id : 8, value : "ErrorDiffusion: Array (Sierra)"},
+					{id : 9, value : "ErrorDiffusion: Array (TwoSierra)"},
+					{id : 10, value: "ErrorDiffusion: Array (SierraLite)"},
+					{id : 3, value : "ErrorDiffusion: Array (False Floyd-Steinberg)"},
+					{id : 11, value : "ErrorDiffusion: Riemersma (Hilbert Curve)"}
 				]
 			},
 			{

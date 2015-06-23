@@ -36,7 +36,7 @@
 /// <reference path='utils/hueStatistics.ts' />
 
 /// <reference path='image/common.ts' />
-/// <reference path='image/ditherErrorDiffusion.ts' />
+/// <reference path='image/array.ts' />
 /// <reference path='image/riemersma.ts' />
 /// <reference path='image/nearestColor.ts' />
 

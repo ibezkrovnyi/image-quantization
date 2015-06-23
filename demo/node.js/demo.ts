@@ -43,7 +43,7 @@ for(var i = 0; i < 1; i++) {
 
 	// quantize image
 	timeMark("image: error diffusion: sierra lite", function() {
-		iqImage = new IQ.Image.DitherErrorDiffusion(distance, IQ.Image.DitherErrorDiffusionKernel.SierraLite);
+		iqImage = new IQ.Image.ErrorDiffusionArray(distance, IQ.Image.ErrorDiffusionArrayKernel.SierraLite);
 		iqImage.quantize(pointBuffer, palette);
 	});
 }
