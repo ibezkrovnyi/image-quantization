@@ -140,9 +140,9 @@ var uint8array = resultPointContainer.toUint8Array();
 
 TODO
 ----
-	1. notification about progress
-	~~2. riemersma dithering~~
-	3. ordered dithering
+1. notification about progress  
+2. ~~riemersma dithering~~  
+3. ordered dithering
 
 Changelog
 ---------
