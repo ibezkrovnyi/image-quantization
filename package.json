@@ -24,7 +24,7 @@
 	},
 	"main"           : "./_builds/node-iq.js",
 	"scripts" : {
-		"prepublish" : "./build.cmd"
+		"prepublish" : "build.cmd"
 	},
 	"repository"     : {
 		"type": "git",
