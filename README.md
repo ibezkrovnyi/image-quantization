@@ -91,13 +91,14 @@ var uint8array = resultPointContainer.toUint8Array();
 TODO
 ----
 	1. notification about progress
-	2. riemersma dithering
+	~~2. riemersma dithering~~
 	3. ordered dithering
 
 Changelog
 ---------
 
-##### 0.1.4 (2015-06-22)
+##### 0.1.4 (2015-06-24)
+	+ Refactoring 
 	+ Riemersma dithering added (Hilbert Curve)
 	+ Readme.md updated
 	+ build.cmd updated

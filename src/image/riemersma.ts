@@ -49,7 +49,7 @@ module IQ.Image {
 				pointArray                                                      = pointBuffer.getPointArray(),
 				width                                                           = pointBuffer.getWidth(),
 				height                                                          = pointBuffer.getHeight(),
-				errorQueue : {r : number, g : number, b : number, a : number}[] = [],
+				errorQueue : {r : number; g : number; b : number; a : number}[] = [],
 				head                                                            = 0;
 
 			for (var i = 0; i < this._errorQueueSize; i++) {

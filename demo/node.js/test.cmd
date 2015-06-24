@@ -3,7 +3,7 @@ del /q/f *.asm
 del /q/f *.cfg
 rem node_0.12.4_x86.exe --trace-hydrogen --trace-phase=Z --trace-deopt --code-comments --hydrogen-track-positions  --redirect-code-traces --redirect-code-traces-to=code.asm --print_deopt_stress _build/demo.js
 rem node --trace-hydrogen --trace-phase=Z --trace-deopt --code-comments --hydrogen-track-positions  --redirect-code-traces --redirect-code-traces-to=code.asm --print_deopt_stress _build/demo.js
-node _build/demo.js
+node build/demo.js
 rem 
 rem iojs  --trace-hydrogen --trace-phase=Z --trace-deopt --code-comments --hydrogen-track-positions --redirect-code-traces --print_deopt_stress --redirect-code-traces --redirect-code-traces-to=code.asm _build/demo.js 
 rem "C:\Users\Igor\AppData\Local\Google\Chrome SxS\Application\chrome.exe" --no-sandbox --js-flags="--trace-hydrogen --trace-phase=Z --trace-deopt --trace-inlining --trace-bce --trace-opt --trace_opt_verbose --print_deopt_stress --trace_array_abuse --trace-codegen --code-comments --hydrogen-track-positions --redirect-code-traces --emit-opt-code-positions --print-opt-code" "http://localhost:63343/ImageQuantization/demo/html/index.html"
