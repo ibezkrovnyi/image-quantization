@@ -25,15 +25,15 @@ module UI {
 				id : "option-distance",
 				label : "Color Distance Equation",
 				labelWidth : 175,
-				value : "6",
+				value : "2",
 				options : [
 					{id : 1, value : "Euclidean"},
 					{id : 2, value : "Manhattan"},
 					{id : 3, value : "CIEDE2000"},
 					{id : 4, value : "CIE94"},
 					{id : 5, value : "RgbQuant Euclidean (w/o ALPHA)"},
-					{id : 6, value : "NeuQuant Manhattan (w/o sRGB coef)"},
-					{id : 7, value : "WuQuant Euclidean (w/o sRGB coef)"},
+					{id : 6, value : "RgbQuant Euclidean (with Alpha)"},
+					{id : 7, value : "Manhattan (with sRGB coefficients)"},
 					{id : 8, value : "CMETRIC"},
 					{id : 9, value : "PNGQUANT"}
 				]

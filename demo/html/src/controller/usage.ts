@@ -134,9 +134,9 @@ module Usage {
 				case 5:
 					return new IQ.Distance.EuclideanRgbQuantWOAlpha();
 				case 6:
-					return new IQ.Distance.ManhattanNeuQuant();
+					return new IQ.Distance.EuclideanRgbQuantWithAlpha();
 				case 7:
-					return new IQ.Distance.EuclideanWuQuant();
+					return new IQ.Distance.ManhattanSRGB();
 				case 8:
 					return new IQ.Distance.CMETRIC();
 				case 9:

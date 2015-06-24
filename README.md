@@ -1,26 +1,76 @@
 IQ.ts
 -----
+
 Image Quantization Library in **TypeScript** _(MIT License)_
+
+* [API](http://igor-bezkrovny.github.io/image-q/doc)  
+* [Online Demo](http://igor-bezkrovny.github.io/image-q/demo)  
+* [Demo Source](https://github.com/igor-bezkrovny/igor-bezkrovny.github.io/image-quantization-demo)
+
 ![quantization](https://raw.githubusercontent.com/leeoniya/RgbQuant.js/master/quantization.png "quantization")
 
 Introduction
 ------------
 Image Color Number Reduction with alpha support using RgbQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
  
-[API](http://igor-bezkrovny.github.io/image-q/doc)  
-[Online Demo](http://igor-bezkrovny.github.io/image-q/demo)  
-[Demo Source](https://github.com/igor-bezkrovny/igor-bezkrovny.github.io/image-quantization-demo)
-
 Capability
 ----------
 
-title   | description
---------|-----------------------------------------------------------------------------------------------------------------
-Import  | **HTMLImageElement, HTMLCanvasElement, NodeCanvas, ImageData, Array, CanvasPixelArray, Uint8Array, Uint32Array**  
-Palette | **NeuQuant, RgbQuant, Xiaolin Wu's method**  
-Image   | **Nearest Color, Error Diffusion Dithering**  
-Export  | **Uint32Array, Uint8Array**  
+1. Platforms supported
+	* browser (Chrome 7.0+, FireFox 4.0+, IE 10+, Opera 11.6+, Safari 5.1+)
+	* node.js (Node.js 0.9.0+)
+	
+2. Builds
+	* **dist/browser-iq**.js - JavaScript build for browser (global `var IQ`)
+	* **dist/node-iq**.js - JavaScript build for Node.js (`module.exports = IQ`)
+	* **src/iq.ts** - TypeScript module (use `/// <reference path="path-to-library/src/iq.ts" />`)
+	 
+3. Import
+	* `HTMLImageElement`
+	* `HTMLCanvasElement`
+	* `NodeCanvas`
+	* `ImageData`
+	* `Array`
+	* `CanvasPixelArray`
+	* `Uint8Array`
+	* `Uint32Array`
+	 
+4. Color Distance
+	* `Euclidean` - originally used in Xiaolin Wu's Quantizer **WuQuant**
+	* `EuclideanRgbQuantWOAlpha` (sRGB coefficients/without alpha support) - originally used in **RgbQuant**
+	* `EuclideanRgbQuantWithAlpha` (sRGB coefficients)
+	* `Manhattan` - originally used in **NeuQuant** 
+	* `ManhattanSRGB` (sRGB coefficients)
+	* `CIEDE2000_Original` - full CIEDE2000 implementation (very very very slow) 
+	* `CIEDE2000` - part of formula was stripped as it meaningless for JavaScript floating-point precision/RGB 8bit per channel converted to Lab (very very slow)
+	* `CIE94` - full CIE94 implementation
+	* `CMETRIC`
+	* `PNGQUANT` - used in pngQuant tool
 
+5. Palette Quantizers
+	* `NeuQuant` (original code ported, integer calculations)
+	* `RgbQuant`
+	* `WuQuant`
+	* `NeuQuantFloat` (floating-point calculations)
+	
+6. Image Quantizers
+	* `NearestColor`
+	* `ErrorDiffusionArray` - two modes of error propagation are supported: `xnview` and `gimp`
+		1. `FloydSteinberg`
+        2. `FalseFloydSteinberg`
+        3. `Stucki`
+        4. `Atkinson`
+        5. `Jarvis`
+        6. `Burkes`
+        7. `Sierra`
+        8. `TwoSierra`
+        9. `SierraLite`
+	* `ErrorDiffusionRiemersma` - Hilbert space-filling curve is used
+
+7. Output
+	* `Uint32Array`
+	* `Uint8Array`  
+	 
 Include IQ Library into your project
 ------------------------------------
 ##### TypeScript + Node.js/Browser project 

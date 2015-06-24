@@ -8,9 +8,9 @@
 module IQ.Distance {
 
 	/**
-	 * Perceptual Euclidean color distance
-	 */
-	export class Euclidean implements Distance.IDistanceCalculator {
+	 * Euclidean color distance
+ 	 */
+	export class Euclidean implements IDistanceCalculator {
 		protected _Pr : number;
 		protected _Pg : number;
 		protected _Pb : number;
@@ -42,12 +42,7 @@ module IQ.Distance {
 		}
 
 		protected _setDefaults() : void {
-			this._Pr = Constants.sRGB.Y.RED;
-			this._Pg = Constants.sRGB.Y.GREEN;
-			this._Pb = Constants.sRGB.Y.BLUE;
-
-			// TODO: what is the best coef below?
-			this._Pa = 1;
+			this._Pr = this._Pg = this._Pb = this._Pa = 1;
 		}
 	}
 }
