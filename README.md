@@ -9,9 +9,11 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 [![API Documentation](https://img.shields.io/badge/API_Documentation-Available-blue.svg)](http://igor-bezkrovny.github.io/image-q/doc)
 [![NPM License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-![quantization](https://raw.githubusercontent.com/leeoniya/RgbQuant.js/master/quantization.png "quantization")
+![quantization](https://raw.githubusercontent.com/igor-bezkrovny/image-quantization/master/quantization.png "quantization")
 
-**Table of Contents**
+Table of Contents
+-----------------
+
 * [Introduction](#introduction)
 * [Capability](#capability)
 * [Usage](#usage)
@@ -263,19 +265,11 @@ References
 
 	1. [HUSL (Boronine) - info](http://www.husl-colors.org)
 	2. [HUSL (Boronine) - code](https://github.com/husl-colors/husl)
+	3. [Color Image Quantization for Frame Buffer Display](https://www.cs.cmu.edu/~ph/ciq_thesis)
+	4. [K-Means](http://arxiv.org/pdf/1101.0395.pdf)
+	5. [Efficient Color Quantization by Hierarchical Clustering Algorithms](ftp://cs.joensuu.fi/pub/Theses/2005_MSc_Hautamaki_Ville.pdf)
 
 License
 -------
 
 [MIT](LICENSE)
-
-[npm-img]: https://img.shields.io/npm/v/png-async.svg
-[npm-url]: https://npmjs.org/package/png-async
-[dts-img]: https://img.shields.io/badge/DefinitelyTyped-.d.ts-1a8bcb.svg
-[dts-url]: http://definitelytyped.org/
-[travis-img]: https://img.shields.io/travis/kanreisa/node-png-async.svg
-[travis-url]: https://travis-ci.org/kanreisa/node-png-async
-[appveyor-img]: https://img.shields.io/appveyor/ci/kanreisa/node-png-async.svg
-[appveyor-url]: https://ci.appveyor.com/project/kanreisa/node-png-async
-[devdep-img]: https://david-dm.org/kanreisa/node-png-async/dev-status.svg
-[devdep-url]: https://david-dm.org/kanreisa/node-png-async#info=devDependencies
