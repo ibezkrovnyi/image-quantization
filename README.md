@@ -1,16 +1,29 @@
 IQ.ts
 -----
 
-Image Quantization Library in **TypeScript** _(MIT License)_
+Complete Image Quantization Library in **TypeScript** _(MIT License)_
 
-* [API](http://igor-bezkrovny.github.io/image-q/doc)  
-* [Online Demo](http://igor-bezkrovny.github.io/image-q/demo)  
-* [Demo Source](https://github.com/igor-bezkrovny/igor-bezkrovny.github.io/image-quantization-demo)
+[![demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](http://igor-bezkrovny.github.io/image-q/demo)
+[![github](https://img.shields.io/badge/github-.com-brightgreen.svg)](https://github.com/igor-bezkrovny/image-quantization)
+[![npm version](https://badge.fury.io/js/image-q.svg)](https://www.npmjs.com/package/image-q)
+[![API Documentation](https://img.shields.io/badge/API_Documentation-Available-blue.svg)](http://igor-bezkrovny.github.io/image-q/doc)
+[![NPM License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ![quantization](https://raw.githubusercontent.com/leeoniya/RgbQuant.js/master/quantization.png "quantization")
 
+**Table of Contents**
+* [Introduction](#introduction)
+* [Capability](#capability)
+* [Usage](#usage)
+* [Todo](#todo)
+* [Changelog](#changelog)
+* [Credits](#credits)
+* [References](#references)
+* [License](#license)
+
 Introduction
 ------------
+
 Image Color Number Reduction with alpha support using RgbQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
  
 Capability
@@ -88,8 +101,8 @@ var iq = require("<path-to-iq>/dist/node-iq.js");
 <script src="<path-to-iq>/dist/browser-iq.js" type="text/javascript" charset="utf-8"></script>
 ```
 
-Usage Example
--------------
+Usage
+-----
 
 ##### Load Image (simple example)
 ```javascript
@@ -193,10 +206,6 @@ Changelog
 ##### 0.0.1
 	+ Initial
 
-License
--------
-License MIT [(NeuQuant use also forces to add it's copyright notice into source code)](./src/paletteQuantizers/neuquant/neuquant.ts)
-
 Credits
 -------
 Thanks to Leon Sorokin for information share and his original RgbQuant!
@@ -254,3 +263,19 @@ References
 
 	1. [HUSL (Boronine) - info](http://www.husl-colors.org)
 	2. [HUSL (Boronine) - code](https://github.com/husl-colors/husl)
+
+License
+-------
+
+[MIT](LICENSE)
+
+[npm-img]: https://img.shields.io/npm/v/png-async.svg
+[npm-url]: https://npmjs.org/package/png-async
+[dts-img]: https://img.shields.io/badge/DefinitelyTyped-.d.ts-1a8bcb.svg
+[dts-url]: http://definitelytyped.org/
+[travis-img]: https://img.shields.io/travis/kanreisa/node-png-async.svg
+[travis-url]: https://travis-ci.org/kanreisa/node-png-async
+[appveyor-img]: https://img.shields.io/appveyor/ci/kanreisa/node-png-async.svg
+[appveyor-url]: https://ci.appveyor.com/project/kanreisa/node-png-async
+[devdep-img]: https://david-dm.org/kanreisa/node-png-async/dev-status.svg
+[devdep-url]: https://david-dm.org/kanreisa/node-png-async#info=devDependencies
