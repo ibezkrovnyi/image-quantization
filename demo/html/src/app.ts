@@ -10,7 +10,7 @@ webix.ready(function () {
 		type : "line",
 		cols : [
 			{
-				width : 500,
+				width : 570,
 				header : "Settings & Folders", headerHeight : 45,
 				body : UI.leftPanel
 			},

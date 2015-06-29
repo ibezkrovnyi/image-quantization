@@ -57,7 +57,7 @@ module Usage {
 		public quantize(img : HTMLImageElement, optionColors, optionPaletteQuantizer, optionImageDithering, optionColorDistance) : {palette : IQ.Utils.Palette, image : IQ.Utils.PointContainer, time : number, ssim : number, original : IQ.Utils.PointContainer} {
 			var pointBuffer : IQ.Utils.PointContainer,
 				originalPointBuffer : IQ.Utils.PointContainer,
-				paletteQuantizer : IQ.IPaletteQuantizer,
+				paletteQuantizer : IQ.Palette.IPaletteQuantizer,
 				id = this._baseName(img.src)[0],
 				palette : IQ.Utils.Palette,
 				image : IQ.Utils.PointContainer;

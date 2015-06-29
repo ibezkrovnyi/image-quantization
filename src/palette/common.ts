@@ -5,7 +5,7 @@
  *
  * common.ts - part of Image Quantization Library
  */
-module IQ {
+module IQ.Palette {
 	export interface IPaletteQuantizer {
 		sample(pointBuffer : Utils.PointContainer) : void;
 		quantize() : Utils.Palette;

@@ -1,42 +1,46 @@
 {
-	"author"         : "Igor Bezkrovny",
-	"name"           : "image-q",
-	"version"        : "0.1.4",
-	"description"    : "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
-	"contributors"   : [],
-	"homepage"       : "https://github.com/igor-bezkrovny/image-quantization",
-	"keywords"       : [
-		"image",
-		"palette",
-		"quantization",
-		"quantizer",
-		"color",
-		"neuquant",
-		"rgbquant",
-		"xiaolin wu",
-		"cie94 distance",
-		"ciede2000",
-		"dithering",
-		"floyd-steinberg"
-	],
-	"engines"        : {
-		"node": ">=0.9.0"
-	},
-	"main"           : "./_builds/node-iq.js",
-	"scripts" : {
-		"prepublish" : "build.cmd"
-	},
-	"repository"     : {
-		"type": "git",
-		"url" : "https://github.com/igor-bezkrovny/image-quantization"
-	},
-	"bugs"           : {
-		"url": "https://github.com/igor-bezkrovny/image-quantization/issues"
-	},
-	"dependencies"   : {},
-	"preferGlobal"   : "false",
-	"license"        : "MIT",
-	"devDependencies": {
-		"typedoc": "^0.3.4"
-	}
+  "author": "Igor Bezkrovny",
+  "name": "image-q",
+  "version": "0.1.4",
+  "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
+  "contributors": [],
+  "homepage": "https://github.com/igor-bezkrovny/image-quantization",
+  "keywords": [
+    "image",
+    "palette",
+    "quantization",
+    "quantizer",
+    "color",
+    "neuquant",
+    "rgbquant",
+    "xiaolin wu",
+    "cie94 distance",
+    "ciede2000",
+    "dithering",
+    "floyd-steinberg"
+  ],
+  "engines": {
+    "node": ">=0.9.0"
+  },
+  "main": "./_builds/node-iq.js",
+  "scripts": {
+    "prepublish": "build.cmd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/igor-bezkrovny/image-quantization"
+  },
+  "bugs": {
+    "url": "https://github.com/igor-bezkrovny/image-quantization/issues"
+  },
+  "dependencies": {},
+  "preferGlobal": "false",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5",
+    "pngjs-image": "^0.11.6",
+    "typedoc": "^0.3.4",
+    "typescript": "^1.5.0-beta"
+  }
 }

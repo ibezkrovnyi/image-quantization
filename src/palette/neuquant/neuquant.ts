@@ -60,24 +60,6 @@ module IQ.Palette {
             this.b -= b | 0;
             this.a -= a | 0;
 		}
-/*
-		public subtract(r : number, g : number, b : number, a : number) : void {
-			this.r = (-r + this.r) | 0;
-			this.g = (-g + this.g) | 0;
-			this.b = (-b + this.b) | 0;
-			this.a = (-a + this.a) | 0;
-
-			this.r -= r;
-			this.g -= g;
-			this.b -= b;
-			this.a -= a;
-
-			this.r -= r | 0;
-			this.g -= g | 0;
-			this.b -= b | 0;
-			this.a -= a | 0;
-		}
-*/
 	}
 
 	export class NeuQuant implements IPaletteQuantizer {

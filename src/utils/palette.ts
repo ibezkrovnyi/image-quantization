@@ -84,12 +84,35 @@ module IQ.Utils {
 			var idx : number = this._nearestPointFromCache("" + point.uint32);
 			if (idx >= 0) return idx;
 
-			var minimalDistance : number = Number.MAX_VALUE;
+			var minimalDistance : number = Number.MAX_VALUE/*,
+				low :Point = null,
+				high :Point = null*/;
 
 			for (var idx = 0, i = 0, l = this._pointArray.length; i < l; i++) {
-				var p = this._pointArray[i],
-					distance = colorDistanceCalculator.calculateRaw(point.r, point.g, point.b, point.a, p.r, p.g, p.b, p.a);
+				var p = this._pointArray[i];
+/*
+				// TODO: the optimization below gives from 10% to 5% performance gain. Do we need it at all?
+					isHigher = point.r <= p.r && point.g <= p.g && point.b <= p.b && point.a <= p.a,
+					isLower = point.r > p.r && point.g > p.g && point.b > p.b && point.a > p.a;
 
+				if(isLower && low && low.r > p.r && low.g > p.g && low.b > p.b && low.a > p.a ) {
+					continue;
+				}
+
+				if(isHigher && high && high.r <= p.r && high.g <= p.g && high.b <= p.b && high.a <= p.a ) {
+					continue;
+				}
+
+				if(isHigher) {
+					high = p;
+				}
+
+				if(isLower) {
+					low = p;
+				}
+*/
+
+				var distance = colorDistanceCalculator.calculateRaw(point.r, point.g, point.b, point.a, p.r, p.g, p.b, p.a);
 				if (distance < minimalDistance) {
 					minimalDistance = distance;
 					idx = i;
