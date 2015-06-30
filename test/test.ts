@@ -16,40 +16,31 @@ var expect = chai.expect;
 module Test {
 	var options = {
 		colors   : [
-			2,
-			/*
-			 16,
-			 64,
-			 256,
-			 2048
-			 */
+			64
 		],
 		image    : [
 			IQ.Image.NearestColor,
-			//IQ.Image.ErrorDiffusionArray,
-			/*			IQ.Image.ErrorDiffusionRiemersma
+			/*
+			 IQ.Image.ErrorDiffusionArray,
+			 IQ.Image.ErrorDiffusionRiemersma
 			 */
 		],
 		palette  : [
 			IQ.Palette.NeuQuant,
-			/*
-			 IQ.Palette.NeuQuantFloat,
-			 IQ.Palette.RgbQuant,
-			 IQ.Palette.WuQuant
-			 */
+			IQ.Palette.NeuQuantFloat,
+			IQ.Palette.RgbQuant,
+			IQ.Palette.WuQuant
 		],
 		distance : [
 			IQ.Distance.Euclidean,
-			/*
-			 IQ.Distance.EuclideanRgbQuantWithAlpha,
-			 IQ.Distance.EuclideanRgbQuantWOAlpha,
-			 IQ.Distance.CIE94,
-			 IQ.Distance.CIEDE2000,
-			 IQ.Distance.CIEDE2000_Original,
-			 IQ.Distance.CMETRIC,
-			 IQ.Distance.Manhattan,
-			 IQ.Distance.ManhattanSRGB
-			 */
+			IQ.Distance.EuclideanRgbQuantWithAlpha,
+			IQ.Distance.EuclideanRgbQuantWOAlpha,
+			IQ.Distance.CIE94,
+			IQ.Distance.CIEDE2000,
+			IQ.Distance.CIEDE2000_Original,
+			IQ.Distance.CMETRIC,
+			IQ.Distance.Manhattan,
+			IQ.Distance.ManhattanSRGB
 		]
 	};
 
@@ -98,121 +89,191 @@ module Test {
 		setTimeout(fn, 1);
 	}
 
-	function testPalette(folder : string, imageQuantizer : IQ.Image.IImageDitherer, paletteQuantizer : IQ.Palette.IPaletteQuantizer, distance : IQ.Distance.IDistanceCalculator, callback : () => void) : void {
+	function testPalette(folder : string, fileRecords, imageQuantizer : IQ.Image.IImageDitherer, paletteQuantizer : IQ.Palette.IPaletteQuantizer, distance : IQ.Distance.IDistanceCalculator, callback : () => void) : void {
 		folder = path.join("generated", folder);
 		createDirectory(folder);
 
-		var files = getFilesInFolder("PngSuite", true, file => file.indexOf(".png") === -1);
+		var processed = 0;
+		fileRecords.forEach(fileRecord => {
+			var file  = fileRecord.file,
+				image = fileRecord.image,
+				w     = image.getWidth(),
+				h     = image.getHeight();
 
-		files.forEach(file => {
-			PNGImage.readImage(path.join("PngSuite", file), function (err, image) {
-				if (err) {
-					console.log("ERROR - " + err + ", " + file);
+			//var buf = IQ.Utils.PointContainer.fromNodeBuffer(image.getBlob(), image.getWidth(), image.getHeight());
+			var containerCopy = fileRecord.pointContainer.clone();
+			paletteQuantizer.sample(containerCopy);
+			var pal = paletteQuantizer.quantize();
+			var qBuf = imageQuantizer.quantize(containerCopy, pal);
+
+			var quantized = PNGImage.createImage(w, h);
+			for (var x = 0; x < w; x++) {
+				for (var y = 0; y < h; y++) {
+					var color = qBuf.getAt(x, y);
+					quantized.setAt(x, y, {
+						red   : color.r,
+						green : color.g,
+						blue  : color.b,
+						alpha : color.a
+					});
+				}
+			}
+
+			quantized.writeImage(path.join(folder, file), function (err) {
+				processed++;
+				if (fileRecords.length === processed) {
 					processLater(callback);
-					return;
+
+					imageQuantizer = paletteQuantizer = distance = fileRecord = null;
+					quantized = containerCopy = pal = qBuf = null;
+					callback = null;
 				}
-				console.log("OK - " + file);
-
-				var w   = image.getWidth(),
-					h   = image.getHeight(),
-					buf = new IQ.Utils.PointContainer(w, h);
-
-				for (var x = 0; x < w; x++) {
-					for (var y = 0; y < h; y++) {
-						var idx = image.getIndex(x, y);
-						buf.setAt(IQ.Utils.Point.createByRGBA(
-							image.getRed(idx),
-							image.getGreen(idx),
-							image.getBlue(idx),
-							image.getAlpha(idx)
-						), x, y);
-					}
-				}
-
-				//var buf = IQ.Utils.PointContainer.fromNodeBuffer(image.getBlob(), image.getWidth(), image.getHeight());
-				paletteQuantizer.sample(buf);
-				var pal    = paletteQuantizer.quantize();
-				var qBuf   = imageQuantizer.quantize(buf, pal);
-
-				//var quantized = PNGImage.createImage(w, h);
-				for (var x = 0; x < w; x++) {
-					for (var y = 0; y < h; y++) {
-						var color = qBuf.getAt(x, y);
-						image.setAt(x, y, {
-							red   : color.r,
-							green : color.g,
-							blue  : color.b,
-							alpha : color.a
-						});
-					}
-				}
-				// Get width and height
-				//console.log(image.getWidth());
-				//console.log(image.getHeight());
-
-				// Set a pixel at (20, 30) with red, having an alpha value of 100 (half-transparent)
-				//image.setAt(20, 30, { red:255, green:0, blue:0, alpha:100 });
-
-				//console.log(file,w , h);
-				image.writeImage(path.join(folder, file), function (err) {
-					console.log(file);
-					processLater(callback);
-				});
 			});
 		});
 	}
 
-	describe('image-quantization', function () {
-		it('xx', function (done : MochaDone) {
+	function readSourceFiles(sourceFolder : string, callback : (fileRecords) => void) {
+		var files       = getFilesInFolder("PngSuite", true, file => file.indexOf(".png") === -1),
+			fileRecords = [],
+			processed   = 0;
 
-			var n = 0;
-			function checkDone() {
-				if(n === -500) {
-					done();
+		files.forEach(file => {
+			PNGImage.readImage(path.join(sourceFolder, file), function (err, image) {
+				if (err) {
+					console.log("ERROR - " + err + ", " + file);
+				} else {
+					var w   = image.getWidth(),
+						h   = image.getHeight(),
+						buf = new IQ.Utils.PointContainer(w, h);
+
+					for (var x = 0; x < w; x++) {
+						for (var y = 0; y < h; y++) {
+							var idx = image.getIndex(x, y);
+							buf.setAt(IQ.Utils.Point.createByRGBA(
+								image.getRed(idx),
+								image.getGreen(idx),
+								image.getBlue(idx),
+								image.getAlpha(idx)
+							), x, y);
+						}
+					}
+					console.log(file + " read OK");
+					fileRecords.push({
+						folder         : sourceFolder,
+						file           : file,
+						image          : image,
+						pointContainer : buf
+					});
 				}
-			}
+				processed++;
+				if (files.length === processed) {
+					processLater(() => {
+						callback(fileRecords);
+					});
+				}
+			});
+		});
+	}
 
-			options.colors.forEach(colors => {
+	function testConditionColors(fileRecords, colors : number, done : MochaDone) {
+		var combinations = [];
 
-				options.palette.forEach(paletteKlass => {
-					options.image.forEach(imageKlass => {
-						options.distance.forEach(distanceKlass => {
-
-							var distance = new distanceKlass(),
-								palette  = new (<any>paletteKlass)(distance, colors),
-								folder   = colors + "/" + (<any>imageKlass).name + "/" + (<any>paletteKlass).name + "/" + (<any>distanceKlass).name;
-
-							if (<any>imageKlass === IQ.Image.ErrorDiffusionArray) {
-								for (var i = 0; i <= 8; i++) {
-									var imageQuantizer = new (<any>imageKlass)(distance, i);
-									n++;
-									testPalette(folder + "/" + IQ.Image.ErrorDiffusionArrayKernel[ i ], imageQuantizer, palette, distance, () => {
-										n--;
-										checkDone();
-									});
-								}
-							} else {
-								var imageQuantizer = new (<any>imageKlass)(distance);
-								n++;
-								testPalette(folder, imageQuantizer, palette, distance, () => {
-									n--;
-									checkDone();
-								});
-							}
+		options.palette.forEach(paletteKlass => {
+			options.image.forEach(imageKlass => {
+				options.distance.forEach(distanceKlass => {
+					fileRecords.forEach(fileRecord => {
+						combinations.push({
+							paletteKlass  : paletteKlass,
+							imageKlass    : imageKlass,
+							distanceKlass : distanceKlass,
+							fileRecord    : fileRecord
 						});
 					});
 				});
 			});
 		});
 
-		/*testPalette('neuquant (integer)', IQ.Palette.NeuQuant);
-		 testPalette('rgbquant (integer)', IQ.Palette.RgbQuant);
-		 testPalette('neuquant (float)', IQ.Palette.NeuQuantFloat);
-		 testPalette('wuquant (integer)', IQ.Palette.WuQuant);*/
+		var runNext = () => {
+			console.log("left ", combinations.length, " tasks!");
+			if (combinations.length > 0) {
+				var item          = combinations.pop(),
+					distanceKlass = item.distanceKlass,
+					imageKlass    = item.imageKlass,
+					paletteKlass  = item.paletteKlass,
+					fileRecord = item.fileRecord;
+
+				var distance = new distanceKlass(),
+					palette  = new (<any>paletteKlass)(distance, colors),
+					folder   = colors + "/" + (<any>imageKlass).name + "/" + (<any>paletteKlass).name + "/" + (<any>distanceKlass).name;
+
+				/*
+				 if (<any>imageKlass === IQ.Image.ErrorDiffusionArray) {
+				 for (var i = 0; i <= 8; i++) {
+				 var imageQuantizer = new (<any>imageKlass)(distance, i);
+				 n++;
+				 console.log("add");
+				 testPalette(folder + "/" + IQ.Image.ErrorDiffusionArrayKernel[i], fileRecords, imageQuantizer, palette, distance, () => {
+				 n--;
+				 checkDone();
+				 });
+				 }
+				 } else {
+				 */
+				var imageQuantizer = new (<any>imageKlass)(distance);
+				testPalette(folder, [fileRecord], imageQuantizer, palette, distance, runNext);
+				//}
+			} else {
+				done();
+			}
+		};
+
+		runNext();
+	}
+
+	describe('image-quantization11', () => {
+		var fileRecords;
+
+		before(done => {
+			readSourceFiles("PngSuite", _fileRecords => {
+				fileRecords = _fileRecords;
+				done();
+			});
+		});
+
+		describe('image-quantization', function () {
+			options.colors.forEach(colors => {
+				it(colors + ' colors', function (done : MochaDone) {
+					this.timeout(50000);
+					testConditionColors(fileRecords, colors, done);
+				});
+			});
+		});
 		/*
-		 it('should return -1 when the value is not present', function() {
-		 expect(this.chunks).to.contain.keys('IDAT', 'IHDR', 'IEND');
-		 })
+		 describe('image-quantization', function () {
+		 it('2 colors', function (done : MochaDone) {
+		 testConditionColors(fileRecords, 2, done);
+		 });
+		 });
+
+		 describe('image-quantization', function () {
+		 it('16 colors', function (done : MochaDone) {
+		 testConditionColors(fileRecords, 16, done);
+		 });
+		 });
+
+		 describe('image-quantization', function () {
+		 this.timeout(5000);
+		 it('64 colors', function (done : MochaDone) {
+		 testConditionColors(fileRecords, 64, done);
+		 });
+		 });
+
+		 describe('image-quantization', function () {
+		 this.timeout(50000);
+		 it('256 colors', function (done : MochaDone) {
+		 testConditionColors(fileRecords, 256, done);
+		 });
+		 });
 		 */
 	});
 }
