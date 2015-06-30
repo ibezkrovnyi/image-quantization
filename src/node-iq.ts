@@ -7,6 +7,6 @@
  */
 /// <reference path='iq.ts' />
 
-declare var module : any;
+//declare var module : any;
 module.exports = IQ;
 

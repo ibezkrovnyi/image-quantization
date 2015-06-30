@@ -7,6 +7,8 @@
  */
 
 /// <reference path='./point.ts' />
+// TODO: refactor - move typings to common folder
+///<reference path="../../test/typings/node/node.d.ts"/>
 module IQ.Utils {
 
 	/**
@@ -18,9 +20,9 @@ module IQ.Utils {
 		private _width : number;
 		private _height : number;
 
-		constructor() {
-			this._width = 0;
-			this._height = 0;
+		constructor(width : number, height : number = 1) {
+			this._width = width;
+			this._height = height;
 			this._pointArray = [];
 		}
 
@@ -32,12 +34,43 @@ module IQ.Utils {
 			return this._height;
 		}
 
+		// TODO: refactor - do we need this method?
 		public setWidth(width : number) : void {
 			this._width = width;
 		}
+/*
 
 		public setHeight(height : number) : void {
 			this._height = height;
+		}
+*/
+
+		public getIndex(x : number, y : number = 0) : number {
+			return x + y * this._width;
+		}
+
+		public setAt(color : Point, x : number, y : number = 0) : void {
+			this.setAtIndex(color, this.getIndex(x, y));
+		}
+
+		public setAtIndex(color : Point, index : number) : void {
+			this._enlargeTo(index + 1);
+			this._pointArray[index].from(color);
+		}
+
+		public getAt(x : number, y : number = 0) : Point {
+			return this.getAtIndex(this.getIndex(x, y));
+		}
+
+		public getAtIndex(index : number) : Point {
+			this._enlargeTo(index + 1);
+			return this._pointArray[index];
+		}
+
+		private _enlargeTo(size : number) : void {
+			for(var i = this._pointArray.length; i < size; i++) {
+				this._pointArray[i] = new Point();
+			}
 		}
 
 		public getPointArray() : Point[] {
@@ -45,9 +78,7 @@ module IQ.Utils {
 		}
 
 		public clone() : PointContainer {
-			var clone = new PointContainer();
-			clone._width = this._width;
-			clone._height = this._height;
+			var clone = new PointContainer(this._width, this._height);
 
 			clone._pointArray = [];
 			for(var i = 0, l = this._pointArray.length; i < l; i++) {
@@ -129,11 +160,16 @@ module IQ.Utils {
             return PointContainer.fromUint32Array(new Uint32Array(uint8array.buffer), width, height);
         }
 
-        static fromUint32Array(uint32array : Uint32Array, width : number, height : number) : PointContainer {
-			var container = new PointContainer();
+		static fromNodeBuffer(buffer : NodeBuffer, width : number, height : number) : PointContainer {
+            var uint8array = new Uint8Array(buffer.length);
+			for(var i = 0; i < buffer.length; i++) {
+				uint8array[i] = buffer[i];
+			}
+			return PointContainer.fromUint32Array(new Uint32Array(uint8array.buffer), width, height);
+        }
 
-			container._width = width;
-			container._height = height;
+        static fromUint32Array(uint32array : Uint32Array, width : number, height : number) : PointContainer {
+			var container = new PointContainer(width, height);
 
 			container._pointArray = [];//new Array(uint32array.length);
 			for(var i = 0, l = uint32array.length; i < l; i++) {

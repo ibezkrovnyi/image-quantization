@@ -19,8 +19,7 @@ module IQ.Utils {
 		private _i32idx : { [ key: string ] : number } = {};
 
 		constructor() {
-			this._pointContainer = new PointContainer();
-			this._pointContainer.setHeight(1);
+			this._pointContainer = new PointContainer(0);
 			this._pointArray = this._pointContainer.getPointArray();
 		}
 
