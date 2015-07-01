@@ -1,4 +1,5 @@
 pushd %~dp0
-node ../node_modules/mocha/bin/mocha build/test.js
+rem node ../node_modules/mocha/bin/mocha build/test.js
+node build/test.js
 popd
 

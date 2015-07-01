@@ -2,5 +2,7 @@
 dist
 demo/node.js/build
 demo/html/build
+test/build
+test/generated
 node_modules
 
