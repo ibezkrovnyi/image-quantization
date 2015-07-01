@@ -89,7 +89,13 @@ module Test {
 		setTimeout(fn, 1);
 	}
 
-	function testPalette(folder : string, fileRecords, imageQuantizer : IQ.Image.IImageDitherer, paletteQuantizer : IQ.Palette.IPaletteQuantizer, distance : IQ.Distance.IDistanceCalculator, callback : () => void) : void {
+	interface FileRecord {
+		file : string;
+		image : any;
+		pointContainer : IQ.Utils.PointContainer;
+	}
+
+	function testPalette(folder : string, fileRecords : FileRecord[], imageQuantizer : IQ.Image.IImageDitherer, paletteQuantizer : IQ.Palette.IPaletteQuantizer, distance : IQ.Distance.IDistanceCalculator, callback : () => void) : void {
 		folder = path.join("generated", folder);
 		createDirectory(folder);
 
@@ -230,7 +236,7 @@ module Test {
 		runNext();
 	}
 
-	describe('image-quantization11', () => {
+	describe('image-quantization', () => {
 		var fileRecords;
 
 		before(done => {
@@ -240,7 +246,7 @@ module Test {
 			});
 		});
 
-		describe('image-quantization', function () {
+		describe('color tests', function () {
 			options.colors.forEach(colors => {
 				it(colors + ' colors', function (done : MochaDone) {
 					this.timeout(50000);
