@@ -75,16 +75,53 @@ module Test {
 				}
 			}
 
-			quantized.writeImage(path.join(folder, file), function (err) {
-				processed++;
-				if (fileRecords.length === processed) {
-					processLater(callback);
+			var targetFolderAndFile = path.join(folder, file);
+			if(fs.existsSync(targetFolderAndFile)) {
+				PNGImage.readImage(targetFolderAndFile, function (err, image) {
+					if (err) {
+						console.log("ERROR - " + err + ", " + targetFolderAndFile);
+					} else {
+						var w   = image.getWidth(),
+							h   = image.getHeight(),
+							isOk = true;
 
-					imageQuantizer = paletteQuantizer = distance = fileRecord = null;
-					quantized = containerCopy = pal = qBuf = null;
-					callback = null;
-				}
-			});
+						if(w !== quantized.getWidth() || h !== quantized.getHeight()) {
+							console.log("!!! Failed: width or height are different (" + targetFolderAndFile + ")");
+							isOk = false;
+						}
+
+						for (var x = 0; x < w && isOk; x++) {
+							for (var y = 0; y < h && isOk; y++) {
+								var idx = image.getIndex(x, y);
+
+								if(image.getAtIndex(idx) !== quantized.getAtIndex(idx)) {
+									console.log("!!! Failed: images are different (" + targetFolderAndFile + ")");
+									isOk = false;
+								}
+							}
+						}
+					}
+					processed++;
+					if (fileRecords.length === processed) {
+						processLater(callback);
+
+						imageQuantizer = paletteQuantizer = distance = fileRecord = null;
+						quantized = containerCopy = pal = qBuf = null;
+						callback = null;
+					}
+				});
+			} else {
+				quantized.writeImage(targetFolderAndFile, function (err) {
+					processed++;
+					if (fileRecords.length === processed) {
+						processLater(callback);
+
+						imageQuantizer = paletteQuantizer = distance = fileRecord = null;
+						quantized = containerCopy = pal = qBuf = null;
+						callback = null;
+					}
+				});
+			}
 		});
 	}
 
