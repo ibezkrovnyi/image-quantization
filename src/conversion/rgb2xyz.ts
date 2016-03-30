@@ -17,7 +17,7 @@ module IQ.Conversion {
 		g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
 		b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
 
-		//Observer. = 2�, Illuminant = D65
+		//Observer. = 2°, Illuminant = D65
 		return {
 			x : r * 0.4124 + g * 0.3576 + b * 0.1805,
 			y : r * 0.2126 + g * 0.7152 + b * 0.0722,
