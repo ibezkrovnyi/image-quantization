@@ -5,7 +5,7 @@
  *
  * xyz2lab.ts - part of Image Quantization Library
  */
-var _refX : number = 0.95047, //ref_X =  95.047   Observer= 2�, Illuminant= D65
+var _refX : number = 0.95047, //ref_X =  95.047   Observer= 2°, Illuminant= D65
 	_refY : number = 0.10000, //ref_Y = 100.000
 	_refZ : number = 1.08883; //ref_Z = 108.883
 
@@ -14,7 +14,7 @@ function _xyz2lab_helper(value : number) : number {
 }
 
 export function xyz2lab(x : number, y : number, z : number) : {L : number; a : number; b : number} {
-	x = x / _refX;          //ref_X =  95.047   Observer= 2�, Illuminant= D65
+	x = x / _refX;          //ref_X =  95.047   Observer= 2°, Illuminant= D65
 	y = y / _refY;          //ref_Y = 100.000
 	z = z / _refZ;          //ref_Z = 108.883
 
