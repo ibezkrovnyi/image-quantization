@@ -10,7 +10,7 @@
     "prepublish": "node_modules/.bin/webpack",
     "dist": "node_modules/.bin/webpack"
   },
-  "preferGlobal": "false",
+  "preferGlobal": false,
   "main": "./dist/iq.js",
   "typings" : "./dist/iq.d.ts",
   "dependencies": {},
