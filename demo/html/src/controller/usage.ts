@@ -1,162 +1,161 @@
-module Usage {
+import * as IQ from "../../../../dist/iq";
 
-	export class QuantizationUsage {
-		static drawPixels(pointContainer, width0, width1? : number) {
-			var idxi8  = pointContainer.toUint8Array(),
-				idxi32 = new Uint32Array(idxi8.buffer);
+export class QuantizationUsage {
+	static drawPixels(pointContainer, width0, width1? : number) {
+		var idxi8  = pointContainer.toUint8Array(),
+			idxi32 = new Uint32Array(idxi8.buffer);
 
-			width1 = width1 || width0;
+		width1 = width1 || width0;
 
-			var can        = document.createElement("canvas"),
-				can2       = document.createElement("canvas"),
-				ctx : any  = can.getContext("2d"),
-				ctx2 : any = can2.getContext("2d");
+		var can        = document.createElement("canvas"),
+			can2       = document.createElement("canvas"),
+			ctx : any  = can.getContext("2d"),
+			ctx2 : any = can2.getContext("2d");
 
-			can.width = width0;
-			can.height = Math.ceil(idxi32.length / width0);
-			can2.width = width1;
-			can2.height = Math.ceil(can.height * width1 / width0);
+		can.width   = width0;
+		can.height  = Math.ceil(idxi32.length / width0);
+		can2.width  = width1;
+		can2.height = Math.ceil(can.height * width1 / width0);
 
-			ctx.imageSmoothingEnabled = ctx.mozImageSmoothingEnabled = ctx.webkitImageSmoothingEnabled = ctx.msImageSmoothingEnabled = false;
-			ctx2.imageSmoothingEnabled = ctx2.mozImageSmoothingEnabled = ctx2.webkitImageSmoothingEnabled = ctx2.msImageSmoothingEnabled = false;
+		ctx.imageSmoothingEnabled = ctx.mozImageSmoothingEnabled = ctx.webkitImageSmoothingEnabled = ctx.msImageSmoothingEnabled = false;
+		ctx2.imageSmoothingEnabled = ctx2.mozImageSmoothingEnabled = ctx2.webkitImageSmoothingEnabled = ctx2.msImageSmoothingEnabled = false;
 
-			var imgd = ctx.createImageData(can.width, can.height);
+		var imgd = ctx.createImageData(can.width, can.height);
 
-			if (QuantizationUsage._typeOf(imgd.data) == "CanvasPixelArray") {
-				var data = imgd.data;
-				for (var i = 0, len = data.length; i < len; ++i) {
-					data[i] = idxi8[i];
-				}
+		if (QuantizationUsage._typeOf(imgd.data) == "CanvasPixelArray") {
+			var data = imgd.data;
+			for (var i = 0, len = data.length; i < len; ++i) {
+				data[ i ] = idxi8[ i ];
 			}
-			else {
-				var buf32 = new Uint32Array(imgd.data.buffer);
-				buf32.set(idxi32);
-			}
-
-			ctx.putImageData(imgd, 0, 0);
-
-			ctx2.drawImage(can, 0, 0, can2.width, can2.height);
-
-			return can2;
+		}
+		else {
+			var buf32 = new Uint32Array(imgd.data.buffer);
+			buf32.set(idxi32);
 		}
 
-		private static _typeOf(val) {
-			return Object.prototype.toString.call(val).slice(8, -1);
-		}
+		ctx.putImageData(imgd, 0, 0);
 
-		private _timeMark(title, callback) {
-			var start = Date.now();
-			callback();
-			console.log(title + ": " + (Date.now() - start));
-		}
+		ctx2.drawImage(can, 0, 0, can2.width, can2.height);
 
-		private _baseName(src) {
-			return src.split("/").pop().split(".");
-		}
+		return can2;
+	}
 
-		public quantize(img : HTMLImageElement, optionColors, optionPaletteQuantizer, optionImageDithering, optionColorDistance) : {palette : IQ.Utils.Palette, image : IQ.Utils.PointContainer, time : number, ssim : number, original : IQ.Utils.PointContainer} {
-			var pointBuffer : IQ.Utils.PointContainer,
-				originalPointBuffer : IQ.Utils.PointContainer,
-				paletteQuantizer : IQ.IPaletteQuantizer,
-				id = this._baseName(img.src)[0],
-				palette : IQ.Utils.Palette,
-				image : IQ.Utils.PointContainer;
+	private static _typeOf(val) {
+		return Object.prototype.toString.call(val).slice(8, -1);
+	}
 
-			pointBuffer = IQ.Utils.PointContainer.fromHTMLImageElement(img);
-			originalPointBuffer = pointBuffer.clone();
+	private _timeMark(title, callback) {
+		var start = Date.now();
+		callback();
+		console.log(title + ": " + (Date.now() - start));
+	}
 
-			var time = Date.now();
+	private _baseName(src) {
+		return src.split("/").pop().split(".");
+	}
 
-			console.log("image = " + id);
-			this._timeMark("...sample", () => {
-				var distance : IQ.Distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+	public quantize(img : HTMLImageElement, optionColors, optionPaletteQuantizer, optionImageDithering, optionColorDistance) : {palette : IQ.utils.Palette, image : IQ.utils.PointContainer, time : number, ssim : number, original : IQ.utils.PointContainer} {
+		var pointBuffer : IQ.utils.PointContainer,
+			originalPointBuffer : IQ.utils.PointContainer,
+			paletteQuantizer : IQ.palette.IPaletteQuantizer,
+			id = this._baseName(img.src)[ 0 ],
+			palette : IQ.utils.Palette,
+			image : IQ.utils.PointContainer;
 
-				switch (optionPaletteQuantizer) {
-					case 1:
-						paletteQuantizer = new IQ.Palette.NeuQuant(distance, optionColors);
-						break;
-                    case 2:
-                        paletteQuantizer = new IQ.Palette.RgbQuant(distance, optionColors);
-                        break;
-					case 3:
-						paletteQuantizer = new IQ.Palette.WuQuant(distance, optionColors);
-						break;
-                    case 4:
-                        paletteQuantizer = new IQ.Palette.NeuQuantFloat(distance, optionColors);
-                        break;
-				}
-				paletteQuantizer.sample(pointBuffer);
-			});
+		pointBuffer         = IQ.utils.PointContainer.fromHTMLImageElement(img);
+		originalPointBuffer = pointBuffer.clone();
 
-			this._timeMark("...palette", function () {
-				palette = paletteQuantizer.quantize();
-			});
+		var time = Date.now();
 
-			this._timeMark("...dither", ()  => {
-				var distance : IQ.Distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+		console.log("image = " + id);
+		this._timeMark("...sample", () => {
+			var distance : IQ.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
 
-				var imageQuantizer;
-				if (optionImageDithering === -1) {
-					imageQuantizer = new IQ.Image.NearestColor(distance);
-				} else if (optionImageDithering === 9) {
-					imageQuantizer = new IQ.Image.ErrorDiffusionRiemersma(distance);
-				} else {
-					imageQuantizer = new IQ.Image.ErrorDiffusionArray(distance, optionImageDithering, true, 0, false);
-				}
-
-				image = imageQuantizer.quantize(pointBuffer, palette);
-			});
-
-			time = Date.now() - time;
-			var ssim = new IQ.Quality.SSIM().compare(originalPointBuffer, pointBuffer);
-
-			this._checkImageAndPalette(image, palette, optionColors);
-
-			return {
-				original : originalPointBuffer,
-				image    : image,
-				palette  : palette,
-				time     : time,
-				ssim     : ssim
-			};
-		}
-
-		private _getColorDistanceCalculator(option) : IQ.Distance.IDistanceCalculator {
-			switch (option) {
+			switch (optionPaletteQuantizer) {
 				case 1:
-					return new IQ.Distance.Euclidean();
+					paletteQuantizer = new IQ.palette.NeuQuant(distance, optionColors);
+					break;
 				case 2:
-					return new IQ.Distance.Manhattan();
+					paletteQuantizer = new IQ.palette.RGBQuant(distance, optionColors);
+					break;
 				case 3:
-					return new IQ.Distance.CIEDE2000();
+					paletteQuantizer = new IQ.palette.WuQuant(distance, optionColors);
+					break;
 				case 4:
-					return new IQ.Distance.CIE94();
-				case 5:
-					return new IQ.Distance.EuclideanRgbQuantWOAlpha();
-				case 6:
-					return new IQ.Distance.EuclideanRgbQuantWithAlpha();
-				case 7:
-					return new IQ.Distance.ManhattanSRGB();
-				case 8:
-					return new IQ.Distance.CMETRIC();
-				case 9:
-					return new IQ.Distance.PNGQUANT();
+					paletteQuantizer = new IQ.palette.NeuQuantFloat(distance, optionColors);
+					break;
 			}
-		}
+			paletteQuantizer.sample(pointBuffer);
+		});
 
-		private _checkImageAndPalette(image : IQ.Utils.PointContainer, palette : IQ.Utils.Palette, colors : number) : void {
-			// check palette
-			if(palette.getPointContainer().getPointArray().length > colors) {
-				throw new Error("Palette contains more colors than allowed");
+		this._timeMark("...palette", function () {
+			palette = paletteQuantizer.quantize();
+		});
+
+		this._timeMark("...dither", () => {
+			var distance : IQ.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+
+			var imageQuantizer;
+			if (optionImageDithering === -1) {
+				imageQuantizer = new IQ.image.NearestColor(distance);
+			} else if (optionImageDithering === 9) {
+				imageQuantizer = new IQ.image.ErrorDiffusionRiemersma(distance);
+			} else {
+				imageQuantizer = new IQ.image.ErrorDiffusionArray(distance, optionImageDithering, true, 0, false);
 			}
 
-			// check image
-			image.getPointArray().forEach((point : IQ.Utils.Point) => {
-				if(!palette.has(point)) {
-					throw new Error("Image contains color not in palette: " + point.r + "," + point.g + "," + point.b + "," + point.a);
-				}
-			});
+			image = imageQuantizer.quantize(pointBuffer, palette);
+		});
+
+		time     = Date.now() - time;
+		var ssim = new IQ.quality.SSIM().compare(originalPointBuffer, pointBuffer);
+
+		this._checkImageAndPalette(image, palette, optionColors);
+
+		return {
+			original : originalPointBuffer,
+			image    : image,
+			palette  : palette,
+			time     : time,
+			ssim     : ssim
+		};
+	}
+
+	private _getColorDistanceCalculator(option) : IQ.distance.IDistanceCalculator {
+		switch (option) {
+			case 1:
+				return new IQ.distance.Euclidean();
+			case 2:
+				return new IQ.distance.Manhattan();
+			case 3:
+				return new IQ.distance.CIEDE2000();
+			case 4:
+				return new IQ.distance.CIE94();
+			case 5:
+				return new IQ.distance.EuclideanRgbQuantWOAlpha();
+			case 6:
+				return new IQ.distance.EuclideanRgbQuantWithAlpha();
+			case 7:
+				return new IQ.distance.ManhattanSRGB();
+			case 8:
+				return new IQ.distance.CMETRIC();
+			case 9:
+				return new IQ.distance.PNGQUANT();
 		}
 	}
 
+	private _checkImageAndPalette(image : IQ.utils.PointContainer, palette : IQ.utils.Palette, colors : number) : void {
+		// check palette
+		if (palette.getPointContainer().getPointArray().length > colors) {
+			throw new Error("Palette contains more colors than allowed");
+		}
+
+		// check image
+		image.getPointArray().forEach((point : IQ.utils.Point) => {
+			if (!palette.has(point)) {
+				throw new Error("Image contains color not in palette: " + point.r + "," + point.g + "," + point.b + "," + point.a);
+			}
+		});
+	}
 }
+

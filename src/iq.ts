@@ -1,51 +1,24 @@
 /**
  * @preserve
- * Copyright 2015 Igor Bezkrovny
+ * Copyright 2015-2016 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * iq.ts - Image Quantization Library
  */
+import * as constants from "./constants"
+import * as conversion from "./conversion"
+import * as distance from "./distance"
+import * as palette from "./palette"
+import * as image from "./image"
+import * as quality from "./quality"
+import * as utils from "./utils"
 
-/// <reference path='distance/common.ts' />
-/// <reference path='constants.ts' />
-
-/// <reference path='conversion/rgb2xyz.ts' />
-/// <reference path='conversion/rgb2hsl.ts' />
-/// <reference path='conversion/rgb2lab.ts' />
-/// <reference path='conversion/lab2xyz.ts' />
-/// <reference path='conversion/lab2rgb.ts' />
-/// <reference path='conversion/xyz2lab.ts' />
-/// <reference path='conversion/xyz2rgb.ts' />
-
-///<reference path="utils/arithmetic.ts"/>
-/// <reference path='distance/common.ts' />
-/// <reference path='distance/euclidean.ts' />
-/// <reference path='distance/euclideanRgbQuantWOAlpha.ts' />
-/// <reference path='distance/euclideanRgbQuantWithAlpha.ts' />
-/// <reference path='distance/manhattan.ts' />
-/// <reference path='distance/manhattanSRGB.ts' />
-/// <reference path='distance/cie94.ts' />
-/// <reference path='distance/ciede2000.ts' />
-/// <reference path='distance/ciede2000_original.ts' />
-/// <reference path='distance/cmetric.ts' />
-/// <reference path='distance/pngQuant.ts' />
-
-/// <reference path='utils/point.ts' />
-/// <reference path='utils/palette.ts' />
-/// <reference path='utils/pointContainer.ts' />
-/// <reference path='utils/hueStatistics.ts' />
-
-/// <reference path='image/common.ts' />
-/// <reference path='image/array.ts' />
-/// <reference path='image/riemersma.ts' />
-/// <reference path='image/nearestColor.ts' />
-
-/// <reference path="palette/common.ts"/>
-/// <reference path="palette/neuquant/neuquant.ts"/>
-/// <reference path="palette/neuquant/neuquant-float.ts"/>
-/// <reference path="palette/rgbquant/rgbquant.ts"/>
-/// <reference path="palette/wu/wuQuant.ts"/>
-
-/// <reference path="quality/ssim.ts"/>
-
-/// <reference path='utils/utils.ts' />
+export {
+	constants,
+	conversion,
+	distance,
+	palette,
+	image,
+	quality,
+	utils
+}

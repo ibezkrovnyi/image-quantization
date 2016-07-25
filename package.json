@@ -1,42 +1,47 @@
 {
-	"author"         : "Igor Bezkrovny",
-	"name"           : "image-q",
-	"version"        : "0.1.4",
-	"description"    : "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
-	"contributors"   : [],
-	"homepage"       : "https://github.com/igor-bezkrovny/image-quantization",
-	"keywords"       : [
-		"image",
-		"palette",
-		"quantization",
-		"quantizer",
-		"color",
-		"neuquant",
-		"rgbquant",
-		"xiaolin wu",
-		"cie94 distance",
-		"ciede2000",
-		"dithering",
-		"floyd-steinberg"
-	],
-	"engines"        : {
-		"node": ">=0.9.0"
-	},
-	"main"           : "./_builds/node-iq.js",
-	"scripts" : {
-		"prepublish" : "build.cmd"
-	},
-	"repository"     : {
-		"type": "git",
-		"url" : "https://github.com/igor-bezkrovny/image-quantization"
-	},
-	"bugs"           : {
-		"url": "https://github.com/igor-bezkrovny/image-quantization/issues"
-	},
-	"dependencies"   : {},
-	"preferGlobal"   : "false",
-	"license"        : "MIT",
-	"devDependencies": {
-		"typedoc": "^0.3.4"
-	}
+  "author": "Igor Bezkrovny",
+  "name": "image-q",
+  "version": "0.1.4",
+  "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
+  "contributors": [],
+  "homepage": "https://github.com/igor-bezkrovny/image-quantization",
+  "keywords": [
+    "image",
+    "palette",
+    "quantization",
+    "quantizer",
+    "color",
+    "neuquant",
+    "rgbquant",
+    "xiaolin wu",
+    "cie94 distance",
+    "ciede2000",
+    "dithering",
+    "floyd-steinberg"
+  ],
+  "engines": {
+    "node": ">=0.9.0"
+  },
+  "main": "./_builds/node-iq.js",
+  "scripts": {
+    "prepublish": "node_modules/.bin/webpack",
+    "dist": "node_modules/.bin/webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/igor-bezkrovny/image-quantization"
+  },
+  "bugs": {
+    "url": "https://github.com/igor-bezkrovny/image-quantization/issues"
+  },
+  "dependencies": {},
+  "preferGlobal": "false",
+  "license": "MIT",
+  "devDependencies": {
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2",
+    "typedoc": "^0.4.4",
+    "typescript": "^2.0.0",
+    "webpack": "^1.13.1"
+  }
 }

@@ -1,11 +1,14 @@
 /**
  * @preserve
- * Copyright 2015 Igor Bezkrovny
+ * Copyright 2015-2016 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * ciede2000.ts - part of Image Quantization Library
  */
-module IQ.Distance {
+import {IDistanceCalculator} from "./common"
+import {Point} from "../utils/point"
+import {rgb2lab} from "../conversion/rgb2lab"
+import {degrees2radians} from "../utils/arithmetic"
 
 	/**
 	 * CIEDE2000 algorithm (optimized)
@@ -16,11 +19,11 @@ module IQ.Distance {
 		private static _kC : number = 1;
 		private static _kH : number = 1;
 		private static _pow25to7 : number = Math.pow(25, 7);
-		private static _deg360InRad : number = Arithmetic.degrees2radians(360);
-		private static _deg180InRad : number = Arithmetic.degrees2radians(180);
-		private static _deg30InRad : number = Arithmetic.degrees2radians(30);
-		private static _deg6InRad : number = Arithmetic.degrees2radians(6);
-		private static _deg63InRad : number = Arithmetic.degrees2radians(63);
+		private static _deg360InRad : number = degrees2radians(360);
+		private static _deg180InRad : number = degrees2radians(180);
+		private static _deg30InRad : number = degrees2radians(30);
+		private static _deg6InRad : number = degrees2radians(6);
+		private static _deg63InRad : number = degrees2radians(63);
 
 		private _whitePoint : {r : number; g : number; b : number; a : number};
 
@@ -28,13 +31,13 @@ module IQ.Distance {
 			this.setWhitePoint(255, 255, 255, 255);
 		}
 
-		public setWhitePoint(r : number, g : number, b : number, a : number) : void {
+		setWhitePoint(r : number, g : number, b : number, a : number) : void {
 			this._whitePoint = {r : r, g : g, b : b, a : a};
 		}
 
-		public calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
-			var lab1 = Conversion.rgb2lab(r1 / this._whitePoint.r, g1 / this._whitePoint.g, b1 / this._whitePoint.b),
-				lab2 = Conversion.rgb2lab(r2 / this._whitePoint.r, g2 / this._whitePoint.g, b2 / this._whitePoint.b),
+		calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
+			var lab1 = rgb2lab(r1 / this._whitePoint.r, g1 / this._whitePoint.g, b1 / this._whitePoint.b),
+				lab2 = rgb2lab(r2 / this._whitePoint.r, g2 / this._whitePoint.g, b2 / this._whitePoint.b),
 				dA = (a2 - a1) / this._whitePoint.a;
 
 			var dE = this.calculateRawInLab(lab1, lab2);
@@ -49,7 +52,7 @@ module IQ.Distance {
 		 *
 		 *   So, we can remove RT from equation.
 		 */
-		public calculateRawInLab(Lab1 : {L : number; a : number; b : number}, Lab2 : {L : number; a : number; b : number}) : number {
+		calculateRawInLab(Lab1 : {L : number; a : number; b : number}, Lab2 : {L : number; a : number; b : number}) : number {
 			// Get L,a,b values for color 1
 			var L1 = Lab1.L,
 				a1 = Lab1.a,
@@ -111,7 +114,7 @@ module IQ.Distance {
 			return dE * dE;
 		}
 
-		public calculateNormalized(colorA : Utils.Point, colorB : Utils.Point) : number {
+		calculateNormalized(colorA : Point, colorB : Point) : number {
 			return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a));
 		}
 
@@ -164,4 +167,3 @@ module IQ.Distance {
 			return h2p_minus_h1p;
 		}
 	}
-}

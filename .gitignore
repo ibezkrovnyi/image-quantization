@@ -1,6 +1,9 @@
-.idea
-dist
-demo/node.js/build
-demo/html/build
+/dist
+
+/.idea
+/demo/html/dist
+/demo/node.js/demo.js
+/demo/node.js/demo.js.map
+
 node_modules
 

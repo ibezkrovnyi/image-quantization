@@ -1,24 +1,23 @@
 ///<reference path="../lib/webix/webix.d.ts"/>
-///<reference path="../../../src/iq.ts"/>
-///<reference path="controller/usage.ts"/>
-///<reference path="data/imageList.ts"/>
-///<reference path="ui\leftPanel\leftPanel.ts"/>
-///<reference path="ui\rightPanel\rightPanel.ts"/>
+import {initialize} from "./controller/ui";
+import {leftPanel} from "./ui/leftPanel/leftPanel";
+import {rightPanel} from "./ui/rightPanel/rightPanel";
+
 webix.ready(function () {
 
 	webix.ui({
 		type : "line",
 		cols : [
 			{
-				width : 500,
+				width  : 500,
 				header : "Settings & Folders", headerHeight : 45,
-				body : UI.leftPanel
+				body   : leftPanel
 			},
-			{view : "resizer"},
-			UI.rightPanel
+			{ view : "resizer" },
+			rightPanel
 		]
 	});
 
-	Controller.initialize();
+	initialize();
 
 });

@@ -1,186 +1,201 @@
 /**
  * @preserve
- * Copyright 2015 Igor Bezkrovny
+ * Copyright 2015-2016 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * palette.ts - part of Image Quantization Library
  */
 
-/// <reference path='point.ts' />
-///<reference path="../palette/rgbquant/colorHistogram.ts"/>
+import {Point} from "./point"
+import {PointContainer} from "./pointContainer"
+import {IDistanceCalculator} from "../distance/common"
+import {rgb2hsl} from "../conversion/rgb2hsl"
+
 // TODO: make paletteArray via pointBuffer, so, export will be available via pointBuffer.exportXXX
-module IQ.Utils {
 
-	var hueGroups : number = 10;
+var hueGroups : number = 10;
 
-	export class Palette {
-		private _pointContainer : PointContainer;
-		private _pointArray : Point[] = [];
-		private _i32idx : { [ key: string ] : number } = {};
+export function hueGroup(hue : number, segmentsNumber : number) {
+	var maxHue = 360,
+		seg = maxHue / segmentsNumber,
+		half = seg / 2;
 
-		constructor() {
-			this._pointContainer = new PointContainer();
-			this._pointContainer.setHeight(1);
-			this._pointArray = this._pointContainer.getPointArray();
+	for (var i = 1, mid = seg - half; i < segmentsNumber; i++, mid+=seg) {
+		if (hue >= mid && hue < mid + seg) return i;
+	}
+	return 0;
+}
+
+export class Palette {
+	private _pointContainer : PointContainer;
+	private _pointArray : Point[]                   = [];
+	private _i32idx : { [ key : string ] : number } = {};
+
+	constructor() {
+		this._pointContainer = new PointContainer();
+		this._pointContainer.setHeight(1);
+		this._pointArray = this._pointContainer.getPointArray();
+	}
+
+	add(color : Point) {
+		this._pointArray.push(color);
+		this._pointContainer.setWidth(this._pointArray.length);
+	}
+
+	has(color : Point) {
+		for (var i = this._pointArray.length - 1; i >= 0; i--) {
+			if (color.uint32 === this._pointArray[ i ].uint32) return true;
 		}
 
-		public add(color : Point) {
-			this._pointArray.push(color);
-			this._pointContainer.setWidth(this._pointArray.length);
-		}
+		return false;
+	}
 
-		public has(color : Point) {
-			for(var i = this._pointArray.length - 1; i >= 0; i--) {
-				if(color.uint32 === this._pointArray[i].uint32) return true;
-			}
+	// TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
+	getNearestColor(colorDistanceCalculator : IDistanceCalculator, color : Point) : Point {
+		return this._pointArray[ this.getNearestIndex(colorDistanceCalculator, color) | 0 ];
+	}
 
-			return false;
-		}
+	getPointContainer() : PointContainer {
+		return this._pointContainer;
+	}
 
-		// TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
-		public getNearestColor(colorDistanceCalculator : Distance.IDistanceCalculator, color : Point) : Point {
-			return this._pointArray[this.getNearestIndex(colorDistanceCalculator, color) | 0];
-		}
+	// TOTRY: use HUSL - http://boronine.com/husl/
+	/*
+	 public nearestIndexByUint32(i32) {
+	 var idx : number = this._nearestPointFromCache("" + i32);
+	 if (idx >= 0) return idx;
 
-		public getPointContainer() : PointContainer {
-			return this._pointContainer;
-		}
+	 var min = 1000,
+	 rgb = [
+	 (i32 & 0xff),
+	 (i32 >>> 8) & 0xff,
+	 (i32 >>> 16) & 0xff,
+	 (i32 >>> 24) & 0xff
+	 ],
+	 len = this._pointArray.length;
 
-		// TOTRY: use HUSL - http://boronine.com/husl/
-/*
-		public nearestIndexByUint32(i32) {
-			var idx : number = this._nearestPointFromCache("" + i32);
-			if (idx >= 0) return idx;
+	 idx = 0;
+	 for (var i = 0; i < len; i++) {
+	 var dist = Utils.distEuclidean(rgb, this._pointArray[i].rgba);
 
-			var min = 1000,
-				rgb = [
-					(i32 & 0xff),
-					(i32 >>> 8) & 0xff,
-					(i32 >>> 16) & 0xff,
-					(i32 >>> 24) & 0xff
-				],
-				len = this._pointArray.length;
+	 if (dist < min) {
+	 min = dist;
+	 idx = i;
+	 }
+	 }
 
-			idx = 0;
-			for (var i = 0; i < len; i++) {
-				var dist = Utils.distEuclidean(rgb, this._pointArray[i].rgba);
+	 this._i32idx[i32] = idx;
+	 return idx;
+	 }
+	 */
 
-				if (dist < min) {
-					min = dist;
-					idx = i;
-				}
-			}
+	private _nearestPointFromCache(key : string) {
+		return typeof this._i32idx[ key ] === "number" ? this._i32idx[ key ] : -1;
+	}
 
-			this._i32idx[i32] = idx;
-			return idx;
-		}
-*/
+	private getNearestIndex(colorDistanceCalculator : IDistanceCalculator, point : Point) : number {
+		var idx : number = this._nearestPointFromCache("" + point.uint32);
+		if (idx >= 0) return idx;
 
-		private _nearestPointFromCache(key) {
-			return typeof this._i32idx[key] === "number" ? this._i32idx[key] : -1;
-		}
+		var minimalDistance : number = Number.MAX_VALUE;
 
-		private getNearestIndex(colorDistanceCalculator : Distance.IDistanceCalculator, point : Point) : number {
-			var idx : number = this._nearestPointFromCache("" + point.uint32);
-			if (idx >= 0) return idx;
+		for (var idx = 0, i = 0, l = this._pointArray.length; i < l; i++) {
+			var p        = this._pointArray[ i ],
+				distance = colorDistanceCalculator.calculateRaw(point.r, point.g, point.b, point.a, p.r, p.g, p.b, p.a);
 
-			var minimalDistance : number = Number.MAX_VALUE;
-
-			for (var idx = 0, i = 0, l = this._pointArray.length; i < l; i++) {
-				var p = this._pointArray[i],
-					distance = colorDistanceCalculator.calculateRaw(point.r, point.g, point.b, point.a, p.r, p.g, p.b, p.a);
-
-				if (distance < minimalDistance) {
-					minimalDistance = distance;
-					idx = i;
-				}
-			}
-
-			this._i32idx[point.uint32] = idx;
-			return idx;
-		}
-
-/*
-		public reduce(histogram : ColorHistogram, colors : number) {
-			if (this._pointArray.length > colors) {
-				var idxi32 = histogram.getImportanceSortedColorsIDXI32();
-
-				// quantize histogram to existing palette
-				var keep = [], uniqueColors = 0, idx, pruned = false;
-
-				for (var i = 0, len = idxi32.length; i < len; i++) {
-					// palette length reached, unset all remaining colors (sparse palette)
-					if (uniqueColors >= colors) {
-						this.prunePal(keep);
-						pruned = true;
-						break;
-					} else {
-						idx = this.nearestIndexByUint32(idxi32[i]);
-						if (keep.indexOf(idx) < 0) {
-							keep.push(idx);
-							uniqueColors++;
-						}
-					}
-				}
-
-				if (!pruned) {
-					this.prunePal(keep);
-				}
+			if (distance < minimalDistance) {
+				minimalDistance = distance;
+				idx             = i;
 			}
 		}
 
-		// TODO: check usage, not tested!
-		public prunePal(keep : number[]) {
-			var colors = this._pointArray.length;
-			for (var colorIndex = colors - 1; colorIndex >= 0; colorIndex--) {
-				if (keep.indexOf(colorIndex) < 0) {
+		this._i32idx[ point.uint32 ] = idx;
+		return idx;
+	}
 
-					if(colorIndex + 1 < colors) {
-						this._pointArray[ colorIndex ] = this._pointArray [ colors - 1 ];
-					}
-					--colors;
-					//this._pointArray[colorIndex] = null;
-				}
-			}
-			console.log("colors pruned: " + (this._pointArray.length - colors));
-			this._pointArray.length = colors;
-			this._i32idx = {};
-		}
-*/
+	/*
+	 public reduce(histogram : ColorHistogram, colors : number) {
+	 if (this._pointArray.length > colors) {
+	 var idxi32 = histogram.getImportanceSortedColorsIDXI32();
 
-		// TODO: group very low lum and very high lum colors
-		// TODO: pass custom sort order
-		// TODO: sort criteria function should be placed to HueStats class
-		public sort() {
-			this._i32idx = {};
-			this._pointArray.sort((a : Point, b : Point) => {
-				var hslA = Conversion.rgb2hsl(a.r, a.g, a.b),
-					hslB = Conversion.rgb2hsl(b.r, b.g, b.b);
+	 // quantize histogram to existing palette
+	 var keep = [], uniqueColors = 0, idx, pruned = false;
 
-				// sort all grays + whites together
-				var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);
-				var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + Utils.hueGroup(hslB.h, hueGroups);
-/*
-				var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);
-				var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + Utils.hueGroup(hslB.h, hueGroups);
-*/
+	 for (var i = 0, len = idxi32.length; i < len; i++) {
+	 // palette length reached, unset all remaining colors (sparse palette)
+	 if (uniqueColors >= colors) {
+	 this.prunePal(keep);
+	 pruned = true;
+	 break;
+	 } else {
+	 idx = this.nearestIndexByUint32(idxi32[i]);
+	 if (keep.indexOf(idx) < 0) {
+	 keep.push(idx);
+	 uniqueColors++;
+	 }
+	 }
+	 }
 
-				var hueDiff = hueB - hueA;
-				if (hueDiff) return -hueDiff;
+	 if (!pruned) {
+	 this.prunePal(keep);
+	 }
+	 }
+	 }
 
-/*
-				var lumDiff = Utils.lumGroup(+hslB.l.toFixed(2)) - Utils.lumGroup(+hslA.l.toFixed(2));
-				if (lumDiff) return -lumDiff;
-*/
-                var lA = a.getLuminosity(true),
-                    lB = b.getLuminosity(true);
+	 // TODO: check usage, not tested!
+	 public prunePal(keep : number[]) {
+	 var colors = this._pointArray.length;
+	 for (var colorIndex = colors - 1; colorIndex >= 0; colorIndex--) {
+	 if (keep.indexOf(colorIndex) < 0) {
 
-                if(lB - lA !== 0) return lB - lA;
+	 if(colorIndex + 1 < colors) {
+	 this._pointArray[ colorIndex ] = this._pointArray [ colors - 1 ];
+	 }
+	 --colors;
+	 //this._pointArray[colorIndex] = null;
+	 }
+	 }
+	 console.log("colors pruned: " + (this._pointArray.length - colors));
+	 this._pointArray.length = colors;
+	 this._i32idx = {};
+	 }
+	 */
 
-				var satDiff = ((hslB.s * 100) | 0) - ((hslA.s * 100) | 0);
-				if (satDiff) return -satDiff;
+	// TODO: group very low lum and very high lum colors
+	// TODO: pass custom sort order
+	// TODO: sort criteria function should be placed to HueStats class
+	sort() {
+		this._i32idx = {};
+		this._pointArray.sort((a : Point, b : Point) => {
+			var hslA = rgb2hsl(a.r, a.g, a.b),
+				hslB = rgb2hsl(b.r, b.g, b.b);
 
-			});
-		}
+			// sort all grays + whites together
+			var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + hueGroup(hslA.h, hueGroups);
+			var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + hueGroup(hslB.h, hueGroups);
+			/*
+			 var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);
+			 var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + Utils.hueGroup(hslB.h, hueGroups);
+			 */
+
+			var hueDiff = hueB - hueA;
+			if (hueDiff) return -hueDiff;
+
+			/*
+			 var lumDiff = Utils.lumGroup(+hslB.l.toFixed(2)) - Utils.lumGroup(+hslA.l.toFixed(2));
+			 if (lumDiff) return -lumDiff;
+			 */
+			var lA = a.getLuminosity(true),
+				lB = b.getLuminosity(true);
+
+			if (lB - lA !== 0) return lB - lA;
+
+			var satDiff = ((hslB.s * 100) | 0) - ((hslA.s * 100) | 0);
+			if (satDiff) return -satDiff;
+
+			// TODO: why there was no return here? What to return instead? 0?
+			return 0;
+		});
 	}
 }
+

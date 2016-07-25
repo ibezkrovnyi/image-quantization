@@ -1,12 +1,12 @@
-///<reference path="configForm.ts"/>
-///<reference path="imageFileExplorer.ts"/>
-module UI {
-	export var leftPanel = {
-		type : "line",
-		rows : [
-			UI.configForm,
-			{type : "header", template : "Image Folder"},
-			imageFoldersPanel
-		]
-	};
-}
+import {configForm} from "./configForm";
+import {imageFoldersPanel} from "./imageFileExplorer";
+
+export var leftPanel = {
+	type : "line",
+	rows : [
+		configForm,
+		{ type : "header", template : "Image Folder" },
+		imageFoldersPanel
+	]
+};
+
