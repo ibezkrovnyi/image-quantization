@@ -6,16 +6,12 @@
  * ssim.ts - part of Image Quantization Library
  */
 import {PointContainer} from "../utils/pointContainer"
+import {Y} from "../constants/bt709"
 
 // based on https://github.com/rhys-e/structural-similarity
 // http://en.wikipedia.org/wiki/Structural_similarity
 var K1 = 0.01,
 	K2 = 0.03;
-
-// TODO: use costants file instead of these values
-var RED_COEFFICIENT   = 0.212655,
-	GREEN_COEFFICIENT = 0.715158,
-	BLUE_COEFFICIENT  = 0.072187;
 
 export class SSIM {
 	compare(image1 : PointContainer, image2 : PointContainer) {
@@ -91,7 +87,7 @@ export class SSIM {
 			var offset = j * image.getWidth();
 			for (var i = x; i < x + width; i++) {
 				var point             = pointArray[ offset + i ];
-				lumaValues[ counter ] = point.r * RED_COEFFICIENT + point.g * GREEN_COEFFICIENT + point.b * BLUE_COEFFICIENT;
+				lumaValues[ counter ] = point.r * Y.RED + point.g * Y.GREEN + point.b * Y.BLUE;
 				counter++;
 			}
 		}
