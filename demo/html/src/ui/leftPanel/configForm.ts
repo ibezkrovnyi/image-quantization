@@ -36,7 +36,8 @@ export var configForm = {
 				{ id : 6, value : "RgbQuant Euclidean (with Alpha)" },
 				{ id : 7, value : "Manhattan (with sRGB coefficients)" },
 				{ id : 8, value : "CMETRIC" },
-				{ id : 9, value : "PNGQUANT" }
+				{ id : 9, value : "PNGQUANT" },
+				{ id : 10, value : "Manhattan Nommyde" },
 			]
 		},
 		{

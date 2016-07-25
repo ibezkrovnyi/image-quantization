@@ -141,6 +141,8 @@ export class QuantizationUsage {
 				return new IQ.distance.CMETRIC();
 			case 9:
 				return new IQ.distance.PNGQUANT();
+			case 10:
+				return new IQ.distance.ManhattanNommyde();
 		}
 	}
 

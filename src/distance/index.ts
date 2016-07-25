@@ -14,6 +14,7 @@ import {EuclideanRgbQuantWithAlpha} from "./euclideanRgbQuantWithAlpha"
 import {EuclideanRgbQuantWOAlpha} from "./euclideanRgbQuantWOAlpha"
 import {Manhattan} from "./manhattan"
 import {ManhattanSRGB} from "./manhattanSRGB"
+import {ManhattanNommyde} from "./manhattanNommyde"
 import {PNGQUANT} from "./pngQuant"
 
 export {
@@ -26,5 +27,6 @@ export {
 	EuclideanRgbQuantWOAlpha,
 	Manhattan,
 	ManhattanSRGB,
+	ManhattanNommyde,
 	PNGQUANT
 }
