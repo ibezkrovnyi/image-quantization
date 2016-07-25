@@ -5,6 +5,7 @@
  *
  * point.ts - part of Image Quantization Library
  */
+import {Y} from "../constants/bt709"
 
 /**
  * v8 optimized class
@@ -12,10 +13,6 @@
  * 2) "set" should have |0 / >>> 0
  */
 export class Point {
-	private static _RED_COEFFICIENT : number   = 0.212655;
-	private static _GREEN_COEFFICIENT : number = 0.715158;
-	private static _BLUE_COEFFICIENT : number  = 0.072187;
-
 	r : number;
 	g : number;
 	b : number;
@@ -123,9 +120,7 @@ export class Point {
 		 }
 		 */
 
-		var luma = r * Point._RED_COEFFICIENT + g * Point._GREEN_COEFFICIENT + b * Point._BLUE_COEFFICIENT;
-
-		return luma;
+		return r * Y.RED + g * Y.GREEN + b * Y.BLUE;
 	}
 
 	private _loadUINT32() {
