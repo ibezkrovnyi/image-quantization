@@ -8,13 +8,15 @@
   "homepage": "https://github.com/igor-bezkrovny/image-quantization",
   "scripts": {
     "prepublish": "node_modules/.bin/webpack",
-    "dist": "node_modules/.bin/webpack"
+    "dist": "node_modules/.bin/webpack",
+    "watch": "node_modules/.bin/webpack --watch"
   },
   "preferGlobal": false,
   "main": "./dist/iq.js",
-  "typings" : "./dist/iq.d.ts",
+  "typings": "./dist/iq.d.ts",
   "dependencies": {},
   "devDependencies": {
+    "chai": "^3.5.0",
     "source-map-loader": "^0.1.5",
     "ts-loader": "^0.8.2",
     "typedoc": "^0.4.4",
