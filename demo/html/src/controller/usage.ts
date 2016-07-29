@@ -1,4 +1,4 @@
-import * as IQ from "../../../../dist/iq";
+import * as iq from "../../../../dist/iq";
 
 export class QuantizationUsage {
 	static drawPixels(pointContainer, width0, width1? : number) {
@@ -54,35 +54,35 @@ export class QuantizationUsage {
 		return src.split("/").pop().split(".");
 	}
 
-	public quantize(img : HTMLImageElement, optionColors, optionPaletteQuantizer, optionImageDithering, optionColorDistance) : {palette : IQ.utils.Palette, image : IQ.utils.PointContainer, time : number, ssim : number, original : IQ.utils.PointContainer} {
-		var pointBuffer : IQ.utils.PointContainer,
-			originalPointBuffer : IQ.utils.PointContainer,
-			paletteQuantizer : IQ.palette.IPaletteQuantizer,
+	public quantize(img : HTMLImageElement, optionColors, optionPaletteQuantizer, optionImageDithering, optionColorDistance) : {palette : iq.utils.Palette, image : iq.utils.PointContainer, time : number, ssim : number, original : iq.utils.PointContainer} {
+		var pointBuffer : iq.utils.PointContainer,
+			originalPointBuffer : iq.utils.PointContainer,
+			paletteQuantizer : iq.palette.IPaletteQuantizer,
 			id = this._baseName(img.src)[ 0 ],
-			palette : IQ.utils.Palette,
-			image : IQ.utils.PointContainer;
+			palette : iq.utils.Palette,
+			image : iq.utils.PointContainer;
 
-		pointBuffer         = IQ.utils.PointContainer.fromHTMLImageElement(img);
+		pointBuffer         = iq.utils.PointContainer.fromHTMLImageElement(img);
 		originalPointBuffer = pointBuffer.clone();
 
 		var time = Date.now();
 
 		console.log("image = " + id);
 		this._timeMark("...sample", () => {
-			var distance : IQ.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+			var distance : iq.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
 
 			switch (optionPaletteQuantizer) {
 				case 1:
-					paletteQuantizer = new IQ.palette.NeuQuant(distance, optionColors);
+					paletteQuantizer = new iq.palette.NeuQuant(distance, optionColors);
 					break;
 				case 2:
-					paletteQuantizer = new IQ.palette.RGBQuant(distance, optionColors);
+					paletteQuantizer = new iq.palette.RGBQuant(distance, optionColors);
 					break;
 				case 3:
-					paletteQuantizer = new IQ.palette.WuQuant(distance, optionColors);
+					paletteQuantizer = new iq.palette.WuQuant(distance, optionColors);
 					break;
 				case 4:
-					paletteQuantizer = new IQ.palette.NeuQuantFloat(distance, optionColors);
+					paletteQuantizer = new iq.palette.NeuQuantFloat(distance, optionColors);
 					break;
 			}
 			paletteQuantizer.sample(pointBuffer);
@@ -93,22 +93,22 @@ export class QuantizationUsage {
 		});
 
 		this._timeMark("...dither", () => {
-			var distance : IQ.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+			var distance : iq.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
 
 			var imageQuantizer;
 			if (optionImageDithering === -1) {
-				imageQuantizer = new IQ.image.NearestColor(distance);
+				imageQuantizer = new iq.image.NearestColor(distance);
 			} else if (optionImageDithering === 9) {
-				imageQuantizer = new IQ.image.ErrorDiffusionRiemersma(distance);
+				imageQuantizer = new iq.image.ErrorDiffusionRiemersma(distance);
 			} else {
-				imageQuantizer = new IQ.image.ErrorDiffusionArray(distance, optionImageDithering, true, 0, false);
+				imageQuantizer = new iq.image.ErrorDiffusionArray(distance, optionImageDithering, true, 0, false);
 			}
 
 			image = imageQuantizer.quantize(pointBuffer, palette);
 		});
 
 		time     = Date.now() - time;
-		var ssim = new IQ.quality.SSIM().compare(originalPointBuffer, pointBuffer);
+		var ssim = new iq.quality.SSIM().compare(originalPointBuffer, pointBuffer);
 
 		this._checkImageAndPalette(image, palette, optionColors);
 
@@ -121,39 +121,39 @@ export class QuantizationUsage {
 		};
 	}
 
-	private _getColorDistanceCalculator(option) : IQ.distance.IDistanceCalculator {
+	private _getColorDistanceCalculator(option) : iq.distance.IDistanceCalculator {
 		switch (option) {
 			case 1:
-				return new IQ.distance.Euclidean();
+				return new iq.distance.Euclidean();
 			case 2:
-				return new IQ.distance.Manhattan();
+				return new iq.distance.Manhattan();
 			case 3:
-				return new IQ.distance.CIEDE2000();
+				return new iq.distance.CIEDE2000();
 			case 4:
-				return new IQ.distance.CIE94();
+				return new iq.distance.CIE94();
 			case 5:
-				return new IQ.distance.EuclideanRgbQuantWOAlpha();
+				return new iq.distance.EuclideanRgbQuantWOAlpha();
 			case 6:
-				return new IQ.distance.EuclideanRgbQuantWithAlpha();
+				return new iq.distance.EuclideanRgbQuantWithAlpha();
 			case 7:
-				return new IQ.distance.ManhattanSRGB();
+				return new iq.distance.ManhattanSRGB();
 			case 8:
-				return new IQ.distance.CMETRIC();
+				return new iq.distance.CMETRIC();
 			case 9:
-				return new IQ.distance.PNGQUANT();
+				return new iq.distance.PNGQUANT();
 			case 10:
-				return new IQ.distance.ManhattanNommyde();
+				return new iq.distance.ManhattanNommyde();
 		}
 	}
 
-	private _checkImageAndPalette(image : IQ.utils.PointContainer, palette : IQ.utils.Palette, colors : number) : void {
+	private _checkImageAndPalette(image : iq.utils.PointContainer, palette : iq.utils.Palette, colors : number) : void {
 		// check palette
 		if (palette.getPointContainer().getPointArray().length > colors) {
 			throw new Error("Palette contains more colors than allowed");
 		}
 
 		// check image
-		image.getPointArray().forEach((point : IQ.utils.Point) => {
+		image.getPointArray().forEach((point : iq.utils.Point) => {
 			if (!palette.has(point)) {
 				throw new Error("Image contains color not in palette: " + point.r + "," + point.g + "," + point.b + "," + point.a);
 			}
