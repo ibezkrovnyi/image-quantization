@@ -27,11 +27,11 @@
  * neuquant.ts - part of Image Quantization Library
  */
 
-import {Palette} from "../../utils/palette"
-import {Point} from "../../utils/point"
-import {PointContainer} from "../../utils/pointContainer"
-import {IDistanceCalculator} from "../../distance/common"
-import {IPaletteQuantizer} from "../common"
+import { Palette } from "../../utils/palette"
+import { Point } from "../../utils/point"
+import { PointContainer } from "../../utils/pointContainer"
+import { IDistanceCalculator } from "../../distance/common"
+import { IPaletteQuantizer } from "../common"
 
 // bias for colour values
 var networkBiasShift = 3;

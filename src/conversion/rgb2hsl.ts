@@ -5,7 +5,7 @@
  *
  * rgb2hsl.ts - part of Image Quantization Library
  */
-import {min3, max3} from "../utils/arithmetic"
+import { min3, max3 } from "../utils/arithmetic"
 
 /**
  * Calculate HSL from RGB

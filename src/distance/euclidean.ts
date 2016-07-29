@@ -5,8 +5,8 @@
  *
  * euclidean.ts - part of Image Quantization Library
  */
-import {IDistanceCalculator} from "./common"
-import {Point} from "../utils/point"
+import { IDistanceCalculator } from "./common"
+import { Point } from "../utils/point"
 
 /**
  * Euclidean color distance

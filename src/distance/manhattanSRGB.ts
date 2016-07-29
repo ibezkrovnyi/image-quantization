@@ -5,8 +5,8 @@
  *
  * manhattanSRGB.ts - part of Image Quantization Library
  */
-import {IDistanceCalculator} from "./common"
-import {Manhattan} from "./manhattan"
+import { IDistanceCalculator } from "./common"
+import { Manhattan } from "./manhattan"
 import * as bt709 from "../constants/bt709"
 
 /**

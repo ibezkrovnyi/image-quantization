@@ -5,8 +5,8 @@
  *
  * ssim.ts - part of Image Quantization Library
  */
-import {PointContainer} from "../utils/pointContainer"
-import {Y} from "../constants/bt709"
+import { PointContainer } from "../utils/pointContainer"
+import { Y } from "../constants/bt709"
 
 // based on https://github.com/rhys-e/structural-similarity
 // http://en.wikipedia.org/wiki/Structural_similarity

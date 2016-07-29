@@ -5,7 +5,7 @@
  *
  * hueStatistics.ts - part of Image Quantization Library
  */
-import {rgb2hsl} from "../conversion/rgb2hsl"
+import { rgb2hsl } from "../conversion/rgb2hsl"
 import { hueGroup } from "./palette"
 
 class HueGroup {

@@ -5,12 +5,12 @@
  *
  * ditherErrorDiffusionArray.ts - part of Image Quantization Library
  */
-import {IImageDitherer} from "./common"
-import {IDistanceCalculator} from "../distance/common"
-import {PointContainer} from "../utils/pointContainer"
-import {Palette} from "../utils/palette"
-import {Point} from "../utils/point"
-import {intInRange} from "../utils/arithmetic"
+import { IImageDitherer } from "./common"
+import { IDistanceCalculator } from "../distance/common"
+import { PointContainer } from "../utils/pointContainer"
+import { Palette } from "../utils/palette"
+import { Point } from "../utils/point"
+import { intInRange } from "../utils/arithmetic"
 
 // TODO: is it the best name for this enum "kernel"?
 export enum ErrorDiffusionArrayKernel {
@@ -30,9 +30,7 @@ export class ErrorDiffusionArray implements IImageDitherer {
 	private _minColorDistance : number;
 	private _serpentine : boolean;
 	private _kernel : number[][];
-	/**
-	 * true = GIMP, false = XNVIEW
-	 */
+	/** true = GIMP, false = XNVIEW */
 	private _calculateErrorLikeGIMP : boolean;
 
 	private _distance : IDistanceCalculator;

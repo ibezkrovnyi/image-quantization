@@ -5,7 +5,7 @@
  *
  * point.ts - part of Image Quantization Library
  */
-import {Y} from "../constants/bt709"
+import { Y } from "../constants/bt709"
 
 /**
  * v8 optimized class

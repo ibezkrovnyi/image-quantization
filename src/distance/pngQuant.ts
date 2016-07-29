@@ -5,8 +5,8 @@
  *
  * pngQuant.ts - part of Image Quantization Library
  */
-import {IDistanceCalculator} from "./common"
-import {Point} from "../utils/point"
+import { IDistanceCalculator } from "./common"
+import { Point } from "../utils/point"
 
 /**
  * TODO: check quality of this distance equation

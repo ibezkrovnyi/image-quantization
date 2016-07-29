@@ -5,8 +5,8 @@
  *
  * common.ts - part of Image Quantization Library
  */
-import {PointContainer} from "../utils/pointContainer"
-import {Palette} from "../utils/palette"
+import { PointContainer } from "../utils/pointContainer"
+import { Palette } from "../utils/palette"
 
 export interface IPaletteQuantizer {
 	sample(pointBuffer : PointContainer) : void;

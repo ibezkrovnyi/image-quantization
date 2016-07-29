@@ -5,8 +5,8 @@
  *
  * euclideanRgbQuantWOAlpha.ts - part of Image Quantization Library
  */
-import {IDistanceCalculator} from "./common"
-import {Euclidean} from "./euclidean"
+import { IDistanceCalculator } from "./common"
+import { Euclidean } from "./euclidean"
 import * as bt709 from "../constants/bt709"
 
 /**

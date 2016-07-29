@@ -5,8 +5,8 @@
  *
  * cmetric.ts - part of Image Quantization Library
  */
-import {IDistanceCalculator} from "./common"
-import {Point} from "../utils/point"
+import { IDistanceCalculator } from "./common"
+import { Point } from "../utils/point"
 
 /**
  * TODO: Name it: http://www.compuphase.com/cmetric.htm

@@ -24,13 +24,13 @@
  *
  * nearestColor.ts - part of Image Quantization Library
  */
-import {IImageDitherer} from "./common"
-import {HilbertCurveBase} from "./spaceFillingCurves/hilbertCurve"
-import {IDistanceCalculator} from "../distance/common"
-import {PointContainer} from "../utils/pointContainer"
-import {Palette} from "../utils/palette"
-import {Point} from "../utils/point"
-import {intInRange} from "../utils/arithmetic"
+import { IImageDitherer } from "./common"
+import { HilbertCurveBase } from "./spaceFillingCurves/hilbertCurve"
+import { IDistanceCalculator } from "../distance/common"
+import { PointContainer } from "../utils/pointContainer"
+import { Palette } from "../utils/palette"
+import { Point } from "../utils/point"
+import { intInRange } from "../utils/arithmetic"
 
 export class ErrorDiffusionRiemersma implements IImageDitherer {
 	private _distance : IDistanceCalculator;

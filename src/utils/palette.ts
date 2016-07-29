@@ -6,10 +6,10 @@
  * palette.ts - part of Image Quantization Library
  */
 
-import {Point} from "./point"
-import {PointContainer} from "./pointContainer"
-import {IDistanceCalculator} from "../distance/common"
-import {rgb2hsl} from "../conversion/rgb2hsl"
+import { Point } from "./point"
+import { PointContainer } from "./pointContainer"
+import { IDistanceCalculator } from "../distance/common"
+import { rgb2hsl } from "../conversion/rgb2hsl"
 
 // TODO: make paletteArray via pointBuffer, so, export will be available via pointBuffer.exportXXX
 
@@ -17,10 +17,10 @@ var hueGroups : number = 10;
 
 export function hueGroup(hue : number, segmentsNumber : number) {
 	var maxHue = 360,
-		seg = maxHue / segmentsNumber,
-		half = seg / 2;
+		seg    = maxHue / segmentsNumber,
+		half   = seg / 2;
 
-	for (var i = 1, mid = seg - half; i < segmentsNumber; i++, mid+=seg) {
+	for (var i = 1, mid = seg - half; i < segmentsNumber; i++, mid += seg) {
 		if (hue >= mid && hue < mid + seg) return i;
 	}
 	return 0;

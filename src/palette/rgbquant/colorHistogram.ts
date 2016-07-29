@@ -12,9 +12,9 @@
  *
  * colorHistogram.ts - part of Image Quantization Library
  */
-import {HueStatistics} from "../../utils/hueStatistics"
-import {PointContainer} from "../../utils/pointContainer"
-import {stableSort} from "../../utils/arithmetic"
+import { HueStatistics } from "../../utils/hueStatistics"
+import { PointContainer } from "../../utils/pointContainer"
+import { stableSort } from "../../utils/arithmetic"
 
 interface Box {
 	x : number,

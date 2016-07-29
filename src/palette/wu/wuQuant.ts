@@ -5,10 +5,10 @@
  *
  * wuQuant.ts - part of Image Quantization Library
  */
-import {Palette} from "../../utils/palette"
-import {Point} from "../../utils/point"
-import {PointContainer} from "../../utils/pointContainer"
-import {IDistanceCalculator} from "../../distance/common"
+import { Palette } from "../../utils/palette"
+import { Point } from "../../utils/point"
+import { PointContainer } from "../../utils/pointContainer"
+import { IDistanceCalculator } from "../../distance/common"
 
 function createArray1D(dimension1 : number) {
 	var a : number[] = [];

@@ -5,7 +5,7 @@
  *
  * pointContainer.ts - part of Image Quantization Library
  */
-import {Point} from "./point"
+import { Point } from "./point"
 
 /**
  * v8 optimizations done.

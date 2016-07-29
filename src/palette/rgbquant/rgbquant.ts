@@ -13,13 +13,13 @@
  * rgbquant.ts - part of Image Quantization Library
  */
 
-import {Palette} from "../../utils/palette"
-import {Point} from "../../utils/point"
-import {PointContainer} from "../../utils/pointContainer"
-import {IDistanceCalculator} from "../../distance/common"
-import {ColorHistogram} from "./colorHistogram"
-import {IPaletteQuantizer} from "../common"
-import {stableSort} from "../../utils/arithmetic"
+import { Palette } from "../../utils/palette"
+import { Point } from "../../utils/point"
+import { PointContainer } from "../../utils/pointContainer"
+import { IDistanceCalculator } from "../../distance/common"
+import { ColorHistogram } from "./colorHistogram"
+import { IPaletteQuantizer } from "../common"
+import { stableSort } from "../../utils/arithmetic"
 
 class RemovedColor {
 	index : number;
@@ -83,8 +83,8 @@ export class RGBQuant implements IPaletteQuantizer {
 
 	// reduces histogram to palette, remaps & memoizes reduced colors
 	quantize() : Palette {
-		var idxi32  = this._histogram.getImportanceSortedColorsIDXI32()
-		if(!idxi32) {
+		var idxi32 = this._histogram.getImportanceSortedColorsIDXI32()
+		if (!idxi32) {
 			throw new Error("No colors in image")
 		}
 

@@ -5,10 +5,10 @@
  *
  * nearestColor.ts - part of Image Quantization Library
  */
-import {IImageDitherer} from "./common"
-import {IDistanceCalculator} from "../distance/common"
-import {PointContainer} from "../utils/pointContainer"
-import {Palette} from "../utils/palette"
+import { IImageDitherer } from "./common"
+import { IDistanceCalculator } from "../distance/common"
+import { PointContainer } from "../utils/pointContainer"
+import { Palette } from "../utils/palette"
 
 export class NearestColor implements IImageDitherer {
 	private _distance : IDistanceCalculator;
