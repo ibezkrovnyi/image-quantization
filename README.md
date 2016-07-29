@@ -236,13 +236,18 @@ References
 
 * Color Distance Formulas
 
+	[Calculator + Info](http://colorizer.org/)
+
 	1. Euclidean Distance
 	2. Manhattan Distance
 	3. CIE94 Distance
 	   - [Source Code (Iulius Curt)](https://github.com/iuliux/CIE94.js)
 	4. CIEDE2000
-	   - [Math and Test Data Table (PDF)](http://www.ece.rochester.edu/~gsharma/ciede2000/ciede2000noteCRNA.pdf) 
-	   - [Source Code (Greg Fiumara)](https://github.com/gfiumara/CIEDE2000) `C` 
+	   - [Math and Test Data Table (PDF)](http://www.ece.rochester.edu/~gsharma/ciede2000/ciede2000noteCRNA.pdf)
+	   - [Info](http://www.ece.rochester.edu/~gsharma/ciede2000/)
+	   - [Source Code (Greg Fiumara)](https://github.com/gfiumara/CIEDE2000) `C`
+	   - [Source Code (THEjoezack)](https://github.com/THEjoezack/ColorMine/blob/master/ColorMine/ColorSpaces/Comparisons/CieDe2000Comparison.cs) `C#`
+	   - [Online Calculator](http://colormine.org/delta-e-calculator/cie2000)
 	5. Euclidean Distance w/o Alpha (RgbQuant)
 	6. Euclidean Distance w/o sRGB coefficients (Xiaolin Wu Quant)  
 	7. Manhattan Distance w/o sRGB coefficients (NeuQuant)
