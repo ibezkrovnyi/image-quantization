@@ -5,15 +5,15 @@
  *
  * rgb2xyz.ts - part of Image Quantization Library
  */
-export function rgb2xyz(r : number, g : number, b : number) : { x : number; y : number; z : number } {
-	r = r / 255;        //R from 0 to 255
-	g = g / 255;        //G from 0 to 255
-	b = b / 255;        //B from 0 to 255
+function correctGamma(n : number) {
+	return n > 0.04045 ? Math.pow((n + 0.055) / 1.055, 2.4) : n / 12.92;
+}
 
+export function rgb2xyz(r : number, g : number, b : number) : { x : number; y : number; z : number } {
 	// gamma correction, see https://en.wikipedia.org/wiki/SRGB#The_reverse_transformation
-	r = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
-	g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
-	b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+	r = correctGamma(r / 255);
+	g = correctGamma(g / 255);
+	b = correctGamma(b / 255);
 
 	// Observer. = 2°, Illuminant = D65
 	return {
