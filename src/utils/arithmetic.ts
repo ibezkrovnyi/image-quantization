@@ -22,6 +22,13 @@ export function intInRange(value : number, low : number, high : number) {
 	return value | 0;
 }
 
+export function roundIn8bit(value : number) {
+	value = Math.round(value);
+	if (value > 255) value = 255;
+	else if (value < 0) value = 0;
+	return value;
+}
+
 export function stableSort<T>(arrayToSort : T[], callback : (a : T, b : T) => number) : T[] {
 	var type = typeof arrayToSort[ 0 ],
 		sorted : T[];
