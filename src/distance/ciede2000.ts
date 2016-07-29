@@ -5,165 +5,136 @@
  *
  * ciede2000.ts - part of Image Quantization Library
  */
-import {IDistanceCalculator} from "./common"
-import {Point} from "../utils/point"
-import {rgb2lab} from "../conversion/rgb2lab"
-import {degrees2radians} from "../utils/arithmetic"
+import { IDistanceCalculator } from "./common";
+import { Point } from "../utils/point";
+import { rgb2lab } from "../conversion/rgb2lab";
+import { degrees2radians, roundIn8bit } from "../utils/arithmetic";
 
-	/**
-	 * CIEDE2000 algorithm (optimized)
-	 *
-	 */
-	export class CIEDE2000 implements IDistanceCalculator {
-		private static _kL : number = 1;
-		private static _kC : number = 1;
-		private static _kH : number = 1;
-		private static _pow25to7 : number = Math.pow(25, 7);
-		private static _deg360InRad : number = degrees2radians(360);
-		private static _deg180InRad : number = degrees2radians(180);
-		private static _deg30InRad : number = degrees2radians(30);
-		private static _deg6InRad : number = degrees2radians(6);
-		private static _deg63InRad : number = degrees2radians(63);
+/**
+ * CIEDE2000 algorithm - Adapted from Sharma et al's MATLAB implementation at
+ * http://www.ece.rochester.edu/~gsharma/ciede2000/
+ */
+export class CIEDE2000 implements IDistanceCalculator {
+	private static _pow25to7 : number    = Math.pow(25, 7);
+	private static _deg360InRad : number = degrees2radians(360);
+	private static _deg180InRad : number = degrees2radians(180);
+	private static _deg30InRad : number  = degrees2radians(30);
+	private static _deg6InRad : number   = degrees2radians(6);
+	private static _deg63InRad : number  = degrees2radians(63);
+	private static _deg275InRad : number = degrees2radians(275);
+	private static _deg25InRad : number  = degrees2radians(25);
 
-		private _whitePoint : {r : number; g : number; b : number; a : number};
+	private _whitePoint : {r : number; g : number; b : number; a : number};
+	private _maxDistance : number;
 
-		constructor() {
-			this.setWhitePoint(255, 255, 255, 255);
-		}
-
-		setWhitePoint(r : number, g : number, b : number, a : number) : void {
-			this._whitePoint = {r : r, g : g, b : b, a : a};
-		}
-
-		calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
-			var lab1 = rgb2lab(r1 / this._whitePoint.r, g1 / this._whitePoint.g, b1 / this._whitePoint.b),
-				lab2 = rgb2lab(r2 / this._whitePoint.r, g2 / this._whitePoint.g, b2 / this._whitePoint.b),
-				dA = (a2 - a1) / this._whitePoint.a;
-
-			var dE = this.calculateRawInLab(lab1, lab2);
-			return dE + dA * dA;
-		}
-
-		/**
-		 * @description
-		 *   minDistance between any color (CIEDE2000 low limit) = 0.00021155740497634713 (Chrome 46, JavaScript)
-		 *   !!!!!! max (RT * (dCp / (SC * CIEDE2000._kC)) * (dHp / (SH * CIEDE2000._kH))) 0.0000019135101965161994
-		 *   max (abs(dE (correct RT) - dE (RT = 0) ) ) is always less than minDistance (0.0000019135101965161994)
-		 *
-		 *   So, we can remove RT from equation.
-		 */
-		calculateRawInLab(Lab1 : {L : number; a : number; b : number}, Lab2 : {L : number; a : number; b : number}) : number {
-			// Get L,a,b values for color 1
-			var L1 = Lab1.L,
-				a1 = Lab1.a,
-				b1 = Lab1.b;
-
-			// Get L,a,b values for color 2
-			var L2 = Lab2.L,
-				a2 = Lab2.a,
-				b2 = Lab2.b;
-
-			// Weight factors
-			/**
-			 * Step 1: Calculate C1p, C2p, h1p, h2p
-			 */
-			var C1 = Math.sqrt(a1 * a1 + b1 * b1), //(2)
-				C2 = Math.sqrt(a2 * a2 + b2 * b2), //(2)
-
-				pow_a_C1_C2_to_7 = Math.pow((C1 + C2) / 2.0, 7.0),             //(3)
-
-				G = 0.5 * (1 - Math.sqrt(pow_a_C1_C2_to_7 / (pow_a_C1_C2_to_7 + CIEDE2000._pow25to7))), //(4)
-
-				a1p = (1.0 + G) * a1, //(5)
-				a2p = (1.0 + G) * a2, //(5)
-
-				C1p = Math.sqrt(a1p * a1p + b1 * b1), //(6)
-				C2p = Math.sqrt(a2p * a2p + b2 * b2), //(6)
-
-				h1p = this._hp_f(b1, a1p), //(7)
-				h2p = this._hp_f(b2, a2p); //(7)
-
-			/**
-			 * Step 2: Calculate dLp, dCp, dHp
-			 */
-			var dLp = L2 - L1, //(8)
-				dCp = C2p - C1p, //(9)
-
-				dhp = this._dhp_f(C1, C2, h1p, h2p), //(10)
-				dHp = 2 * Math.sqrt(C1p * C2p) * Math.sin(dhp / 2.0); //(11)
-
-			/**
-			 * Step 3: Calculate CIEDE2000 Color-Difference
-			 */
-			var a_L = (L1 + L2) / 2.0, //(12)
-				a_Cp = (C1p + C2p) / 2.0, //(13)
-
-				a_hp = this._a_hp_f(C1, C2, h1p, h2p), //(14)
-
-				T = 1 - 0.17 * Math.cos(a_hp - CIEDE2000._deg30InRad) +
-					0.24 * Math.cos(2 * a_hp) +
-					0.32 * Math.cos(3 * a_hp + CIEDE2000._deg6InRad) -
-					0.20 * Math.cos(4 * a_hp - CIEDE2000._deg63InRad), //(15)
-
-				pow_a_L_minus_50_to_2 = Math.pow(a_L - 50, 2),
-				SL = 1 + (0.015 * pow_a_L_minus_50_to_2) / Math.sqrt(20 + pow_a_L_minus_50_to_2),//(18)
-				SC = 1 + 0.045 * a_Cp,//(19)
-				SH = 1 + 0.015 * a_Cp * T,//(20)
-				dE = Math.sqrt(Math.pow(dLp / (SL * CIEDE2000._kL), 2) + Math.pow(dCp / (SC * CIEDE2000._kC), 2) + Math.pow(dHp / (SH * CIEDE2000._kH), 2)); //(22)
-
-			return dE * dE;
-		}
-
-		calculateNormalized(colorA : Point, colorB : Point) : number {
-			return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a));
-		}
-
-		private _hp_f(b : number, aPrime : number) { //(7)
-			if (b === 0 && aPrime === 0) {
-				return 0;
-			}
-
-			var hPrime = Math.atan2(b, aPrime);
-			if (hPrime >= 0) {
-				return hPrime;
-			}
-
-			return hPrime + CIEDE2000._deg360InRad;
-		}
-
-		private _a_hp_f(C1 : number, C2 : number, h1p : number, h2p : number) : number { //(14)
-			var hPrimeSum = h1p + h2p;
-			var h1p_minus_h2p = h1p - h2p;
-			if (C1 * C2 === 0) {
-				return hPrimeSum;
-			}
-
-			if (h1p_minus_h2p >= -CIEDE2000._deg180InRad && h1p_minus_h2p <= CIEDE2000._deg180InRad) {
-				return hPrimeSum / 2.0;
-			}
-
-			if (hPrimeSum < CIEDE2000._deg360InRad) {
-				return (hPrimeSum + CIEDE2000._deg360InRad) / 2.0;
-			}
-
-			return (hPrimeSum - CIEDE2000._deg360InRad) / 2.0;
-		}
-
-		private _dhp_f(C1 : number, C2 : number, h1p : number, h2p : number) : number { //(10)
-			if (C1 * C2 === 0) {
-				return 0;
-			}
-
-			var h2p_minus_h1p = h2p - h1p;
-
-			if (h2p_minus_h1p < -CIEDE2000._deg180InRad) {
-				return h2p_minus_h1p + CIEDE2000._deg360InRad;
-			}
-
-			if (h2p_minus_h1p > CIEDE2000._deg180InRad) {
-				return h2p_minus_h1p - CIEDE2000._deg360InRad;
-			}
-
-			return h2p_minus_h1p;
-		}
+	constructor() {
+		this.setWhitePoint(255, 255, 255, 255);
 	}
+
+	setWhitePoint(r : number, g : number, b : number, a : number) : void {
+		this._whitePoint  = { r : 255 / r, g : 255 / g, b : 255 / b, a : a !== 0 ? 1 / a : 0 };
+		this._maxDistance = Math.sqrt(this.calculateRaw(0, 0, 0, 0, r, g, b, a))
+	}
+
+	calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
+		const lab1 = rgb2lab(roundIn8bit(r1 * this._whitePoint.r), roundIn8bit(g1 * this._whitePoint.g), roundIn8bit(b1 * this._whitePoint.b)),
+			  lab2 = rgb2lab(roundIn8bit(r2 * this._whitePoint.r), roundIn8bit(g2 * this._whitePoint.g), roundIn8bit(b2 * this._whitePoint.b)),
+			  dA   = roundIn8bit((a2 - a1) * this._whitePoint.a),
+			  dE2  = this.calculateRawInLab(lab1, lab2);
+
+		return dE2 + dA * dA;
+	}
+
+	calculateRawInLab(Lab1 : {L : number; a : number; b : number}, Lab2 : {L : number; a : number; b : number}) : number {
+		// Get L,a,b values for color 1
+		const L1 = Lab1.L,
+			  a1 = Lab1.a,
+			  b1 = Lab1.b;
+
+		// Get L,a,b values for color 2
+		const L2 = Lab2.L,
+			  a2 = Lab2.a,
+			  b2 = Lab2.b;
+
+		// Calculate Cprime1, Cprime2, Cabbar
+		const C1                  = Math.sqrt(a1 * a1 + b1 * b1),
+			  C2                  = Math.sqrt(a2 * a2 + b2 * b2),
+			  pow_a_C1_C2_to_7    = Math.pow((C1 + C2) / 2.0, 7.0),
+
+			  G                   = 0.5 * (1.0 - Math.sqrt(pow_a_C1_C2_to_7 / (pow_a_C1_C2_to_7 + CIEDE2000._pow25to7))), //25^7
+			  a1p                 = (1.0 + G) * a1,
+			  a2p                 = (1.0 + G) * a2,
+
+			  C1p                 = Math.sqrt(a1p * a1p + b1 * b1),
+			  C2p                 = Math.sqrt(a2p * a2p + b2 * b2),
+			  C1pC2p              = C1p * C2p,
+
+			  // Angles in Degree.
+			  h1p                 = CIEDE2000._calculatehp(b1, a1p),
+			  h2p                 = CIEDE2000._calculatehp(b2, a2p),
+			  h_bar               = Math.abs(h1p - h2p),
+			  dLp                 = L2 - L1,
+			  dCp                 = C2p - C1p,
+			  dHp                 = CIEDE2000._calculate_dHp(C1pC2p, h_bar, h2p, h1p),
+			  ahp                 = CIEDE2000._calculate_ahp(C1pC2p, h_bar, h1p, h2p),
+
+			  T                   = CIEDE2000._calculateT(ahp),
+
+			  aCp                 = (C1p + C2p) / 2.0,
+			  aLp_minus_50_square = Math.pow((L1 + L2) / 2.0 - 50.0, 2.0),
+			  S_L                 = 1.0 + (.015 * aLp_minus_50_square) / Math.sqrt(20.0 + aLp_minus_50_square),
+			  S_C                 = 1.0 + .045 * aCp,
+			  S_H                 = 1.0 + .015 * T * aCp,
+
+			  R_T                 = CIEDE2000._calculateRT(ahp, aCp),
+
+			  dLpSL               = dLp / S_L, // S_L * kL, where kL is 1.0
+			  dCpSC               = dCp / S_C, // S_C * kC, where kC is 1.0
+			  dHpSH               = dHp / S_H; // S_H * kH, where kH is 1.0
+
+		return Math.pow(dLpSL, 2) + Math.pow(dCpSC, 2) + Math.pow(dHpSH, 2) + R_T * dCpSC * dHpSH;
+	}
+
+	private static _calculatehp(b : number, ap : number) {
+		const hp = Math.atan2(b, ap);
+		if (hp >= 0) return hp;
+		return hp + CIEDE2000._deg360InRad;
+	}
+
+	private static _calculateRT(ahp : number, aCp : number) {
+		const aCp_to_7    = Math.pow(aCp, 7.0),
+			  R_C         = 2.0 * Math.sqrt(aCp_to_7 / (aCp_to_7 + CIEDE2000._pow25to7)), // 25^7
+			  delta_theta = CIEDE2000._deg30InRad * Math.exp(-Math.pow((ahp - CIEDE2000._deg275InRad) / CIEDE2000._deg25InRad, 2.0));
+		return -Math.sin(2.0 * delta_theta) * R_C;
+	}
+
+	private static _calculateT(ahp : number) {
+		return 1.0 - .17 * Math.cos(ahp - CIEDE2000._deg30InRad) + .24 * Math.cos(ahp * 2.0) + .32 * Math.cos(ahp * 3.0 + CIEDE2000._deg6InRad) - .2 * Math.cos(ahp * 4.0 - CIEDE2000._deg63InRad);
+	}
+
+	private static _calculate_ahp(C1pC2p : number, h_bar : number, h1p : number, h2p : number) {
+		const hpSum = h1p + h2p;
+		if (C1pC2p == 0) return hpSum;
+		if (h_bar <= CIEDE2000._deg180InRad) return hpSum / 2.0;
+		if (hpSum < CIEDE2000._deg360InRad) return (hpSum + CIEDE2000._deg360InRad) / 2.0;
+		return (hpSum - CIEDE2000._deg360InRad) / 2.0;
+	}
+
+	private static _calculate_dHp(C1pC2p : number, h_bar : number, h2p : number, h1p : number) {
+		let dhp : number;
+		if (C1pC2p == 0) {
+			dhp = 0;
+		} else if (h_bar <= CIEDE2000._deg180InRad) {
+			dhp = h2p - h1p;
+		} else if (h2p <= h1p) {
+			dhp = h2p - h1p + CIEDE2000._deg360InRad;
+		} else {
+			dhp = h2p - h1p - CIEDE2000._deg360InRad;
+		}
+		return 2.0 * Math.sqrt(C1pC2p) * Math.sin(dhp / 2.0);
+	}
+
+	calculateNormalized(colorA : Point, colorB : Point) : number {
+		return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._maxDistance;
+	}
+}
