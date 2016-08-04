@@ -5,44 +5,31 @@
  *
  * ciede2000.ts - part of Image Quantization Library
  */
-import { IDistanceCalculator } from "./common";
-import { Point } from "../utils/point";
+import { AbstractDistanceCalculator } from "./abstractDistanceCalculator";
 import { rgb2lab } from "../conversion/rgb2lab";
-import { degrees2radians, roundIn8bit } from "../utils/arithmetic";
+import { degrees2radians, inRange0to255 } from "../utils/arithmetic";
 
 /**
  * CIEDE2000 algorithm - Adapted from Sharma et al's MATLAB implementation at
  * http://www.ece.rochester.edu/~gsharma/ciede2000/
  */
-export class CIEDE2000 implements IDistanceCalculator {
-	private static _pow25to7 : number    = Math.pow(25, 7);
-	private static _deg360InRad : number = degrees2radians(360);
-	private static _deg180InRad : number = degrees2radians(180);
-	private static _deg30InRad : number  = degrees2radians(30);
-	private static _deg6InRad : number   = degrees2radians(6);
-	private static _deg63InRad : number  = degrees2radians(63);
-	private static _deg275InRad : number = degrees2radians(275);
-	private static _deg25InRad : number  = degrees2radians(25);
-
-	private _whitePoint : {r : number; g : number; b : number; a : number};
-	private _maxDistance : number;
-
-	constructor() {
-		this.setWhitePoint(255, 255, 255, 255);
-	}
-
-	setWhitePoint(r : number, g : number, b : number, a : number) : void {
-		this._whitePoint  = { r : 255 / r, g : 255 / g, b : 255 / b, a : a !== 0 ? 1 / a : 0 };
-		this._maxDistance = Math.sqrt(this.calculateRaw(0, 0, 0, 0, r, g, b, a))
-	}
+export class CIEDE2000 extends AbstractDistanceCalculator {
+	private static readonly _pow25to7 : number    = Math.pow(25, 7);
+	private static readonly _deg360InRad : number = degrees2radians(360);
+	private static readonly _deg180InRad : number = degrees2radians(180);
+	private static readonly _deg30InRad : number  = degrees2radians(30);
+	private static readonly _deg6InRad : number   = degrees2radians(6);
+	private static readonly _deg63InRad : number  = degrees2radians(63);
+	private static readonly _deg275InRad : number = degrees2radians(275);
+	private static readonly _deg25InRad : number  = degrees2radians(25);
 
 	calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
-		const lab1 = rgb2lab(roundIn8bit(r1 * this._whitePoint.r), roundIn8bit(g1 * this._whitePoint.g), roundIn8bit(b1 * this._whitePoint.b)),
-			  lab2 = rgb2lab(roundIn8bit(r2 * this._whitePoint.r), roundIn8bit(g2 * this._whitePoint.g), roundIn8bit(b2 * this._whitePoint.b)),
-			  dA   = roundIn8bit((a2 - a1) * this._whitePoint.a),
+		const lab1 = rgb2lab(inRange0to255(r1 * this._whitePoint.r), inRange0to255(g1 * this._whitePoint.g), inRange0to255(b1 * this._whitePoint.b)),
+			  lab2 = rgb2lab(inRange0to255(r2 * this._whitePoint.r), inRange0to255(g2 * this._whitePoint.g), inRange0to255(b2 * this._whitePoint.b)),
+			  dA   = inRange0to255((a2 - a1) * this._whitePoint.a),
 			  dE2  = this.calculateRawInLab(lab1, lab2);
 
-		return dE2 + dA * dA;
+		return Math.sqrt(dE2 + dA * dA);
 	}
 
 	calculateRawInLab(Lab1 : {L : number; a : number; b : number}, Lab2 : {L : number; a : number; b : number}) : number {
@@ -132,9 +119,5 @@ export class CIEDE2000 implements IDistanceCalculator {
 			dhp = h2p - h1p - CIEDE2000._deg360InRad;
 		}
 		return 2.0 * Math.sqrt(C1pC2p) * Math.sin(dhp / 2.0);
-	}
-
-	calculateNormalized(colorA : Point, colorB : Point) : number {
-		return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._maxDistance;
 	}
 }

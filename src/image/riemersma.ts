@@ -26,20 +26,20 @@
  */
 import { IImageDitherer } from "./common"
 import { HilbertCurveBase } from "./spaceFillingCurves/hilbertCurve"
-import { IDistanceCalculator } from "../distance/common"
+import { AbstractDistanceCalculator } from "../distance/abstractDistanceCalculator"
 import { PointContainer } from "../utils/pointContainer"
 import { Palette } from "../utils/palette"
 import { Point } from "../utils/point"
-import { intInRange } from "../utils/arithmetic"
+import { inRange0to255Rounded } from "../utils/arithmetic"
 
 export class ErrorDiffusionRiemersma implements IImageDitherer {
-	private _distance : IDistanceCalculator;
+	private _distance : AbstractDistanceCalculator;
 	private _weights : number[];
 	private _errorQueueSize : number;
 	private _errorPropagation : number;
 	private _max : number;
 
-	constructor(colorDistanceCalculator : IDistanceCalculator, errorQueueSize : number = 16, errorPropagation : number = 1) {
+	constructor(colorDistanceCalculator : AbstractDistanceCalculator, errorQueueSize : number = 16, errorPropagation : number = 1) {
 		this._distance         = colorDistanceCalculator;
 		this._errorPropagation = errorPropagation;
 		this._errorQueueSize   = errorQueueSize;
@@ -48,31 +48,24 @@ export class ErrorDiffusionRiemersma implements IImageDitherer {
 	}
 
 	quantize(pointBuffer : PointContainer, palette : Palette) : PointContainer {
-		var curve                                                           = new HilbertCurveBase(),
-			pointArray                                                      = pointBuffer.getPointArray(),
-			width                                                           = pointBuffer.getWidth(),
-			height                                                          = pointBuffer.getHeight(),
-			errorQueue : {r : number; g : number; b : number; a : number}[] = [],
-			head                                                            = 0;
+		const curve                                                           = new HilbertCurveBase(),
+			  pointArray                                                      = pointBuffer.getPointArray(),
+			  width                                                           = pointBuffer.getWidth(),
+			  height                                                          = pointBuffer.getHeight(),
+			  errorQueue : {r : number; g : number; b : number; a : number}[] = [];
 
-		for (var i = 0; i < this._errorQueueSize; i++) {
+		let head = 0;
+
+		for (let i = 0; i < this._errorQueueSize; i++) {
 			errorQueue[ i ] = { r : 0, g : 0, b : 0, a : 0 };
 		}
 
-		// just for test!!
-		var testArray = new Array(height * width);
-		for (var i = 0; i < testArray.length; i++) {
-			testArray[ i ] = 0;
-		}
-
 		curve.walk(width, height, (x, y) => {
-			// just for test
-			testArray[ x + y * width ]++;
-
-			var p = pointArray[ x + y * width ], r = p.r, g = p.g, b = p.b, a = p.a;
-			for (var i = 0; i < this._errorQueueSize; i++) {
-				var weight = this._weights[ i ],
-					e      = errorQueue[ (i + head) % this._errorQueueSize ];
+			const p = pointArray[ x + y * width ];
+			let r   = p.r, g = p.g, b = p.b, a = p.a;
+			for (let i = 0; i < this._errorQueueSize; i++) {
+				const weight = this._weights[ i ],
+					  e      = errorQueue[ (i + head) % this._errorQueueSize ];
 
 				r += e.r * weight;
 				g += e.g * weight;
@@ -80,17 +73,18 @@ export class ErrorDiffusionRiemersma implements IImageDitherer {
 				a += e.a * weight;
 			}
 
-			var correctedPoint = Point.createByRGBA(
-				intInRange(r, 0, 255),
-				intInRange(g, 0, 255),
-				intInRange(b, 0, 255),
-				intInRange(a, 0, 255)
-				),
-				quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
+			const correctedPoint = Point.createByRGBA(
+				inRange0to255Rounded(r),
+				inRange0to255Rounded(g),
+				inRange0to255Rounded(b),
+				inRange0to255Rounded(a)
+			);
+
+			const quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
 
 			// update head and calculate tail
-			head     = (head + 1) % this._errorQueueSize;
-			var tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
+			head       = (head + 1) % this._errorQueueSize;
+			const tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
 
 			// update error with new value
 			errorQueue[ tail ].r = p.r - quantizedPoint.r;
@@ -102,18 +96,14 @@ export class ErrorDiffusionRiemersma implements IImageDitherer {
 			p.from(quantizedPoint);
 		});
 
-		// just for test
-		for (var i = 0; i < testArray.length; i++) {
-			if (testArray[ i ] !== 1) throw new Error("x");
-		}
 		return pointBuffer;
 	}
 
 	private _createWeights() : void {
 		this._weights = [];
 
-		var multiplier = Math.exp(Math.log(this._max) / (this._errorQueueSize - 1));
-		for (var i = 0, next = 1; i < this._errorQueueSize; i++) {
+		const multiplier = Math.exp(Math.log(this._max) / (this._errorQueueSize - 1));
+		for (let i = 0, next = 1; i < this._errorQueueSize; i++) {
 			this._weights[ i ] = (((next + 0.5) | 0) / this._max) * this._errorPropagation;
 			next *= multiplier;
 		}

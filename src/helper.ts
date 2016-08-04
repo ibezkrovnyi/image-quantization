@@ -8,7 +8,7 @@
 // TODO: do we need this helper?
 
 import { IPaletteQuantizer } from "./palette/common"
-import { IDistanceCalculator } from "./distance/common"
+import { AbstractDistanceCalculator } from "./distance/abstractDistanceCalculator"
 import { IImageDitherer } from "./image/common"
 import { PointContainer } from "./utils/pointContainer"
 import { Palette } from "./utils/palette"
@@ -16,10 +16,10 @@ import { SSIM } from "./quality/ssim"
 
 export class IQ {
 	private paletteQuantizer : IPaletteQuantizer;
-	private distanceCalculator : IDistanceCalculator;
+	private distanceCalculator : AbstractDistanceCalculator;
 	private ditherer : IImageDitherer;
 
-	constructor(colors : number, DistanceCalculator : new() => IDistanceCalculator, Quantizer : new(distanceCalculator : IDistanceCalculator, color : number) => IPaletteQuantizer, ditherer : IImageDitherer) {
+	constructor(colors : number, DistanceCalculator : new() => AbstractDistanceCalculator, Quantizer : new(distanceCalculator : AbstractDistanceCalculator, color : number) => IPaletteQuantizer, ditherer : IImageDitherer) {
 		this.ditherer           = ditherer;
 		this.distanceCalculator = new DistanceCalculator();
 		this.paletteQuantizer   = new Quantizer(this.distanceCalculator, colors);

@@ -16,7 +16,7 @@
 import { Palette } from "../../utils/palette"
 import { Point } from "../../utils/point"
 import { PointContainer } from "../../utils/pointContainer"
-import { IDistanceCalculator } from "../../distance/common"
+import { AbstractDistanceCalculator } from "../../distance/abstractDistanceCalculator"
 import { ColorHistogram } from "./colorHistogram"
 import { IPaletteQuantizer } from "../common"
 import { stableSort } from "../../utils/arithmetic"
@@ -46,9 +46,9 @@ export class RGBQuant implements IPaletteQuantizer {
 
 	// accumulated histogram
 	private _histogram : ColorHistogram;
-	private _distance : IDistanceCalculator;
+	private _distance : AbstractDistanceCalculator;
 
-	constructor(colorDistanceCalculator : IDistanceCalculator, colors : number = 256, method : number = 2) {
+	constructor(colorDistanceCalculator : AbstractDistanceCalculator, colors : number = 256, method : number = 2) {
 		this._distance = colorDistanceCalculator;
 		// desired final palette size
 		this._colors   = colors;

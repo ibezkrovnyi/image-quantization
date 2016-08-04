@@ -8,7 +8,7 @@
 
 import { Point } from "./point"
 import { PointContainer } from "./pointContainer"
-import { IDistanceCalculator } from "../distance/common"
+import { AbstractDistanceCalculator } from "../distance/abstractDistanceCalculator"
 import { rgb2hsl } from "../conversion/rgb2hsl"
 
 // TODO: make paletteArray via pointBuffer, so, export will be available via pointBuffer.exportXXX
@@ -51,7 +51,7 @@ export class Palette {
 	}
 
 	// TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
-	getNearestColor(colorDistanceCalculator : IDistanceCalculator, color : Point) : Point {
+	getNearestColor(colorDistanceCalculator : AbstractDistanceCalculator, color : Point) : Point {
 		return this._pointArray[ this.getNearestIndex(colorDistanceCalculator, color) | 0 ];
 	}
 
@@ -93,7 +93,7 @@ export class Palette {
 		return typeof this._i32idx[ key ] === "number" ? this._i32idx[ key ] : -1;
 	}
 
-	private getNearestIndex(colorDistanceCalculator : IDistanceCalculator, point : Point) : number {
+	private getNearestIndex(colorDistanceCalculator : AbstractDistanceCalculator, point : Point) : number {
 		var idx : number = this._nearestPointFromCache("" + point.uint32);
 		if (idx >= 0) return idx;
 

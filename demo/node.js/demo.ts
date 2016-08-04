@@ -1,15 +1,14 @@
 import iq = require("../../dist/iq")
 
-var p1 = iq.utils.Point.createByRGBA(0,0,0,0),
-    p2 = iq.utils.Point.createByRGBA(255,255,255,0);
+var p1 = iq.utils.Point.createByRGBA(0, 0, 0, 0),
+	p2 = iq.utils.Point.createByRGBA(255, 255, 255, 0);
 
 console.log(new iq.distance.CIEDE2000().calculateNormalized(p1, p2))
 
 var width      = 16,
 	height     = 16,
 	imageArray = [],
-	distance1  = new iq.distance.CIEDE2000(),
-	distance2  = new iq.distance.CIEDE2000_Original();
+	distance   = new iq.distance.CIEDE2000();
 
 for (var i = 0; i < width * height * 4; i++) {
 	imageArray[ i ] = (Math.random() * 256) | 0;
@@ -29,32 +28,29 @@ timeMark("!!! total time", () => {
 			iqImage,
 			palette;
 
-		[ distance1, distance2 ].forEach((distance, index) => {
-			console.log("distance " + ((index === 1) ? "original" : "new"));
-			// quantize palette
-			timeMark("palette: neuquant", function () {
-				iqPalette = new iq.palette.NeuQuant(distance, 256);
-				iqPalette.sample(pointBuffer);
-				palette = iqPalette.quantize();
-			});
+		// quantize palette
+		timeMark("palette: neuquant", function () {
+			iqPalette = new iq.palette.NeuQuant(distance, 256);
+			iqPalette.sample(pointBuffer);
+			palette = iqPalette.quantize();
+		});
 
-			timeMark("palette: rgbquant", function () {
-				iqPalette = new iq.palette.RGBQuant(distance, 256);
-				iqPalette.sample(pointBuffer);
-				palette = iqPalette.quantize();
-			});
+		timeMark("palette: rgbquant", function () {
+			iqPalette = new iq.palette.RGBQuant(distance, 256);
+			iqPalette.sample(pointBuffer);
+			palette = iqPalette.quantize();
+		});
 
-			timeMark("palette: wuquant", function () {
-				iqPalette = new iq.palette.WuQuant(distance, 256);
-				iqPalette.sample(pointBuffer);
-				palette = iqPalette.quantize();
-			});
+		timeMark("palette: wuquant", function () {
+			iqPalette = new iq.palette.WuQuant(distance, 256);
+			iqPalette.sample(pointBuffer);
+			palette = iqPalette.quantize();
+		});
 
-			// quantize image
-			timeMark("image: error diffusion: sierra lite", function () {
-				iqImage = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.SierraLite);
-				iqImage.quantize(pointBuffer, palette);
-			});
+		// quantize image
+		timeMark("image: error diffusion: sierra lite", function () {
+			iqImage = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.SierraLite);
+			iqImage.quantize(pointBuffer, palette);
 		});
 	}
 });

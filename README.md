@@ -273,6 +273,7 @@ References
 	3. [Color Image Quantization for Frame Buffer Display](https://www.cs.cmu.edu/~ph/ciq_thesis)
 	4. [K-Means](http://arxiv.org/pdf/1101.0395.pdf)
 	5. [Efficient Color Quantization by Hierarchical Clustering Algorithms](ftp://cs.joensuu.fi/pub/Theses/2005_MSc_Hautamaki_Ville.pdf)
+	6. http://www.codeproject.com/Articles/66341/A-Simple-Yet-Quite-Powerful-Palette-Quantizer-in-C
 
 License
 -------

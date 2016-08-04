@@ -5,13 +5,12 @@
  *
  * lab2xyz.ts - part of Image Quantization Library
  */
-var _refX : number = 0.95047, //ref_X =  95.047   Observer= 2°, Illuminant = D65
-	_refY : number = 1.00000, //ref_Y = 100.000
-	_refZ : number = 1.08883; //ref_Z = 108.883
+const refX : number = 0.95047, //ref_X =  95.047   Observer= 2°, Illuminant = D65
+	  refY : number = 1.00000, //ref_Y = 100.000
+	  refZ : number = 1.08883; //ref_Z = 108.883
 
 function pivot(n : number) {
-	const n3 = Math.pow(n, 3);
-	return n3 > 0.008856 ? n3 : ( n - 16 / 116 ) / 7.787
+	return n > 0.206893034 ? Math.pow(n, 3) : ( n - 16 / 116 ) / 7.787
 }
 
 export function lab2xyz(L : number, a : number, b : number) : {x : number; y : number; z : number} {
@@ -20,8 +19,8 @@ export function lab2xyz(L : number, a : number, b : number) : {x : number; y : n
 		  z = y - b / 200;
 
 	return {
-		x : _refX * pivot(x),
-		y : _refY * pivot(y),
-		z : _refZ * pivot(z)
+		x : refX * pivot(x),
+		y : refY * pivot(y),
+		z : refZ * pivot(z)
 	}
 }

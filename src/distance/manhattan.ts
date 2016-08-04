@@ -5,46 +5,61 @@
  *
  * manhattanNeuQuant.ts - part of Image Quantization Library
  */
-import { IDistanceCalculator } from "./common"
-import { Point } from "../utils/point"
+import { AbstractDistanceCalculator } from "./abstractDistanceCalculator"
+import { Y } from "../constants/bt709"
 
 /**
  * Manhattan distance (NeuQuant modification) - w/o sRGB coefficients
  */
-export class Manhattan implements IDistanceCalculator {
-	protected _Pr : number;
-	protected _Pg : number;
-	protected _Pb : number;
-	protected _Pa : number;
-
-	protected _maxManhattanDistance : number;
-
-	constructor() {
-		this._setDefaults();
-
-		// set default maximal color component deltas (255 - 0 = 255)
-		this.setWhitePoint(255, 255, 255, 255);
-	}
-
-	setWhitePoint(r : number, g : number, b : number, a : number) : void {
-		this._maxManhattanDistance = this.calculateRaw(r, g, b, a, 0, 0, 0, 0);
-	}
-
-	calculateNormalized(colorA : Point, colorB : Point) : number {
-		return this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a) / this._maxManhattanDistance;
-	}
+export abstract class AbstractManhattan extends AbstractDistanceCalculator {
+	protected _kR : number;
+	protected _kG : number;
+	protected _kB : number;
+	protected _kA : number;
 
 	calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
-		var dR = r2 - r1, dG = g2 - g1, dB = b2 - b1, dA = a2 - a1;
+		let dR = r2 - r1, dG = g2 - g1, dB = b2 - b1, dA = a2 - a1;
 		if (dR < 0) dR = 0 - dR;
 		if (dG < 0) dG = 0 - dG;
 		if (dB < 0) dB = 0 - dB;
 		if (dA < 0) dA = 0 - dA;
 
-		return this._Pr * dR + this._Pg * dG + this._Pb * dB + this._Pa * dA;
+		return this._kR * dR + this._kG * dG + this._kB * dB + this._kA * dA;
 	}
+}
 
-	protected _setDefaults() : void {
-		this._Pr = this._Pg = this._Pb = this._Pa = 1;
+export class Manhattan extends AbstractManhattan {
+	protected _setDefaults() {
+		this._kR = 1;
+		this._kG = 1;
+		this._kB = 1;
+		this._kA = 1;
+	}
+}
+
+/**
+ * Manhattan distance (Nommyde modification)
+ * https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-235155320
+ */
+export class ManhattanNommyde extends AbstractManhattan {
+	protected _setDefaults() {
+		this._kR = 0.4984;
+		this._kG = 0.8625;
+		this._kB = 0.2979;
+		// TODO: what is the best coefficient below?
+		this._kA = 1;
+	}
+}
+
+/**
+ * Manhattan distance (sRGB coefficients)
+ */
+export class ManhattanSRGB extends AbstractManhattan {
+	protected _setDefaults() {
+		this._kR = Y.RED;
+		this._kG = Y.GREEN;
+		this._kB = Y.BLUE;
+		// TODO: what is the best coefficient below?
+		this._kA = 1;
 	}
 }

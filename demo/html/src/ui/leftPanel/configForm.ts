@@ -31,13 +31,14 @@ export var configForm = {
 				{ id : 1, value : "Euclidean" },
 				{ id : 2, value : "Manhattan" },
 				{ id : 3, value : "CIEDE2000" },
-				{ id : 4, value : "CIE94" },
-				{ id : 5, value : "RgbQuant Euclidean (w/o ALPHA)" },
-				{ id : 6, value : "RgbQuant Euclidean (with Alpha)" },
-				{ id : 7, value : "Manhattan (with sRGB coefficients)" },
-				{ id : 8, value : "CMETRIC" },
-				{ id : 9, value : "PNGQUANT" },
-				{ id : 10, value : "Manhattan Nommyde" },
+				{ id : 4, value : "CIE94Textiles" },
+				{ id : 5, value : "CIE94GraphicArts" },
+				{ id : 6, value : "RgbQuant Euclidean (w/o ALPHA)" },
+				{ id : 7, value : "RgbQuant Euclidean (with Alpha)" },
+				{ id : 8, value : "Manhattan (with sRGB coefficients)" },
+				{ id : 9, value : "CMETRIC" },
+				{ id : 10, value : "PNGQUANT" },
+				{ id : 11, value : "Manhattan Nommyde" }
 			]
 		},
 		{

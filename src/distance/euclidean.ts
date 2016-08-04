@@ -5,45 +5,54 @@
  *
  * euclidean.ts - part of Image Quantization Library
  */
-import { IDistanceCalculator } from "./common"
-import { Point } from "../utils/point"
+import { AbstractDistanceCalculator } from "./abstractDistanceCalculator"
+import { Y } from "../constants/bt709"
 
 /**
  * Euclidean color distance
  */
-export class Euclidean implements IDistanceCalculator {
-	protected _Pr : number;
-	protected _Pg : number;
-	protected _Pb : number;
-	protected _Pa : number;
-
-	protected _maxEuclideanDistance : number;
-
-	constructor() {
-		this._setDefaults();
-
-		// set default maximal color component deltas (255 - 0 = 255)
-		this.setWhitePoint(255, 255, 255, 255);
-	}
-
-	/**
-	 * To simulate original RgbQuant distance use `r=255,g=255,b=255,a=0`
-	 */
-	setWhitePoint(r : number, g : number, b : number, a : number) : void {
-		this._maxEuclideanDistance = Math.sqrt(this.calculateRaw(r, g, b, a, 0, 0, 0, 0));
-	}
+export class AbstractEuclidean extends AbstractDistanceCalculator {
+	protected _kR : number;
+	protected _kG : number;
+	protected _kB : number;
+	protected _kA : number;
 
 	calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
-		var dR = r2 - r1, dG = g2 - g1, dB = b2 - b1, dA = a2 - a1;
-		return this._Pr * dR * dR + this._Pg * dG * dG + this._Pb * dB * dB + this._Pa * dA * dA;
-	}
-
-	calculateNormalized(colorA : Point, colorB : Point) : number {
-		return Math.sqrt(this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a)) / this._maxEuclideanDistance;
-	}
-
-	protected _setDefaults() : void {
-		this._Pr = this._Pg = this._Pb = this._Pa = 1;
+		const dR = r2 - r1, dG = g2 - g1, dB = b2 - b1, dA = a2 - a1;
+		return Math.sqrt(this._kR * dR * dR + this._kG * dG * dG + this._kB * dB * dB + this._kA * dA * dA);
 	}
 }
 
+export class Euclidean extends AbstractEuclidean {
+	protected _setDefaults() {
+		this._kR = 1;
+		this._kG = 1;
+		this._kB = 1;
+		this._kA = 1;
+	}
+}
+
+/**
+ * Euclidean color distance (RgbQuant modification w Alpha)
+ */
+export class EuclideanRgbQuantWithAlpha extends AbstractEuclidean {
+	protected _setDefaults() {
+		this._kR = Y.RED;
+		this._kG = Y.GREEN;
+		this._kB = Y.BLUE;
+		// TODO: what is the best coefficient below?
+		this._kA = 1;
+	}
+}
+
+/**
+ * Euclidean color distance (RgbQuant modification w/o Alpha)
+ */
+export class EuclideanRgbQuantWOAlpha extends AbstractEuclidean {
+	protected _setDefaults() {
+		this._kR = Y.RED;
+		this._kG = Y.GREEN;
+		this._kB = Y.BLUE;
+		this._kA = 0;
+	}
+}

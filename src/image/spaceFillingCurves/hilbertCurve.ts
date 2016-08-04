@@ -1,4 +1,4 @@
-export enum Direction {
+enum Direction {
 	NONE = 0,
 	UP,
 	LEFT,
@@ -24,14 +24,14 @@ export class HilbertCurveBase {
 		this._height   = height;
 		this._callback = visitorCallback;
 
-		var maxBound = Math.max(width, height);
+		const maxBound = Math.max(width, height);
 
 		this._level = (Math.log(maxBound) / Math.log(2) + 1) | 0;
 		this._walkHilbert(Direction.UP);
 		this._visit(Direction.NONE);
 	}
 
-	_walkHilbert(direction : Direction) {
+	private _walkHilbert(direction : Direction) {
 		if (this._level < 1) return;
 
 		this._level--;

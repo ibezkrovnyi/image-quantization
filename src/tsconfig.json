@@ -4,7 +4,7 @@
 		"sourceMap" : true,
 		"module" : "commonjs",
 		"moduleResolution" : "node",
-		"target" : "es5",
+		"target" : "es6",
 		"noEmit" : true,
 		"noEmitOnError" : true,
 		"noFallthroughCasesInSwitch" : true,

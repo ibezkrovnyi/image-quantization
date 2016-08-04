@@ -69,7 +69,7 @@ export class QuantizationUsage {
 
 		console.log("image = " + id);
 		this._timeMark("...sample", () => {
-			var distance : iq.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+			var distance : iq.distance.AbstractDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
 
 			switch (optionPaletteQuantizer) {
 				case 1:
@@ -93,7 +93,7 @@ export class QuantizationUsage {
 		});
 
 		this._timeMark("...dither", () => {
-			var distance : iq.distance.IDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
+			var distance : iq.distance.AbstractDistanceCalculator = this._getColorDistanceCalculator(optionColorDistance);
 
 			var imageQuantizer;
 			if (optionImageDithering === -1) {
@@ -121,7 +121,7 @@ export class QuantizationUsage {
 		};
 	}
 
-	private _getColorDistanceCalculator(option) : iq.distance.IDistanceCalculator {
+	private _getColorDistanceCalculator(option) : iq.distance.AbstractDistanceCalculator {
 		switch (option) {
 			case 1:
 				return new iq.distance.Euclidean();
@@ -130,18 +130,20 @@ export class QuantizationUsage {
 			case 3:
 				return new iq.distance.CIEDE2000();
 			case 4:
-				return new iq.distance.CIE94();
+				return new iq.distance.CIE94Textiles();
 			case 5:
-				return new iq.distance.EuclideanRgbQuantWOAlpha();
+				return new iq.distance.CIE94GraphicArts();
 			case 6:
-				return new iq.distance.EuclideanRgbQuantWithAlpha();
+				return new iq.distance.EuclideanRgbQuantWOAlpha();
 			case 7:
-				return new iq.distance.ManhattanSRGB();
+				return new iq.distance.EuclideanRgbQuantWithAlpha();
 			case 8:
-				return new iq.distance.CMETRIC();
+				return new iq.distance.ManhattanSRGB();
 			case 9:
-				return new iq.distance.PNGQUANT();
+				return new iq.distance.CMETRIC();
 			case 10:
+				return new iq.distance.PNGQUANT();
+			case 11:
 				return new iq.distance.ManhattanNommyde();
 		}
 	}

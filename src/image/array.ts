@@ -6,11 +6,11 @@
  * ditherErrorDiffusionArray.ts - part of Image Quantization Library
  */
 import { IImageDitherer } from "./common"
-import { IDistanceCalculator } from "../distance/common"
+import { AbstractDistanceCalculator } from "../distance/abstractDistanceCalculator"
 import { PointContainer } from "../utils/pointContainer"
 import { Palette } from "../utils/palette"
 import { Point } from "../utils/point"
-import { intInRange } from "../utils/arithmetic"
+import { inRange0to255Rounded } from "../utils/arithmetic"
 
 // TODO: is it the best name for this enum "kernel"?
 export enum ErrorDiffusionArrayKernel {
@@ -31,11 +31,11 @@ export class ErrorDiffusionArray implements IImageDitherer {
 	private _serpentine : boolean;
 	private _kernel : number[][];
 	/** true = GIMP, false = XNVIEW */
-	private _calculateErrorLikeGIMP : boolean;
+			private _calculateErrorLikeGIMP : boolean;
 
-	private _distance : IDistanceCalculator;
+	private _distance : AbstractDistanceCalculator;
 
-	constructor(colorDistanceCalculator : IDistanceCalculator, kernel : ErrorDiffusionArrayKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = false) {
+	constructor(colorDistanceCalculator : AbstractDistanceCalculator, kernel : ErrorDiffusionArrayKernel, serpentine : boolean = true, minimumColorDistanceToDither : number = 0, calculateErrorLikeGIMP : boolean = false) {
 		this._setKernel(kernel);
 
 		this._distance               = colorDistanceCalculator;
@@ -47,85 +47,87 @@ export class ErrorDiffusionArray implements IImageDitherer {
 	// adapted from http://jsbin.com/iXofIji/2/edit by PAEz
 	// fixed version. it doesn't use image pixels as error storage, also it doesn't have 0.3 + 0.3 + 0.3 + 0.3 = 0 error
 	quantize(pointBuffer : PointContainer, palette : Palette) : PointContainer {
-		var pointArray                = pointBuffer.getPointArray(),
-			originalPoint             = new Point(),
-			width                     = pointBuffer.getWidth(),
-			height                    = pointBuffer.getHeight(),
-			dir                       = 1,
-			errorLines : number[][][] = [];
+		const pointArray                = pointBuffer.getPointArray(),
+			  originalPoint             = new Point(),
+			  width                     = pointBuffer.getWidth(),
+			  height                    = pointBuffer.getHeight(),
+			  errorLines : number[][][] = [];
+
+		let dir           = 1,
+			maxErrorLines = 1;
 
 		// initial error lines (number is taken from dithering kernel)
-		for (var i = 0, maxErrorLines = 1; i < this._kernel.length; i++) {
-			var kernelErrorLines = this._kernel[ i ][ 2 ] + 1;
-			(maxErrorLines < kernelErrorLines) && (maxErrorLines = kernelErrorLines);
+		for (let i = 0; i < this._kernel.length; i++) {
+			const kernelErrorLines = this._kernel[ i ][ 2 ] + 1;
+			if (maxErrorLines < kernelErrorLines) maxErrorLines = kernelErrorLines;
 		}
-		for (var i = 0; i < maxErrorLines; i++) {
+		for (let i = 0; i < maxErrorLines; i++) {
 			this._fillErrorLine(errorLines[ i ] = [], width);
 		}
 
-		for (var y = 0; y < height; y++) {
+		for (let y = 0; y < height; y++) {
 			// always serpentine
 			if (this._serpentine) dir = dir * -1;
 
-			var lni    = y * width,
-				xStart = dir == 1 ? 0 : width - 1,
-				xEnd   = dir == 1 ? width : -1;
+			const lni    = y * width,
+				  xStart = dir == 1 ? 0 : width - 1,
+				  xEnd   = dir == 1 ? width : -1;
 
 			// cyclic shift with erasing
 			this._fillErrorLine(errorLines[ 0 ], width);
 			// TODO: why it is needed to cast types here?
 			errorLines.push(<number[][]>errorLines.shift());
 
-			var errorLine = errorLines[ 0 ];
-			for (var x = xStart, idx = lni + xStart; x !== xEnd; x += dir, idx += dir) {
+			const errorLine = errorLines[ 0 ];
+			for (let x = xStart, idx = lni + xStart; x !== xEnd; x += dir, idx += dir) {
 				// Image pixel
-				var point = pointArray[ idx ],
-					//originalPoint = new Utils.Point(),
-					error = errorLine[ x ];
+				const point = pointArray[ idx ],
+					  //originalPoint = new Utils.Point(),
+					  error = errorLine[ x ];
 
 				originalPoint.from(point);
 
-				var correctedPoint = Point.createByRGBA(
-					intInRange(point.r + error[ 0 ], 0, 255),
-					intInRange(point.g + error[ 1 ], 0, 255),
-					intInRange(point.b + error[ 2 ], 0, 255),
-					intInRange(point.a + error[ 3 ], 0, 255)
+				const correctedPoint = Point.createByRGBA(
+					inRange0to255Rounded(point.r + error[ 0 ]),
+					inRange0to255Rounded(point.g + error[ 1 ]),
+					inRange0to255Rounded(point.b + error[ 2 ]),
+					inRange0to255Rounded(point.a + error[ 3 ])
 				);
 
 				// Reduced pixel
-				var palettePoint = palette.getNearestColor(this._distance, correctedPoint);
+				const palettePoint = palette.getNearestColor(this._distance, correctedPoint);
 				point.from(palettePoint);
 
 				// dithering strength
 				if (this._minColorDistance) {
-					var dist = this._distance.calculateNormalized(point, palettePoint);
-					if (dist < this._minColorDistance)
-						continue;
+					const dist = this._distance.calculateNormalized(point, palettePoint);
+					if (dist < this._minColorDistance) continue;
 				}
 
 				// Component distance
+				let er : number, eg : number, eb : number, ea : number;
 				if (this._calculateErrorLikeGIMP) {
-					var er = correctedPoint.r - palettePoint.r,
-						eg = correctedPoint.g - palettePoint.g,
-						eb = correctedPoint.b - palettePoint.b,
-						ea = correctedPoint.a - palettePoint.a;
+					er = correctedPoint.r - palettePoint.r;
+					eg = correctedPoint.g - palettePoint.g;
+					eb = correctedPoint.b - palettePoint.b;
+					ea = correctedPoint.a - palettePoint.a;
 				} else {
-					var er = originalPoint.r - palettePoint.r,
-						eg = originalPoint.g - palettePoint.g,
-						eb = originalPoint.b - palettePoint.b,
-						ea = originalPoint.a - palettePoint.a;
+					er = originalPoint.r - palettePoint.r;
+					eg = originalPoint.g - palettePoint.g;
+					eb = originalPoint.b - palettePoint.b;
+					ea = originalPoint.a - palettePoint.a;
 				}
 
-				var dStart = dir == 1 ? 0 : this._kernel.length - 1,
-					dEnd   = dir == 1 ? this._kernel.length : -1;
+				const dStart = dir == 1 ? 0 : this._kernel.length - 1,
+					  dEnd   = dir == 1 ? this._kernel.length : -1;
 
-				for (var i = dStart; i !== dEnd; i += dir) {
-					var x1 = this._kernel[ i ][ 1 ] * dir,
-						y1 = this._kernel[ i ][ 2 ];
+				for (let i = dStart; i !== dEnd; i += dir) {
+					const x1 = this._kernel[ i ][ 1 ] * dir,
+						  y1 = this._kernel[ i ][ 2 ];
 
 					if (x1 + x >= 0 && x1 + x < width && y1 + y >= 0 && y1 + y < height) {
-						var d = this._kernel[ i ][ 0 ],
-							e = errorLines[ y1 ][ x1 + x ];
+						const d = this._kernel[ i ][ 0 ],
+							  e = errorLines[ y1 ][ x1 + x ];
 
 						e[ 0 ] = e[ 0 ] + er * d;
 						e[ 1 ] = e[ 1 ] + eg * d;
@@ -146,14 +148,14 @@ export class ErrorDiffusionArray implements IImageDitherer {
 		}
 
 		// reuse existing arrays
-		var l = errorLine.length;
-		for (var i = 0; i < l; i++) {
-			var error  = errorLine[ i ];
-			error[ 0 ] = error[ 1 ] = error[ 2 ] = error[ 3 ] = 0;
+		const l = errorLine.length;
+		for (let i = 0; i < l; i++) {
+			const error = errorLine[ i ];
+			error[ 0 ]  = error[ 1 ] = error[ 2 ] = error[ 3 ] = 0;
 		}
 
 		// create missing arrays
-		for (var i = l; i < width; i++) {
+		for (let i = l; i < width; i++) {
 			errorLine[ i ] = [ 0.0, 0.0, 0.0, 0.0 ];
 		}
 	}

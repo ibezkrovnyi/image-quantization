@@ -8,7 +8,7 @@
 import { Palette } from "../../utils/palette"
 import { Point } from "../../utils/point"
 import { PointContainer } from "../../utils/pointContainer"
-import { IDistanceCalculator } from "../../distance/common"
+import { AbstractDistanceCalculator } from "../../distance/abstractDistanceCalculator"
 
 function createArray1D(dimension1 : number) {
 	var a : number[] = [];
@@ -111,9 +111,9 @@ export class WuQuant {
 	private _sideSize : number;
 	private _alphaSideSize : number;
 
-	private _distance : IDistanceCalculator;
+	private _distance : AbstractDistanceCalculator;
 
-	constructor(colorDistanceCalculator : IDistanceCalculator, colors : number = 256, significantBitsPerChannel : number = 5) {
+	constructor(colorDistanceCalculator : AbstractDistanceCalculator, colors : number = 256, significantBitsPerChannel : number = 5) {
 		this._distance = colorDistanceCalculator;
 		this._setQuality(significantBitsPerChannel);
 		this._initialize(colors);

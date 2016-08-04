@@ -6,26 +6,26 @@
  * nearestColor.ts - part of Image Quantization Library
  */
 import { IImageDitherer } from "./common"
-import { IDistanceCalculator } from "../distance/common"
+import { AbstractDistanceCalculator } from "../distance/abstractDistanceCalculator"
 import { PointContainer } from "../utils/pointContainer"
 import { Palette } from "../utils/palette"
 
 export class NearestColor implements IImageDitherer {
-	private _distance : IDistanceCalculator;
+	private _distance : AbstractDistanceCalculator;
 
-	constructor(colorDistanceCalculator : IDistanceCalculator) {
+	constructor(colorDistanceCalculator : AbstractDistanceCalculator) {
 		this._distance = colorDistanceCalculator;
 	}
 
 	quantize(pointBuffer : PointContainer, palette : Palette) : PointContainer {
-		var pointArray = pointBuffer.getPointArray(),
-			width      = pointBuffer.getWidth(),
-			height     = pointBuffer.getHeight();
+		const pointArray = pointBuffer.getPointArray(),
+			  width      = pointBuffer.getWidth(),
+			  height     = pointBuffer.getHeight();
 
-		for (var y = 0; y < height; y++) {
-			for (var x = 0, idx = y * width; x < width; x++, idx++) {
+		for (let y = 0; y < height; y++) {
+			for (let x = 0, idx = y * width; x < width; x++, idx++) {
 				// Image pixel
-				var point = pointArray[ idx ];
+				const point = pointArray[ idx ];
 				// Reduced pixel
 				point.from(palette.getNearestColor(this._distance, point));
 			}
