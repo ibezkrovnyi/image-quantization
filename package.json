@@ -7,7 +7,7 @@
   "contributors": [],
   "homepage": "https://github.com/igor-bezkrovny/image-quantization",
   "scripts": {
-    "test": "node_modules/.bin/mocha.cmd --recursive",
+    "test": "node_modules/.bin/mocha --recursive",
     "prepublish": "node_modules/.bin/webpack",
     "dist": "node_modules/.bin/webpack",
     "watch": "node_modules/.bin/webpack --watch"
