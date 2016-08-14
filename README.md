@@ -3,6 +3,7 @@ IQ.ts
 
 Complete Image Quantization Library in **TypeScript** _(MIT License)_
 
+[![Build Status](https://travis-ci.org/igor-bezkrovny/image-quantization.svg?branch=master)](https://travis-ci.org/igor-bezkrovny/image-quantization)
 [![demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](http://igor-bezkrovny.github.io/image-q/demo)
 [![github](https://img.shields.io/badge/github-.com-brightgreen.svg)](https://github.com/igor-bezkrovny/image-quantization)
 [![npm version](https://badge.fury.io/js/image-q.svg)](https://www.npmjs.com/package/image-q)
