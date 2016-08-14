@@ -34,7 +34,7 @@ import { AbstractDistanceCalculator } from "../../distance/abstractDistanceCalcu
 import { IPaletteQuantizer } from "../common"
 
 // bias for colour values
-var networkBiasShift = 3;
+const networkBiasShift = 3;
 
 class Neuron {
 	r : number;
@@ -177,7 +177,7 @@ export class NeuQuant implements IPaletteQuantizer {
 		this._bias     = [];
 		this._radPower = [];
 		this._network  = [];
-		for (var i = 0; i < this._networkSize; i++) {
+		for (let i = 0; i < this._networkSize; i++) {
 			this._network[ i ] = new Neuron((i << (networkBiasShift + 8)) / this._networkSize | 0);
 
 			// 1/this._networkSize
@@ -194,12 +194,12 @@ export class NeuQuant implements IPaletteQuantizer {
 		const pointsNumber = this._pointArray.length;
 		if (pointsNumber < NeuQuant._minpicturebytes) sampleFactor = 1;
 
-		var alphadec       = 30 + (sampleFactor - 1) / 3 | 0,
-			pointIndex     = 0,
-			pointsToSample = pointsNumber / sampleFactor | 0,
-			delta          = pointsToSample / NeuQuant._nCycles | 0,
-			alpha          = NeuQuant._initAlpha,
-			radius         = (this._networkSize >> 3) * NeuQuant._radiusBias;
+		const alphadec       = 30 + (sampleFactor - 1) / 3 | 0,
+			  pointsToSample = pointsNumber / sampleFactor | 0;
+
+		let delta  = pointsToSample / NeuQuant._nCycles | 0,
+			alpha  = NeuQuant._initAlpha,
+			radius = (this._networkSize >> 3) * NeuQuant._radiusBias;
 
 		let rad = radius >> NeuQuant._radiusBiasShift;
 		if (rad <= 1) rad = 0;
@@ -221,7 +221,7 @@ export class NeuQuant implements IPaletteQuantizer {
 			step = NeuQuant._prime4;
 		}
 
-		for (let i = 0; i < pointsToSample;) {
+		for (let i = 0, pointIndex = 0; i < pointsToSample;) {
 			const point       = this._pointArray[ pointIndex ],
 				  b           = point.b << networkBiasShift,
 				  g           = point.g << networkBiasShift,
@@ -326,7 +326,7 @@ export class NeuQuant implements IPaletteQuantizer {
 	 * Original distance equation:
 	 *        dist = abs(dR) + abs(dG) + abs(dB)
 	 */
-	private _contest(b : number, g : number, r : number, al : number) : number {
+	private _contest(b : number, g : number, r : number, a : number) : number {
 		const multiplier = (255 * 4) << networkBiasShift;
 
 		let bestd       = ~(1 << 31),
@@ -336,7 +336,7 @@ export class NeuQuant implements IPaletteQuantizer {
 
 		for (let i = 0; i < this._networkSize; i++) {
 			const n    = this._network[ i ],
-				  dist = this._distance.calculateNormalized(<any>n, <any>{ r : r, g : g, b : b, a : al }) * multiplier | 0;
+				  dist = this._distance.calculateNormalized(<any>n, <any>{ r, g, b, a }) * multiplier | 0;
 
 			if (dist < bestd) {
 				bestd   = dist;

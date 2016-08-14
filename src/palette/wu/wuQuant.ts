@@ -11,22 +11,22 @@ import { PointContainer } from "../../utils/pointContainer"
 import { AbstractDistanceCalculator } from "../../distance/abstractDistanceCalculator"
 
 function createArray1D(dimension1 : number) {
-	var a : number[] = [];
-	for (var k = 0; k < dimension1; k++) {
+	const a : number[] = [];
+	for (let k = 0; k < dimension1; k++) {
 		a[ k ] = 0;
 	}
 	return a;
 }
 
 function createArray4D(dimension1 : number, dimension2 : number, dimension3 : number, dimension4 : number) : number[][][][] {
-	var a = new Array(dimension1);
-	for (var i = 0; i < dimension1; i++) {
+	const a = new Array(dimension1);
+	for (let i = 0; i < dimension1; i++) {
 		a[ i ] = new Array(dimension2);
-		for (var j = 0; j < dimension2; j++) {
+		for (let j = 0; j < dimension2; j++) {
 			a[ i ][ j ] = new Array(dimension3);
-			for (var k = 0; k < dimension3; k++) {
+			for (let k = 0; k < dimension3; k++) {
 				a[ i ][ j ][ k ] = new Array(dimension4);
-				for (var l = 0; l < dimension4; l++) {
+				for (let l = 0; l < dimension4; l++) {
 					a[ i ][ j ][ k ][ l ] = 0;
 				}
 			}
@@ -36,12 +36,12 @@ function createArray4D(dimension1 : number, dimension2 : number, dimension3 : nu
 }
 
 function createArray3D(dimension1 : number, dimension2 : number, dimension3 : number) : number[][][] {
-	var a = new Array(dimension1);
-	for (var i = 0; i < dimension1; i++) {
+	const a = new Array(dimension1);
+	for (let i = 0; i < dimension1; i++) {
 		a[ i ] = new Array(dimension2);
-		for (var j = 0; j < dimension2; j++) {
+		for (let j = 0; j < dimension2; j++) {
 			a[ i ][ j ] = new Array(dimension3);
-			for (var k = 0; k < dimension3; k++) {
+			for (let k = 0; k < dimension3; k++) {
 				a[ i ][ j ][ k ] = 0;
 			}
 		}
@@ -50,11 +50,11 @@ function createArray3D(dimension1 : number, dimension2 : number, dimension3 : nu
 }
 
 function fillArray3D<T>(a : T[][][], dimension1 : number, dimension2 : number, dimension3 : number, value : T) : void {
-	for (var i = 0; i < dimension1; i++) {
+	for (let i = 0; i < dimension1; i++) {
 		a[ i ] = [];
-		for (var j = 0; j < dimension2; j++) {
+		for (let j = 0; j < dimension2; j++) {
 			a[ i ][ j ] = [];
-			for (var k = 0; k < dimension3; k++) {
+			for (let k = 0; k < dimension3; k++) {
 				a[ i ][ j ][ k ] = value;
 			}
 		}
@@ -62,7 +62,7 @@ function fillArray3D<T>(a : T[][][], dimension1 : number, dimension2 : number, d
 }
 
 function fillArray1D<T>(a : T[], dimension1 : number, value : T) : void {
-	for (var i = 0; i < dimension1; i++) {
+	for (let i = 0; i < dimension1; i++) {
 		a[ i ] = value;
 	}
 }
@@ -81,10 +81,10 @@ export class WuColorCube {
 
 export class WuQuant {
 
-	private static alpha = 3;
-	private static red   = 2;
-	private static green = 1;
-	private static blue  = 0;
+	private static readonly alpha = 3;
+	private static readonly red   = 2;
+	private static readonly green = 1;
+	private static readonly blue  = 0;
 
 	private _reds : number[];
 	private _greens : number[];
@@ -111,7 +111,7 @@ export class WuQuant {
 	private _sideSize : number;
 	private _alphaSideSize : number;
 
-	private _distance : AbstractDistanceCalculator;
+	private readonly _distance : AbstractDistanceCalculator;
 
 	constructor(colorDistanceCalculator : AbstractDistanceCalculator, colors : number = 256, significantBitsPerChannel : number = 5) {
 		this._distance = colorDistanceCalculator;
@@ -120,9 +120,9 @@ export class WuQuant {
 	}
 
 	sample(image : PointContainer) : void {
-		var pointArray = image.getPointArray();
+		const pointArray = image.getPointArray();
 
-		for (var i = 0, l = pointArray.length; i < l; i++) {
+		for (let i = 0, l = pointArray.length; i < l; i++) {
 			this._addColor(pointArray[ i ]);
 		}
 
@@ -132,18 +132,18 @@ export class WuQuant {
 	quantize() : Palette {
 		this._preparePalette();
 
-		var palette : Palette = new Palette();
+		const palette : Palette = new Palette();
 
 		// generates palette
-		for (var paletteIndex = 0; paletteIndex < this._colors; paletteIndex++) {
+		for (let paletteIndex = 0; paletteIndex < this._colors; paletteIndex++) {
 			if (this._sums[ paletteIndex ] > 0) {
-				var sum = this._sums[ paletteIndex ],
-					r   = this._reds[ paletteIndex ] / sum,
-					g   = this._greens[ paletteIndex ] / sum,
-					b   = this._blues[ paletteIndex ] / sum,
-					a   = this._alphas[ paletteIndex ] / sum;
+				const sum = this._sums[ paletteIndex ],
+					  r   = this._reds[ paletteIndex ] / sum,
+					  g   = this._greens[ paletteIndex ] / sum,
+					  b   = this._blues[ paletteIndex ] / sum,
+					  a   = this._alphas[ paletteIndex ] / sum;
 
-				var color = Point.createByRGBA(r | 0, g | 0, b | 0, a | 0);
+				const color = Point.createByRGBA(r | 0, g | 0, b | 0, a | 0);
 				palette.add(color);
 			}
 		}
@@ -153,15 +153,14 @@ export class WuQuant {
 	}
 
 	private _preparePalette() : void {
-		var l : number;
 		// preprocess the colors
 		this._calculateMoments();
 
-		var next           = 0,
+		let next           = 0,
 			volumeVariance = createArray1D(this._colors);
 
 		// processes the cubes
-		for (var cubeIndex = 1; cubeIndex < this._colors; ++cubeIndex) {
+		for (let cubeIndex = 1; cubeIndex < this._colors; ++cubeIndex) {
 			// if cut is possible; make it
 			if (this._cut(this._cubes[ next ], this._cubes[ cubeIndex ])) {
 				volumeVariance[ next ]      = this._cubes[ next ].volume > 1 ? this._calculateVariance(this._cubes[ next ]) : 0.0;
@@ -173,9 +172,9 @@ export class WuQuant {
 			}
 
 			next     = 0;
-			var temp = volumeVariance[ 0 ];
+			let temp = volumeVariance[ 0 ];
 
-			for (var index = 1; index <= cubeIndex; ++index) {
+			for (let index = 1; index <= cubeIndex; ++index) {
 				if (volumeVariance[ index ] > temp) {
 					temp = volumeVariance[ index ];
 					next = index;
@@ -188,15 +187,15 @@ export class WuQuant {
 			}
 		}
 
-		var lookupRed : number[]   = [],
-			lookupGreen : number[] = [],
-			lookupBlue : number[]  = [],
-			lookupAlpha : number[] = [];
+		const lookupRed : number[]   = [],
+			  lookupGreen : number[] = [],
+			  lookupBlue : number[]  = [],
+			  lookupAlpha : number[] = [];
 
 		// precalculates lookup tables
-		for (var k = 0; k < this._colors; ++k) {
+		for (let k = 0; k < this._colors; ++k) {
 
-			var weight = WuQuant._volume(this._cubes[ k ], this._weights);
+			const weight = WuQuant._volume(this._cubes[ k ], this._weights);
 
 			if (weight > 0) {
 				lookupRed[ k ]   = (WuQuant._volume(this._cubes[ k ], this._momentsRed) / weight) | 0;
@@ -218,20 +217,21 @@ export class WuQuant {
 		this._sums   = createArray1D(this._colors + 1);
 
 		// scans and adds colors
-		for (var index = 0, l = this._pixels.length; index < l; index++) {
-			var color : Point = this._pixels[ index ];
+		for (let index = 0, l = this._pixels.length; index < l; index++) {
+			const color : Point = this._pixels[ index ];
 
-			var match        = -1,
-				bestMatch    = match,
+			const match = -1;
+
+			let bestMatch    = match,
 				bestDistance = Number.MAX_VALUE;
 
-			for (var lookup = 0; lookup < this._colors; lookup++) {
-				var foundRed   = lookupRed[ lookup ],
-					foundGreen = lookupGreen[ lookup ],
-					foundBlue  = lookupBlue[ lookup ],
-					foundAlpha = lookupAlpha[ lookup ];
+			for (let lookup = 0; lookup < this._colors; lookup++) {
+				const foundRed   = lookupRed[ lookup ],
+					  foundGreen = lookupGreen[ lookup ],
+					  foundBlue  = lookupBlue[ lookup ],
+					  foundAlpha = lookupAlpha[ lookup ];
 
-				var distance = this._distance.calculateRaw(foundRed, foundGreen, foundBlue, foundAlpha, color.r, color.g, color.b, color.a);
+				const distance = this._distance.calculateRaw(foundRed, foundGreen, foundBlue, foundAlpha, color.r, color.g, color.b, color.a);
 				//var distance = this._distance.calculateRaw(Utils.Point.createByRGBA(foundRed, foundGreen, foundBlue, foundAlpha), color);
 				//deltaRed   = color.r - foundRed,
 				//deltaGreen = color.g - foundGreen,
@@ -255,11 +255,11 @@ export class WuQuant {
 	}
 
 	private _addColor(color : Point) : void {
-		var bitsToRemove = 8 - this._significantBitsPerChannel,
-			indexRed     = (color.r >> bitsToRemove) + 1,
-			indexGreen   = (color.g >> bitsToRemove) + 1,
-			indexBlue    = (color.b >> bitsToRemove) + 1,
-			indexAlpha   = (color.a >> bitsToRemove) + 1;
+		const bitsToRemove = 8 - this._significantBitsPerChannel,
+			  indexRed     = (color.r >> bitsToRemove) + 1,
+			  indexGreen   = (color.g >> bitsToRemove) + 1,
+			  indexBlue    = (color.b >> bitsToRemove) + 1,
+			  indexAlpha   = (color.a >> bitsToRemove) + 1;
 
 		//if(color.a > 10) {
 		this._weights[ indexAlpha ][ indexRed ][ indexGreen ][ indexBlue ]++;
@@ -275,21 +275,21 @@ export class WuQuant {
 	 * Converts the histogram to a series of _moments.
 	 */
 	private _calculateMoments() : void {
-		var area : number[]      = [],
-			areaRed : number[]   = [],
-			areaGreen : number[] = [],
-			areaBlue : number[]  = [],
-			areaAlpha : number[] = [],
-			area2 : number[]     = [];
+		const area : number[]      = [],
+			  areaRed : number[]   = [],
+			  areaGreen : number[] = [],
+			  areaBlue : number[]  = [],
+			  areaAlpha : number[] = [],
+			  area2 : number[]     = [];
 
-		var xarea : number[][][]      = createArray3D(this._sideSize, this._sideSize, this._sideSize),
-			xareaRed : number[][][]   = createArray3D(this._sideSize, this._sideSize, this._sideSize),
-			xareaGreen : number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize),
-			xareaBlue : number[][][]  = createArray3D(this._sideSize, this._sideSize, this._sideSize),
-			xareaAlpha : number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize),
-			xarea2 : number[][][]     = createArray3D(this._sideSize, this._sideSize, this._sideSize);
+		const xarea : number[][][]      = createArray3D(this._sideSize, this._sideSize, this._sideSize),
+			  xareaRed : number[][][]   = createArray3D(this._sideSize, this._sideSize, this._sideSize),
+			  xareaGreen : number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize),
+			  xareaBlue : number[][][]  = createArray3D(this._sideSize, this._sideSize, this._sideSize),
+			  xareaAlpha : number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize),
+			  xarea2 : number[][][]     = createArray3D(this._sideSize, this._sideSize, this._sideSize);
 
-		for (var alphaIndex = 1; alphaIndex <= this._alphaMaxSideIndex; ++alphaIndex) {
+		for (let alphaIndex = 1; alphaIndex <= this._alphaMaxSideIndex; ++alphaIndex) {
 			fillArray3D<number>(xarea, this._sideSize, this._sideSize, this._sideSize, 0);
 			fillArray3D<number>(xareaRed, this._sideSize, this._sideSize, this._sideSize, 0);
 			fillArray3D<number>(xareaGreen, this._sideSize, this._sideSize, this._sideSize, 0);
@@ -297,7 +297,7 @@ export class WuQuant {
 			fillArray3D<number>(xareaAlpha, this._sideSize, this._sideSize, this._sideSize, 0);
 			fillArray3D<number>(xarea2, this._sideSize, this._sideSize, this._sideSize, 0);
 
-			for (var redIndex = 1; redIndex <= this._maxSideIndex; ++redIndex) {
+			for (let redIndex = 1; redIndex <= this._maxSideIndex; ++redIndex) {
 				fillArray1D<number>(area, this._sideSize, 0);
 				fillArray1D<number>(areaRed, this._sideSize, 0);
 				fillArray1D<number>(areaGreen, this._sideSize, 0);
@@ -305,15 +305,15 @@ export class WuQuant {
 				fillArray1D<number>(areaAlpha, this._sideSize, 0);
 				fillArray1D<number>(area2, this._sideSize, 0);
 
-				for (var greenIndex = 1; greenIndex <= this._maxSideIndex; ++greenIndex) {
-					var line      = 0,
+				for (let greenIndex = 1; greenIndex <= this._maxSideIndex; ++greenIndex) {
+					let line      = 0,
 						lineRed   = 0,
 						lineGreen = 0,
 						lineBlue  = 0,
 						lineAlpha = 0,
 						line2     = 0.0;
 
-					for (var blueIndex = 1; blueIndex <= this._maxSideIndex; ++blueIndex) {
+					for (let blueIndex = 1; blueIndex <= this._maxSideIndex; ++blueIndex) {
 						line += this._weights[ alphaIndex ][ redIndex ][ greenIndex ][ blueIndex ];
 						lineRed += this._momentsRed[ alphaIndex ][ redIndex ][ greenIndex ][ blueIndex ];
 						lineGreen += this._momentsGreen[ alphaIndex ][ redIndex ][ greenIndex ][ blueIndex ];
@@ -381,7 +381,7 @@ export class WuQuant {
 	 * Splits the cube in given position][and color direction.
 	 */
 	private static _top(cube : WuColorCube, direction : number, position : number, moment : number[][][][]) : number {
-		var result : number;
+		let result : number;
 		switch (direction) {
 			case WuQuant.alpha:
 				result = (moment[ position ][ cube.redMaximum ][ cube.greenMaximum ][ cube.blueMaximum ] -
@@ -488,14 +488,13 @@ export class WuQuant {
 	 * Calculates statistical variance for a given cube.
 	 */
 	private  _calculateVariance(cube : WuColorCube) : number {
-		var volumeRed    = WuQuant._volume(cube, this._momentsRed),
-			volumeGreen  = WuQuant._volume(cube, this._momentsGreen),
-			volumeBlue   = WuQuant._volume(cube, this._momentsBlue),
-			volumeAlpha  = WuQuant._volume(cube, this._momentsAlpha),
-			volumeMoment = WuQuant._volumeFloat(cube, this._moments),
-			volumeWeight = WuQuant._volume(cube, this._weights),
-
-			distance     = volumeRed * volumeRed + volumeGreen * volumeGreen + volumeBlue * volumeBlue + volumeAlpha * volumeAlpha;
+		const volumeRed    = WuQuant._volume(cube, this._momentsRed),
+			  volumeGreen  = WuQuant._volume(cube, this._momentsGreen),
+			  volumeBlue   = WuQuant._volume(cube, this._momentsBlue),
+			  volumeAlpha  = WuQuant._volume(cube, this._momentsAlpha),
+			  volumeMoment = WuQuant._volumeFloat(cube, this._moments),
+			  volumeWeight = WuQuant._volume(cube, this._weights),
+			  distance     = volumeRed * volumeRed + volumeGreen * volumeGreen + volumeBlue * volumeBlue + volumeAlpha * volumeAlpha;
 
 		return volumeMoment - (distance / volumeWeight);
 	}
@@ -504,18 +503,18 @@ export class WuQuant {
 	 * Finds the optimal (maximal) position for the cut.
 	 */
 	private _maximize(cube : WuColorCube, direction : number, first : number, last : number, wholeRed : number, wholeGreen : number, wholeBlue : number, wholeAlpha : number, wholeWeight : number) : {max : number; position : number} {
-		var bottomRed    = WuQuant._bottom(cube, direction, this._momentsRed) | 0,
-			bottomGreen  = WuQuant._bottom(cube, direction, this._momentsGreen) | 0,
-			bottomBlue   = WuQuant._bottom(cube, direction, this._momentsBlue) | 0,
-			bottomAlpha  = WuQuant._bottom(cube, direction, this._momentsAlpha) | 0,
-			bottomWeight = WuQuant._bottom(cube, direction, this._weights) | 0,
+		const bottomRed    = WuQuant._bottom(cube, direction, this._momentsRed) | 0,
+			  bottomGreen  = WuQuant._bottom(cube, direction, this._momentsGreen) | 0,
+			  bottomBlue   = WuQuant._bottom(cube, direction, this._momentsBlue) | 0,
+			  bottomAlpha  = WuQuant._bottom(cube, direction, this._momentsAlpha) | 0,
+			  bottomWeight = WuQuant._bottom(cube, direction, this._weights) | 0;
 
-			result       = 0.0,
-			cutPosition  = -1;
+		let result      = 0.0,
+			cutPosition = -1;
 
-		for (var position = first; position < last; ++position) {
+		for (let position = first; position < last; ++position) {
 			// determines the cube cut at a certain position
-			var halfRed    = bottomRed + WuQuant._top(cube, direction, position, this._momentsRed),
+			let halfRed    = bottomRed + WuQuant._top(cube, direction, position, this._momentsRed),
 				halfGreen  = bottomGreen + WuQuant._top(cube, direction, position, this._momentsGreen),
 				halfBlue   = bottomBlue + WuQuant._top(cube, direction, position, this._momentsBlue),
 				halfAlpha  = bottomAlpha + WuQuant._top(cube, direction, position, this._momentsAlpha),
@@ -523,7 +522,7 @@ export class WuQuant {
 
 			// the cube cannot be cut at bottom (this would lead to empty cube)
 			if (halfWeight != 0) {
-				var halfDistance = halfRed * halfRed + halfGreen * halfGreen + halfBlue * halfBlue + halfAlpha * halfAlpha,
+				let halfDistance = halfRed * halfRed + halfGreen * halfGreen + halfBlue * halfBlue + halfAlpha * halfAlpha,
 					temp         = halfDistance / halfWeight;
 
 				halfRed    = wholeRed - halfRed;
@@ -549,18 +548,18 @@ export class WuQuant {
 
 	// Cuts a cube with another one.
 	private _cut(first : WuColorCube, second : WuColorCube) : boolean {
-		var direction : number,
+		let direction : number;
 
-			wholeRed    = WuQuant._volume(first, this._momentsRed),
-			wholeGreen  = WuQuant._volume(first, this._momentsGreen),
-			wholeBlue   = WuQuant._volume(first, this._momentsBlue),
-			wholeAlpha  = WuQuant._volume(first, this._momentsAlpha),
-			wholeWeight = WuQuant._volume(first, this._weights),
+		const wholeRed    = WuQuant._volume(first, this._momentsRed),
+			  wholeGreen  = WuQuant._volume(first, this._momentsGreen),
+			  wholeBlue   = WuQuant._volume(first, this._momentsBlue),
+			  wholeAlpha  = WuQuant._volume(first, this._momentsAlpha),
+			  wholeWeight = WuQuant._volume(first, this._weights),
 
-			red         = this._maximize(first, WuQuant.red, first.redMinimum + 1, first.redMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight),
-			green       = this._maximize(first, WuQuant.green, first.greenMinimum + 1, first.greenMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight),
-			blue        = this._maximize(first, WuQuant.blue, first.blueMinimum + 1, first.blueMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight),
-			alpha       = this._maximize(first, WuQuant.alpha, first.alphaMinimum + 1, first.alphaMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
+			  red         = this._maximize(first, WuQuant.red, first.redMinimum + 1, first.redMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight),
+			  green       = this._maximize(first, WuQuant.green, first.greenMinimum + 1, first.greenMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight),
+			  blue        = this._maximize(first, WuQuant.blue, first.blueMinimum + 1, first.blueMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight),
+			  alpha       = this._maximize(first, WuQuant.alpha, first.alphaMinimum + 1, first.alphaMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
 
 		if (alpha.max >= red.max && alpha.max >= green.max && alpha.max >= blue.max) {
 			direction = WuQuant.alpha;
@@ -628,7 +627,7 @@ export class WuQuant {
 		this._cubes = [];
 
 		// initializes all the _cubes
-		for (var cubeIndex = 0; cubeIndex < colors; cubeIndex++) {
+		for (let cubeIndex = 0; cubeIndex < colors; cubeIndex++) {
 			this._cubes[ cubeIndex ] = new WuColorCube();
 		}
 
@@ -652,7 +651,7 @@ export class WuQuant {
 		this._moments      = createArray4D(this._alphaSideSize, this._sideSize, this._sideSize, this._sideSize);
 
 		this._table = [];
-		for (var tableIndex = 0; tableIndex < 256; ++tableIndex) {
+		for (let tableIndex = 0; tableIndex < 256; ++tableIndex) {
 			this._table[ tableIndex ] = tableIndex * tableIndex;
 		}
 

@@ -32,7 +32,7 @@ import { AbstractDistanceCalculator } from "../../distance/abstractDistanceCalcu
 import { IPaletteQuantizer } from "../common"
 
 // bias for colour values
-var networkBiasShift = 3;
+const networkBiasShift = 3;
 
 class NeuronFloat {
 	r : number;
@@ -156,7 +156,7 @@ export class NeuQuantFloat implements IPaletteQuantizer {
 		this._bias     = [];
 		this._radPower = [];
 		this._network  = [];
-		for (var i = 0; i < this._networkSize; i++) {
+		for (let i = 0; i < this._networkSize; i++) {
 			this._network[ i ] = new NeuronFloat((i << (networkBiasShift + 8)) / this._networkSize);
 
 			// 1/this._networkSize
@@ -174,12 +174,12 @@ export class NeuQuantFloat implements IPaletteQuantizer {
 		let pointsNumber = this._pointArray.length;
 		if (pointsNumber < NeuQuantFloat._minpicturebytes) sampleFactor = 1;
 
-		var alphadec       = 30 + (sampleFactor - 1) / 3,
-			pointIndex     = 0,
-			pointsToSample = pointsNumber / sampleFactor,
-			delta          = pointsToSample / NeuQuantFloat._nCycles | 0,
-			alpha          = NeuQuantFloat._initAlpha,
-			radius         = (this._networkSize >> 3) * NeuQuantFloat._radiusBias;
+		const alphadec       = 30 + (sampleFactor - 1) / 3,
+			  pointsToSample = pointsNumber / sampleFactor;
+
+		let delta  = pointsToSample / NeuQuantFloat._nCycles | 0,
+			alpha  = NeuQuantFloat._initAlpha,
+			radius = (this._networkSize >> 3) * NeuQuantFloat._radiusBias;
 
 		let rad = radius >> NeuQuantFloat._radiusBiasShift;
 		if (rad <= 1) rad = 0;
@@ -201,7 +201,7 @@ export class NeuQuantFloat implements IPaletteQuantizer {
 			step = NeuQuantFloat._prime4;
 		}
 
-		for (let i = 0; i < pointsToSample;) {
+		for (let i = 0, pointIndex = 0; i < pointsToSample;) {
 			const point       = this._pointArray[ pointIndex ],
 				  b           = point.b << networkBiasShift,
 				  g           = point.g << networkBiasShift,

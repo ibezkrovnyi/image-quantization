@@ -24,7 +24,7 @@ export class HueStatistics {
 		this._minCols   = minCols;
 		this._stats     = [];
 
-		for (var i = 0; i <= numGroups; i++) {
+		for (let i = 0; i <= numGroups; i++) {
 			this._stats[ i ] = new HueGroup();
 		}
 
@@ -37,12 +37,12 @@ export class HueStatistics {
 			};
 		}
 
-		var r   = (i32 & 0xff),
-			g   = (i32 >>> 8) & 0xff,
-			b   = (i32 >>> 16) & 0xff,
-			hg  = (r == g && g == b) ? 0 : 1 + hueGroup(rgb2hsl(r, g, b).h, this._numGroups),
-			gr  = this._stats[ hg ],
-			min = this._minCols;
+		const r   = (i32 & 0xff),
+			  g   = (i32 >>> 8) & 0xff,
+			  b   = (i32 >>> 16) & 0xff,
+			  hg  = (r == g && g == b) ? 0 : 1 + hueGroup(rgb2hsl(r, g, b).h, this._numGroups),
+			  gr  = this._stats[ hg ],
+			  min = this._minCols;
 
 		gr.num++;
 
@@ -56,7 +56,7 @@ export class HueStatistics {
 	}
 
 	injectIntoDictionary(histG : { [key : string ] : number}) {
-		for (var i = 0; i <= this._numGroups; i++) {
+		for (let i = 0; i <= this._numGroups; i++) {
 			if (this._stats[ i ].num <= this._minCols) {
 				this._stats[ i ].cols.forEach((col : number) => {
 					if (!histG[ col ])
@@ -68,10 +68,10 @@ export class HueStatistics {
 		}
 	}
 
-	injectIntoArray(histG : number[]) {
-		for (var i = 0; i <= this._numGroups; i++) {
+	injectIntoArray(histG : string[]) {
+		for (let i = 0; i <= this._numGroups; i++) {
 			if (this._stats[ i ].num <= this._minCols) {
-				this._stats[ i ].cols.forEach((col : number) => {
+				this._stats[ i ].cols.forEach((col : any) => {
 					if (histG.indexOf(col) == -1)
 						histG.push(col);
 				});

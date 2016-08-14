@@ -12,7 +12,7 @@ import { Point } from "./point"
  * fromXXX methods are static to move out polymorphic code from class instance itself.
  */
 export class PointContainer {
-	private _pointArray : Point[];
+	private readonly _pointArray : Point[];
 	private _width : number;
 	private _height : number;
 
@@ -43,12 +43,11 @@ export class PointContainer {
 	}
 
 	clone() : PointContainer {
-		var clone     = new PointContainer();
+		const clone   = new PointContainer();
 		clone._width  = this._width;
 		clone._height = this._height;
 
-		clone._pointArray = [];
-		for (var i = 0, l = this._pointArray.length; i < l; i++) {
+		for (let i = 0, l = this._pointArray.length; i < l; i++) {
 			clone._pointArray[ i ] = Point.createByUint32(this._pointArray[ i ].uint32 | 0); // "| 0" is added for v8 optimization
 		}
 
@@ -56,10 +55,10 @@ export class PointContainer {
 	}
 
 	toUint32Array() : Uint32Array {
-		var l           = this._pointArray.length,
-			uint32Array = new Uint32Array(l);
+		const l           = this._pointArray.length,
+			  uint32Array = new Uint32Array(l);
 
-		for (var i = 0; i < l; i++) {
+		for (let i = 0; i < l; i++) {
 			uint32Array[ i ] = this._pointArray[ i ].uint32;
 		}
 
@@ -71,25 +70,25 @@ export class PointContainer {
 	}
 
 	static fromHTMLImageElement(img : HTMLImageElement) : PointContainer {
-		var width  = img.naturalWidth,
-			height = img.naturalHeight;
+		const width  = img.naturalWidth,
+			  height = img.naturalHeight;
 
-		var canvas    = document.createElement("canvas");
+		const canvas  = document.createElement("canvas");
 		canvas.width  = width;
 		canvas.height = height;
 
-		var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
+		const ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
 		ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
 
 		return PointContainer.fromHTMLCanvasElement(canvas);
 	}
 
 	static fromHTMLCanvasElement(canvas : HTMLCanvasElement) : PointContainer {
-		var width  = canvas.width,
-			height = canvas.height;
+		const width  = canvas.width,
+			  height = canvas.height;
 
-		var ctx     = <CanvasRenderingContext2D>canvas.getContext("2d"),
-			imgData = ctx.getImageData(0, 0, width, height);
+		const ctx     = <CanvasRenderingContext2D>canvas.getContext("2d"),
+			  imgData = ctx.getImageData(0, 0, width, height);
 
 		return PointContainer.fromImageData(imgData);
 	}
@@ -99,8 +98,8 @@ export class PointContainer {
 	}
 
 	static fromImageData(imageData : ImageData) : PointContainer {
-		var width  = imageData.width,
-			height = imageData.height;
+		const width  = imageData.width,
+			  height = imageData.height;
 
 		return PointContainer.fromCanvasPixelArray(imageData.data, width, height);
 		/*
@@ -115,7 +114,7 @@ export class PointContainer {
 	}
 
 	static fromArray(byteArray : number[], width : number, height : number) : PointContainer {
-		var uint8array = new Uint8Array(byteArray);
+		const uint8array = new Uint8Array(byteArray);
 		return PointContainer.fromUint8Array(uint8array, width, height);
 	}
 
@@ -128,13 +127,12 @@ export class PointContainer {
 	}
 
 	static fromUint32Array(uint32array : Uint32Array, width : number, height : number) : PointContainer {
-		var container = new PointContainer();
+		const container = new PointContainer();
 
 		container._width  = width;
 		container._height = height;
 
-		container._pointArray = [];//new Array(uint32array.length);
-		for (var i = 0, l = uint32array.length; i < l; i++) {
+		for (let i = 0, l = uint32array.length; i < l; i++) {
 			container._pointArray[ i ] = Point.createByUint32(uint32array[ i ] | 0); // "| 0" is added for v8 optimization
 		}
 

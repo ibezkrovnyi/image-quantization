@@ -22,7 +22,7 @@ export class Point {
 	Lab : { L : number; a : number; b : number };
 
 	static createByQuadruplet(quadruplet : number[]) : Point {
-		var point : Point = new Point();
+		const point : Point = new Point();
 
 		point.r = quadruplet[ 0 ] | 0;
 		point.g = quadruplet[ 1 ] | 0;
@@ -35,7 +35,7 @@ export class Point {
 	}
 
 	static createByRGBA(red : number, green : number, blue : number, alpha : number) : Point {
-		var point : Point = new Point();
+		const point : Point = new Point();
 
 		point.r = red | 0;
 		point.g = green | 0;
@@ -48,7 +48,7 @@ export class Point {
 	}
 
 	static createByUint32(uint32 : number) : Point {
-		var point : Point = new Point();
+		const point : Point = new Point();
 
 		point.uint32 = uint32 >>> 0;
 		point._loadRGBA();
@@ -102,7 +102,7 @@ export class Point {
 	 Luminance (perceived option 2, slower to calculate):  sqrt( 0.241*R^2 + 0.691*G^2 + 0.068*B^2 ) ? sqrt( 0.299*R^2 + 0.587*G^2 + 0.114*B^2 ) (thanks to @MatthewHerbst) [http://alienryderflex.com/hsp.html]
 	 */
 	getLuminosity(useAlphaChannel : boolean) : number {
-		var r = this.r,
+		let r = this.r,
 			g = this.g,
 			b = this.b;
 

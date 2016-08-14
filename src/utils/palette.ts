@@ -13,22 +13,22 @@ import { rgb2hsl } from "../conversion/rgb2hsl"
 
 // TODO: make paletteArray via pointBuffer, so, export will be available via pointBuffer.exportXXX
 
-var hueGroups : number = 10;
+const hueGroups : number = 10;
 
 export function hueGroup(hue : number, segmentsNumber : number) {
-	var maxHue = 360,
-		seg    = maxHue / segmentsNumber,
-		half   = seg / 2;
+	const maxHue = 360,
+		  seg    = maxHue / segmentsNumber,
+		  half   = seg / 2;
 
-	for (var i = 1, mid = seg - half; i < segmentsNumber; i++, mid += seg) {
+	for (let i = 1, mid = seg - half; i < segmentsNumber; i++, mid += seg) {
 		if (hue >= mid && hue < mid + seg) return i;
 	}
 	return 0;
 }
 
 export class Palette {
-	private _pointContainer : PointContainer;
-	private _pointArray : Point[]                   = [];
+	private readonly _pointContainer : PointContainer;
+	private readonly _pointArray : Point[]          = [];
 	private _i32idx : { [ key : string ] : number } = {};
 
 	constructor() {
@@ -43,7 +43,7 @@ export class Palette {
 	}
 
 	has(color : Point) {
-		for (var i = this._pointArray.length - 1; i >= 0; i--) {
+		for (let i = this._pointArray.length - 1; i >= 0; i--) {
 			if (color.uint32 === this._pointArray[ i ].uint32) return true;
 		}
 
@@ -94,14 +94,15 @@ export class Palette {
 	}
 
 	private getNearestIndex(colorDistanceCalculator : AbstractDistanceCalculator, point : Point) : number {
-		var idx : number = this._nearestPointFromCache("" + point.uint32);
+		let idx : number = this._nearestPointFromCache("" + point.uint32);
 		if (idx >= 0) return idx;
 
-		var minimalDistance : number = Number.MAX_VALUE;
+		let minimalDistance : number = Number.MAX_VALUE;
 
-		for (var idx = 0, i = 0, l = this._pointArray.length; i < l; i++) {
-			var p        = this._pointArray[ i ],
-				distance = colorDistanceCalculator.calculateRaw(point.r, point.g, point.b, point.a, p.r, p.g, p.b, p.a);
+		idx = 0;
+		for (let i = 0, l = this._pointArray.length; i < l; i++) {
+			const p        = this._pointArray[ i ],
+				  distance = colorDistanceCalculator.calculateRaw(point.r, point.g, point.b, point.a, p.r, p.g, p.b, p.a);
 
 			if (distance < minimalDistance) {
 				minimalDistance = distance;
@@ -167,33 +168,32 @@ export class Palette {
 	sort() {
 		this._i32idx = {};
 		this._pointArray.sort((a : Point, b : Point) => {
-			var hslA = rgb2hsl(a.r, a.g, a.b),
-				hslB = rgb2hsl(b.r, b.g, b.b);
+			const hslA = rgb2hsl(a.r, a.g, a.b),
+				  hslB = rgb2hsl(b.r, b.g, b.b);
 
 			// sort all grays + whites together
-			var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + hueGroup(hslA.h, hueGroups);
-			var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + hueGroup(hslB.h, hueGroups);
+			const hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + hueGroup(hslA.h, hueGroups),
+				  hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + hueGroup(hslB.h, hueGroups);
 			/*
 			 var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);
 			 var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + Utils.hueGroup(hslB.h, hueGroups);
 			 */
 
-			var hueDiff = hueB - hueA;
+			const hueDiff = hueB - hueA;
 			if (hueDiff) return -hueDiff;
 
 			/*
 			 var lumDiff = Utils.lumGroup(+hslB.l.toFixed(2)) - Utils.lumGroup(+hslA.l.toFixed(2));
 			 if (lumDiff) return -lumDiff;
 			 */
-			var lA = a.getLuminosity(true),
-				lB = b.getLuminosity(true);
+			const lA = a.getLuminosity(true),
+				  lB = b.getLuminosity(true);
 
 			if (lB - lA !== 0) return lB - lA;
 
-			var satDiff = ((hslB.s * 100) | 0) - ((hslA.s * 100) | 0);
+			const satDiff = ((hslB.s * 100) | 0) - ((hslA.s * 100) | 0);
 			if (satDiff) return -satDiff;
 
-			// TODO: why there was no return here? What to return instead? 0?
 			return 0;
 		});
 	}

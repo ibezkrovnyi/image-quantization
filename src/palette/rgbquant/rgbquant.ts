@@ -22,9 +22,9 @@ import { IPaletteQuantizer } from "../common"
 import { stableSort } from "../../utils/arithmetic"
 
 class RemovedColor {
-	index : number;
-	color : Point;
-	distance : number;
+	readonly index : number;
+	readonly color : Point;
+	readonly distance : number;
 
 	constructor(index : number, color : Point, distance : number) {
 		this.index    = index;
@@ -36,17 +36,17 @@ class RemovedColor {
 // TODO: make input/output image and input/output palettes with instances of class Point only!
 export class RGBQuant implements IPaletteQuantizer {
 	// desired final palette size
-	private _colors : number;
+	private readonly _colors : number;
 
 	// color-distance threshold for initial reduction pass
-	private _initialDistance : number;
+	private readonly _initialDistance : number;
 
 	// subsequent passes threshold
-	private _distanceIncrement : number;
+	private readonly _distanceIncrement : number;
 
 	// accumulated histogram
-	private _histogram : ColorHistogram;
-	private _distance : AbstractDistanceCalculator;
+	private readonly _histogram : ColorHistogram;
+	private readonly _distance : AbstractDistanceCalculator;
 
 	constructor(colorDistanceCalculator : AbstractDistanceCalculator, colors : number = 256, method : number = 2) {
 		this._distance = colorDistanceCalculator;
@@ -83,12 +83,12 @@ export class RGBQuant implements IPaletteQuantizer {
 
 	// reduces histogram to palette, remaps & memoizes reduced colors
 	quantize() : Palette {
-		var idxi32 = this._histogram.getImportanceSortedColorsIDXI32()
-		if (!idxi32) {
+		const idxi32 = this._histogram.getImportanceSortedColorsIDXI32()
+		if (idxi32.length === 0) {
 			throw new Error("No colors in image")
 		}
 
-		var palette = this._buildPalette(idxi32);
+		const palette = this._buildPalette(idxi32);
 
 		palette.sort();
 		return palette;
@@ -98,36 +98,37 @@ export class RGBQuant implements IPaletteQuantizer {
 	private _buildPalette(idxi32 : number[]) : Palette {
 		// reduce histogram to create initial palette
 		// build full rgb palette
-		var palette    = new Palette(),
-			colorArray = palette.getPointContainer().getPointArray(),
-			usageArray = new Array(idxi32.length);
+		const palette    = new Palette(),
+			  colorArray = palette.getPointContainer().getPointArray(),
+			  usageArray = new Array(idxi32.length);
 
-		for (var i = 0; i < idxi32.length; i++) {
+		for (let i = 0; i < idxi32.length; i++) {
 			colorArray.push(Point.createByUint32(idxi32[ i ]));
 			usageArray[ i ] = 1;
 		}
 
-		var len                      = colorArray.length,
-			palLen                   = len,
-			thold                    = this._initialDistance,
-			memDist : RemovedColor[] = [];
+		const len                      = colorArray.length,
+			  memDist : RemovedColor[] = [];
+
+		let palLen = len,
+			thold  = this._initialDistance;
 
 		// palette already at or below desired length
 		while (palLen > this._colors) {
 			memDist.length = 0;
 
 			// iterate palette
-			for (var i = 0; i < len; i++) {
+			for (let i = 0; i < len; i++) {
 				if (usageArray[ i ] === 0) continue;
-				var pxi = colorArray[ i ];
+				const pxi = colorArray[ i ];
 				//if (!pxi) continue;
 
-				for (var j = i + 1; j < len; j++) {
+				for (let j = i + 1; j < len; j++) {
 					if (usageArray[ j ] === 0) continue;
-					var pxj = colorArray[ j ];
+					const pxj = colorArray[ j ];
 					//if (!pxj) continue;
 
-					var dist = this._distance.calculateNormalized(pxi, pxj);
+					const dist = this._distance.calculateNormalized(pxi, pxj);
 					if (dist < thold) {
 						// store index,rgb,dist
 						memDist.push(new RemovedColor(j, pxj, dist));
@@ -150,9 +151,9 @@ export class RGBQuant implements IPaletteQuantizer {
 				return b.distance - a.distance;
 			});
 
-			var k = 0;
+			let k = 0;
 			while (palLen < this._colors && k < memDist.length) {
-				var removedColor                 = memDist[ k ];
+				const removedColor               = memDist[ k ];
 				// re-inject rgb into final palette
 				usageArray[ removedColor.index ] = 1;
 				palLen++;
@@ -160,8 +161,8 @@ export class RGBQuant implements IPaletteQuantizer {
 			}
 		}
 
-		var colors = colorArray.length;
-		for (var colorIndex = colors - 1; colorIndex >= 0; colorIndex--) {
+		let colors = colorArray.length;
+		for (let colorIndex = colors - 1; colorIndex >= 0; colorIndex--) {
 			if (usageArray[ colorIndex ] === 0) {
 				if (colorIndex !== colors - 1) {
 					colorArray[ colorIndex ] = colorArray[ colors - 1 ];

@@ -71,25 +71,22 @@ export class ColorHistogram {
 
 	getImportanceSortedColorsIDXI32() {
 		// TODO: fix typing issue in stableSort func
-		var sorted : number[] = <any>stableSort(Object.keys(this._histogram), (a, b) => this._histogram[ b ] - this._histogram[ a ]);
-		//var sorted = Object.keys(this._histogram).sort((a, b) => this._histogram[b] - this._histogram[a]);
-		//var sorted = Utils.sortedHashKeys(this._histogram, true);
-
-		// TODO: check that other code waits for null
-		if (sorted.length == 0) {
-			return null;
+		const sorted = stableSort(Object.keys(this._histogram), (a, b) => this._histogram[ b ] - this._histogram[ a ]);
+		if (sorted.length === 0) {
+			return [];
 		}
 
+		let idxi32 : string[];
 		switch (this._method) {
 			case 1:
-				var initialColorsLimit = Math.min(sorted.length, this._initColors),
-					last               = sorted[ initialColorsLimit - 1 ],
-					freq               = this._histogram[ last ];
+				const initialColorsLimit = Math.min(sorted.length, this._initColors),
+					  last               = sorted[ initialColorsLimit - 1 ],
+					  freq               = this._histogram[ last ];
 
-				var idxi32 = sorted.slice(0, initialColorsLimit);
+				idxi32 = sorted.slice(0, initialColorsLimit);
 
 				// add any cut off colors with same freq as last
-				var pos = initialColorsLimit, len = sorted.length;
+				let pos = initialColorsLimit, len = sorted.length;
 				while (pos < len && this._histogram[ sorted[ pos ] ] == freq)
 					idxi32.push(sorted[ pos++ ]);
 
@@ -98,7 +95,7 @@ export class ColorHistogram {
 				break;
 
 			case 2:
-				var idxi32 = sorted;
+				idxi32 = sorted;
 				break;
 
 			default:
@@ -107,19 +104,19 @@ export class ColorHistogram {
 		}
 
 		// int32-ify values
-		return idxi32.map(function (v) {
+		return (<string[]><any>idxi32).map(function (v : string) {
 			return +v;
 		});
 	}
 
 	// global top-population
 	private _colorStats1D(pointBuffer : PointContainer) {
-		var histG      = this._histogram,
-			pointArray = pointBuffer.getPointArray(),
-			len        = pointArray.length;
+		const histG      = this._histogram,
+			  pointArray = pointBuffer.getPointArray(),
+			  len        = pointArray.length;
 
-		for (var i = 0; i < len; i++) {
-			var col = pointArray[ i ].uint32;
+		for (let i = 0; i < len; i++) {
+			const col = pointArray[ i ].uint32;
 
 			// collect hue stats
 			this._hueStats.check(col);
@@ -135,25 +132,23 @@ export class ColorHistogram {
 	// FIXME: this can over-reduce (few/no colors same?), need a way to keep
 	// important colors that dont ever reach local thresholds (gradients?)
 	private _colorStats2D(pointBuffer : PointContainer) {
-		var width      = pointBuffer.getWidth(),
-			height     = pointBuffer.getHeight(),
-			pointArray = pointBuffer.getPointArray();
+		const width      = pointBuffer.getWidth(),
+			  height     = pointBuffer.getHeight(),
+			  pointArray = pointBuffer.getPointArray();
 
-		var boxW  = ColorHistogram._boxSize[ 0 ],
-			boxH  = ColorHistogram._boxSize[ 1 ],
-			area  = boxW * boxH,
-			boxes = this._makeBoxes(width, height, boxW, boxH),
-			histG = this._histogram;
+		const boxW  = ColorHistogram._boxSize[ 0 ],
+			  boxH  = ColorHistogram._boxSize[ 1 ],
+			  area  = boxW * boxH,
+			  boxes = this._makeBoxes(width, height, boxW, boxH),
+			  histG = this._histogram;
 
 		boxes.forEach(box => {
-			var effc                                = Math.round((box.w * box.h) / area) * ColorHistogram._boxPixels,
-				histL : { [key : string ] : number} = {},
-				col : number;
-
+			let effc = Math.round((box.w * box.h) / area) * ColorHistogram._boxPixels;
 			if (effc < 2) effc = 2;
 
+			const histL : { [key : string ] : number} = {};
 			this._iterateBox(box, width, (i : number) => {
-				col = pointArray[ i ].uint32;
+				const col = pointArray[ i ].uint32;
 
 				// collect hue stats
 				this._hueStats.check(col);
@@ -176,10 +171,13 @@ export class ColorHistogram {
 
 	// iterates @bbox within a parent rect of width @wid; calls @fn, passing index within parent
 	private _iterateBox(bbox : Box, wid : number, fn : Function) {
-		var b                                = bbox,
-			i0                               = b.y * wid + b.x,
-			i1                               = (b.y + b.h - 1) * wid + (b.x + b.w - 1),
-			cnt = 0, incr = wid - b.w + 1, i = i0;
+		const b    = bbox,
+			  i0   = b.y * wid + b.x,
+			  i1   = (b.y + b.h - 1) * wid + (b.x + b.w - 1),
+			  incr = wid - b.w + 1;
+
+		let cnt = 0,
+			i   = i0;
 
 		do {
 			fn.call(this, i);
@@ -192,15 +190,15 @@ export class ColorHistogram {
 	 *    array of boxes stepX x stepY (or less)
 	 */
 	private _makeBoxes(width : number, height : number, stepX : number, stepY : number) {
-		var wrem = width % stepX,
-			hrem = height % stepY,
-			xend = width - wrem,
-			yend = height - hrem;
+		const wrem               = width % stepX,
+			  hrem               = height % stepY,
+			  xend               = width - wrem,
+			  yend               = height - hrem,
+			  boxesArray : Box[] = [];
 
-		var boxesArray : Box[] = [];
-		for (var y = 0; y < height; y += stepY)
-			for (var x = 0; x < width; x += stepX)
-				boxesArray.push({ x : x, y : y, w : (x == xend ? wrem : stepX), h : (y == yend ? hrem : stepY) });
+		for (let y = 0; y < height; y += stepY)
+			for (let x = 0; x < width; x += stepX)
+				boxesArray.push({ x, y, w : (x == xend ? wrem : stepX), h : (y == yend ? hrem : stepY) });
 
 		return boxesArray;
 	}
