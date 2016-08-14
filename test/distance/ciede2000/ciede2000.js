@@ -30,7 +30,7 @@ function doTests (ciede2000) {
 			it(`Colors: Lab1 = ${dir(item.Lab1)}, Lab2 = ${dir(item.Lab2)}`, function () {
 				var normalized = ciede2000.calculateNormalized(point1, point2);
 				expect(normalized).to.be.at.most(1);
-				console.log(normalized)
+				// console.log(normalized)
 			});
 		})
 	});
