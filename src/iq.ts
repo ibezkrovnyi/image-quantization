@@ -14,11 +14,11 @@ import * as quality from "./quality"
 import * as utils from "./utils"
 
 export {
-	constants,
-	conversion,
-	distance,
-	palette,
-	image,
-	quality,
-	utils
+    constants,
+    conversion,
+    distance,
+    palette,
+    image,
+    quality,
+    utils
 }

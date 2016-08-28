@@ -15,26 +15,26 @@ import { min3, max3 } from "../utils/arithmetic"
  * http://web.archive.org/web/20060914040436/http://local.wasp.uwa.edu.au/~pbourke/colour/hsl/
  */
 export function rgb2hsl(r : number, g : number, b : number) : {h : number; s : number; l : number} {
-	const min   = min3(r, g, b),
-		  max   = max3(r, g, b),
-		  delta = max - min,
-		  l     = (min + max) / 510;
+    const min   = min3(r, g, b),
+          max   = max3(r, g, b),
+          delta = max - min,
+          l     = (min + max) / 510;
 
-	let s = 0;
-	if (l > 0 && l < 1) s = delta / (l < 0.5 ? (max + min) : (510 - max - min));
+    let s = 0;
+    if (l > 0 && l < 1) s = delta / (l < 0.5 ? (max + min) : (510 - max - min));
 
-	let h = 0;
-	if (delta > 0) {
-		if (max === r) {
-			h = (g - b) / delta;
-		} else if (max === g) {
-			h = (2 + (b - r) / delta);
-		} else {
-			h = (4 + (r - g) / delta);
-		}
+    let h = 0;
+    if (delta > 0) {
+        if (max === r) {
+            h = (g - b) / delta;
+        } else if (max === g) {
+            h = (2 + (b - r) / delta);
+        } else {
+            h = (4 + (r - g) / delta);
+        }
 
-		h *= 60;
-		if (h < 0) h += 360;
-	}
-	return { h, s, l };
+        h *= 60;
+        if (h < 0) h += 360;
+    }
+    return { h, s, l };
 }

@@ -33,80 +33,80 @@ import { Point } from "../utils/point"
 import { inRange0to255Rounded } from "../utils/arithmetic"
 
 export class ErrorDiffusionRiemersma implements IImageDitherer {
-	private _distance : AbstractDistanceCalculator;
-	private _weights : number[];
-	private _errorQueueSize : number;
-	private _errorPropagation : number;
-	private _max : number;
+    private _distance : AbstractDistanceCalculator;
+    private _weights : number[];
+    private _errorQueueSize : number;
+    private _errorPropagation : number;
+    private _max : number;
 
-	constructor(colorDistanceCalculator : AbstractDistanceCalculator, errorQueueSize : number = 16, errorPropagation : number = 1) {
-		this._distance         = colorDistanceCalculator;
-		this._errorPropagation = errorPropagation;
-		this._errorQueueSize   = errorQueueSize;
-		this._max              = this._errorQueueSize;
-		this._createWeights();
-	}
+    constructor(colorDistanceCalculator : AbstractDistanceCalculator, errorQueueSize : number = 16, errorPropagation : number = 1) {
+        this._distance         = colorDistanceCalculator;
+        this._errorPropagation = errorPropagation;
+        this._errorQueueSize   = errorQueueSize;
+        this._max              = this._errorQueueSize;
+        this._createWeights();
+    }
 
-	quantize(pointBuffer : PointContainer, palette : Palette) : PointContainer {
-		const curve                                                           = new HilbertCurveBase(),
-			  pointArray                                                      = pointBuffer.getPointArray(),
-			  width                                                           = pointBuffer.getWidth(),
-			  height                                                          = pointBuffer.getHeight(),
-			  errorQueue : {r : number; g : number; b : number; a : number}[] = [];
+    quantize(pointBuffer : PointContainer, palette : Palette) : PointContainer {
+        const curve                                                           = new HilbertCurveBase(),
+              pointArray                                                      = pointBuffer.getPointArray(),
+              width                                                           = pointBuffer.getWidth(),
+              height                                                          = pointBuffer.getHeight(),
+              errorQueue : {r : number; g : number; b : number; a : number}[] = [];
 
-		let head = 0;
+        let head = 0;
 
-		for (let i = 0; i < this._errorQueueSize; i++) {
-			errorQueue[ i ] = { r : 0, g : 0, b : 0, a : 0 };
-		}
+        for (let i = 0; i < this._errorQueueSize; i++) {
+            errorQueue[ i ] = { r : 0, g : 0, b : 0, a : 0 };
+        }
 
-		curve.walk(width, height, (x, y) => {
-			const p = pointArray[ x + y * width ];
-			let r   = p.r, g = p.g, b = p.b, a = p.a;
-			for (let i = 0; i < this._errorQueueSize; i++) {
-				const weight = this._weights[ i ],
-					  e      = errorQueue[ (i + head) % this._errorQueueSize ];
+        curve.walk(width, height, (x, y) => {
+            const p = pointArray[ x + y * width ];
+            let r   = p.r, g = p.g, b = p.b, a = p.a;
+            for (let i = 0; i < this._errorQueueSize; i++) {
+                const weight = this._weights[ i ],
+                      e      = errorQueue[ (i + head) % this._errorQueueSize ];
 
-				r += e.r * weight;
-				g += e.g * weight;
-				b += e.b * weight;
-				a += e.a * weight;
-			}
+                r += e.r * weight;
+                g += e.g * weight;
+                b += e.b * weight;
+                a += e.a * weight;
+            }
 
-			const correctedPoint = Point.createByRGBA(
-				inRange0to255Rounded(r),
-				inRange0to255Rounded(g),
-				inRange0to255Rounded(b),
-				inRange0to255Rounded(a)
-			);
+            const correctedPoint = Point.createByRGBA(
+                inRange0to255Rounded(r),
+                inRange0to255Rounded(g),
+                inRange0to255Rounded(b),
+                inRange0to255Rounded(a)
+            );
 
-			const quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
+            const quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
 
-			// update head and calculate tail
-			head       = (head + 1) % this._errorQueueSize;
-			const tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
+            // update head and calculate tail
+            head       = (head + 1) % this._errorQueueSize;
+            const tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
 
-			// update error with new value
-			errorQueue[ tail ].r = p.r - quantizedPoint.r;
-			errorQueue[ tail ].g = p.g - quantizedPoint.g;
-			errorQueue[ tail ].b = p.b - quantizedPoint.b;
-			errorQueue[ tail ].a = p.a - quantizedPoint.a;
+            // update error with new value
+            errorQueue[ tail ].r = p.r - quantizedPoint.r;
+            errorQueue[ tail ].g = p.g - quantizedPoint.g;
+            errorQueue[ tail ].b = p.b - quantizedPoint.b;
+            errorQueue[ tail ].a = p.a - quantizedPoint.a;
 
-			// update point
-			p.from(quantizedPoint);
-		});
+            // update point
+            p.from(quantizedPoint);
+        });
 
-		return pointBuffer;
-	}
+        return pointBuffer;
+    }
 
-	private _createWeights() : void {
-		this._weights = [];
+    private _createWeights() : void {
+        this._weights = [];
 
-		const multiplier = Math.exp(Math.log(this._max) / (this._errorQueueSize - 1));
-		for (let i = 0, next = 1; i < this._errorQueueSize; i++) {
-			this._weights[ i ] = (((next + 0.5) | 0) / this._max) * this._errorPropagation;
-			next *= multiplier;
-		}
-	}
+        const multiplier = Math.exp(Math.log(this._max) / (this._errorQueueSize - 1));
+        for (let i = 0, next = 1; i < this._errorQueueSize; i++) {
+            this._weights[ i ] = (((next + 0.5) | 0) / this._max) * this._errorPropagation;
+            next *= multiplier;
+        }
+    }
 }
 

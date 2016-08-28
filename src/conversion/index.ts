@@ -14,11 +14,11 @@ import { xyz2lab } from "./xyz2lab"
 import { xyz2rgb } from "./xyz2rgb"
 
 export {
-	rgb2xyz,
-	rgb2hsl,
-	rgb2lab,
-	lab2xyz,
-	lab2rgb,
-	xyz2lab,
-	xyz2rgb,
+    rgb2xyz,
+    rgb2hsl,
+    rgb2lab,
+    lab2xyz,
+    lab2rgb,
+    xyz2lab,
+    xyz2rgb,
 }

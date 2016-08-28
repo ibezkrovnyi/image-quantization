@@ -11,9 +11,9 @@ import { ErrorDiffusionArray, ErrorDiffusionArrayKernel } from "./array"
 import { ErrorDiffusionRiemersma } from "./riemersma"
 
 export {
-	IImageDitherer,
-	NearestColor,
-	ErrorDiffusionArray,
-	ErrorDiffusionArrayKernel,
-	ErrorDiffusionRiemersma
+    IImageDitherer,
+    NearestColor,
+    ErrorDiffusionArray,
+    ErrorDiffusionArrayKernel,
+    ErrorDiffusionRiemersma
 }

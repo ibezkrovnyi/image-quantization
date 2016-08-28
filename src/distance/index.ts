@@ -14,20 +14,20 @@ import { AbstractManhattan, Manhattan, ManhattanSRGB, ManhattanNommyde } from ".
 import { PNGQUANT } from "./pngQuant"
 
 export {
-	AbstractDistanceCalculator,
-	CIE94Textiles,
-	CIE94GraphicArts,
-	CIEDE2000,
-	CMETRIC,
-	PNGQUANT,
+    AbstractDistanceCalculator,
+    CIE94Textiles,
+    CIE94GraphicArts,
+    CIEDE2000,
+    CMETRIC,
+    PNGQUANT,
 
-	AbstractEuclidean,
-	Euclidean,
-	EuclideanRgbQuantWithAlpha,
-	EuclideanRgbQuantWOAlpha,
+    AbstractEuclidean,
+    Euclidean,
+    EuclideanRgbQuantWithAlpha,
+    EuclideanRgbQuantWOAlpha,
 
-	AbstractManhattan,
-	Manhattan,
-	ManhattanSRGB,
-	ManhattanNommyde
+    AbstractManhattan,
+    Manhattan,
+    ManhattanSRGB,
+    ManhattanNommyde
 }

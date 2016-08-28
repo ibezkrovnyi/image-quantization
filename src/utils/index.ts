@@ -12,9 +12,9 @@ import { Point } from "./point"
 import { PointContainer } from "./pointContainer"
 
 export {
-	Point,
-	PointContainer,
-	Palette,
-	HueStatistics,
-	arithmetic
+    Point,
+    PointContainer,
+    Palette,
+    HueStatistics,
+    arithmetic
 }

@@ -19,7 +19,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
      * Max DeltaE: 100
      * Max DeltaA: 255
      */
-    private static readonly _kA            = 0.25 * 100 / 255;
+    private static readonly _kA                   = 0.25 * 100 / 255;
     private static readonly _pow25to7 : number    = Math.pow(25, 7);
     private static readonly _deg360InRad : number = degrees2radians(360);
     private static readonly _deg180InRad : number = degrees2radians(180);
