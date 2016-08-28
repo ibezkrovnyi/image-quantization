@@ -7,10 +7,10 @@
   "contributors": [],
   "homepage": "https://github.com/igor-bezkrovny/image-quantization",
   "scripts": {
-    "test": "node_modules/.bin/mocha --recursive",
-    "prepublish": "node_modules/.bin/webpack",
-    "dist": "node_modules/.bin/webpack",
-    "watch": "node_modules/.bin/webpack --watch"
+    "test": "mocha --recursive",
+    "prepublish": "npm run dist",
+    "dist": "webpack --config ./src/webpack.config.js",
+    "watch": "webpack --config ./src/webpack.config.js --watch"
   },
   "preferGlobal": false,
   "main": "./dist/iq.js",

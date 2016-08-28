@@ -1,6 +1,6 @@
 {
 	"compilerOptions" : {
-		"outDir" : "./dist/",
+		"outDir" : "../dist/",
 		"sourceMap" : true,
 		"inlineSources" : true,
 		"module" : "commonjs",
@@ -20,8 +20,5 @@
 		"forceConsistentCasingInFileNames" : true,
 		"declaration" : true,
 		"diagnostics" : true
-	},
-	"files" : [
-		"./src/iq.ts"
-	]
+	}
 }

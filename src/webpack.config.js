@@ -1,9 +1,10 @@
+const path = require('path')
 const libraryName = "iq";
 
 module.exports = {
-	entry  : `${__dirname}/src/${libraryName}.ts`,
+	entry  : `${__dirname}/${libraryName}.ts`,
 	output : {
-		filename       : `${__dirname}/dist/${libraryName}.js`,
+		filename       : `${__dirname}/../dist/${libraryName}.js`,
 		//path: `${__dirname}`,
 		library        : libraryName,
 		libraryTarget  : 'umd',
