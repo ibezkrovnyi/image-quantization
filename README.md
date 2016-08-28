@@ -37,9 +37,7 @@ Capability
 	* node.js (Node.js 0.9.0+)
 	
 2. Builds
-	* **dist/browser-iq**.js - JavaScript build for browser (global `var IQ`)
-	* **dist/node-iq**.js - JavaScript build for Node.js (`module.exports = IQ`)
-	* **src/iq.ts** - TypeScript module (use `/// <reference path="path-to-library/src/iq.ts" />`)
+	* **iq**.js - UMD build (`import * as iq from "image-q"`)
 	 
 3. Import
 	* `HTMLImageElement`
@@ -52,22 +50,23 @@ Capability
 	* `Uint32Array`
 	 
 4. Color Distance
-	* `Euclidean` - originally used in Xiaolin Wu's Quantizer **WuQuant**
-	* `EuclideanRgbQuantWOAlpha` (sRGB coefficients/without alpha support) - originally used in **RgbQuant**
-	* `EuclideanRgbQuantWithAlpha` (sRGB coefficients)
-	* `Manhattan` - originally used in **NeuQuant** 
-	* `ManhattanSRGB` (sRGB coefficients)
-	* `CIEDE2000_Original` - full CIEDE2000 implementation (very very very slow) 
-	* `CIEDE2000` - part of formula was stripped as it meaningless for JavaScript floating-point precision/RGB 8bit per channel converted to Lab (very very slow)
-	* `CIE94` - full CIE94 implementation
-	* `CMETRIC`
+	* `Euclidean` - 1/1/1/1 coefficients (originally used in Xiaolin Wu's Quantizer **WuQuant**)
+	* `EuclideanRgbQuantWOAlpha` - BT.709 sRGB coefficients (originally used in **RgbQuant**)
+	* `EuclideanRgbQuantWithAlpha` BT.709 sRGB coefficients + alpha support
+	* `Manhattan` - 1/1/1/1 coefficients (originally used in **NeuQuant**) 
+	* `ManhattanSRGB` - BT.709 sRGB coefficients
+	* `ManhattanNommyde` - see https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-234527620
+	* `CIEDE2000` - CIEDE2000 (very slow)
+	* `CIE94Textiles` - CIE94 implementation for textiles
+	* `CIE94GraphicArts` - CIE94 implementation for graphic arts 
+	* `CMETRIC` - see http://www.compuphase.com/cmetric.htm
 	* `PNGQUANT` - used in pngQuant tool
 
 5. Palette Quantizers
 	* `NeuQuant` (original code ported, integer calculations)
+	* `NeuQuantFloat` (floating-point calculations)
 	* `RgbQuant`
 	* `WuQuant`
-	* `NeuQuantFloat` (floating-point calculations)
 	
 6. Image Quantizers
 	* `NearestColor`
@@ -89,19 +88,20 @@ Capability
 	 
 Include IQ Library into your project
 ------------------------------------
-##### TypeScript + Node.js/Browser project 
+
+##### ES6 module
 ```javascript
-/// <reference path='<path-to-iq>/src/iq.ts' />
+import * as iq from "image-q"
 ```
 
-##### JavaScript + Node.js project
+##### CommonJS 
 ```javascript
-var iq = require("<path-to-iq>/dist/node-iq.js");
+var iq = require("image-q");
 ```
 
-##### JavaScript + Browser project
+##### As a global variable (Browser)
 ```html
-<script src="<path-to-iq>/dist/browser-iq.js" type="text/javascript" charset="utf-8"></script>
+<script src="<path-to image-q/dist/iq.js>" type="text/javascript" charset="utf-8"></script>
 ```
 
 Usage
@@ -123,13 +123,13 @@ img.src = "http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-275
 var targetColors = 256;
    
 // create pointContainer and fill it with image
-var pointContainer = IQ.Utils.PointContainer.fromHTMLImageElement(img);
+var pointContainer = iq.utils.PointContainer.fromHTMLImageElement(img);
 
-// create chosen distance calculator (see classes implementing `IQ.Distance.IDistanceCalculator`)
-var distanceCalculator = new IQ.Distance.Euclidean();
+// create chosen distance calculator (see classes inherited from `iq.distance.AbstractDistanceCalculator`)
+var distanceCalculator = new iq.distance.Euclidean();
 
-// create chosen palette quantizer (see classes implementing `IQ.Palette.IPaletteQuantizer`) 
-var paletteQuantizer = new IQ.Palette.RgbQuant(distanceCalculator, targetColors);
+// create chosen palette quantizer (see classes implementing `iq.palette.IPaletteQuantizer`) 
+var paletteQuantizer = new iq.palette.RgbQuant(distanceCalculator, targetColors);
 		
 // feed out pointContainer filled with image to paletteQuantizer
 paletteQuantizer.sample(pointContainer);
@@ -142,8 +142,8 @@ var palette = paletteQuantizer.quantize();
 
 ##### Apply Palette to Image (Image Dithering) 
 ```javascript
-// create image quantizer (see classes implementing `IQ.Image.IImageDitherer`)
-var imageDitherer = new IQ.Image.NearestColor(distanceCalculator);
+// create image quantizer (see classes implementing `iq.image.IImageDitherer`)
+var imageDitherer = new iq.image.NearestColor(distanceCalculator);
 
 // apply palette to image
 var resultPointContainer = imageQuantizer.quantize(pointContainer, palette);
@@ -162,6 +162,21 @@ TODO
 
 Changelog
 ---------
+
+##### 1.1.1 (2016-08-28)
+    + CIEDE2000 - incorrect calculation fixed
+    + CIEDE2000 - alpha channel now has only 25% impact on color distance instead of 66%
+    + CIE94 - added 2 types (textiles and graphics art) according to spec
+    + CIE94 - alpha support added
+    + rgb2xyz, lab2xyz, xyz2rgb, xyz2lab - gamma correction
+    + lab2xyz, xyz2lab - refY should be 100 (1.00000) instead of 10 (0.10000) 
+    + manhattan with new (Nommyde) coefficients added 
+    + mocha tests added
+    + webpack integration
+    + image-q is now UMD module 
+    + travis-ci integration
+    + typescript 2.0
+    + indentation with 4 spaces
 
 ##### 0.1.4 (2015-06-24)
 	+ Refactoring 
