@@ -6,9 +6,6 @@ node_js:
   - "5.11"
   - "4.2"
 
-before_deploy: "npm version patch"
-
 deploy:
   provider: npm
-  email: "igor.bezkrovny@gmail.com"
   api_key: "8701189c-d219-40fc-ae6c-51cbd53eef18"
