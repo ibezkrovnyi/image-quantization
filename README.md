@@ -129,7 +129,7 @@ var pointContainer = iq.utils.PointContainer.fromHTMLImageElement(img);
 var distanceCalculator = new iq.distance.Euclidean();
 
 // create chosen palette quantizer (see classes implementing `iq.palette.IPaletteQuantizer`) 
-var paletteQuantizer = new iq.palette.RgbQuant(distanceCalculator, targetColors);
+var paletteQuantizer = new iq.palette.RGBQuant(distanceCalculator, targetColors);
 		
 // feed out pointContainer filled with image to paletteQuantizer
 paletteQuantizer.sample(pointContainer);
@@ -146,7 +146,7 @@ var palette = paletteQuantizer.quantize();
 var imageDitherer = new iq.image.NearestColor(distanceCalculator);
 
 // apply palette to image
-var resultPointContainer = imageQuantizer.quantize(pointContainer, palette);
+var resultPointContainer = imageDitherer.quantize(pointContainer, palette);
 ```
 
 You may work with resultPointContainer directly or you may convert it to `Uint8Array`/`Uint32Array`
