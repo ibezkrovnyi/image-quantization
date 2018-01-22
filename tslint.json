@@ -1,10 +1,15 @@
 {
-    "extends": [
-       "tslint:recommended",
-       "tslint-microsoft-contrib",
-       "tslint-consistent-codestyle"
-    ],
-    "rules": {
-        "no-relative-imports": false
-    }
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-airbnb",
+    "tslint-consistent-codestyle"
+  ],
+  "rules": {
+    "no-relative-imports": false,
+    "curly": [true, "ignore-same-line"],
+    "no-increment-decrement": false,
+    "member-access": [true, "no-public"],
+    "sort-imports": false,
+    "ordered-imports": false
+  }
 }

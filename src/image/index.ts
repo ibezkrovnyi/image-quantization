@@ -5,15 +5,15 @@
  *
  * iq.ts - Image Quantization Library
  */
-import { IImageDitherer } from "./common"
-import { NearestColor } from "./nearestColor"
-import { ErrorDiffusionArray, ErrorDiffusionArrayKernel } from "./array"
-import { ErrorDiffusionRiemersma } from "./riemersma"
+import { IImageDitherer } from './common';
+import { NearestColor } from './nearestColor';
+import { ErrorDiffusionArray, ErrorDiffusionArrayKernel } from './array';
+import { ErrorDiffusionRiemersma } from './riemersma';
 
 export {
     IImageDitherer,
     NearestColor,
     ErrorDiffusionArray,
     ErrorDiffusionArrayKernel,
-    ErrorDiffusionRiemersma
-}
+    ErrorDiffusionRiemersma,
+};

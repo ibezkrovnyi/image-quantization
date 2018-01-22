@@ -9,7 +9,7 @@
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
-    "test": "echo 'no tests at this time'",
+    "test": "npm run lint",
     "lint": "tslint --config tslint.json --project tsconfig.json",
     "build": "npm run esm && npm run cjs && npm run umd",
     "esm": "tsc --outDir dist/esm",
@@ -54,8 +54,8 @@
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.2",
     "tslint": "^5.9.1",
+    "tslint-config-airbnb": "^5.4.2",
     "tslint-consistent-codestyle": "^1.11.0",
-    "tslint-microsoft-contrib": "^5.0.2",
     "typescript": "^2.7.0-rc"
   }
 }

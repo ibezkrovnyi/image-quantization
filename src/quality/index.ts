@@ -5,8 +5,8 @@
  *
  * iq.ts - Image Quantization Library
  */
-import { SSIM } from "./ssim"
+import { SSIM } from './ssim';
 
 export {
-    SSIM
-}
+    SSIM,
+};

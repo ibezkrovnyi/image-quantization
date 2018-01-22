@@ -5,13 +5,13 @@
  *
  * iq.ts - Image Quantization Library
  */
-import { AbstractDistanceCalculator } from "./abstractDistanceCalculator"
-import { CIE94Textiles, CIE94GraphicArts } from "./cie94"
-import { CIEDE2000 } from "./ciede2000"
-import { CMETRIC } from "./cmetric"
-import { AbstractEuclidean, Euclidean, EuclideanRgbQuantWOAlpha, EuclideanRgbQuantWithAlpha } from "./euclidean"
-import { AbstractManhattan, Manhattan, ManhattanSRGB, ManhattanNommyde } from "./manhattan"
-import { PNGQUANT } from "./pngQuant"
+import { AbstractDistanceCalculator } from './abstractDistanceCalculator';
+import { CIE94Textiles, CIE94GraphicArts } from './cie94';
+import { CIEDE2000 } from './ciede2000';
+import { CMETRIC } from './cmetric';
+import { AbstractEuclidean, Euclidean, EuclideanRgbQuantWOAlpha, EuclideanRgbQuantWithAlpha } from './euclidean';
+import { AbstractManhattan, Manhattan, ManhattanSRGB, ManhattanNommyde } from './manhattan';
+import { PNGQUANT } from './pngQuant';
 
 export {
     AbstractDistanceCalculator,
@@ -29,5 +29,5 @@ export {
     AbstractManhattan,
     Manhattan,
     ManhattanSRGB,
-    ManhattanNommyde
-}
+    ManhattanNommyde,
+};

@@ -5,8 +5,8 @@
  *
  * constants.ts - part of Image Quantization Library
  */
-import * as bt709 from "./bt709"
+import * as bt709 from './bt709';
 
 export {
-    bt709
-}
+    bt709,
+};

@@ -5,11 +5,9 @@
  *
  * common.ts - part of Image Quantization Library
  */
-import { PointContainer } from "../utils/pointContainer"
-import { Palette } from "../utils/palette"
+import { PointContainer } from '../utils/pointContainer';
+import { Palette } from '../utils/palette';
 
 export interface IImageDitherer {
-    quantize(pointBuffer : PointContainer, palette : Palette) : PointContainer;
+  quantize(pointBuffer: PointContainer, palette: Palette): PointContainer;
 }
-
-

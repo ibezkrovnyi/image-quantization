@@ -5,7 +5,7 @@
  *
  * point.ts - part of Image Quantization Library
  */
-import { Y } from "../constants/bt709"
+import { Y } from '../constants/bt709';
 
 /**
  * v8 optimized class
@@ -13,59 +13,59 @@ import { Y } from "../constants/bt709"
  * 2) "set" should have |0 / >>> 0
  */
 export class Point {
-    r : number;
-    g : number;
-    b : number;
-    a : number;
-    uint32 : number;
-    rgba : number[]; // TODO: better name is quadruplet or quad may be?
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+  uint32: number;
+  rgba: number[]; // TODO: better name is quadruplet or quad may be?
     // Lab : { L : number; a : number; b : number };
 
-    static createByQuadruplet(quadruplet : number[]) : Point {
-        const point : Point = new Point();
+  static createByQuadruplet(quadruplet: number[]): Point {
+      const point: Point = new Point();
 
-        point.r = quadruplet[ 0 ] | 0;
-        point.g = quadruplet[ 1 ] | 0;
-        point.b = quadruplet[ 2 ] | 0;
-        point.a = quadruplet[ 3 ] | 0;
-        point._loadUINT32();
-        point._loadQuadruplet();
+      point.r = quadruplet[ 0 ] | 0;
+      point.g = quadruplet[ 1 ] | 0;
+      point.b = quadruplet[ 2 ] | 0;
+      point.a = quadruplet[ 3 ] | 0;
+      point._loadUINT32();
+      point._loadQuadruplet();
         //point._loadLab();
-        return point;
+      return point;
     }
 
-    static createByRGBA(red : number, green : number, blue : number, alpha : number) : Point {
-        const point : Point = new Point();
+  static createByRGBA(red: number, green: number, blue: number, alpha: number): Point {
+      const point: Point = new Point();
 
-        point.r = red | 0;
-        point.g = green | 0;
-        point.b = blue | 0;
-        point.a = alpha | 0;
-        point._loadUINT32();
-        point._loadQuadruplet();
+      point.r = red | 0;
+      point.g = green | 0;
+      point.b = blue | 0;
+      point.a = alpha | 0;
+      point._loadUINT32();
+      point._loadQuadruplet();
         //point._loadLab();
-        return point;
+      return point;
     }
 
-    static createByUint32(uint32 : number) : Point {
-        const point : Point = new Point();
+  static createByUint32(uint32: number): Point {
+      const point: Point = new Point();
 
-        point.uint32 = uint32 >>> 0;
-        point._loadRGBA();
-        point._loadQuadruplet();
+      point.uint32 = uint32 >>> 0;
+      point._loadRGBA();
+      point._loadQuadruplet();
         //point._loadLab();
-        return point;
+      return point;
     }
 
-    constructor() {
-        this.uint32 = -1 >>> 0;
-        this.r      = this.g = this.b = this.a = 0;
-        this.rgba = new Array(4);
+  constructor() {
+      this.uint32 = -1 >>> 0;
+      this.r      = this.g = this.b = this.a = 0;
+      this.rgba = new Array(4);
         /*[ this.r , this.g , this.b , this.a ]*/
-        this.rgba[ 0 ] = 0;
-        this.rgba[ 1 ] = 0;
-        this.rgba[ 2 ] = 0;
-        this.rgba[ 3 ] = 0;
+      this.rgba[ 0 ] = 0;
+      this.rgba[ 1 ] = 0;
+      this.rgba[ 2 ] = 0;
+      this.rgba[ 3 ] = 0;
         /*
          this.Lab = {
          L : 0.0,
@@ -75,16 +75,16 @@ export class Point {
          */
     }
 
-    from(point : Point) {
-        this.r         = point.r;
-        this.g         = point.g;
-        this.b         = point.b;
-        this.a         = point.a;
-        this.uint32    = point.uint32;
-        this.rgba[ 0 ] = point.r;
-        this.rgba[ 1 ] = point.g;
-        this.rgba[ 2 ] = point.b;
-        this.rgba[ 3 ] = point.a;
+  from(point: Point) {
+      this.r         = point.r;
+      this.g         = point.g;
+      this.b         = point.b;
+      this.a         = point.a;
+      this.uint32    = point.uint32;
+      this.rgba[ 0 ] = point.r;
+      this.rgba[ 1 ] = point.g;
+      this.rgba[ 2 ] = point.b;
+      this.rgba[ 3 ] = point.a;
 
         /*
          this.Lab.L = point.Lab.L;
@@ -101,15 +101,15 @@ export class Point {
      Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B) [2]
      Luminance (perceived option 2, slower to calculate):  sqrt( 0.241*R^2 + 0.691*G^2 + 0.068*B^2 ) ? sqrt( 0.299*R^2 + 0.587*G^2 + 0.114*B^2 ) (thanks to @MatthewHerbst) [http://alienryderflex.com/hsp.html]
      */
-    getLuminosity(useAlphaChannel : boolean) : number {
-        let r = this.r,
-            g = this.g,
-            b = this.b;
+  getLuminosity(useAlphaChannel: boolean): number {
+      let r = this.r,
+          g = this.g,
+          b = this.b;
 
-        if (useAlphaChannel) {
-            r = Math.min(255, 255 - this.a + this.a * r / 255);
-            g = Math.min(255, 255 - this.a + this.a * g / 255);
-            b = Math.min(255, 255 - this.a + this.a * b / 255);
+      if (useAlphaChannel) {
+          r = Math.min(255, 255 - this.a + this.a * r / 255);
+          g = Math.min(255, 255 - this.a + this.a * g / 255);
+          b = Math.min(255, 255 - this.a + this.a * b / 255);
         }
 
         //var luma = this.r * Point._RED_COEFFICIENT + this.g * Point._GREEN_COEFFICIENT + this.b * Point._BLUE_COEFFICIENT;
@@ -120,25 +120,25 @@ export class Point {
          }
          */
 
-        return r * Y.RED + g * Y.GREEN + b * Y.BLUE;
+      return r * Y.RED + g * Y.GREEN + b * Y.BLUE;
     }
 
-    private _loadUINT32() {
-        this.uint32 = (this.a << 24 | this.b << 16 | this.g << 8 | this.r) >>> 0;
+  private _loadUINT32() {
+      this.uint32 = (this.a << 24 | this.b << 16 | this.g << 8 | this.r) >>> 0;
     }
 
-    private _loadRGBA() {
-        this.r = this.uint32 & 0xff;
-        this.g = (this.uint32 >>> 8) & 0xff;
-        this.b = (this.uint32 >>> 16) & 0xff;
-        this.a = (this.uint32 >>> 24) & 0xff;
+  private _loadRGBA() {
+      this.r = this.uint32 & 0xff;
+      this.g = (this.uint32 >>> 8) & 0xff;
+      this.b = (this.uint32 >>> 16) & 0xff;
+      this.a = (this.uint32 >>> 24) & 0xff;
     }
 
-    private _loadQuadruplet() {
-        this.rgba[ 0 ] = this.r;
-        this.rgba[ 1 ] = this.g;
-        this.rgba[ 2 ] = this.b;
-        this.rgba[ 3 ] = this.a;
+  private _loadQuadruplet() {
+      this.rgba[ 0 ] = this.r;
+      this.rgba[ 1 ] = this.g;
+      this.rgba[ 2 ] = this.b;
+      this.rgba[ 3 ] = this.a;
 
         /*
          var xyz = rgb2xyz(this.r, this.g, this.b);
@@ -158,4 +158,3 @@ export class Point {
      }
      */
 }
-

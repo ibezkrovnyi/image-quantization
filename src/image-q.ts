@@ -5,13 +5,13 @@
  *
  * iq.ts - Image Quantization Library
  */
-import * as constants from "./constants"
-import * as conversion from "./conversion"
-import * as distance from "./distance"
-import * as palette from "./palette"
-import * as image from "./image"
-import * as quality from "./quality"
-import * as utils from "./utils"
+import * as constants from './constants';
+import * as conversion from './conversion';
+import * as distance from './distance';
+import * as palette from './palette';
+import * as image from './image';
+import * as quality from './quality';
+import * as utils from './utils';
 
 export {
     constants,
@@ -20,5 +20,5 @@ export {
     palette,
     image,
     quality,
-    utils
-}
+    utils,
+};
