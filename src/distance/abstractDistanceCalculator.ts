@@ -8,8 +8,8 @@
 import { Point } from "../utils/point"
 
 export abstract class AbstractDistanceCalculator {
-    protected _maxDistance : number;
-    protected _whitePoint : { r : number; g : number; b : number; a : number };
+    protected _maxDistance! : number;
+    protected _whitePoint! : { r : number; g : number; b : number; a : number };
 
     constructor() {
         this._setDefaults();

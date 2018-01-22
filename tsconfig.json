@@ -1,0 +1,21 @@
+{
+	"compilerOptions" : {
+		"outDir" : "dist",
+		"sourceMap" : true,
+		"inlineSources" : true,
+		"module" : "esnext",
+		"target" : "esnext",
+		"moduleResolution": "node",
+		"noFallthroughCasesInSwitch" : true,
+		"noUnusedLocals" : true,
+		"noUnusedParameters" : false,
+		"preserveConstEnums" : true,
+		"pretty" : false,
+		"strict" : true,
+		"forceConsistentCasingInFileNames" : true,
+		"declaration" : true
+	},
+	"files": [
+		"src/image-q.ts"
+	]
+}

@@ -19,10 +19,10 @@ export abstract class AbstractCIE94 extends AbstractDistanceCalculator {
      * Max DeltaE: 100
      * Max DeltaA: 255
      */
-    protected _kA : number;
-    protected _Kl : number;
-    protected _K1 : number;
-    protected _K2 : number;
+    protected _kA! : number;
+    protected _Kl! : number;
+    protected _K1! : number;
+    protected _K2! : number;
 
     calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
         const lab1 = rgb2lab(inRange0to255(r1 * this._whitePoint.r), inRange0to255(g1 * this._whitePoint.g), inRange0to255(b1 * this._whitePoint.b)),

@@ -68,15 +68,15 @@ function fillArray1D<T>(a : T[], dimension1 : number, value : T) : void {
 }
 
 export class WuColorCube {
-    redMinimum : number;
-    redMaximum : number;
-    greenMinimum : number;
-    greenMaximum : number;
-    blueMinimum : number;
-    blueMaximum : number;
-    volume : number;
-    alphaMinimum : number;
-    alphaMaximum : number;
+    redMinimum! : number;
+    redMaximum! : number;
+    greenMinimum! : number;
+    greenMaximum! : number;
+    blueMinimum! : number;
+    blueMaximum! : number;
+    volume! : number;
+    alphaMinimum! : number;
+    alphaMaximum! : number;
 }
 
 export class WuQuant {
@@ -86,30 +86,30 @@ export class WuQuant {
     private static readonly green = 1;
     private static readonly blue  = 0;
 
-    private _reds : number[];
-    private _greens : number[];
-    private _blues : number[];
-    private _alphas : number[];
-    private _sums : number[];
+    private _reds! : number[];
+    private _greens! : number[];
+    private _blues! : number[];
+    private _alphas! : number[];
+    private _sums! : number[];
 
-    private _weights : number[][][][];
-    private _momentsRed : number[][][][];
-    private _momentsGreen : number[][][][];
-    private _momentsBlue : number[][][][];
-    private _momentsAlpha : number[][][][];
-    private _moments : number[][][][];
+    private _weights! : number[][][][];
+    private _momentsRed! : number[][][][];
+    private _momentsGreen! : number[][][][];
+    private _momentsBlue! : number[][][][];
+    private _momentsAlpha! : number[][][][];
+    private _moments! : number[][][][];
 
-    private _table : number[];
-    private _pixels : Point[];
+    private _table! : number[];
+    private _pixels! : Point[];
 
-    private _cubes : WuColorCube[];
-    private _colors : number;
+    private _cubes! : WuColorCube[];
+    private _colors! : number;
 
-    private _significantBitsPerChannel : number;
-    private _maxSideIndex : number;
-    private _alphaMaxSideIndex : number;
-    private _sideSize : number;
-    private _alphaSideSize : number;
+    private _significantBitsPerChannel! : number;
+    private _maxSideIndex! : number;
+    private _alphaMaxSideIndex! : number;
+    private _sideSize! : number;
+    private _alphaSideSize! : number;
 
     private readonly _distance : AbstractDistanceCalculator;
 

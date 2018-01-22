@@ -29,7 +29,7 @@ export enum ErrorDiffusionArrayKernel {
 export class ErrorDiffusionArray implements IImageDitherer {
     private _minColorDistance : number;
     private _serpentine : boolean;
-    private _kernel : number[][];
+    private _kernel! : number[][];
     /** true = GIMP, false = XNVIEW */
             private _calculateErrorLikeGIMP : boolean;
 

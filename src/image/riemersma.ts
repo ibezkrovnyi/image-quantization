@@ -34,7 +34,7 @@ import { inRange0to255Rounded } from "../utils/arithmetic"
 
 export class ErrorDiffusionRiemersma implements IImageDitherer {
     private _distance : AbstractDistanceCalculator;
-    private _weights : number[];
+    private _weights! : number[];
     private _errorQueueSize : number;
     private _errorPropagation : number;
     private _max : number;

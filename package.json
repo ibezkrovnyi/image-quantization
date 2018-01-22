@@ -1,30 +1,26 @@
 {
-  "author": "Igor Bezkrovny",
   "name": "image-q",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
   "homepage": "https://github.com/igor-bezkrovny/image-quantization",
+  "main": "dist/umd/image-q.js",
+  "module": "dist/esm/image-q.js",
+  "types": "dist/esm/image-q.d.ts",
   "scripts": {
-    "test": "mocha --recursive",
-    "prepublish": "npm run dist",
-    "dist": "webpack --config ./src/webpack.config.js",
-    "watch": "webpack --config ./src/webpack.config.js --watch"
+    "test": "echo 'no tests at this time'",
+    "lint": "tslint --config tslint.json --project tsconfig.json",
+    "build": "npm run esm && npm run cjs && npm run umd",
+    "esm": "tsc --outDir dist/esm",
+    "cjs": "tsc -m commonjs --outDir dist/cjs",
+    "umd": "rollup -i dist/esm/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
+    "release": "npm update && npm run test && npm run build && npm version patch && git push --follow-tags && npm publish"
   },
+  "files": [
+    "dist"
+  ],
   "preferGlobal": false,
-  "main": "./dist/iq.js",
-  "typings": "./dist/iq.d.ts",
-  "dependencies": {},
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.0.2",
-    "source-map-loader": "^0.1.5",
-    "ts-loader": "^0.8.2",
-    "typedoc": "^0.4.4",
-    "typescript": "^2.0.0",
-    "webpack": "^1.13.1"
-  },
   "keywords": [
     "image",
     "palette",
@@ -39,6 +35,7 @@
     "dithering",
     "floyd-steinberg"
   ],
+  "author": "Igor Bezkrovny",
   "engines": {
     "node": ">=0.9.0"
   },
@@ -48,5 +45,17 @@
   },
   "bugs": {
     "url": "https://github.com/igor-bezkrovny/image-quantization/issues"
+  },
+  "dependencies": {
+    "rollup-plugin-local-resolve": "^1.0.7"
+  },
+  "devDependencies": {
+    "rollup": "^0.54.1",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.2",
+    "tslint": "^5.9.1",
+    "tslint-consistent-codestyle": "^1.11.0",
+    "tslint-microsoft-contrib": "^5.0.2",
+    "typescript": "^2.7.0-rc"
   }
 }

@@ -12,10 +12,10 @@ import { Y } from "../constants/bt709"
  * Manhattan distance (NeuQuant modification) - w/o sRGB coefficients
  */
 export abstract class AbstractManhattan extends AbstractDistanceCalculator {
-    protected _kR : number;
-    protected _kG : number;
-    protected _kB : number;
-    protected _kA : number;
+    protected _kR! : number;
+    protected _kG! : number;
+    protected _kB! : number;
+    protected _kA! : number;
 
     calculateRaw(r1 : number, g1 : number, b1 : number, a1 : number, r2 : number, g2 : number, b2 : number, a2 : number) : number {
         let dR = r2 - r1, dG = g2 - g1, dB = b2 - b1, dA = a2 - a1;

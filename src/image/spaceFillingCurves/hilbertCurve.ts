@@ -8,13 +8,13 @@ enum Direction {
 
 // Check code against double-entrance into walk (walk=> callback => walk)
 export class HilbertCurveBase {
-    private _x : number;
-    private _y : number;
-    private _d : number;
-    private _width : number;
-    private _height : number;
-    private _callback : (x : number, y : number, d : number) => void;
-    private _level : number;
+    private _x! : number;
+    private _y! : number;
+    private _d! : number;
+    private _width! : number;
+    private _height! : number;
+    private _callback! : (x : number, y : number, d : number) => void;
+    private _level! : number;
 
     walk(width : number, height : number, visitorCallback : (x : number, y : number, d : number) => void) : void {
         this._x        = 0;

@@ -19,7 +19,7 @@ export class Point {
     a : number;
     uint32 : number;
     rgba : number[]; // TODO: better name is quadruplet or quad may be?
-    Lab : { L : number; a : number; b : number };
+    // Lab : { L : number; a : number; b : number };
 
     static createByQuadruplet(quadruplet : number[]) : Point {
         const point : Point = new Point();

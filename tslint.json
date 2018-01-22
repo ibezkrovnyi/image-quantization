@@ -1,0 +1,10 @@
+{
+    "extends": [
+       "tslint:recommended",
+       "tslint-microsoft-contrib",
+       "tslint-consistent-codestyle"
+    ],
+    "rules": {
+        "no-relative-imports": false
+    }
+}

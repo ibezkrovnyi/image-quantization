@@ -139,17 +139,17 @@ export class NeuQuant implements IPaletteQuantizer {
 
     private _pointArray : Point[];
     private readonly _networkSize : number;
-    private _network : Neuron[];
+    private _network! : Neuron[];
 
     /** sampling factor 1..30 */
     private readonly _sampleFactor : number;
-    private _radPower : number[];
+    private _radPower! : number[];
 
     // bias and freq arrays for learning
-    private _freq : number[];
+    private _freq! : number[];
 
     /* for network lookup - really 256 */
-    private _bias : number[];
+    private _bias! : number[];
     private readonly _distance : AbstractDistanceCalculator;
 
     constructor(colorDistanceCalculator : AbstractDistanceCalculator, colors : number = 256) {
