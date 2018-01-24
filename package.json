@@ -10,7 +10,7 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "test": "npm run lint",
-    "lint": "tslint --config tslint.json --project tsconfig.json",
+    "lint": "tslint --format stylish --config tslint.json --project tsconfig.json",
     "build": "npm run esm && npm run cjs && npm run umd",
     "esm": "tsc --outDir dist/esm",
     "cjs": "tsc -m commonjs --outDir dist/cjs",

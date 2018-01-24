@@ -18,18 +18,21 @@ export class AbstractEuclidean extends AbstractDistanceCalculator {
   protected _kA!: number;
 
   calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number): number {
-      const dR = r2 - r1, dG = g2 - g1, dB = b2 - b1, dA = a2 - a1;
-      return Math.sqrt(this._kR * dR * dR + this._kG * dG * dG + this._kB * dB * dB + this._kA * dA * dA);
-    }
+    const dR = r2 - r1;
+    const dG = g2 - g1;
+    const dB = b2 - b1;
+    const dA = a2 - a1;
+    return Math.sqrt(this._kR * dR * dR + this._kG * dG * dG + this._kB * dB * dB + this._kA * dA * dA);
+  }
 }
 
 export class Euclidean extends AbstractEuclidean {
   protected _setDefaults() {
-      this._kR = 1;
-      this._kG = 1;
-      this._kB = 1;
-      this._kA = 1;
-    }
+    this._kR = 1;
+    this._kG = 1;
+    this._kB = 1;
+    this._kA = 1;
+  }
 }
 
 /**
@@ -37,12 +40,12 @@ export class Euclidean extends AbstractEuclidean {
  */
 export class EuclideanRgbQuantWithAlpha extends AbstractEuclidean {
   protected _setDefaults() {
-      this._kR = Y.RED;
-      this._kG = Y.GREEN;
-      this._kB = Y.BLUE;
-        // TODO: what is the best coefficient below?
-      this._kA = 1;
-    }
+    this._kR = Y.RED;
+    this._kG = Y.GREEN;
+    this._kB = Y.BLUE;
+    // TODO: what is the best coefficient below?
+    this._kA = 1;
+  }
 }
 
 /**
@@ -50,9 +53,9 @@ export class EuclideanRgbQuantWithAlpha extends AbstractEuclidean {
  */
 export class EuclideanRgbQuantWOAlpha extends AbstractEuclidean {
   protected _setDefaults() {
-      this._kR = Y.RED;
-      this._kG = Y.GREEN;
-      this._kB = Y.BLUE;
-      this._kA = 0;
-    }
+    this._kR = Y.RED;
+    this._kG = Y.GREEN;
+    this._kB = Y.BLUE;
+    this._kA = 0;
+  }
 }

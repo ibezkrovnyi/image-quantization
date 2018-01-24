@@ -13,13 +13,13 @@ import { ColorHistogram } from './rgbquant/colorHistogram';
 import { WuQuant, WuColorCube } from './wu/wuQuant';
 
 export {
-    IPaletteQuantizer,
+  IPaletteQuantizer,
 
-    NeuQuant,
-    NeuQuantFloat,
-    RGBQuant,
-    WuQuant,
+  NeuQuant,
+  NeuQuantFloat,
+  RGBQuant,
+  WuQuant,
 
-    ColorHistogram,
-    WuColorCube,
+  ColorHistogram,
+  WuColorCube,
 };

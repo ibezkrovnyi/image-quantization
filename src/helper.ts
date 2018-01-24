@@ -15,30 +15,30 @@ import { Palette } from "./utils/palette"
 import { SSIM } from "./quality/ssim"
 
 export class IQ {
-    private paletteQuantizer : IPaletteQuantizer;
-    private distanceCalculator : AbstractDistanceCalculator;
-    private ditherer : IImageDitherer;
+  private paletteQuantizer: IPaletteQuantizer;
+  private distanceCalculator: AbstractDistanceCalculator;
+  private ditherer: IImageDitherer;
 
-    constructor(colors : number, DistanceCalculator : new() => AbstractDistanceCalculator, Quantizer : new(distanceCalculator : AbstractDistanceCalculator, color : number) => IPaletteQuantizer, ditherer : IImageDitherer) {
-        this.ditherer           = ditherer;
-        this.distanceCalculator = new DistanceCalculator();
-        this.paletteQuantizer   = new Quantizer(this.distanceCalculator, colors);
-    }
+  constructor(colors: number, DistanceCalculator: new() => AbstractDistanceCalculator, Quantizer: new(distanceCalculator: AbstractDistanceCalculator, color: number) => IPaletteQuantizer, ditherer: IImageDitherer) {
+    this.ditherer = ditherer;
+    this.distanceCalculator = new DistanceCalculator();
+    this.paletteQuantizer = new Quantizer(this.distanceCalculator, colors);
+  }
 
-    sample(image : PointContainer) : void {
-        this.paletteQuantizer.sample(image);
-    }
+  sample(image: PointContainer): void {
+    this.paletteQuantizer.sample(image);
+  }
 
-    buildPalette() : Palette {
-        return this.paletteQuantizer.quantize();
-    }
+  buildPalette(): Palette {
+    return this.paletteQuantizer.quantize();
+  }
 
-    buildImage(image : PointContainer, palette : Palette) : PointContainer {
-        return this.ditherer.quantize(image, palette);
-    }
+  buildImage(image: PointContainer, palette: Palette): PointContainer {
+    return this.ditherer.quantize(image, palette);
+  }
 
-    compare(image1 : PointContainer, image2 : PointContainer) {
-        return new SSIM().compare(image1, image2)
-    }
+  compare(image1: PointContainer, image2: PointContainer) {
+    return new SSIM().compare(image1, image2)
+  }
 }
 

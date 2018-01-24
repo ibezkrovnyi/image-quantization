@@ -17,125 +17,125 @@ export class PointContainer {
   private _height: number;
 
   constructor() {
-      this._width      = 0;
-      this._height     = 0;
-      this._pointArray = [];
-    }
+    this._width = 0;
+    this._height = 0;
+    this._pointArray = [];
+  }
 
   getWidth(): number {
-      return this._width;
-    }
+    return this._width;
+  }
 
   getHeight(): number {
-      return this._height;
-    }
+    return this._height;
+  }
 
   setWidth(width: number): void {
-      this._width = width;
-    }
+    this._width = width;
+  }
 
   setHeight(height: number): void {
-      this._height = height;
-    }
+    this._height = height;
+  }
 
   getPointArray(): Point[] {
-      return this._pointArray;
-    }
+    return this._pointArray;
+  }
 
   clone(): PointContainer {
-      const clone   = new PointContainer();
-      clone._width  = this._width;
-      clone._height = this._height;
+    const clone = new PointContainer();
+    clone._width = this._width;
+    clone._height = this._height;
 
-      for (let i = 0, l = this._pointArray.length; i < l; i++) {
-          clone._pointArray[ i ] = Point.createByUint32(this._pointArray[ i ].uint32 | 0); // "| 0" is added for v8 optimization
-        }
-
-      return clone;
+    for (let i = 0, l = this._pointArray.length; i < l; i++) {
+      clone._pointArray[ i ] = Point.createByUint32(this._pointArray[ i ].uint32 | 0); // "| 0" is added for v8 optimization
     }
+
+    return clone;
+  }
 
   toUint32Array(): Uint32Array {
-      const l           = this._pointArray.length,
-          uint32Array = new Uint32Array(l);
+    const l = this._pointArray.length;
+    const uint32Array = new Uint32Array(l);
 
-      for (let i = 0; i < l; i++) {
-          uint32Array[ i ] = this._pointArray[ i ].uint32;
-        }
-
-      return uint32Array;
+    for (let i = 0; i < l; i++) {
+      uint32Array[ i ] = this._pointArray[ i ].uint32;
     }
+
+    return uint32Array;
+  }
 
   toUint8Array(): Uint8Array {
-      return new Uint8Array(this.toUint32Array().buffer);
-    }
+    return new Uint8Array(this.toUint32Array().buffer);
+  }
 
   static fromHTMLImageElement(img: HTMLImageElement): PointContainer {
-      const width  = img.naturalWidth,
-          height = img.naturalHeight;
+    const width = img.naturalWidth;
+    const height = img.naturalHeight;
 
-      const canvas  = document.createElement('canvas');
-      canvas.width  = width;
-      canvas.height = height;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
 
-      const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-      ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
 
-      return PointContainer.fromHTMLCanvasElement(canvas);
-    }
+    return PointContainer.fromHTMLCanvasElement(canvas);
+  }
 
   static fromHTMLCanvasElement(canvas: HTMLCanvasElement): PointContainer {
-      const width  = canvas.width,
-          height = canvas.height;
+    const width = canvas.width;
+    const height = canvas.height;
 
-      const ctx     = canvas.getContext('2d') as CanvasRenderingContext2D,
-          imgData = ctx.getImageData(0, 0, width, height);
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    const imgData = ctx.getImageData(0, 0, width, height);
 
-      return PointContainer.fromImageData(imgData);
-    }
+    return PointContainer.fromImageData(imgData);
+  }
 
   static fromNodeCanvas(canvas: any): PointContainer {
-      return PointContainer.fromHTMLCanvasElement(canvas);
-    }
+    return PointContainer.fromHTMLCanvasElement(canvas);
+  }
 
   static fromImageData(imageData: ImageData): PointContainer {
-      const width  = imageData.width,
-          height = imageData.height;
+    const width = imageData.width;
+    const height = imageData.height;
 
-      return PointContainer.fromCanvasPixelArray(imageData.data, width, height);
-        /*
-         var buf8;
-         if (Utils.typeOf(imageData.data) == "CanvasPixelArray")
-         buf8 = new Uint8Array(imageData.data);
-         else
-         buf8 = imageData.data;
+    return PointContainer.fromCanvasPixelArray(imageData.data, width, height);
+    /*
+     var buf8;
+     if (Utils.typeOf(imageData.data) == "CanvasPixelArray")
+     buf8 = new Uint8Array(imageData.data);
+     else
+     buf8 = imageData.data;
 
-         this.fromUint32Array(new Uint32Array(buf8.buffer), width, height);
-         */
-    }
+     this.fromUint32Array(new Uint32Array(buf8.buffer), width, height);
+     */
+  }
 
   static fromArray(byteArray: number[], width: number, height: number): PointContainer {
-      const uint8array = new Uint8Array(byteArray);
-      return PointContainer.fromUint8Array(uint8array, width, height);
-    }
+    const uint8array = new Uint8Array(byteArray);
+    return PointContainer.fromUint8Array(uint8array, width, height);
+  }
 
   static fromCanvasPixelArray(data: any, width: number, height: number): PointContainer {
-      return PointContainer.fromArray(data, width, height);
-    }
+    return PointContainer.fromArray(data, width, height);
+  }
 
   static fromUint8Array(uint8array: Uint8Array, width: number, height: number): PointContainer {
-      return PointContainer.fromUint32Array(new Uint32Array(uint8array.buffer), width, height);
-    }
+    return PointContainer.fromUint32Array(new Uint32Array(uint8array.buffer), width, height);
+  }
 
   static fromUint32Array(uint32array: Uint32Array, width: number, height: number): PointContainer {
-      const container = new PointContainer();
+    const container = new PointContainer();
 
-      container._width  = width;
-      container._height = height;
+    container._width = width;
+    container._height = height;
 
-      for (let i = 0, l = uint32array.length; i < l; i++) {
-          container._pointArray[ i ] = Point.createByUint32(uint32array[ i ] | 0); // "| 0" is added for v8 optimization
-        }
-
-      return container;
+    for (let i = 0, l = uint32array.length; i < l; i++) {
+      container._pointArray[ i ] = Point.createByUint32(uint32array[ i ] | 0); // "| 0" is added for v8 optimization
     }
+
+    return container;
+  }
 }

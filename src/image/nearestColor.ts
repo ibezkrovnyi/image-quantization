@@ -14,22 +14,22 @@ export class NearestColor implements IImageDitherer {
   private _distance: AbstractDistanceCalculator;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator) {
-      this._distance = colorDistanceCalculator;
-    }
+    this._distance = colorDistanceCalculator;
+  }
 
   quantize(pointBuffer: PointContainer, palette: Palette): PointContainer {
-      const pointArray = pointBuffer.getPointArray(),
-          width      = pointBuffer.getWidth(),
-          height     = pointBuffer.getHeight();
+    const pointArray = pointBuffer.getPointArray();
+    const width = pointBuffer.getWidth();
+    const height = pointBuffer.getHeight();
 
-      for (let y = 0; y < height; y++) {
-          for (let x = 0, idx = y * width; x < width; x++, idx++) {
-                // Image pixel
-              const point = pointArray[ idx ];
-                // Reduced pixel
-              point.from(palette.getNearestColor(this._distance, point));
-            }
-        }
-      return pointBuffer;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0, idx = y * width; x < width; x++, idx++) {
+        // Image pixel
+        const point = pointArray[ idx ];
+        // Reduced pixel
+        point.from(palette.getNearestColor(this._distance, point));
+      }
     }
+    return pointBuffer;
+  }
 }

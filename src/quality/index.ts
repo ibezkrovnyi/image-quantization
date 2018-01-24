@@ -8,5 +8,5 @@
 import { SSIM } from './ssim';
 
 export {
-    SSIM,
+  SSIM,
 };

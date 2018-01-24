@@ -4,15 +4,15 @@ export function degrees2radians(n: number): number {
 
 export function max3(a: number, b: number, c: number) {
   let m = a;
-  (m < b) && (m = b);
-  (m < c) && (m = c);
+  if (m < b) m = b;
+  if (m < c) m = c;
   return m;
 }
 
 export function min3(a: number, b: number, c: number) {
   let m = a;
-  (m > b) && (m = b);
-  (m > c) && (m = c);
+  if (m > b) m = b;
+  if (m > c) m = c;
   return m;
 }
 
@@ -40,22 +40,22 @@ export function stableSort<T>(arrayToSort: T[], callback: (a: T, b: T) => number
   let sorted: T[];
 
   if (type === 'number' || type === 'string') {
-      const ord = Object.create(null);
-      for (let i = 0, l = arrayToSort.length; i < l; i++) {
-          const val: string = arrayToSort[ i ] as any;
-          if (ord[ val ] || ord[ val ] === 0) continue;
-          ord[ val ] = i;
-        }
-
-      sorted = arrayToSort.sort(function (a, b) {
-          return callback(a, b) || ord[ a as any ] - ord[ b as any ];
-        });
-    } else {
-      const ord2: T[] = arrayToSort.slice(0);
-      sorted           = arrayToSort.sort(function (a, b) {
-          return callback(a, b) || ord2.indexOf(a) - ord2.indexOf(b);
-        });
+    const ord = Object.create(null);
+    for (let i = 0, l = arrayToSort.length; i < l; i++) {
+      const val: string = arrayToSort[ i ] as any;
+      if (ord[ val ] || ord[ val ] === 0) continue;
+      ord[ val ] = i;
     }
+
+    sorted = arrayToSort.sort(function (a, b) {
+      return callback(a, b) || ord[ a as any ] - ord[ b as any ];
+    });
+  } else {
+    const ord2: T[] = arrayToSort.slice(0);
+    sorted = arrayToSort.sort(function (a, b) {
+      return callback(a, b) || ord2.indexOf(a) - ord2.indexOf(b);
+    });
+  }
 
   return sorted;
 }

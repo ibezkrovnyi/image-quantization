@@ -10,6 +10,27 @@
     "no-increment-decrement": false,
     "member-access": [true, "no-public"],
     "sort-imports": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "no-parameter-reassignment": false,
+    "max-line-length": false,
+    "no-bitwise": false,
+    "max-classes-per-file": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+    "function-name": [true, {
+      "method-regex": "^[a-z][\\w\\d]+$",
+      "private-method-regex": "^_?[a-z][\\w\\d]+$",
+      "protected-method-regex": "^_?[a-z][\\w\\d]+$",
+      "static-method-regex": "^[a-z][\\w\\d]+$",
+      "function-regex": "^[a-z][\\w\\d]+$"
+    }],
+    "ter-arrow-parens": false,
+    "interface-name": false,
+    "only-arrow-functions": false,
+    "ter-prefer-arrow-callback": false,
+    "object-literal-sort-keys": false,
+    "no-empty": false,
+    "prefer-array-literal": false,
+    "member-ordering": false,
+    "strict-boolean-expressions": false
   }
 }
