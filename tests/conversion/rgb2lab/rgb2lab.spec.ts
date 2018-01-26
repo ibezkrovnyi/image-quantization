@@ -1,15 +1,15 @@
-var dataLab2RGB = require('./dataLab2RGB.json'),
-	dataRGB2Lab = require('./dataRGB2Lab.json'),
-	iq          = require('../../../dist/cjs/image-q'),
-	rgb2lab     = iq.conversion.rgb2lab,
-	lab2rgb     = iq.conversion.lab2rgb;
+import { conversion } from '../../../dist/cjs/image-q';
+import { dataLab2RGB } from './dataLab2RGB';
+import { dataRGB2Lab } from './dataRGB2Lab';
+
+const rgb2lab = conversion.rgb2lab;
+const lab2rgb = conversion.lab2rgb;
 
 describe('lab2xyz and back', function () {
-
 	dataLab2RGB.forEach(item => {
 		test(`Colors: Lab = ${item.Lab.L}, ${item.Lab.a}, ${item.Lab.b}`, () => {
-			var xyz = iq.conversion.lab2xyz(item.Lab.L, item.Lab.a, item.Lab.b),
-				lab = iq.conversion.xyz2lab(xyz.x, xyz.y, xyz.z);
+			var xyz = conversion.lab2xyz(item.Lab.L, item.Lab.a, item.Lab.b),
+				lab = conversion.xyz2lab(xyz.x, xyz.y, xyz.z);
 			expect(deepRound(lab, 4)).toEqual(deepRound(item.Lab, 4));
 		});
 	});
@@ -19,8 +19,8 @@ describe('rgb2xyz and back', function () {
 
 	dataRGB2Lab.forEach(item => {
 		test(`Colors: rgb = ${item.rgb.r}, ${item.rgb.g}, ${item.rgb.b}`, () => {
-			var xyz = iq.conversion.rgb2xyz(item.rgb.r, item.rgb.g, item.rgb.b),
-				rgb = iq.conversion.xyz2rgb(xyz.x, xyz.y, xyz.z);
+			var xyz = conversion.rgb2xyz(item.rgb.r, item.rgb.g, item.rgb.b),
+				rgb = conversion.xyz2rgb(xyz.x, xyz.y, xyz.z);
 			expect(deepRound(rgb, 4)).toEqual(deepRound(item.rgb, 4));
 		});
 	});
@@ -29,10 +29,10 @@ describe('rgb2xyz and back', function () {
 describe('xyz2lab and back', function () {
 
 	dataLab2RGB.forEach(item => {
-		const xyz = iq.conversion.lab2xyz(item.Lab.L, item.Lab.a, item.Lab.b);
+		const xyz = conversion.lab2xyz(item.Lab.L, item.Lab.a, item.Lab.b);
 		test(`Colors: xyz = ${xyz.x}, ${xyz.y}, ${xyz.z}`, () => {
-			var lab    = iq.conversion.xyz2lab(xyz.x, xyz.y, xyz.z),
-				newXyz = iq.conversion.lab2xyz(lab.L, lab.a, lab.b);
+			var lab    = conversion.xyz2lab(xyz.x, xyz.y, xyz.z),
+				newXyz = conversion.lab2xyz(lab.L, lab.a, lab.b);
 			expect(deepRound(newXyz, 4)).toEqual(deepRound(xyz, 4));
 		});
 	});
@@ -41,10 +41,10 @@ describe('xyz2lab and back', function () {
 describe('xyz2rgb and back', function () {
 
 	dataRGB2Lab.forEach(item => {
-		const xyz = iq.conversion.rgb2xyz(item.rgb.r, item.rgb.g, item.rgb.b);
+		const xyz = conversion.rgb2xyz(item.rgb.r, item.rgb.g, item.rgb.b);
 		test(`Colors: xyz = ${xyz.x}, ${xyz.y}, ${xyz.z}`, () => {
-			var rgb    = iq.conversion.xyz2rgb(xyz.x, xyz.y, xyz.z),
-				newXyz = iq.conversion.rgb2xyz(rgb.r, rgb.g, rgb.b);
+			var rgb    = conversion.xyz2rgb(xyz.x, xyz.y, xyz.z),
+				newXyz = conversion.rgb2xyz(rgb.r, rgb.g, rgb.b);
 			expect(deepRound(newXyz, 4)).toEqual(deepRound(xyz, 4));
 		});
 	});

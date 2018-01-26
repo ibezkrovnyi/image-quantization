@@ -42,7 +42,7 @@ var data = [
  * Implementation Notes, Supplementary Test Data, and Mathematical Observations"
  * by Gaurav Sharma, Wencheng Wu and Edul N. Dalal.
  */
-var data = [
+export const data = [
 	{
 		Lab1     : {
 			L : 50,
@@ -487,4 +487,3 @@ var data = [
 	}
 ];
 
-module.exports = data;
