@@ -1,6 +1,5 @@
-var expect    = require('chai').expect,
-	dataInLab = require('./dataInLab.js'),
-	iq        = require('../../../dist/iq')
+var dataInLab = require('./dataInLab.js'),
+	iq        = require('../../../dist/cjs/image-q')
 
 		describe(`CIEDE2000`, function () {
 			const ciede2000 = new (iq.distance.CIEDE2000)();
@@ -11,11 +10,11 @@ var expect    = require('chai').expect,
 function doTests (ciede2000) {
 	describe('color distance should be correctly calculated (Lab)', function () {
 		dataInLab.forEach(item => {
-			it(`Colors: Lab1 = ${dir(item.Lab1)}, Lab2 = ${dir(item.Lab2)}`, function () {
+			test(`Colors: Lab1 = ${dir(item.Lab1)}, Lab2 = ${dir(item.Lab2)}`, function () {
 				var raw = ciede2000.calculateRawInLab(item.Lab1, item.Lab2),
 					dE  = Number(Math.sqrt(raw).toFixed(4));
 
-				expect(dE).to.be.equal(item.distance);
+				expect(dE).toEqual(item.distance);
 			});
 		})
 	});
@@ -27,9 +26,9 @@ function doTests (ciede2000) {
 				  point1 = iq.utils.Point.createByRGBA(rgb1.r, rgb1.g, rgb1.b, 0),
 				  point2 = iq.utils.Point.createByRGBA(rgb2.r, rgb2.g, rgb2.b, 0);
 
-			it(`Colors: Lab1 = ${dir(item.Lab1)}, Lab2 = ${dir(item.Lab2)}`, function () {
+			test(`Colors: Lab1 = ${dir(item.Lab1)}, Lab2 = ${dir(item.Lab2)}`, function () {
 				var normalized = ciede2000.calculateNormalized(point1, point2);
-				expect(normalized).to.be.at.most(1);
+				expect(normalized).toBeLessThanOrEqual(1);
 				// console.log(normalized)
 			});
 		})
