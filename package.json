@@ -51,12 +51,12 @@
     "jest": "22.1.4",
     "rollup": "0.54.1",
     "rollup-plugin-commonjs": "8.2.6",
-    "rollup-plugin-node-resolve": "3.0.2",
     "rollup-plugin-local-resolve": "1.0.7",
+    "rollup-plugin-node-resolve": "3.0.2",
     "ts-jest": "22.0.1",
     "tslint": "5.9.1",
     "tslint-config-airbnb": "5.4.2",
     "tslint-consistent-codestyle": "1.11.0",
-    "typescript": "2.7.0-dev.20171118"
+    "typescript": "2.7.0-dev.20180124"
   }
 }
