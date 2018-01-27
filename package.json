@@ -9,6 +9,7 @@
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
     "test": "npm run lint && jest",
     "lint": "tslint --format stylish --config tslint.json --project tsconfig.json",
     "build": "npm run esm && npm run cjs && npm run umd",
