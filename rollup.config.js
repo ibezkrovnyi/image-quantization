@@ -7,7 +7,7 @@ export default {
     file: 'dist/umd/image-q.umd.js',
     format: 'umd',
     name: 'image-q',
-    sourcemap: 'inline'
+    sourcemap: true
   },
   plugins: [
     resolve(),

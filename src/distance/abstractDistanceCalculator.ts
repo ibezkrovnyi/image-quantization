@@ -13,7 +13,7 @@ export abstract class AbstractDistanceCalculator {
     r: number;
     g: number;
     b: number;
-    a: number
+    a: number;
   };
 
   constructor() {
