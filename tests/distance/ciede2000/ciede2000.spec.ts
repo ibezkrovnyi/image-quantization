@@ -1,5 +1,5 @@
 import { data as dataInLab } from './dataInLab';
-import { conversion, distance, utils } from '../../../dist/cjs/image-q';
+import { conversion, distance, utils } from '../../../src/image-q';
 
 describe(`CIEDE2000`, function () {
   const ciede2000 = new (distance.CIEDE2000)();

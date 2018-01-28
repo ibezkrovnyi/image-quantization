@@ -9,20 +9,19 @@
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
-    "test": "npm run lint && jest",
-    "lint": "tslint --format stylish --config tslint.json --project tsconfig.json",
-    "build": "npm run esm && npm run cjs && npm run umd",
-    "esm": "tsc --outDir dist/esm",
-    "cjs": "tsc -m commonjs --outDir dist/cjs",
-    "umd": "rollup -i dist/esm/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
-    "release": "npm update && npm run test && npm run build && npm version patch && git push --follow-tags && npm publish"
+    "prepublish": "tsc --outDir dist/esm && tsc -m commonjs --outDir dist/cjs && rollup -i dist/esm/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
+    "test": "tslint --format stylish --config tslint.json --project tsconfig.json && jest",
+    "test:watch": "jest --watch",
+    "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags"
   },
   "files": [
     "dist"
   ],
   "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["text", "text-summary", "html"],
     "roots": [
+      "<rootDir>/src",
       "<rootDir>/tests"
     ],
     "globals": {
@@ -80,6 +79,7 @@
     "tslint": "5.9.1",
     "tslint-config-airbnb": "5.4.2",
     "tslint-consistent-codestyle": "1.11.0",
+    "tslint-language-service": "^0.9.8",
     "typescript": "2.7.0-dev.20180124"
   }
 }

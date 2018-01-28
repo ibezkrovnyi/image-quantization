@@ -1,19 +1,24 @@
 {
-	"compilerOptions" : {
-		"outDir" : "dist",
-		"sourceMap" : true,
-		"inlineSources" : true,
-		"module" : "esnext",
-		"target" : "esnext",
+	"compilerOptions": {
+		"outDir": "dist",
+		"sourceMap": true,
+		"inlineSources": true,
+		"module": "esnext",
+		"target": "esnext",
 		"moduleResolution": "node",
-		"noFallthroughCasesInSwitch" : true,
-		"noUnusedLocals" : true,
-		"noUnusedParameters" : false,
-		"preserveConstEnums" : true,
-		"pretty" : false,
-		"strict" : true,
-		"forceConsistentCasingInFileNames" : true,
-		"declaration" : true
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": false,
+		"preserveConstEnums": true,
+		"pretty": false,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"declaration": true,
+		"plugins": [
+			{
+				"name": "tslint-language-service"
+			}
+		]
 	},
 	"files": [
 		"src/image-q.ts"

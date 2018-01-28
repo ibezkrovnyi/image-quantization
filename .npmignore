@@ -1,4 +1,7 @@
+/.vscode
 /.idea
+
+/coverage
 /examples/node.js/demo.js
 /examples/node.js/demo.js.map
 /examples/apply-palette-from-file/out
