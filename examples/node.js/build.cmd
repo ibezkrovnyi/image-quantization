@@ -1,7 +1,7 @@
 pushd %~dp0
 del /f /q dist\demo.js
 del /f /q dist\demo.js.map
-call npm run dist
+call ../../node_modules/.bin/tsc demo.ts
 call tsc demo.ts --sourcemap
 node demo.js
 popd

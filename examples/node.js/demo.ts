@@ -1,4 +1,4 @@
-import iq = require("../../dist/iq")
+import iq = require("../../dist/cjs/image-q")
 
 var p1 = iq.utils.Point.createByRGBA(0, 0, 0, 0),
 	p2 = iq.utils.Point.createByRGBA(255, 255, 255, 0);
