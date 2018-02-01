@@ -18,7 +18,7 @@ import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
 import { ColorHistogram } from './colorHistogram';
-import { IPaletteQuantizer } from '../common';
+import { PaletteQuantizer } from '../common';
 import { stableSort } from '../../utils/arithmetic';
 
 class RemovedColor {
@@ -34,7 +34,7 @@ class RemovedColor {
 }
 
 // TODO: make input/output image and input/output palettes with instances of class Point only!
-export class RGBQuant implements IPaletteQuantizer {
+export class RGBQuant implements PaletteQuantizer {
   // desired final palette size
   private readonly _colors: number;
 

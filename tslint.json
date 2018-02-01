@@ -5,6 +5,8 @@
     "tslint-consistent-codestyle"
   ],
   "rules": {
+    "no-angle-bracket-type-assertion": true,
+
     "no-relative-imports": false,
     "curly": [true, "ignore-same-line"],
     "no-increment-decrement": false,

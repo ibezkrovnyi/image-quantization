@@ -84,6 +84,6 @@
     "tslint-config-airbnb": "5.4.2",
     "tslint-consistent-codestyle": "1.11.0",
     "tslint-language-service": "0.9.8",
-    "typescript": "2.7.0-dev.20180124"
+    "typescript": "2.7.1"
   }
 }

@@ -22,9 +22,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  *
- * nearestColor.ts - part of Image Quantization Library
+ * riemersma.ts - part of Image Quantization Library
  */
-import { IImageDitherer } from './common';
+import { ImageQuantizer } from './common';
 import { HilbertCurveBase } from './spaceFillingCurves/hilbertCurve';
 import { AbstractDistanceCalculator } from '../distance/abstractDistanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
@@ -32,7 +32,7 @@ import { Palette } from '../utils/palette';
 import { Point } from '../utils/point';
 import { inRange0to255Rounded } from '../utils/arithmetic';
 
-export class ErrorDiffusionRiemersma implements IImageDitherer {
+export class ErrorDiffusionRiemersma implements ImageQuantizer {
   private _distance: AbstractDistanceCalculator;
   private _weights!: number[];
   private _errorQueueSize: number;

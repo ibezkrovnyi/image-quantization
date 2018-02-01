@@ -8,6 +8,6 @@
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 
-export interface IImageDitherer {
+export interface ImageQuantizer {
   quantize(pointBuffer: PointContainer, palette: Palette): PointContainer;
 }

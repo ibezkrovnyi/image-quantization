@@ -31,7 +31,7 @@ import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
-import { IPaletteQuantizer } from '../common';
+import { PaletteQuantizer } from '../common';
 
 // bias for colour values
 const networkBiasShift = 3;
@@ -82,7 +82,7 @@ class Neuron {
    */
 }
 
-export class NeuQuant implements IPaletteQuantizer {
+export class NeuQuant implements PaletteQuantizer {
   /*
    four primes near 500 - assume no image has a length so large
    that it is divisible by all four primes

@@ -8,7 +8,7 @@
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 
-export interface IPaletteQuantizer {
+export interface PaletteQuantizer {
   sample(pointBuffer: PointContainer): void;
   quantize(): Palette;
 }
