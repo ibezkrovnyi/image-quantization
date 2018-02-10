@@ -9,6 +9,9 @@ import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
+import { PaletteQuantizer } from '..';
+import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
+import { ProgressTracker } from '../../utils';
 
 function createArray1D(dimension1: number) {
   const a: number[] = [];
@@ -79,7 +82,7 @@ export class WuColorCube {
   alphaMaximum!: number;
 }
 
-export class WuQuant {
+export class WuQuant extends PaletteQuantizer {
 
   private static readonly alpha = 3;
   private static readonly red = 2;
@@ -113,6 +116,7 @@ export class WuQuant {
   private readonly _distance: AbstractDistanceCalculator;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors: number = 256, significantBitsPerChannel: number = 5) {
+    super();
     this._distance = colorDistanceCalculator;
     this._setQuality(significantBitsPerChannel);
     this._initialize(colors);
@@ -128,8 +132,8 @@ export class WuQuant {
     this._pixels = this._pixels.concat(pointArray);
   }
 
-  quantize(): Palette {
-    this._preparePalette();
+  * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {
+    yield * this._preparePalette();
 
     const palette: Palette = new Palette();
 
@@ -148,12 +152,16 @@ export class WuQuant {
     }
 
     palette.sort();
-    return palette;
+
+    yield {
+      palette,
+      progress: 100,
+    };
   }
 
-  private _preparePalette(): void {
+  private * _preparePalette(): IterableIterator<PaletteQuantizerYieldValue> {
     // preprocess the colors
-    this._calculateMoments();
+    yield * this._calculateMoments();
 
     let next = 0;
     const volumeVariance = createArray1D(this._colors);
@@ -231,13 +239,6 @@ export class WuQuant {
         const foundAlpha = lookupAlpha[ lookup ];
 
         const distance = this._distance.calculateRaw(foundRed, foundGreen, foundBlue, foundAlpha, color.r, color.g, color.b, color.a);
-        // var distance = this._distance.calculateRaw(Utils.Point.createByRGBA(foundRed, foundGreen, foundBlue, foundAlpha), color);
-        // deltaRed   = color.r - foundRed,
-        // deltaGreen = color.g - foundGreen,
-        // deltaBlue  = color.b - foundBlue,
-        // deltaAlpha = color.a - foundAlpha,
-
-        // distance   = deltaRed * deltaRed + deltaGreen * deltaGreen + deltaBlue * deltaBlue + deltaAlpha * deltaAlpha;
 
         if (distance < bestDistance) {
           bestDistance = distance;
@@ -273,7 +274,7 @@ export class WuQuant {
   /**
    * Converts the histogram to a series of _moments.
    */
-  private _calculateMoments(): void {
+  private * _calculateMoments(): IterableIterator<PaletteQuantizerYieldValue> {
     const area: number[] = [];
     const areaRed: number[] = [];
     const areaGreen: number[] = [];
@@ -288,6 +289,9 @@ export class WuQuant {
     const xareaAlpha: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
     const xarea2: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
 
+    let notifyProgress = 0;
+    const tracker = new ProgressTracker(this._alphaMaxSideIndex * this._maxSideIndex, 99);
+
     for (let alphaIndex = 1; alphaIndex <= this._alphaMaxSideIndex; ++alphaIndex) {
       fillArray3D<number>(xarea, this._sideSize, this._sideSize, this._sideSize, 0);
       fillArray3D<number>(xareaRed, this._sideSize, this._sideSize, this._sideSize, 0);
@@ -296,7 +300,13 @@ export class WuQuant {
       fillArray3D<number>(xareaAlpha, this._sideSize, this._sideSize, this._sideSize, 0);
       fillArray3D<number>(xarea2, this._sideSize, this._sideSize, this._sideSize, 0);
 
-      for (let redIndex = 1; redIndex <= this._maxSideIndex; ++redIndex) {
+      for (let redIndex = 1; redIndex <= this._maxSideIndex; ++redIndex, ++notifyProgress) {
+        if (tracker.shouldNotify(notifyProgress)) {
+          yield {
+            progress: tracker.progress,
+          };
+        }
+
         fillArray1D<number>(area, this._sideSize, 0);
         fillArray1D<number>(areaRed, this._sideSize, 0);
         fillArray1D<number>(areaGreen, this._sideSize, 0);

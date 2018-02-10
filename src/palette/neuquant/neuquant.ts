@@ -31,7 +31,9 @@ import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
-import { PaletteQuantizer } from '../common';
+import { PaletteQuantizer } from '../paletteQuantizer';
+import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
+import { ProgressTracker } from '../../utils';
 
 // bias for colour values
 const networkBiasShift = 3;
@@ -82,7 +84,7 @@ class Neuron {
    */
 }
 
-export class NeuQuant implements PaletteQuantizer {
+export class NeuQuant extends PaletteQuantizer {
   /*
    four primes near 500 - assume no image has a length so large
    that it is divisible by all four primes
@@ -153,6 +155,7 @@ export class NeuQuant implements PaletteQuantizer {
   private readonly _distance: AbstractDistanceCalculator;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors: number = 256) {
+    super();
     this._distance = colorDistanceCalculator;
     this._pointArray = [];
     this._sampleFactor = 1;
@@ -165,11 +168,15 @@ export class NeuQuant implements PaletteQuantizer {
     this._pointArray = this._pointArray.concat(pointBuffer.getPointArray());
   }
 
-  quantize(): Palette {
+  * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {
     this._init();
-    this._learn();
 
-    return this._buildPalette();
+    yield * this._learn();
+
+    yield {
+      palette: this._buildPalette(),
+      progress: 100,
+    };
   }
 
   private _init(): void {
@@ -189,7 +196,7 @@ export class NeuQuant implements PaletteQuantizer {
   /**
    * Main Learning Loop
    */
-  private _learn(): void {
+  private * _learn() {
     let sampleFactor = this._sampleFactor;
     const pointsNumber = this._pointArray.length;
     if (pointsNumber < NeuQuant._minpicturebytes) sampleFactor = 1;
@@ -221,7 +228,14 @@ export class NeuQuant implements PaletteQuantizer {
       step = NeuQuant._prime4;
     }
 
+    const tracker = new ProgressTracker(pointsToSample, 99);
     for (let i = 0, pointIndex = 0; i < pointsToSample;) {
+      if (tracker.shouldNotify(i)) {
+        yield {
+          progress: tracker.progress,
+        };
+      }
+
       const point = this._pointArray[ pointIndex ];
       const b = point.b << networkBiasShift;
       const g = point.g << networkBiasShift;

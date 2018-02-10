@@ -18,8 +18,10 @@ import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
 import { ColorHistogram } from './colorHistogram';
-import { PaletteQuantizer } from '../common';
+import { PaletteQuantizer } from '../paletteQuantizer';
+import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { stableSort } from '../../utils/arithmetic';
+import { ProgressTracker } from '../../utils';
 
 class RemovedColor {
   readonly index: number;
@@ -34,7 +36,7 @@ class RemovedColor {
 }
 
 // TODO: make input/output image and input/output palettes with instances of class Point only!
-export class RGBQuant implements PaletteQuantizer {
+export class RGBQuant extends PaletteQuantizer {
   // desired final palette size
   private readonly _colors: number;
 
@@ -49,6 +51,7 @@ export class RGBQuant implements PaletteQuantizer {
   private readonly _distance: AbstractDistanceCalculator;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors: number = 256, method: number = 2) {
+    super();
     this._distance = colorDistanceCalculator;
     // desired final palette size
     this._colors = colors;
@@ -82,20 +85,17 @@ export class RGBQuant implements PaletteQuantizer {
   }
 
   // reduces histogram to palette, remaps & memoizes reduced colors
-  quantize(): Palette {
+  * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {
     const idxi32 = this._histogram.getImportanceSortedColorsIDXI32();
     if (idxi32.length === 0) {
       throw new Error('No colors in image');
     }
 
-    const palette = this._buildPalette(idxi32);
-
-    palette.sort();
-    return palette;
+    yield * this._buildPalette(idxi32);
   }
 
   // reduces similar colors from an importance-sorted Uint32 rgba array
-  private _buildPalette(idxi32: number[]): Palette {
+  private * _buildPalette(idxi32: number[]): IterableIterator<PaletteQuantizerYieldValue> {
     // reduce histogram to create initial palette
     // build full rgb palette
     const palette = new Palette();
@@ -114,11 +114,18 @@ export class RGBQuant implements PaletteQuantizer {
     let thold = this._initialDistance;
 
     // palette already at or below desired length
+    const tracker = new ProgressTracker(palLen - this._colors, 99);
     while (palLen > this._colors) {
       memDist.length = 0;
 
       // iterate palette
       for (let i = 0; i < len; i++) {
+        if (tracker.shouldNotify(len - palLen)) {
+          yield {
+            progress: tracker.progress,
+          };
+        }
+
         if (usageArray[ i ] === 0) continue;
         const pxi = colorArray[ i ];
         // if (!pxi) continue;
@@ -172,7 +179,12 @@ export class RGBQuant implements PaletteQuantizer {
     }
     colorArray.length = colors;
 
-    return palette;
+    palette.sort();
+
+    yield {
+      palette,
+      progress: 100,
+    };
   }
 
 }

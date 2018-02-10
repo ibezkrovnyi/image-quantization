@@ -9,7 +9,7 @@
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
-    "prepublish": "tsc --outDir dist/esm && tsc -m commonjs --outDir dist/cjs && rollup -i dist/esm/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
+    "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
     "test": "tslint --format verbose --config tslint.json --project tsconfig.json && jest",
     "test:watch": "jest --watch",
     "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags"

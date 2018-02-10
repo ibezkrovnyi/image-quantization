@@ -5,15 +5,17 @@
  *
  * iq.ts - Image Quantization Library
  */
-import { PaletteQuantizer } from './common';
+import { PaletteQuantizer } from './paletteQuantizer';
 import { NeuQuant } from './neuquant/neuquant';
 import { NeuQuantFloat } from './neuquant/neuquantFloat';
 import { RGBQuant } from './rgbquant/rgbquant';
 import { ColorHistogram } from './rgbquant/colorHistogram';
 import { WuQuant, WuColorCube } from './wu/wuQuant';
+import { PaletteQuantizerYieldValue } from './paletteQuantizerYieldValue';
 
 export {
   PaletteQuantizer,
+  PaletteQuantizerYieldValue,
 
   NeuQuant,
   NeuQuantFloat,

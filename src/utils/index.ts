@@ -10,11 +10,13 @@ import { HueStatistics } from './hueStatistics';
 import { Palette } from './palette';
 import { Point } from './point';
 import { PointContainer } from './pointContainer';
+import { ProgressTracker } from './progressTracker';
 
 export {
   Point,
   PointContainer,
   Palette,
   HueStatistics,
+  ProgressTracker,
   arithmetic,
 };

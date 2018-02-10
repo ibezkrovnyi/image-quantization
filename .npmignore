@@ -7,3 +7,15 @@
 /examples/apply-palette-from-file/out
 
 node_modules
+
+/src
+/tests
+
+.*
+
+/npm-debug.log
+/package-lock.json
+/rollup.config.js
+/tasks.txt
+/tsconfig.json
+/tslint.json
