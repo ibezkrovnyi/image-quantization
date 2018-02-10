@@ -1,13 +1,13 @@
 /**
  * @preserve
- * Copyright 2015-2016 Igor Bezkrovnyi
+ * Copyright 2015-2018 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * constants.ts - part of Image Quantization Library
  */
 // TODO: do we need this helper?
 
-import { PaletteQuantizer } from "./palette/common"
+import { PaletteQuantizer } from "./palette/paletteQuantizer"
 import { AbstractDistanceCalculator } from "./distance/abstractDistanceCalculator"
 import { ImageQuantizer } from "./image/common"
 import { PointContainer } from "./utils/pointContainer"

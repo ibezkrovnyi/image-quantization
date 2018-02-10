@@ -20,7 +20,7 @@
  */
 /**
  * @preserve TypeScript port:
- * Copyright 2015-2016 Igor Bezkrovnyi
+ * Copyright 2015-2018 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * neuquant.ts - part of Image Quantization Library
@@ -29,7 +29,7 @@ import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
-import { PaletteQuantizer } from '../common';
+import { PaletteQuantizer } from '../paletteQuantizer';
 import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { ProgressTracker } from '../../utils';
 
