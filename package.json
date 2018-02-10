@@ -74,7 +74,10 @@
   },
   "devDependencies": {
     "@types/jest": "22.1.0",
+    "@types/node": "^9.4.4",
+    "@types/pngjs": "^3.3.0",
     "jest": "22.1.4",
+    "pngjs": "^3.3.1",
     "rollup": "0.54.1",
     "rollup-plugin-commonjs": "8.2.6",
     "rollup-plugin-local-resolve": "1.0.7",
@@ -85,5 +88,6 @@
     "tslint-consistent-codestyle": "1.11.0",
     "tslint-language-service": "0.9.8",
     "typescript": "2.7.1"
-  }
+  },
+  "dependencies": {}
 }
