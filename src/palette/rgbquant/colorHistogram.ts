@@ -7,7 +7,7 @@
 
 /**
  * @preserve TypeScript port:
- * Copyright 2015-2016 Igor Bezkrovnyi
+ * Copyright 2015-2018 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * colorHistogram.ts - part of Image Quantization Library

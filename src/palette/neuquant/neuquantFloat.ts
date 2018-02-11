@@ -29,7 +29,7 @@ import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
-import { PaletteQuantizer } from '../paletteQuantizer';
+import { AbstractPaletteQuantizer } from '../paletteQuantizer';
 import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { ProgressTracker } from '../../utils';
 
@@ -63,7 +63,7 @@ class NeuronFloat {
   }
 }
 
-export class NeuQuantFloat extends PaletteQuantizer {
+export class NeuQuantFloat extends AbstractPaletteQuantizer {
   /*
    four primes near 500 - assume no image has a length so large
    that it is divisible by all four primes

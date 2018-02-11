@@ -1,6 +1,6 @@
 /**
  * @preserve
- * Copyright 2015-2016 Igor Bezkrovnyi
+ * Copyright 2015-2018 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * wuQuant.ts - part of Image Quantization Library
@@ -9,7 +9,7 @@ import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
-import { PaletteQuantizer } from '..';
+import { AbstractPaletteQuantizer } from '..';
 import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { ProgressTracker } from '../../utils';
 
@@ -82,7 +82,7 @@ export class WuColorCube {
   alphaMaximum!: number;
 }
 
-export class WuQuant extends PaletteQuantizer {
+export class WuQuant extends AbstractPaletteQuantizer {
 
   private static readonly alpha = 3;
   private static readonly red = 2;
@@ -289,7 +289,7 @@ export class WuQuant extends PaletteQuantizer {
     const xareaAlpha: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
     const xarea2: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
 
-    let notifyProgress = 0;
+    let trackerProgress = 0;
     const tracker = new ProgressTracker(this._alphaMaxSideIndex * this._maxSideIndex, 99);
 
     for (let alphaIndex = 1; alphaIndex <= this._alphaMaxSideIndex; ++alphaIndex) {
@@ -300,8 +300,8 @@ export class WuQuant extends PaletteQuantizer {
       fillArray3D<number>(xareaAlpha, this._sideSize, this._sideSize, this._sideSize, 0);
       fillArray3D<number>(xarea2, this._sideSize, this._sideSize, this._sideSize, 0);
 
-      for (let redIndex = 1; redIndex <= this._maxSideIndex; ++redIndex, ++notifyProgress) {
-        if (tracker.shouldNotify(notifyProgress)) {
+      for (let redIndex = 1; redIndex <= this._maxSideIndex; ++redIndex, ++trackerProgress) {
+        if (tracker.shouldNotify(trackerProgress)) {
           yield {
             progress: tracker.progress,
           };

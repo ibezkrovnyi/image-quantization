@@ -20,7 +20,6 @@
   "jest": {
     "collectCoverage": true,
     "coverageReporters": [
-      "text",
       "text-summary",
       "html"
     ],

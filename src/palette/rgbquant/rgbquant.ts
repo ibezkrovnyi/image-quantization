@@ -7,7 +7,7 @@
 
 /**
  * @preserve TypeScript port:
- * Copyright 2015-2016 Igor Bezkrovnyi
+ * Copyright 2015-2018 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * rgbquant.ts - part of Image Quantization Library
@@ -18,7 +18,7 @@ import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
 import { ColorHistogram } from './colorHistogram';
-import { PaletteQuantizer } from '../paletteQuantizer';
+import { AbstractPaletteQuantizer } from '../paletteQuantizer';
 import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { stableSort } from '../../utils/arithmetic';
 import { ProgressTracker } from '../../utils';
@@ -36,7 +36,7 @@ class RemovedColor {
 }
 
 // TODO: make input/output image and input/output palettes with instances of class Point only!
-export class RGBQuant extends PaletteQuantizer {
+export class RGBQuant extends AbstractPaletteQuantizer {
   // desired final palette size
   private readonly _colors: number;
 

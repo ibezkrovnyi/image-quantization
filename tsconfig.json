@@ -17,7 +17,7 @@
 		"downlevelIteration": true,
 		"lib": [
 			"dom",
-			"esnext"
+			"esnext",
 		],
 		"plugins": [
 			{
