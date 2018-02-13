@@ -5,12 +5,14 @@
  *
  * ditherErrorDiffusionArray.ts - part of Image Quantization Library
  */
-import { ImageQuantizer } from './common';
+import { ImageQuantizer } from './imageQuantizer';
 import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 import { Point } from '../utils/point';
 import { inRange0to255Rounded } from '../utils/arithmetic';
+import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
+import { ProgressTracker } from '../utils/progressTracker';
 
 // TODO: is it the best name for this enum "kernel"?
 export enum ErrorDiffusionArrayKernel {
@@ -26,7 +28,7 @@ export enum ErrorDiffusionArrayKernel {
 }
 
 // http://www.tannerhelland.com/4660/dithering-eleven-algorithms-source-code/
-export class ErrorDiffusionArray implements ImageQuantizer {
+export class ErrorDiffusionArray extends ImageQuantizer {
   private _minColorDistance: number;
   private _serpentine: boolean;
   private _kernel!: number[][];
@@ -36,6 +38,7 @@ export class ErrorDiffusionArray implements ImageQuantizer {
   private _distance: AbstractDistanceCalculator;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator, kernel: ErrorDiffusionArrayKernel, serpentine: boolean = true, minimumColorDistanceToDither: number = 0, calculateErrorLikeGIMP: boolean = false) {
+    super();
     this._setKernel(kernel);
 
     this._distance = colorDistanceCalculator;
@@ -46,11 +49,11 @@ export class ErrorDiffusionArray implements ImageQuantizer {
 
   // adapted from http://jsbin.com/iXofIji/2/edit by PAEz
   // fixed version. it doesn't use image pixels as error storage, also it doesn't have 0.3 + 0.3 + 0.3 + 0.3 = 0 error
-  quantize(pointBuffer: PointContainer, palette: Palette): PointContainer {
-    const pointArray = pointBuffer.getPointArray();
+  * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
+    const pointArray = pointContainer.getPointArray();
     const originalPoint = new Point();
-    const width = pointBuffer.getWidth();
-    const height = pointBuffer.getHeight();
+    const width = pointContainer.getWidth();
+    const height = pointContainer.getHeight();
     const errorLines: number[][][] = [];
 
     let dir = 1;
@@ -65,7 +68,14 @@ export class ErrorDiffusionArray implements ImageQuantizer {
       this._fillErrorLine(errorLines[ i ] = [], width);
     }
 
+    const tracker = new ProgressTracker(height, 99);
     for (let y = 0; y < height; y++) {
+      if (tracker.shouldNotify(y)) {
+        yield {
+          progress: tracker.progress,
+        };
+      }
+
       // always serpentine
       if (this._serpentine) dir = dir * -1;
 
@@ -141,7 +151,10 @@ export class ErrorDiffusionArray implements ImageQuantizer {
       }
     }
 
-    return pointBuffer;
+    yield {
+      pointContainer,
+      progress: 100,
+    };
   }
 
   private _fillErrorLine(errorLine: number[][], width: number): void {

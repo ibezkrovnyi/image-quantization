@@ -23,7 +23,7 @@ function timeMark(title, callback) {
 timeMark("!!! total time", () => {
 	for (var i = 0; i < 30; i++) {
 		// simulate image loading
-		var pointBuffer = iq.utils.PointContainer.fromArray(imageArray, width, height),
+		var pointContainer = iq.utils.PointContainer.fromArray(imageArray, width, height),
 			iqPalette,
 			iqImage,
 			palette;
@@ -31,26 +31,26 @@ timeMark("!!! total time", () => {
 		// quantize palette
 		timeMark("palette: neuquant", function () {
 			iqPalette = new iq.palette.NeuQuant(distance, 256);
-			iqPalette.sample(pointBuffer);
+			iqPalette.sample(pointContainer);
 			palette = iqPalette.quantize();
 		});
 
 		timeMark("palette: rgbquant", function () {
 			iqPalette = new iq.palette.RGBQuant(distance, 256);
-			iqPalette.sample(pointBuffer);
+			iqPalette.sample(pointContainer);
 			palette = iqPalette.quantize();
 		});
 
 		timeMark("palette: wuquant", function () {
 			iqPalette = new iq.palette.WuQuant(distance, 256);
-			iqPalette.sample(pointBuffer);
+			iqPalette.sample(pointContainer);
 			palette = iqPalette.quantize();
 		});
 
 		// quantize image
 		timeMark("image: error diffusion: sierra lite", function () {
 			iqImage = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.SierraLite);
-			iqImage.quantize(pointBuffer, palette);
+			iqImage.quantize(pointContainer, palette);
 		});
 	}
 });

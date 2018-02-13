@@ -164,8 +164,8 @@ export class NeuQuant extends AbstractPaletteQuantizer {
     this._distance.setWhitePoint(255 << networkBiasShift, 255 << networkBiasShift, 255 << networkBiasShift, 255 << networkBiasShift);
   }
 
-  sample(pointBuffer: PointContainer): void {
-    this._pointArray = this._pointArray.concat(pointBuffer.getPointArray());
+  sample(pointContainer: PointContainer): void {
+    this._pointArray = this._pointArray.concat(pointContainer.getPointArray());
   }
 
   * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {

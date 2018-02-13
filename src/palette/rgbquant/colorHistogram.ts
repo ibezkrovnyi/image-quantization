@@ -58,13 +58,13 @@ export class ColorHistogram {
     this._histogram = Object.create(null);
   }
 
-  sample(pointBuffer: PointContainer): void {
+  sample(pointContainer: PointContainer): void {
     switch (this._method) {
       case 1:
-        this._colorStats1D(pointBuffer);
+        this._colorStats1D(pointContainer);
         break;
       case 2:
-        this._colorStats2D(pointBuffer);
+        this._colorStats2D(pointContainer);
         break;
     }
   }
@@ -112,9 +112,9 @@ export class ColorHistogram {
   }
 
   // global top-population
-  private _colorStats1D(pointBuffer: PointContainer) {
+  private _colorStats1D(pointContainer: PointContainer) {
     const histG = this._histogram;
-    const pointArray = pointBuffer.getPointArray();
+    const pointArray = pointContainer.getPointArray();
     const len = pointArray.length;
 
     for (let i = 0; i < len; i++) {
@@ -134,10 +134,10 @@ export class ColorHistogram {
   // population threshold within subregions
   // FIXME: this can over-reduce (few/no colors same?), need a way to keep
   // important colors that dont ever reach local thresholds (gradients?)
-  private _colorStats2D(pointBuffer: PointContainer) {
-    const width = pointBuffer.getWidth();
-    const height = pointBuffer.getHeight();
-    const pointArray = pointBuffer.getPointArray();
+  private _colorStats2D(pointContainer: PointContainer) {
+    const width = pointContainer.getWidth();
+    const height = pointContainer.getHeight();
+    const pointArray = pointContainer.getPointArray();
 
     const boxW = ColorHistogram._boxSize[ 0 ];
     const boxH = ColorHistogram._boxSize[ 1 ];

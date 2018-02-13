@@ -5,24 +5,33 @@
  *
  * nearestColor.ts - part of Image Quantization Library
  */
-import { ImageQuantizer } from './common';
+import { ImageQuantizer } from './imageQuantizer';
 import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
+import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
+import { ProgressTracker } from '../utils/progressTracker';
 
-export class NearestColor implements ImageQuantizer {
+export class NearestColor extends ImageQuantizer {
   private _distance: AbstractDistanceCalculator;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator) {
+    super();
     this._distance = colorDistanceCalculator;
   }
 
-  quantize(pointBuffer: PointContainer, palette: Palette): PointContainer {
-    const pointArray = pointBuffer.getPointArray();
-    const width = pointBuffer.getWidth();
-    const height = pointBuffer.getHeight();
+  * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
+    const pointArray = pointContainer.getPointArray();
+    const width = pointContainer.getWidth();
+    const height = pointContainer.getHeight();
 
+    const tracker = new ProgressTracker(height, 99);
     for (let y = 0; y < height; y++) {
+      if (tracker.shouldNotify(y)) {
+        yield {
+          progress: tracker.progress,
+        };
+      }
       for (let x = 0, idx = y * width; x < width; x++, idx++) {
         // Image pixel
         const point = pointArray[ idx ];
@@ -30,6 +39,10 @@ export class NearestColor implements ImageQuantizer {
         point.from(palette.getNearestColor(this._distance, point));
       }
     }
-    return pointBuffer;
+
+    yield {
+      pointContainer,
+      progress: 100,
+    };
   }
 }

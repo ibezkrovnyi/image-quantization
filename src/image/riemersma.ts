@@ -24,15 +24,16 @@
  *
  * riemersma.ts - part of Image Quantization Library
  */
-import { ImageQuantizer } from './common';
+import { ImageQuantizer } from './imageQuantizer';
 import { HilbertCurveBase } from './spaceFillingCurves/hilbertCurve';
 import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 import { Point } from '../utils/point';
 import { inRange0to255Rounded } from '../utils/arithmetic';
+import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
-export class ErrorDiffusionRiemersma implements ImageQuantizer {
+export class ErrorDiffusionRiemersma extends ImageQuantizer {
   private _distance: AbstractDistanceCalculator;
   private _weights!: number[];
   private _errorQueueSize: number;
@@ -40,6 +41,7 @@ export class ErrorDiffusionRiemersma implements ImageQuantizer {
   private _max: number;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator, errorQueueSize: number = 16, errorPropagation: number = 1) {
+    super();
     this._distance = colorDistanceCalculator;
     this._errorPropagation = errorPropagation;
     this._errorQueueSize = errorQueueSize;
@@ -47,10 +49,10 @@ export class ErrorDiffusionRiemersma implements ImageQuantizer {
     this._createWeights();
   }
 
-  quantize(pointBuffer: PointContainer, palette: Palette): PointContainer {
-    const pointArray = pointBuffer.getPointArray();
-    const width = pointBuffer.getWidth();
-    const height = pointBuffer.getHeight();
+  * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
+    const pointArray = pointContainer.getPointArray();
+    const width = pointContainer.getWidth();
+    const height = pointContainer.getHeight();
     const errorQueue: Array<{ r: number; g: number; b: number; a: number }> = [];
 
     let head = 0;
@@ -98,7 +100,10 @@ export class ErrorDiffusionRiemersma implements ImageQuantizer {
       p.from(quantizedPoint);
     });
 
-    return pointBuffer;
+    yield {
+      pointContainer,
+      progress: 100,
+    };
   }
 
   private _createWeights(): void {
