@@ -8,7 +8,7 @@
 
 import { Point } from './point';
 import { PointContainer } from './pointContainer';
-import { AbstractDistanceCalculator } from '../distance/abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { rgb2hsl } from '../conversion/rgb2hsl';
 
 // TODO: make paletteArray via pointBuffer, so, export will be available via pointBuffer.exportXXX

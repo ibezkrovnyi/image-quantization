@@ -5,7 +5,7 @@
  *
  * pngQuant.ts - part of Image Quantization Library
  */
-import { AbstractDistanceCalculator } from './abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from './distanceCalculator';
 
 /**
  * TODO: check quality of this distance equation
@@ -46,4 +46,6 @@ export class PNGQUANT extends AbstractDistanceCalculator {
 
     return black * black + white * white;
   }
+
+  protected _setDefaults() {}
 }

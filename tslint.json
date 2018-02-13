@@ -33,6 +33,7 @@
     "no-empty": false,
     "prefer-array-literal": false,
     "member-ordering": false,
-    "strict-boolean-expressions": false
+    "strict-boolean-expressions": false,
+    "no-unused-expression": [true, "allow-new"]
   }
 }

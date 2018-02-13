@@ -16,7 +16,7 @@
 import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
-import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from '../../distance/distanceCalculator';
 import { ColorHistogram } from './colorHistogram';
 import { AbstractPaletteQuantizer } from '../paletteQuantizer';
 import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';

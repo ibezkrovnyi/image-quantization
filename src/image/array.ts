@@ -6,7 +6,7 @@
  * ditherErrorDiffusionArray.ts - part of Image Quantization Library
  */
 import { ImageQuantizer } from './common';
-import { AbstractDistanceCalculator } from '../distance/abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 import { Point } from '../utils/point';

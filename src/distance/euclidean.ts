@@ -5,13 +5,13 @@
  *
  * euclidean.ts - part of Image Quantization Library
  */
-import { AbstractDistanceCalculator } from './abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from './distanceCalculator';
 import { Y } from '../constants/bt709';
 
 /**
  * Euclidean color distance
  */
-export class AbstractEuclidean extends AbstractDistanceCalculator {
+export abstract class AbstractEuclidean extends AbstractDistanceCalculator {
   protected _kR!: number;
   protected _kG!: number;
   protected _kB!: number;

@@ -5,7 +5,7 @@
  *
  * iq.ts - Image Quantization Library
  */
-import { AbstractDistanceCalculator } from './abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from './distanceCalculator';
 import { CIE94Textiles, CIE94GraphicArts } from './cie94';
 import { CIEDE2000 } from './ciede2000';
 import { CMETRIC } from './cmetric';

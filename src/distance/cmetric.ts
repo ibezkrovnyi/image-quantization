@@ -5,7 +5,7 @@
  *
  * cmetric.ts - part of Image Quantization Library
  */
-import { AbstractDistanceCalculator } from './abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from './distanceCalculator';
 
 /**
  * TODO: Name it: http://www.compuphase.com/cmetric.htm
@@ -21,4 +21,6 @@ export class CMETRIC extends AbstractDistanceCalculator {
 
     return Math.sqrt(dE + dA * dA);
   }
+
+  protected _setDefaults() {}
 }

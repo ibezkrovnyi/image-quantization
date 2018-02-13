@@ -5,7 +5,7 @@
  *
  * ciede2000.ts - part of Image Quantization Library
  */
-import { AbstractDistanceCalculator } from './abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from './distanceCalculator';
 import { rgb2lab } from '../conversion/rgb2lab';
 import { degrees2radians, inRange0to255 } from '../utils/arithmetic';
 
@@ -30,6 +30,8 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
   private static readonly _deg63InRad: number = degrees2radians(63);
   private static readonly _deg275InRad: number = degrees2radians(275);
   private static readonly _deg25InRad: number = degrees2radians(25);
+
+  protected _setDefaults() {}
 
   private static _calculatehp(b: number, ap: number) {
     const hp = Math.atan2(b, ap);

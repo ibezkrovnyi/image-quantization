@@ -5,7 +5,7 @@
  *
  * manhattanNeuQuant.ts - part of Image Quantization Library
  */
-import { AbstractDistanceCalculator } from './abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from './distanceCalculator';
 import { Y } from '../constants/bt709';
 
 /**

@@ -6,17 +6,19 @@ enum Direction {
   DOWN,
 }
 
+export type VisitorCallback = (x: number, y: number, d: number) => void;
+
 // Check code against double-entrance into walk (walk=> callback => walk)
 export class HilbertCurveBase {
-  private _x!: number;
-  private _y!: number;
-  private _d!: number;
-  private _width!: number;
-  private _height!: number;
-  private _callback!: (x: number, y: number, d: number) => void;
-  private _level!: number;
+  private _x: number;
+  private _y: number;
+  private _d: number;
+  private _width: number;
+  private _height: number;
+  private _callback: VisitorCallback;
+  private _level: number;
 
-  walk(width: number, height: number, visitorCallback: (x: number, y: number, d: number) => void): void {
+  constructor(width: number, height: number, visitorCallback: VisitorCallback) {
     this._x = 0;
     this._y = 0;
     this._d = 0;

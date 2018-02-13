@@ -26,7 +26,7 @@
  */
 import { ImageQuantizer } from './common';
 import { HilbertCurveBase } from './spaceFillingCurves/hilbertCurve';
-import { AbstractDistanceCalculator } from '../distance/abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 import { Point } from '../utils/point';
@@ -48,7 +48,6 @@ export class ErrorDiffusionRiemersma implements ImageQuantizer {
   }
 
   quantize(pointBuffer: PointContainer, palette: Palette): PointContainer {
-    const curve = new HilbertCurveBase();
     const pointArray = pointBuffer.getPointArray();
     const width = pointBuffer.getWidth();
     const height = pointBuffer.getHeight();
@@ -60,7 +59,7 @@ export class ErrorDiffusionRiemersma implements ImageQuantizer {
       errorQueue[ i ] = { r: 0, g: 0, b: 0, a: 0 };
     }
 
-    curve.walk(width, height, (x, y) => {
+    new HilbertCurveBase(width, height, (x, y) => {
       const p = pointArray[ x + y * width ];
       let r = p.r;
       let g = p.g;

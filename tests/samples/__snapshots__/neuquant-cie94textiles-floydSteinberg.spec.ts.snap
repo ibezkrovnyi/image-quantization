@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`file: clegg.png, distance: ciede2000, paletteQuantizer: NeuQuant, imageQuantizer: FloydSteinberg, colors: 64 1`] = `
+exports[`file: clegg.png, distance: CIE94Textiles, paletteQuantizer: NeuQuant, imageQuantizer: ErrorDiffusionArray-FloydSteinberg, colors: 64 1`] = `
 Uint8Array [
   77,
   76,

@@ -42,5 +42,5 @@ export abstract class AbstractDistanceCalculator {
    */
   abstract calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number): number;
 
-  protected _setDefaults(): void {}
+  protected abstract _setDefaults(): void;
 }

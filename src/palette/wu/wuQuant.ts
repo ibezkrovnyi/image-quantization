@@ -8,7 +8,7 @@
 import { Palette } from '../../utils/palette';
 import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
-import { AbstractDistanceCalculator } from '../../distance/abstractDistanceCalculator';
+import { AbstractDistanceCalculator } from '../../distance/distanceCalculator';
 import { AbstractPaletteQuantizer } from '..';
 import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { ProgressTracker } from '../../utils';
