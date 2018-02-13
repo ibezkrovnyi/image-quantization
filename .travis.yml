@@ -10,4 +10,5 @@ deploy:
   email: "igor.bezkrovny@gmail.com"
   api_key: "8701189c-d219-40fc-ae6c-51cbd53eef18"
 
-after_success: 'npm run coveralls'
+after_success:
+  - npm run coveralls
