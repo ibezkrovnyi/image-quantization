@@ -12,14 +12,17 @@
     "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
     "test": "tslint --format verbose --config tslint.json --project tsconfig.json && jest",
     "test:watch": "jest --watch",
-    "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags"
+    "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "files": [
     "dist"
   ],
   "jest": {
     "collectCoverage": true,
+    "mapCoverage": true,
     "coverageReporters": [
+      "lcov",
       "text-summary",
       "html"
     ],
@@ -75,6 +78,7 @@
     "@types/jest": "22.1.0",
     "@types/node": "^9.4.4",
     "@types/pngjs": "^3.3.0",
+    "coveralls": "^3.0.0",
     "jest": "22.1.4",
     "pngjs": "^3.3.1",
     "rollup": "0.54.1",
