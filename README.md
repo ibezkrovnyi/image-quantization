@@ -1,3 +1,5 @@
+# README OUTDATED, please use tests as reference
+
 IQ.ts
 -----
 
