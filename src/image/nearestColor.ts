@@ -20,6 +20,9 @@ export class NearestColor extends ImageQuantizer {
     this._distance = colorDistanceCalculator;
   }
 
+  /**
+   * Mutates pointContainer
+   */
   * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
     const pointArray = pointContainer.getPointArray();
     const width = pointContainer.getWidth();

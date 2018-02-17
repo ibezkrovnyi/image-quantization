@@ -47,8 +47,11 @@ export class ErrorDiffusionArray extends ImageQuantizer {
     this._calculateErrorLikeGIMP = calculateErrorLikeGIMP;
   }
 
-  // adapted from http://jsbin.com/iXofIji/2/edit by PAEz
-  // fixed version. it doesn't use image pixels as error storage, also it doesn't have 0.3 + 0.3 + 0.3 + 0.3 = 0 error
+  /**
+   * adapted from http://jsbin.com/iXofIji/2/edit by PAEz
+   * fixed version. it doesn't use image pixels as error storage, also it doesn't have 0.3 + 0.3 + 0.3 + 0.3 = 0 error
+   * Mutates pointContainer
+   */
   * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
     const pointArray = pointContainer.getPointArray();
     const originalPoint = new Point();

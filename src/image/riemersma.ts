@@ -25,7 +25,7 @@
  * riemersma.ts - part of Image Quantization Library
  */
 import { ImageQuantizer } from './imageQuantizer';
-import { HilbertCurveBase } from './spaceFillingCurves/hilbertCurve';
+import { hilbertCurve } from './spaceFillingCurves/hilbertCurve';
 import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
@@ -35,20 +35,19 @@ import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
 export class ErrorDiffusionRiemersma extends ImageQuantizer {
   private _distance: AbstractDistanceCalculator;
-  private _weights!: number[];
+  private _weights: number[];
   private _errorQueueSize: number;
-  private _errorPropagation: number;
-  private _max: number;
 
   constructor(colorDistanceCalculator: AbstractDistanceCalculator, errorQueueSize: number = 16, errorPropagation: number = 1) {
     super();
     this._distance = colorDistanceCalculator;
-    this._errorPropagation = errorPropagation;
     this._errorQueueSize = errorQueueSize;
-    this._max = this._errorQueueSize;
-    this._createWeights();
+    this._weights = ErrorDiffusionRiemersma._createWeights(errorPropagation, errorQueueSize);
   }
 
+  /**
+   * Mutates pointContainer
+   */
   * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
     const pointArray = pointContainer.getPointArray();
     const width = pointContainer.getWidth();
@@ -58,18 +57,18 @@ export class ErrorDiffusionRiemersma extends ImageQuantizer {
     let head = 0;
 
     for (let i = 0; i < this._errorQueueSize; i++) {
-      errorQueue[ i ] = { r: 0, g: 0, b: 0, a: 0 };
+      errorQueue[i] = { r: 0, g: 0, b: 0, a: 0 };
     }
 
-    new HilbertCurveBase(width, height, (x, y) => {
-      const p = pointArray[ x + y * width ];
+    yield * hilbertCurve(width, height, (x, y) => {
+      const p = pointArray[x + y * width];
       let r = p.r;
       let g = p.g;
       let b = p.b;
       let a = p.a;
       for (let i = 0; i < this._errorQueueSize; i++) {
-        const weight = this._weights[ i ];
-        const e = errorQueue[ (i + head) % this._errorQueueSize ];
+        const weight = this._weights[i];
+        const e = errorQueue[(i + head) % this._errorQueueSize];
 
         r += e.r * weight;
         g += e.g * weight;
@@ -91,10 +90,10 @@ export class ErrorDiffusionRiemersma extends ImageQuantizer {
       const tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
 
       // update error with new value
-      errorQueue[ tail ].r = p.r - quantizedPoint.r;
-      errorQueue[ tail ].g = p.g - quantizedPoint.g;
-      errorQueue[ tail ].b = p.b - quantizedPoint.b;
-      errorQueue[ tail ].a = p.a - quantizedPoint.a;
+      errorQueue[tail].r = p.r - quantizedPoint.r;
+      errorQueue[tail].g = p.g - quantizedPoint.g;
+      errorQueue[tail].b = p.b - quantizedPoint.b;
+      errorQueue[tail].a = p.a - quantizedPoint.a;
 
       // update point
       p.from(quantizedPoint);
@@ -106,13 +105,15 @@ export class ErrorDiffusionRiemersma extends ImageQuantizer {
     };
   }
 
-  private _createWeights(): void {
-    this._weights = [];
+  private static _createWeights(errorPropagation: number, errorQueueSize: number) {
+    const weights: number[] = [];
 
-    const multiplier = Math.exp(Math.log(this._max) / (this._errorQueueSize - 1));
-    for (let i = 0, next = 1; i < this._errorQueueSize; i++) {
-      this._weights[ i ] = (((next + 0.5) | 0) / this._max) * this._errorPropagation;
+    const multiplier = Math.exp(Math.log(errorQueueSize) / (errorQueueSize - 1));
+    for (let i = 0, next = 1; i < errorQueueSize; i++) {
+      weights[i] = (((next + 0.5) | 0) / errorQueueSize) * errorPropagation;
       next *= multiplier;
     }
+
+    return weights;
   }
 }

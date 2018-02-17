@@ -1,3 +1,6 @@
+import { ProgressTracker } from '../../utils/progressTracker';
+import { ImageQuantizerYieldValue } from '..';
+
 enum Direction {
   NONE = 0,
   UP,
@@ -6,102 +9,104 @@ enum Direction {
   DOWN,
 }
 
-export type VisitorCallback = (x: number, y: number, d: number) => void;
+interface Data {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  level: number;
+  index: number;
+  tracker: ProgressTracker;
+  callback(x: number, y: number): void;
+}
 
-// Check code against double-entrance into walk (walk=> callback => walk)
-export class HilbertCurveBase {
-  private _x: number;
-  private _y: number;
-  private _d: number;
-  private _width: number;
-  private _height: number;
-  private _callback: VisitorCallback;
-  private _level: number;
+export function * hilbertCurve(width: number, height: number, callback: (x: number, y: number) => void): IterableIterator<ImageQuantizerYieldValue> {
+  const maxBound = Math.max(width, height);
+  const level = Math.floor(Math.log(maxBound) / Math.log(2) + 1);
+  const tracker = new ProgressTracker(width * height, 99);
+  const data = {
+    width,
+    height,
+    level,
+    callback,
+    tracker,
+    index: 0,
+    x: 0,
+    y: 0,
+  };
+  yield * walkHilbert(data, Direction.UP);
+  visit(data, Direction.NONE);
+}
 
-  constructor(width: number, height: number, visitorCallback: VisitorCallback) {
-    this._x = 0;
-    this._y = 0;
-    this._d = 0;
-    this._width = width;
-    this._height = height;
-    this._callback = visitorCallback;
+function * walkHilbert(data: Data, direction: Direction): IterableIterator<ImageQuantizerYieldValue> {
+  if (data.level < 1) return;
 
-    const maxBound = Math.max(width, height);
+  if (data.tracker.shouldNotify(data.index)) yield { progress: data.tracker.progress };
+  data.level--;
+  switch (direction) {
+    case Direction.LEFT:
+      yield * walkHilbert(data, Direction.UP);
+      visit(data, Direction.RIGHT);
+      yield * walkHilbert(data, Direction.LEFT);
+      visit(data, Direction.DOWN);
+      yield * walkHilbert(data, Direction.LEFT);
+      visit(data, Direction.LEFT);
+      yield * walkHilbert(data, Direction.DOWN);
+      break;
 
-    this._level = (Math.log(maxBound) / Math.log(2) + 1) | 0;
-    this._walkHilbert(Direction.UP);
-    this._visit(Direction.NONE);
+    case Direction.RIGHT:
+      yield * walkHilbert(data, Direction.DOWN);
+      visit(data, Direction.LEFT);
+      yield * walkHilbert(data, Direction.RIGHT);
+      visit(data, Direction.UP);
+      yield * walkHilbert(data, Direction.RIGHT);
+      visit(data, Direction.RIGHT);
+      yield * walkHilbert(data, Direction.UP);
+      break;
+
+    case Direction.UP:
+      yield * walkHilbert(data, Direction.LEFT);
+      visit(data, Direction.DOWN);
+      yield * walkHilbert(data, Direction.UP);
+      visit(data, Direction.RIGHT);
+      yield * walkHilbert(data, Direction.UP);
+      visit(data, Direction.UP);
+      yield * walkHilbert(data, Direction.RIGHT);
+      break;
+
+    case Direction.DOWN:
+      yield * walkHilbert(data, Direction.RIGHT);
+      visit(data, Direction.UP);
+      yield * walkHilbert(data, Direction.DOWN);
+      visit(data, Direction.LEFT);
+      yield * walkHilbert(data, Direction.DOWN);
+      visit(data, Direction.DOWN);
+      yield * walkHilbert(data, Direction.LEFT);
+      break;
+
+    default:
+      break;
   }
+  data.level++;
+}
 
-  private _walkHilbert(direction: Direction) {
-    if (this._level < 1) return;
-
-    this._level--;
-    switch (direction) {
-      case Direction.LEFT:
-        this._walkHilbert(Direction.UP);
-        this._visit(Direction.RIGHT);
-        this._walkHilbert(Direction.LEFT);
-        this._visit(Direction.DOWN);
-        this._walkHilbert(Direction.LEFT);
-        this._visit(Direction.LEFT);
-        this._walkHilbert(Direction.DOWN);
-        break;
-
-      case Direction.RIGHT:
-        this._walkHilbert(Direction.DOWN);
-        this._visit(Direction.LEFT);
-        this._walkHilbert(Direction.RIGHT);
-        this._visit(Direction.UP);
-        this._walkHilbert(Direction.RIGHT);
-        this._visit(Direction.RIGHT);
-        this._walkHilbert(Direction.UP);
-        break;
-
-      case Direction.UP:
-        this._walkHilbert(Direction.LEFT);
-        this._visit(Direction.DOWN);
-        this._walkHilbert(Direction.UP);
-        this._visit(Direction.RIGHT);
-        this._walkHilbert(Direction.UP);
-        this._visit(Direction.UP);
-        this._walkHilbert(Direction.RIGHT);
-        break;
-
-      case Direction.DOWN:
-        this._walkHilbert(Direction.RIGHT);
-        this._visit(Direction.UP);
-        this._walkHilbert(Direction.DOWN);
-        this._visit(Direction.LEFT);
-        this._walkHilbert(Direction.DOWN);
-        this._visit(Direction.DOWN);
-        this._walkHilbert(Direction.LEFT);
-        break;
-
-      default:
-        break;
-    }
-    this._level++;
+function visit(data: Data, direction: Direction) {
+  if (data.x >= 0 && data.x < data.width && data.y >= 0 && data.y < data.height) {
+    data.callback(data.x, data.y);
+    data.index++;
   }
-
-  private _visit(direction: Direction): void {
-    if (this._x >= 0 && this._x < this._width && this._y >= 0 && this._y < this._height) {
-      this._callback(this._x, this._y, this._d);
-      this._d++;
-    }
-    switch (direction) {
-      case Direction.LEFT:
-        this._x--;
-        break;
-      case Direction.RIGHT:
-        this._x++;
-        break;
-      case Direction.UP:
-        this._y--;
-        break;
-      case Direction.DOWN:
-        this._y++;
-        break;
-    }
+  switch (direction) {
+    case Direction.LEFT:
+      data.x--;
+      break;
+    case Direction.RIGHT:
+      data.x++;
+      break;
+    case Direction.UP:
+      data.y--;
+      break;
+    case Direction.DOWN:
+      data.y++;
+      break;
   }
 }
