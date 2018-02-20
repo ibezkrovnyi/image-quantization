@@ -58,7 +58,7 @@ export class ColorHistogram {
     this._histogram = Object.create(null);
   }
 
-  sample(pointContainer: PointContainer): void {
+  sample(pointContainer: PointContainer) {
     switch (this._method) {
       case 1:
         this._colorStats1D(pointContainer);
@@ -150,7 +150,7 @@ export class ColorHistogram {
       if (effc < 2) effc = 2;
 
       const histL: { [key: string ]: number } = {};
-      this._iterateBox(box, width, (i: number) => {
+      this._iterateBox(box, width, (i) => {
         const col = pointArray[ i ].uint32;
 
         // collect hue stats

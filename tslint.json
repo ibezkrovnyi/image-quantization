@@ -2,29 +2,50 @@
   "extends": [
     "tslint:recommended",
     "tslint-config-airbnb",
-    "tslint-consistent-codestyle"
+    "tslint-consistent-codestyle",
+    "tslint-advanced-rules"
   ],
   "rules": {
+    "no-inferrable-return-types": true,
     "no-angle-bracket-type-assertion": true,
+    "curly": [
+      true,
+      "ignore-same-line"
+    ],
+    "member-access": [
+      true,
+      "no-public"
+    ],
+    "no-unnecessary-type-annotation": [true, "check-return-type"],
+    "no-inferrable-types": true,
+    
+    "no-var-self": false,
 
     "no-relative-imports": false,
-    "curly": [true, "ignore-same-line"],
     "no-increment-decrement": false,
-    "member-access": [true, "no-public"],
-    "sort-imports": false,
     "ordered-imports": false,
+    "member-ordering": false,
     "no-parameter-reassignment": false,
     "max-line-length": false,
     "no-bitwise": false,
     "max-classes-per-file": false,
-    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
-    "function-name": [true, {
-      "method-regex": "^[a-z][\\w\\d]+$",
-      "private-method-regex": "^_?[a-z][\\w\\d]+$",
-      "protected-method-regex": "^_?[a-z][\\w\\d]+$",
-      "static-method-regex": "^[a-z][\\w\\d]+$",
-      "function-regex": "^[a-z][\\w\\d]+$"
-    }],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
+    "function-name": [
+      true,
+      {
+        "method-regex": "^[a-z][\\w\\d]+$",
+        "private-method-regex": "^_?[a-z][\\w\\d]+$",
+        "protected-method-regex": "^_?[a-z][\\w\\d]+$",
+        "static-method-regex": "^[a-z][\\w\\d]+$",
+        "function-regex": "^[a-z][\\w\\d]+$"
+      }
+    ],
     "ter-arrow-parens": false,
     "interface-name": false,
     "only-arrow-functions": false,
@@ -32,8 +53,10 @@
     "object-literal-sort-keys": false,
     "no-empty": false,
     "prefer-array-literal": false,
-    "member-ordering": false,
     "strict-boolean-expressions": false,
-    "no-unused-expression": [true, "allow-new"]
+    "no-unused-expression": [
+      true,
+      "allow-new"
+    ]
   }
 }

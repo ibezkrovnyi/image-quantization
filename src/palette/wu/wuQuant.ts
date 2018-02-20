@@ -52,7 +52,7 @@ function createArray3D(dimension1: number, dimension2: number, dimension3: numbe
   return a;
 }
 
-function fillArray3D<T>(a: T[][][], dimension1: number, dimension2: number, dimension3: number, value: T): void {
+function fillArray3D<T>(a: T[][][], dimension1: number, dimension2: number, dimension3: number, value: T) {
   for (let i = 0; i < dimension1; i++) {
     a[ i ] = [];
     for (let j = 0; j < dimension2; j++) {
@@ -64,7 +64,7 @@ function fillArray3D<T>(a: T[][][], dimension1: number, dimension2: number, dime
   }
 }
 
-function fillArray1D<T>(a: T[], dimension1: number, value: T): void {
+function fillArray1D<T>(a: T[], dimension1: number, value: T) {
   for (let i = 0; i < dimension1; i++) {
     a[ i ] = value;
   }
@@ -115,14 +115,14 @@ export class WuQuant extends AbstractPaletteQuantizer {
 
   private readonly _distance: AbstractDistanceCalculator;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors: number = 256, significantBitsPerChannel: number = 5) {
+  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors = 256, significantBitsPerChannel = 5) {
     super();
     this._distance = colorDistanceCalculator;
     this._setQuality(significantBitsPerChannel);
     this._initialize(colors);
   }
 
-  sample(image: PointContainer): void {
+  sample(image: PointContainer) {
     const pointArray = image.getPointArray();
 
     for (let i = 0, l = pointArray.length; i < l; i++) {
@@ -135,7 +135,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
   * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {
     yield * this._preparePalette();
 
-    const palette: Palette = new Palette();
+    const palette = new Palette();
 
     // generates palette
     for (let paletteIndex = 0; paletteIndex < this._colors; paletteIndex++) {
@@ -225,7 +225,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
 
     // scans and adds colors
     for (let index = 0, l = this._pixels.length; index < l; index++) {
-      const color: Point = this._pixels[ index ];
+      const color = this._pixels[ index ];
 
       const match = -1;
 
@@ -254,7 +254,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
     }
   }
 
-  private _addColor(color: Point): void {
+  private _addColor(color: Point) {
     const bitsToRemove = 8 - this._significantBitsPerChannel;
     const indexRed = (color.r >> bitsToRemove) + 1;
     const indexGreen = (color.g >> bitsToRemove) + 1;
@@ -282,12 +282,12 @@ export class WuQuant extends AbstractPaletteQuantizer {
     const areaAlpha: number[] = [];
     const area2: number[] = [];
 
-    const xarea: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
-    const xareaRed: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
-    const xareaGreen: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
-    const xareaBlue: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
-    const xareaAlpha: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
-    const xarea2: number[][][] = createArray3D(this._sideSize, this._sideSize, this._sideSize);
+    const xarea = createArray3D(this._sideSize, this._sideSize, this._sideSize);
+    const xareaRed = createArray3D(this._sideSize, this._sideSize, this._sideSize);
+    const xareaGreen = createArray3D(this._sideSize, this._sideSize, this._sideSize);
+    const xareaBlue = createArray3D(this._sideSize, this._sideSize, this._sideSize);
+    const xareaAlpha = createArray3D(this._sideSize, this._sideSize, this._sideSize);
+    const xarea2 = createArray3D(this._sideSize, this._sideSize, this._sideSize);
 
     let trackerProgress = 0;
     const tracker = new ProgressTracker(this._alphaMaxSideIndex * this._maxSideIndex, 99);
@@ -359,7 +359,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
   /**
    * Computes the volume of the cube in a specific moment.
    */
-  private static _volumeFloat(cube: WuColorCube, moment: number[][][][]): number {
+  private static _volumeFloat(cube: WuColorCube, moment: number[][][][]) {
     return (moment[ cube.alphaMaximum ][ cube.redMaximum ][ cube.greenMaximum ][ cube.blueMaximum ] -
       moment[ cube.alphaMaximum ][ cube.redMaximum ][ cube.greenMinimum ][ cube.blueMaximum ] -
       moment[ cube.alphaMaximum ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMaximum ] +
@@ -382,14 +382,14 @@ export class WuQuant extends AbstractPaletteQuantizer {
   /**
    * Computes the volume of the cube in a specific moment.
    */
-  private static _volume(cube: WuColorCube, moment: number[][][][]): number {
+  private static _volume(cube: WuColorCube, moment: number[][][][]) {
     return WuQuant._volumeFloat(cube, moment) | 0;
   }
 
   /**
    * Splits the cube in given position][and color direction.
    */
-  private static _top(cube: WuColorCube, direction: number, position: number, moment: number[][][][]): number {
+  private static _top(cube: WuColorCube, direction: number, position: number, moment: number[][][][]) {
     let result: number;
     switch (direction) {
       case WuQuant.alpha:
@@ -445,7 +445,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
   /**
    * Splits the cube in a given color direction at its minimum.
    */
-  private static _bottom(cube: WuColorCube, direction: number, moment: number[][][][]): number {
+  private static _bottom(cube: WuColorCube, direction: number, moment: number[][][][]) {
     switch (direction) {
       case WuQuant.alpha:
         return (-moment[ cube.alphaMinimum ][ cube.redMaximum ][ cube.greenMaximum ][ cube.blueMaximum ] +
@@ -496,7 +496,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
   /**
    * Calculates statistical variance for a given cube.
    */
-  private  _calculateVariance(cube: WuColorCube): number {
+  private  _calculateVariance(cube: WuColorCube) {
     const volumeRed = WuQuant._volume(cube, this._momentsRed);
     const volumeGreen = WuQuant._volume(cube, this._momentsGreen);
     const volumeBlue = WuQuant._volume(cube, this._momentsBlue);
@@ -511,7 +511,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
   /**
    * Finds the optimal (maximal) position for the cut.
    */
-  private _maximize(cube: WuColorCube, direction: number, first: number, last: number, wholeRed: number, wholeGreen: number, wholeBlue: number, wholeAlpha: number, wholeWeight: number): { max: number; position: number } {
+  private _maximize(cube: WuColorCube, direction: number, first: number, last: number, wholeRed: number, wholeGreen: number, wholeBlue: number, wholeAlpha: number, wholeWeight: number) {
     const bottomRed = WuQuant._bottom(cube, direction, this._momentsRed) | 0;
     const bottomGreen = WuQuant._bottom(cube, direction, this._momentsGreen) | 0;
     const bottomBlue = WuQuant._bottom(cube, direction, this._momentsBlue) | 0;
@@ -556,7 +556,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
   }
 
   // Cuts a cube with another one.
-  private _cut(first: WuColorCube, second: WuColorCube): boolean {
+  private _cut(first: WuColorCube, second: WuColorCube) {
     let direction: number;
 
     const wholeRed = WuQuant._volume(first, this._momentsRed);
@@ -629,7 +629,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
     return true;
   }
 
-  private _initialize(colors: number): void {
+  private _initialize(colors: number) {
     this._colors = colors;
 
     // creates all the _cubes
@@ -667,7 +667,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
     this._pixels = [];
   }
 
-  private _setQuality(significantBitsPerChannel: number = 5): void {
+  private _setQuality(significantBitsPerChannel = 5) {
     this._significantBitsPerChannel = significantBitsPerChannel;
     this._maxSideIndex = 1 << this._significantBitsPerChannel;
     this._alphaMaxSideIndex = this._maxSideIndex;

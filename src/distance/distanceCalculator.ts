@@ -23,7 +23,7 @@ export abstract class AbstractDistanceCalculator {
     this.setWhitePoint(255, 255, 255, 255);
   }
 
-  setWhitePoint(r: number, g: number, b: number, a: number): void {
+  setWhitePoint(r: number, g: number, b: number, a: number) {
     this._whitePoint = {
       r: (r > 0) ? 255 / r : 0,
       g: (g > 0) ? 255 / g : 0,
@@ -33,7 +33,7 @@ export abstract class AbstractDistanceCalculator {
     this._maxDistance = this.calculateRaw(r, g, b, a, 0, 0, 0, 0);
   }
 
-  calculateNormalized(colorA: Point, colorB: Point): number {
+  calculateNormalized(colorA: Point, colorB: Point) {
     return this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a) / this._maxDistance;
   }
 

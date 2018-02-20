@@ -50,7 +50,7 @@ export class RGBQuant extends AbstractPaletteQuantizer {
   private readonly _histogram: ColorHistogram;
   private readonly _distance: AbstractDistanceCalculator;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors: number = 256, method: number = 2) {
+  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors = 256, method = 2) {
     super();
     this._distance = colorDistanceCalculator;
     // desired final palette size
@@ -64,7 +64,7 @@ export class RGBQuant extends AbstractPaletteQuantizer {
   }
 
   // gathers histogram info
-  sample(image: PointContainer): void {
+  sample(image: PointContainer) {
     /*
      var pointArray = image.getPointArray(), max = [0, 0, 0, 0], min = [255, 255, 255, 255];
 

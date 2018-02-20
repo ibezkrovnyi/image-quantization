@@ -7,7 +7,7 @@
 		"target": "esnext",
 		"moduleResolution": "node",
 		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": true,
+		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"preserveConstEnums": true,
 		"pretty": false,

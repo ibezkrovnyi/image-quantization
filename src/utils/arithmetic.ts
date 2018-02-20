@@ -1,4 +1,4 @@
-export function degrees2radians(n: number): number {
+export function degrees2radians(n: number) {
   return n * (Math.PI / 180);
 }
 
@@ -35,7 +35,7 @@ export function inRange0to255(n: number) {
   return n;
 }
 
-export function stableSort<T>(arrayToSort: T[], callback: (a: T, b: T) => number): T[] {
+export function stableSort<T>(arrayToSort: T[], callback: (a: T, b: T) => number) {
   const type = typeof arrayToSort[ 0 ];
   let sorted: T[];
 
@@ -51,7 +51,7 @@ export function stableSort<T>(arrayToSort: T[], callback: (a: T, b: T) => number
       return callback(a, b) || ord[ a as any ] - ord[ b as any ];
     });
   } else {
-    const ord2: T[] = arrayToSort.slice(0);
+    const ord2 = arrayToSort.slice(0);
     sorted = arrayToSort.sort(function (a, b) {
       return callback(a, b) || ord2.indexOf(a) - ord2.indexOf(b);
     });

@@ -72,7 +72,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
     return 2.0 * Math.sqrt(C1pC2p) * Math.sin(dhp / 2.0);
   }
 
-  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number): number {
+  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number) {
     const lab1 = rgb2lab(inRange0to255(r1 * this._whitePoint.r), inRange0to255(g1 * this._whitePoint.g), inRange0to255(b1 * this._whitePoint.b));
     const lab2 = rgb2lab(inRange0to255(r2 * this._whitePoint.r), inRange0to255(g2 * this._whitePoint.g), inRange0to255(b2 * this._whitePoint.b));
     const dA = (a2 - a1) * this._whitePoint.a * CIEDE2000._kA;
@@ -81,7 +81,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
     return Math.sqrt(dE2 + dA * dA);
   }
 
-  calculateRawInLab(Lab1: { L: number; a: number; b: number }, Lab2: { L: number; a: number; b: number }): number {
+  calculateRawInLab(Lab1: { L: number; a: number; b: number }, Lab2: { L: number; a: number; b: number }) {
     // Get L,a,b values for color 1
     const L1 = Lab1.L;
     const a1 = Lab1.a;

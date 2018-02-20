@@ -9,7 +9,7 @@ import { rgb2hsl } from '../conversion/rgb2hsl';
 import { hueGroup } from './palette';
 
 class HueGroup {
-  num: number = 0;
+  num = 0;
   cols: number[] = [];
 }
 

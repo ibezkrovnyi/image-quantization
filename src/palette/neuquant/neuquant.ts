@@ -53,11 +53,11 @@ class Neuron {
    * @example
    * r = Math.min(255, (neuron.r + (1 << (networkBiasShift - 1))) >> networkBiasShift);
    */
-  toPoint(): Point {
+  toPoint() {
     return Point.createByRGBA(this.r >> networkBiasShift, this.g >> networkBiasShift, this.b >> networkBiasShift, this.a >> networkBiasShift);
   }
 
-  subtract(r: number, g: number, b: number, a: number): void {
+  subtract(r: number, g: number, b: number, a: number) {
     this.r -= r | 0;
     this.g -= g | 0;
     this.b -= b | 0;
@@ -154,7 +154,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
   private _bias!: number[];
   private readonly _distance: AbstractDistanceCalculator;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors: number = 256) {
+  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors = 256) {
     super();
     this._distance = colorDistanceCalculator;
     this._pointArray = [];
@@ -164,7 +164,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
     this._distance.setWhitePoint(255 << networkBiasShift, 255 << networkBiasShift, 255 << networkBiasShift, 255 << networkBiasShift);
   }
 
-  sample(pointContainer: PointContainer): void {
+  sample(pointContainer: PointContainer) {
     this._pointArray = this._pointArray.concat(pointContainer.getPointArray());
   }
 
@@ -179,7 +179,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
     };
   }
 
-  private _init(): void {
+  private _init() {
     this._freq = [];
     this._bias = [];
     this._radPower = [];
@@ -264,7 +264,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
     }
   }
 
-  private _buildPalette(): Palette {
+  private _buildPalette() {
     const palette = new Palette();
 
     this._network.forEach(neuron => {
@@ -278,7 +278,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
   /**
    * Move adjacent neurons by precomputed alpha*(1-((i-j)^2/[r]^2)) in radpower[|i-j|]
    */
-  private _alterNeighbour(rad: number, i: number, b: number, g: number, r: number, al: number): void {
+  private _alterNeighbour(rad: number, i: number, b: number, g: number, r: number, al: number) {
     let lo = i - rad;
     if (lo < -1) lo = -1;
 
@@ -316,7 +316,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
   /**
    * Move neuron i towards biased (b,g,r) by factor alpha
    */
-  private _alterSingle(alpha: number, i: number, b: number, g: number, r: number, a: number): void {
+  private _alterSingle(alpha: number, i: number, b: number, g: number, r: number, a: number) {
     alpha /= NeuQuant._initAlpha;
 
     /* alter hit neuron */
@@ -340,7 +340,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
    * Original distance equation:
    *        dist = abs(dR) + abs(dG) + abs(dB)
    */
-  private _contest(b: number, g: number, r: number, a: number): number {
+  private _contest(b: number, g: number, r: number, a: number) {
     const multiplier = (255 * 4) << networkBiasShift;
 
     let bestd = ~(1 << 31);

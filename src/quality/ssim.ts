@@ -28,7 +28,7 @@ export class SSIM {
     let mssim = 0.0;
 
     // calculate ssim for each window
-    this._iterate(image1, image2, (lumaValues1: number[], lumaValues2: number[], averageLumaValue1: number, averageLumaValue2: number) => {
+    this._iterate(image1, image2, (lumaValues1, lumaValues2, averageLumaValue1, averageLumaValue2) => {
       // calculate variance and covariance
       let sigxy = 0.0;
       let sigsqx = 0.0;
@@ -79,7 +79,7 @@ export class SSIM {
     }
   }
 
-  private _calculateLumaValuesForWindow(image: PointContainer, x: number, y: number, width: number, height: number): number[] {
+  private _calculateLumaValuesForWindow(image: PointContainer, x: number, y: number, width: number, height: number) {
     const pointArray = image.getPointArray();
     const lumaValues: number[] = [];
 
@@ -97,7 +97,7 @@ export class SSIM {
     return lumaValues;
   }
 
-  private _calculateAverageLuma(lumaValues: number[]): number {
+  private _calculateAverageLuma(lumaValues: number[]) {
     let sumLuma = 0.0;
     for (const luma of lumaValues) {
       sumLuma += luma;

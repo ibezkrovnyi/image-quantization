@@ -11,7 +11,7 @@ import { AbstractDistanceCalculator } from './distanceCalculator';
  * TODO: Name it: http://www.compuphase.com/cmetric.htm
  */
 export class CMETRIC extends AbstractDistanceCalculator {
-  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number): number {
+  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number) {
     const rmean = (r1 + r2) / 2 * this._whitePoint.r;
     const r = (r1 - r2) * this._whitePoint.r;
     const g = (g1 - g2) * this._whitePoint.g;

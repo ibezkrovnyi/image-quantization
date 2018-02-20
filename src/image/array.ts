@@ -37,7 +37,7 @@ export class ErrorDiffusionArray extends ImageQuantizer {
 
   private _distance: AbstractDistanceCalculator;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, kernel: ErrorDiffusionArrayKernel, serpentine: boolean = true, minimumColorDistanceToDither: number = 0, calculateErrorLikeGIMP: boolean = false) {
+  constructor(colorDistanceCalculator: AbstractDistanceCalculator, kernel: ErrorDiffusionArrayKernel, serpentine = true, minimumColorDistanceToDither = 0, calculateErrorLikeGIMP = false) {
     super();
     this._setKernel(kernel);
 
@@ -160,7 +160,7 @@ export class ErrorDiffusionArray extends ImageQuantizer {
     };
   }
 
-  private _fillErrorLine(errorLine: number[][], width: number): void {
+  private _fillErrorLine(errorLine: number[][], width: number) {
     // shrink
     if (errorLine.length > width) {
       errorLine.length = width;

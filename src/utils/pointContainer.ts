@@ -22,27 +22,27 @@ export class PointContainer {
     this._pointArray = [];
   }
 
-  getWidth(): number {
+  getWidth() {
     return this._width;
   }
 
-  getHeight(): number {
+  getHeight() {
     return this._height;
   }
 
-  setWidth(width: number): void {
+  setWidth(width: number) {
     this._width = width;
   }
 
-  setHeight(height: number): void {
+  setHeight(height: number) {
     this._height = height;
   }
 
-  getPointArray(): Point[] {
+  getPointArray() {
     return this._pointArray;
   }
 
-  clone(): PointContainer {
+  clone() {
     const clone = new PointContainer();
     clone._width = this._width;
     clone._height = this._height;
@@ -54,7 +54,7 @@ export class PointContainer {
     return clone;
   }
 
-  toUint32Array(): Uint32Array {
+  toUint32Array() {
     const l = this._pointArray.length;
     const uint32Array = new Uint32Array(l);
 
@@ -65,11 +65,11 @@ export class PointContainer {
     return uint32Array;
   }
 
-  toUint8Array(): Uint8Array {
+  toUint8Array() {
     return new Uint8Array(this.toUint32Array().buffer);
   }
 
-  static fromHTMLImageElement(img: HTMLImageElement): PointContainer {
+  static fromHTMLImageElement(img: HTMLImageElement) {
     const width = img.naturalWidth;
     const height = img.naturalHeight;
 
@@ -83,7 +83,7 @@ export class PointContainer {
     return PointContainer.fromHTMLCanvasElement(canvas);
   }
 
-  static fromHTMLCanvasElement(canvas: HTMLCanvasElement): PointContainer {
+  static fromHTMLCanvasElement(canvas: HTMLCanvasElement) {
     const width = canvas.width;
     const height = canvas.height;
 
@@ -93,11 +93,11 @@ export class PointContainer {
     return PointContainer.fromImageData(imgData);
   }
 
-  static fromNodeCanvas(canvas: any): PointContainer {
+  static fromNodeCanvas(canvas: any) {
     return PointContainer.fromHTMLCanvasElement(canvas);
   }
 
-  static fromImageData(imageData: ImageData): PointContainer {
+  static fromImageData(imageData: ImageData) {
     const width = imageData.width;
     const height = imageData.height;
 
@@ -113,20 +113,20 @@ export class PointContainer {
      */
   }
 
-  static fromArray(byteArray: number[], width: number, height: number): PointContainer {
+  static fromArray(byteArray: number[], width: number, height: number) {
     const uint8array = new Uint8Array(byteArray);
     return PointContainer.fromUint8Array(uint8array, width, height);
   }
 
-  static fromCanvasPixelArray(data: any, width: number, height: number): PointContainer {
+  static fromCanvasPixelArray(data: any, width: number, height: number) {
     return PointContainer.fromArray(data, width, height);
   }
 
-  static fromUint8Array(uint8array: Uint8Array, width: number, height: number): PointContainer {
+  static fromUint8Array(uint8array: Uint8Array, width: number, height: number) {
     return PointContainer.fromUint32Array(new Uint32Array(uint8array.buffer), width, height);
   }
 
-  static fromUint32Array(uint32array: Uint32Array, width: number, height: number): PointContainer {
+  static fromUint32Array(uint32array: Uint32Array, width: number, height: number) {
     const container = new PointContainer();
 
     container._width = width;

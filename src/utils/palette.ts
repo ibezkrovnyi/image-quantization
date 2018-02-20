@@ -13,7 +13,7 @@ import { rgb2hsl } from '../conversion/rgb2hsl';
 
 // TODO: make paletteArray via pointContainer, so, export will be available via pointContainer.exportXXX
 
-const hueGroups: number = 10;
+const hueGroups = 10;
 
 export function hueGroup(hue: number, segmentsNumber: number) {
   const maxHue = 360;
@@ -51,11 +51,11 @@ export class Palette {
   }
 
   // TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
-  getNearestColor(colorDistanceCalculator: AbstractDistanceCalculator, color: Point): Point {
+  getNearestColor(colorDistanceCalculator: AbstractDistanceCalculator, color: Point) {
     return this._pointArray[ this.getNearestIndex(colorDistanceCalculator, color) | 0 ];
   }
 
-  getPointContainer(): PointContainer {
+  getPointContainer() {
     return this._pointContainer;
   }
 
@@ -93,11 +93,11 @@ export class Palette {
     return typeof this._i32idx[ key ] === 'number' ? this._i32idx[ key ] : -1;
   }
 
-  private getNearestIndex(colorDistanceCalculator: AbstractDistanceCalculator, point: Point): number {
-    let idx: number = this._nearestPointFromCache('' + point.uint32);
+  private getNearestIndex(colorDistanceCalculator: AbstractDistanceCalculator, point: Point) {
+    let idx = this._nearestPointFromCache('' + point.uint32);
     if (idx >= 0) return idx;
 
-    let minimalDistance: number = Number.MAX_VALUE;
+    let minimalDistance = Number.MAX_VALUE;
 
     idx = 0;
     for (let i = 0, l = this._pointArray.length; i < l; i++) {

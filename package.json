@@ -10,7 +10,8 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
-    "test": "tslint --format verbose --config tslint.json --project tsconfig.json && jest",
+    "test": "npm run lint && jest",
+    "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
     "test:watch": "jest --watch",
     "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
@@ -88,8 +89,9 @@
     "ts-jest": "22.0.1",
     "tslint": "5.9.1",
     "tslint-config-airbnb": "5.4.2",
-    "tslint-consistent-codestyle": "1.11.0",
+    "tslint-consistent-codestyle": "^1.11.0",
     "tslint-language-service": "0.9.8",
+    "tslint-advanced-rules": "ibezkrovnyi/tslint-advanced-rules",
     "typescript": "2.7.1"
   },
   "dependencies": {}

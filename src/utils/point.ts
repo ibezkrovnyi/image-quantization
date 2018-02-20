@@ -21,8 +21,8 @@ export class Point {
   rgba: number[]; // TODO: better name is quadruplet or quad may be?
   // Lab : { L : number; a : number; b : number };
 
-  static createByQuadruplet(quadruplet: number[]): Point {
-    const point: Point = new Point();
+  static createByQuadruplet(quadruplet: number[]) {
+    const point = new Point();
 
     point.r = quadruplet[ 0 ] | 0;
     point.g = quadruplet[ 1 ] | 0;
@@ -34,8 +34,8 @@ export class Point {
     return point;
   }
 
-  static createByRGBA(red: number, green: number, blue: number, alpha: number): Point {
-    const point: Point = new Point();
+  static createByRGBA(red: number, green: number, blue: number, alpha: number) {
+    const point = new Point();
 
     point.r = red | 0;
     point.g = green | 0;
@@ -47,8 +47,8 @@ export class Point {
     return point;
   }
 
-  static createByUint32(uint32: number): Point {
-    const point: Point = new Point();
+  static createByUint32(uint32: number) {
+    const point = new Point();
 
     point.uint32 = uint32 >>> 0;
     point._loadRGBA();
@@ -61,7 +61,6 @@ export class Point {
     this.uint32 = -1 >>> 0;
     this.r = this.g = this.b = this.a = 0;
     this.rgba = new Array(4);
-    /*[ this.r , this.g , this.b , this.a ]*/
     this.rgba[ 0 ] = 0;
     this.rgba[ 1 ] = 0;
     this.rgba[ 2 ] = 0;
@@ -101,7 +100,7 @@ export class Point {
    Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B) [2]
    Luminance (perceived option 2, slower to calculate):  sqrt( 0.241*R^2 + 0.691*G^2 + 0.068*B^2 ) ? sqrt( 0.299*R^2 + 0.587*G^2 + 0.114*B^2 ) (thanks to @MatthewHerbst) [http://alienryderflex.com/hsp.html]
    */
-  getLuminosity(useAlphaChannel: boolean): number {
+  getLuminosity(useAlphaChannel: boolean) {
     let r = this.r;
     let g = this.g;
     let b = this.b;

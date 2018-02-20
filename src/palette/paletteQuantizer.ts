@@ -13,7 +13,7 @@ export abstract class AbstractPaletteQuantizer {
   abstract sample(pointContainer: PointContainer): void;
   abstract quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue>;
 
-  quantize(): Palette {
+  quantize() {
     for (const value of this.quantizeAsync()) {
       if (value.palette) {
         return value.palette;

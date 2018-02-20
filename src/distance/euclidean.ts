@@ -17,7 +17,7 @@ export abstract class AbstractEuclidean extends AbstractDistanceCalculator {
   protected _kB!: number;
   protected _kA!: number;
 
-  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number): number {
+  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number) {
     const dR = r2 - r1;
     const dG = g2 - g1;
     const dB = b2 - b1;

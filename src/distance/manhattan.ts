@@ -17,7 +17,7 @@ export abstract class AbstractManhattan extends AbstractDistanceCalculator {
   protected _kB!: number;
   protected _kA!: number;
 
-  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number): number {
+  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number) {
     let dR = r2 - r1;
     let dG = g2 - g1;
     let dB = b2 - b1;

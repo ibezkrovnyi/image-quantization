@@ -38,7 +38,7 @@ export class ErrorDiffusionRiemersma extends ImageQuantizer {
   private _weights: number[];
   private _errorQueueSize: number;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, errorQueueSize: number = 16, errorPropagation: number = 1) {
+  constructor(colorDistanceCalculator: AbstractDistanceCalculator, errorQueueSize = 16, errorPropagation = 1) {
     super();
     this._distance = colorDistanceCalculator;
     this._errorQueueSize = errorQueueSize;
