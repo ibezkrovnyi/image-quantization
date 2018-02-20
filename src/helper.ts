@@ -7,19 +7,19 @@
  */
 // TODO: do we need this helper?
 
-import { PaletteQuantizer } from "./palette/paletteQuantizer"
-import { AbstractDistanceCalculator } from "./distance/abstractDistanceCalculator"
-import { ImageQuantizer } from "./image/common"
+import { AbstractPaletteQuantizer } from "./palette/paletteQuantizer"
+import { AbstractDistanceCalculator } from "./distance/distanceCalculator"
+import { ImageQuantizer } from "./image/imageQuantizer"
 import { PointContainer } from "./utils/pointContainer"
 import { Palette } from "./utils/palette"
 import { SSIM } from "./quality/ssim"
 
 export class IQ {
-  private paletteQuantizer: PaletteQuantizer;
+  private paletteQuantizer: AbstractPaletteQuantizer;
   private distanceCalculator: AbstractDistanceCalculator;
   private ditherer: ImageQuantizer;
 
-  constructor(colors: number, DistanceCalculator: new() => AbstractDistanceCalculator, Quantizer: new(distanceCalculator: AbstractDistanceCalculator, color: number) => PaletteQuantizer, ditherer: ImageQuantizer) {
+  constructor(colors: number, DistanceCalculator: new() => AbstractDistanceCalculator, Quantizer: new(distanceCalculator: AbstractDistanceCalculator, color: number) => AbstractPaletteQuantizer, ditherer: ImageQuantizer) {
     this.ditherer = ditherer;
     this.distanceCalculator = new DistanceCalculator();
     this.paletteQuantizer = new Quantizer(this.distanceCalculator, colors);

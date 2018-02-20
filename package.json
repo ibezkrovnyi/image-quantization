@@ -4,13 +4,13 @@
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
-  "homepage": "https://github.com/igor-bezkrovny/image-quantization",
+  "homepage": "https://github.com/ibezkrovnyi/image-quantization",
   "main": "dist/umd/image-q.js",
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
-    "test": "npm run lint && jest",
+    "test": "npm run lint && jest --maxWorkers=2",
     "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
     "test:watch": "jest --watch",
     "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags",
@@ -70,12 +70,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/igor-bezkrovny/image-quantization"
+    "url": "https://github.com/ibezkrovnyi/image-quantization"
   },
   "bugs": {
-    "url": "https://github.com/igor-bezkrovny/image-quantization/issues"
+    "url": "https://github.com/ibezkrovnyi/image-quantization/issues"
   },
   "devDependencies": {
+    "@ibezkrovnyi/tslint-rules": "0.0.1",
     "@types/jest": "22.1.0",
     "@types/node": "^9.4.4",
     "@types/pngjs": "^3.3.0",
@@ -91,7 +92,6 @@
     "tslint-config-airbnb": "5.4.2",
     "tslint-consistent-codestyle": "^1.11.0",
     "tslint-language-service": "0.9.8",
-    "tslint-advanced-rules": "ibezkrovnyi/tslint-advanced-rules",
     "typescript": "2.7.1"
   },
   "dependencies": {}

@@ -3,7 +3,7 @@
     "tslint:recommended",
     "tslint-config-airbnb",
     "tslint-consistent-codestyle",
-    "tslint-advanced-rules"
+    "@ibezkrovnyi/tslint-rules"
   ],
   "rules": {
     "no-inferrable-return-types": true,
