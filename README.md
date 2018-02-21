@@ -9,6 +9,7 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 [![Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ibezkrovnyi.github.io/image-quantization-demo/)
 [![GitHub](https://img.shields.io/badge/github-.com-brightgreen.svg)](https://github.com/igor-bezkrovny/image-quantization)
 [![NPM](https://badge.fury.io/js/image-q.svg)](https://www.npmjs.com/package/image-q)
+[![Greenkeeper badge](https://badges.greenkeeper.io/ibezkrovnyi/image-quantization.svg)](https://greenkeeper.io/)
 [![API Documentation](https://img.shields.io/badge/API_Documentation-Available-blue.svg)](http://igor-bezkrovny.github.io/image-q/doc)
 [![NPM License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
