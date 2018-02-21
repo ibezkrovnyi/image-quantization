@@ -1,30 +1,55 @@
 {
-  "author": "Igor Bezkrovny",
   "name": "image-q",
-  "version": "1.1.1",
+  "version": "2.0.1",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
-  "homepage": "https://github.com/igor-bezkrovny/image-quantization",
+  "homepage": "https://github.com/ibezkrovnyi/image-quantization",
+  "main": "dist/umd/image-q.js",
+  "module": "dist/esm/image-q.js",
+  "types": "dist/esm/image-q.d.ts",
   "scripts": {
-    "test": "mocha --recursive",
-    "prepublish": "npm run dist",
-    "dist": "webpack --config ./src/webpack.config.js",
-    "watch": "webpack --config ./src/webpack.config.js --watch"
+    "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
+    "test": "npm run lint && jest --maxWorkers=2",
+    "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
+    "test:watch": "jest --watch",
+    "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+  },
+  "files": [
+    "dist"
+  ],
+  "jest": {
+    "collectCoverage": true,
+    "mapCoverage": true,
+    "coverageReporters": [
+      "lcov",
+      "text-summary",
+      "html"
+    ],
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/tests"
+    ],
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "preferGlobal": false,
-  "main": "./dist/iq.js",
-  "typings": "./dist/iq.d.ts",
-  "dependencies": {},
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.0.2",
-    "source-map-loader": "^0.1.5",
-    "ts-loader": "^0.8.2",
-    "typedoc": "^0.4.4",
-    "typescript": "^2.0.0",
-    "webpack": "^1.13.1"
-  },
   "keywords": [
     "image",
     "palette",
@@ -39,14 +64,35 @@
     "dithering",
     "floyd-steinberg"
   ],
+  "author": "Igor Bezkrovny",
   "engines": {
     "node": ">=0.9.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/igor-bezkrovny/image-quantization"
+    "url": "https://github.com/ibezkrovnyi/image-quantization"
   },
   "bugs": {
-    "url": "https://github.com/igor-bezkrovny/image-quantization/issues"
-  }
+    "url": "https://github.com/ibezkrovnyi/image-quantization/issues"
+  },
+  "devDependencies": {
+    "@ibezkrovnyi/tslint-rules": "0.0.3",
+    "@types/jest": "22.1.0",
+    "@types/node": "9.4.4",
+    "@types/pngjs": "3.3.0",
+    "coveralls": "3.0.0",
+    "jest": "22.1.4",
+    "pngjs": "3.3.1",
+    "rollup": "0.54.1",
+    "rollup-plugin-commonjs": "8.2.6",
+    "rollup-plugin-local-resolve": "1.0.7",
+    "rollup-plugin-node-resolve": "3.0.2",
+    "ts-jest": "22.0.1",
+    "tslint": "5.9.1",
+    "tslint-config-airbnb": "5.4.2",
+    "tslint-consistent-codestyle": "1.11.0",
+    "tslint-language-service": "0.9.8",
+    "typescript": "2.7.1"
+  },
+  "dependencies": {}
 }

@@ -1,6 +1,6 @@
 /**
  * @preserve
- * Copyright 2015-2016 Igor Bezkrovnyi
+ * Copyright 2015-2018 Igor Bezkrovnyi
  * All rights reserved. (MIT Licensed)
  *
  * constants.ts - part of Image Quantization Library
@@ -11,19 +11,21 @@
  * http://en.wikipedia.org/wiki/SRGB
  */
 enum Y {
-    RED = .2126, GREEN = .7152, BLUE = .0722, WHITE = 1
+  RED = .2126, GREEN = .7152, BLUE = .0722, WHITE = 1,
 }
 
+// tslint:disable-next-line:naming-convention
 enum x {
-    RED = .6400, GREEN = .3000, BLUE = .1500, WHITE = .3127
+  RED = .6400, GREEN = .3000, BLUE = .1500, WHITE = .3127,
 }
 
+// tslint:disable-next-line:naming-convention
 enum y {
-    RED = .3300, GREEN = .6000, BLUE = .0600, WHITE = .3290
+  RED = .3300, GREEN = .6000, BLUE = .0600, WHITE = .3290,
 }
 
 export {
-    Y,
-    x,
-    y
-}
+  Y,
+  x,
+  y,
+};

@@ -1,10 +1,12 @@
+/.vscode
+/.idea
+
 /dist
 
-/.idea
-/demo/html/dist
-/demo/node.js/demo.js
-/demo/node.js/demo.js.map
-/demo/apply-palette-from-file/out
+/coverage
+/examples/node.js/demo.js
+/examples/node.js/demo.js.map
+/examples/apply-palette-from-file/out
 
 node_modules
 

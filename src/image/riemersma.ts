@@ -2,7 +2,7 @@
  * @preserve
  * MIT License
  *
- * Copyright 2015-2016 Igor Bezkrovnyi
+ * Copyright 2015-2018 Igor Bezkrovnyi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -22,91 +22,98 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  *
- * nearestColor.ts - part of Image Quantization Library
+ * riemersma.ts - part of Image Quantization Library
  */
-import { IImageDitherer } from "./common"
-import { HilbertCurveBase } from "./spaceFillingCurves/hilbertCurve"
-import { AbstractDistanceCalculator } from "../distance/abstractDistanceCalculator"
-import { PointContainer } from "../utils/pointContainer"
-import { Palette } from "../utils/palette"
-import { Point } from "../utils/point"
-import { inRange0to255Rounded } from "../utils/arithmetic"
+import { AbstractImageQuantizer } from './imageQuantizer';
+import { hilbertCurve } from './spaceFillingCurves/hilbertCurve';
+import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
+import { PointContainer } from '../utils/pointContainer';
+import { Palette } from '../utils/palette';
+import { Point } from '../utils/point';
+import { inRange0to255Rounded } from '../utils/arithmetic';
+import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
-export class ErrorDiffusionRiemersma implements IImageDitherer {
-    private _distance : AbstractDistanceCalculator;
-    private _weights : number[];
-    private _errorQueueSize : number;
-    private _errorPropagation : number;
-    private _max : number;
+export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
+  private _distance: AbstractDistanceCalculator;
+  private _weights: number[];
+  private _errorQueueSize: number;
 
-    constructor(colorDistanceCalculator : AbstractDistanceCalculator, errorQueueSize : number = 16, errorPropagation : number = 1) {
-        this._distance         = colorDistanceCalculator;
-        this._errorPropagation = errorPropagation;
-        this._errorQueueSize   = errorQueueSize;
-        this._max              = this._errorQueueSize;
-        this._createWeights();
+  constructor(colorDistanceCalculator: AbstractDistanceCalculator, errorQueueSize = 16, errorPropagation = 1) {
+    super();
+    this._distance = colorDistanceCalculator;
+    this._errorQueueSize = errorQueueSize;
+    this._weights = ErrorDiffusionRiemersma._createWeights(errorPropagation, errorQueueSize);
+  }
+
+  /**
+   * Mutates pointContainer
+   */
+  * quantizeAsync(pointContainer: PointContainer, palette: Palette) {
+    const pointArray = pointContainer.getPointArray();
+    const width = pointContainer.getWidth();
+    const height = pointContainer.getHeight();
+    const errorQueue: Array<{ r: number; g: number; b: number; a: number }> = [];
+
+    let head = 0;
+
+    for (let i = 0; i < this._errorQueueSize; i++) {
+      errorQueue[i] = { r: 0, g: 0, b: 0, a: 0 };
     }
 
-    quantize(pointBuffer : PointContainer, palette : Palette) : PointContainer {
-        const curve                                                           = new HilbertCurveBase(),
-              pointArray                                                      = pointBuffer.getPointArray(),
-              width                                                           = pointBuffer.getWidth(),
-              height                                                          = pointBuffer.getHeight(),
-              errorQueue : {r : number; g : number; b : number; a : number}[] = [];
+    yield * hilbertCurve(width, height, (x, y) => {
+      const p = pointArray[x + y * width];
+      let r = p.r;
+      let g = p.g;
+      let b = p.b;
+      let a = p.a;
+      for (let i = 0; i < this._errorQueueSize; i++) {
+        const weight = this._weights[i];
+        const e = errorQueue[(i + head) % this._errorQueueSize];
 
-        let head = 0;
+        r += e.r * weight;
+        g += e.g * weight;
+        b += e.b * weight;
+        a += e.a * weight;
+      }
 
-        for (let i = 0; i < this._errorQueueSize; i++) {
-            errorQueue[ i ] = { r : 0, g : 0, b : 0, a : 0 };
-        }
+      const correctedPoint = Point.createByRGBA(
+        inRange0to255Rounded(r),
+        inRange0to255Rounded(g),
+        inRange0to255Rounded(b),
+        inRange0to255Rounded(a),
+      );
 
-        curve.walk(width, height, (x, y) => {
-            const p = pointArray[ x + y * width ];
-            let r   = p.r, g = p.g, b = p.b, a = p.a;
-            for (let i = 0; i < this._errorQueueSize; i++) {
-                const weight = this._weights[ i ],
-                      e      = errorQueue[ (i + head) % this._errorQueueSize ];
+      const quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
 
-                r += e.r * weight;
-                g += e.g * weight;
-                b += e.b * weight;
-                a += e.a * weight;
-            }
+      // update head and calculate tail
+      head = (head + 1) % this._errorQueueSize;
+      const tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
 
-            const correctedPoint = Point.createByRGBA(
-                inRange0to255Rounded(r),
-                inRange0to255Rounded(g),
-                inRange0to255Rounded(b),
-                inRange0to255Rounded(a)
-            );
+      // update error with new value
+      errorQueue[tail].r = p.r - quantizedPoint.r;
+      errorQueue[tail].g = p.g - quantizedPoint.g;
+      errorQueue[tail].b = p.b - quantizedPoint.b;
+      errorQueue[tail].a = p.a - quantizedPoint.a;
 
-            const quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
+      // update point
+      p.from(quantizedPoint);
+    });
 
-            // update head and calculate tail
-            head       = (head + 1) % this._errorQueueSize;
-            const tail = (head + this._errorQueueSize - 1) % this._errorQueueSize;
+    yield {
+      pointContainer,
+      progress: 100,
+    };
+  }
 
-            // update error with new value
-            errorQueue[ tail ].r = p.r - quantizedPoint.r;
-            errorQueue[ tail ].g = p.g - quantizedPoint.g;
-            errorQueue[ tail ].b = p.b - quantizedPoint.b;
-            errorQueue[ tail ].a = p.a - quantizedPoint.a;
+  private static _createWeights(errorPropagation: number, errorQueueSize: number) {
+    const weights: number[] = [];
 
-            // update point
-            p.from(quantizedPoint);
-        });
-
-        return pointBuffer;
+    const multiplier = Math.exp(Math.log(errorQueueSize) / (errorQueueSize - 1));
+    for (let i = 0, next = 1; i < errorQueueSize; i++) {
+      weights[i] = (((next + 0.5) | 0) / errorQueueSize) * errorPropagation;
+      next *= multiplier;
     }
 
-    private _createWeights() : void {
-        this._weights = [];
-
-        const multiplier = Math.exp(Math.log(this._max) / (this._errorQueueSize - 1));
-        for (let i = 0, next = 1; i < this._errorQueueSize; i++) {
-            this._weights[ i ] = (((next + 0.5) | 0) / this._max) * this._errorPropagation;
-            next *= multiplier;
-        }
-    }
+    return weights;
+  }
 }
-
