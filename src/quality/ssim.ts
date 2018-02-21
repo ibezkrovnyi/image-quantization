@@ -10,8 +10,8 @@ import { Y } from '../constants/bt709';
 
 // based on https://github.com/rhys-e/structural-similarity
 // http://en.wikipedia.org/wiki/Structural_similarity
-const K1 = 0.01;
-const K2 = 0.03;
+const K1 = 0.01; // tslint:disable-line:naming-convention
+const K2 = 0.03; // tslint:disable-line:naming-convention
 
 export class SSIM {
   compare(image1: PointContainer, image2: PointContainer) {
@@ -20,7 +20,7 @@ export class SSIM {
     }
 
     const bitsPerComponent = 8;
-    const L = (1 << bitsPerComponent) - 1;
+    const L = (1 << bitsPerComponent) - 1; // tslint:disable-line:naming-convention
     const c1 = Math.pow((K1 * L), 2);
     const c2 = Math.pow((K2 * L), 2);
 

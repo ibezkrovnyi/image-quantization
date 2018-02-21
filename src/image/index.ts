@@ -5,14 +5,14 @@
  *
  * iq.ts - Image Quantization Library
  */
-import { ImageQuantizer } from './imageQuantizer';
+import { AbstractImageQuantizer } from './imageQuantizer';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 import { NearestColor } from './nearestColor';
 import { ErrorDiffusionArray, ErrorDiffusionArrayKernel } from './array';
 import { ErrorDiffusionRiemersma } from './riemersma';
 
 export {
-  ImageQuantizer,
+  AbstractImageQuantizer,
   ImageQuantizerYieldValue,
   NearestColor,
   ErrorDiffusionArray,

@@ -24,7 +24,7 @@
  *
  * riemersma.ts - part of Image Quantization Library
  */
-import { ImageQuantizer } from './imageQuantizer';
+import { AbstractImageQuantizer } from './imageQuantizer';
 import { hilbertCurve } from './spaceFillingCurves/hilbertCurve';
 import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
@@ -33,7 +33,7 @@ import { Point } from '../utils/point';
 import { inRange0to255Rounded } from '../utils/arithmetic';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
-export class ErrorDiffusionRiemersma extends ImageQuantizer {
+export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
   private _distance: AbstractDistanceCalculator;
   private _weights: number[];
   private _errorQueueSize: number;
@@ -48,7 +48,7 @@ export class ErrorDiffusionRiemersma extends ImageQuantizer {
   /**
    * Mutates pointContainer
    */
-  * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
+  * quantizeAsync(pointContainer: PointContainer, palette: Palette) {
     const pointArray = pointContainer.getPointArray();
     const width = pointContainer.getWidth();
     const height = pointContainer.getHeight();

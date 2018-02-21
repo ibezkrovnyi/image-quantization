@@ -14,7 +14,7 @@ import { min3, max3 } from '../utils/arithmetic';
  * Saturation: [0..1]
  * http://web.archive.org/web/20060914040436/http://local.wasp.uwa.edu.au/~pbourke/colour/hsl/
  */
-export function rgb2hsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
+export function rgb2hsl(r: number, g: number, b: number) {
   const min = min3(r, g, b);
   const max = max3(r, g, b);
   const delta = max - min;

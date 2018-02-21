@@ -84,10 +84,10 @@ export class WuColorCube {
 
 export class WuQuant extends AbstractPaletteQuantizer {
 
-  private static readonly alpha = 3;
-  private static readonly red = 2;
-  private static readonly green = 1;
-  private static readonly blue = 0;
+  private static readonly _alpha = 3;
+  private static readonly _red = 2;
+  private static readonly _green = 1;
+  private static readonly _blue = 0;
 
   private _reds!: number[];
   private _greens!: number[];
@@ -132,7 +132,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
     this._pixels = this._pixels.concat(pointArray);
   }
 
-  * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {
+  * quantizeAsync() {
     yield * this._preparePalette();
 
     const palette = new Palette();
@@ -159,7 +159,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
     };
   }
 
-  private * _preparePalette(): IterableIterator<PaletteQuantizerYieldValue> {
+  private * _preparePalette() {
     // preprocess the colors
     yield * this._calculateMoments();
 
@@ -392,7 +392,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
   private static _top(cube: WuColorCube, direction: number, position: number, moment: number[][][][]) {
     let result: number;
     switch (direction) {
-      case WuQuant.alpha:
+      case WuQuant._alpha:
         result = (moment[ position ][ cube.redMaximum ][ cube.greenMaximum ][ cube.blueMaximum ] -
           moment[ position ][ cube.redMaximum ][ cube.greenMinimum ][ cube.blueMaximum ] -
           moment[ position ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMaximum ] +
@@ -403,7 +403,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
           moment[ position ][ cube.redMinimum ][ cube.greenMinimum ][ cube.blueMinimum ]);
         break;
 
-      case WuQuant.red:
+      case WuQuant._red:
         result = (moment[ cube.alphaMaximum ][ position ][ cube.greenMaximum ][ cube.blueMaximum ] -
           moment[ cube.alphaMaximum ][ position ][ cube.greenMinimum ][ cube.blueMaximum ] -
           moment[ cube.alphaMinimum ][ position ][ cube.greenMaximum ][ cube.blueMaximum ] +
@@ -414,7 +414,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
           moment[ cube.alphaMinimum ][ position ][ cube.greenMinimum ][ cube.blueMinimum ]);
         break;
 
-      case WuQuant.green:
+      case WuQuant._green:
         result = (moment[ cube.alphaMaximum ][ cube.redMaximum ][ position ][ cube.blueMaximum ] -
           moment[ cube.alphaMaximum ][ cube.redMinimum ][ position ][ cube.blueMaximum ] -
           moment[ cube.alphaMinimum ][ cube.redMaximum ][ position ][ cube.blueMaximum ] +
@@ -425,7 +425,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ position ][ cube.blueMinimum ]);
         break;
 
-      case WuQuant.blue:
+      case WuQuant._blue:
         result = (moment[ cube.alphaMaximum ][ cube.redMaximum ][ cube.greenMaximum ][ position ] -
           moment[ cube.alphaMaximum ][ cube.redMaximum ][ cube.greenMinimum ][ position ] -
           moment[ cube.alphaMaximum ][ cube.redMinimum ][ cube.greenMaximum ][ position ] +
@@ -447,7 +447,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
    */
   private static _bottom(cube: WuColorCube, direction: number, moment: number[][][][]) {
     switch (direction) {
-      case WuQuant.alpha:
+      case WuQuant._alpha:
         return (-moment[ cube.alphaMinimum ][ cube.redMaximum ][ cube.greenMaximum ][ cube.blueMaximum ] +
           moment[ cube.alphaMinimum ][ cube.redMaximum ][ cube.greenMinimum ][ cube.blueMaximum ] +
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMaximum ] -
@@ -457,7 +457,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMinimum ] -
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ cube.greenMinimum ][ cube.blueMinimum ]);
 
-      case WuQuant.red:
+      case WuQuant._red:
         return (-moment[ cube.alphaMaximum ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMaximum ] +
           moment[ cube.alphaMaximum ][ cube.redMinimum ][ cube.greenMinimum ][ cube.blueMaximum ] +
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMaximum ] -
@@ -467,7 +467,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMinimum ] -
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ cube.greenMinimum ][ cube.blueMinimum ]);
 
-      case WuQuant.green:
+      case WuQuant._green:
         return (-moment[ cube.alphaMaximum ][ cube.redMaximum ][ cube.greenMinimum ][ cube.blueMaximum ] +
           moment[ cube.alphaMaximum ][ cube.redMinimum ][ cube.greenMinimum ][ cube.blueMaximum ] +
           moment[ cube.alphaMinimum ][ cube.redMaximum ][ cube.greenMinimum ][ cube.blueMaximum ] -
@@ -477,7 +477,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
           moment[ cube.alphaMinimum ][ cube.redMaximum ][ cube.greenMinimum ][ cube.blueMinimum ] -
           moment[ cube.alphaMinimum ][ cube.redMinimum ][ cube.greenMinimum ][ cube.blueMinimum ]);
 
-      case WuQuant.blue:
+      case WuQuant._blue:
         return (-moment[ cube.alphaMaximum ][ cube.redMaximum ][ cube.greenMaximum ][ cube.blueMinimum ] +
           moment[ cube.alphaMaximum ][ cube.redMaximum ][ cube.greenMinimum ][ cube.blueMinimum ] +
           moment[ cube.alphaMaximum ][ cube.redMinimum ][ cube.greenMaximum ][ cube.blueMinimum ] -
@@ -565,23 +565,23 @@ export class WuQuant extends AbstractPaletteQuantizer {
     const wholeAlpha = WuQuant._volume(first, this._momentsAlpha);
     const wholeWeight = WuQuant._volume(first, this._weights);
 
-    const red = this._maximize(first, WuQuant.red, first.redMinimum + 1, first.redMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
-    const green = this._maximize(first, WuQuant.green, first.greenMinimum + 1, first.greenMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
-    const blue = this._maximize(first, WuQuant.blue, first.blueMinimum + 1, first.blueMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
-    const alpha = this._maximize(first, WuQuant.alpha, first.alphaMinimum + 1, first.alphaMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
+    const red = this._maximize(first, WuQuant._red, first.redMinimum + 1, first.redMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
+    const green = this._maximize(first, WuQuant._green, first.greenMinimum + 1, first.greenMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
+    const blue = this._maximize(first, WuQuant._blue, first.blueMinimum + 1, first.blueMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
+    const alpha = this._maximize(first, WuQuant._alpha, first.alphaMinimum + 1, first.alphaMaximum, wholeRed, wholeGreen, wholeBlue, wholeAlpha, wholeWeight);
 
     if (alpha.max >= red.max && alpha.max >= green.max && alpha.max >= blue.max) {
-      direction = WuQuant.alpha;
+      direction = WuQuant._alpha;
 
       // cannot split empty cube
       if (alpha.position < 0) return false;
     } else {
       if (red.max >= alpha.max && red.max >= green.max && red.max >= blue.max) {
-        direction = WuQuant.red;
+        direction = WuQuant._red;
       } else if (green.max >= alpha.max && green.max >= red.max && green.max >= blue.max) {
-        direction = WuQuant.green;
+        direction = WuQuant._green;
       } else {
-        direction = WuQuant.blue;
+        direction = WuQuant._blue;
       }
     }
 
@@ -592,28 +592,28 @@ export class WuQuant extends AbstractPaletteQuantizer {
 
     // cuts in a certain direction
     switch (direction) {
-      case WuQuant.red:
+      case WuQuant._red:
         second.redMinimum = first.redMaximum = red.position;
         second.greenMinimum = first.greenMinimum;
         second.blueMinimum = first.blueMinimum;
         second.alphaMinimum = first.alphaMinimum;
         break;
 
-      case WuQuant.green:
+      case WuQuant._green:
         second.greenMinimum = first.greenMaximum = green.position;
         second.redMinimum = first.redMinimum;
         second.blueMinimum = first.blueMinimum;
         second.alphaMinimum = first.alphaMinimum;
         break;
 
-      case WuQuant.blue:
+      case WuQuant._blue:
         second.blueMinimum = first.blueMaximum = blue.position;
         second.redMinimum = first.redMinimum;
         second.greenMinimum = first.greenMinimum;
         second.alphaMinimum = first.alphaMinimum;
         break;
 
-      case WuQuant.alpha:
+      case WuQuant._alpha:
         second.alphaMinimum = first.alphaMaximum = alpha.position;
         second.blueMinimum = first.blueMinimum;
         second.redMinimum = first.redMinimum;

@@ -52,7 +52,7 @@ export class Palette {
 
   // TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
   getNearestColor(colorDistanceCalculator: AbstractDistanceCalculator, color: Point) {
-    return this._pointArray[ this.getNearestIndex(colorDistanceCalculator, color) | 0 ];
+    return this._pointArray[ this._getNearestIndex(colorDistanceCalculator, color) | 0 ];
   }
 
   getPointContainer() {
@@ -93,7 +93,7 @@ export class Palette {
     return typeof this._i32idx[ key ] === 'number' ? this._i32idx[ key ] : -1;
   }
 
-  private getNearestIndex(colorDistanceCalculator: AbstractDistanceCalculator, point: Point) {
+  private _getNearestIndex(colorDistanceCalculator: AbstractDistanceCalculator, point: Point) {
     let idx = this._nearestPointFromCache('' + point.uint32);
     if (idx >= 0) return idx;
 

@@ -85,7 +85,7 @@ export class RGBQuant extends AbstractPaletteQuantizer {
   }
 
   // reduces histogram to palette, remaps & memoizes reduced colors
-  * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {
+  * quantizeAsync() {
     const idxi32 = this._histogram.getImportanceSortedColorsIDXI32();
     if (idxi32.length === 0) {
       throw new Error('No colors in image');

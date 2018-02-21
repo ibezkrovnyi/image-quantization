@@ -76,13 +76,13 @@
     "url": "https://github.com/ibezkrovnyi/image-quantization/issues"
   },
   "devDependencies": {
-    "@ibezkrovnyi/tslint-rules": "0.0.1",
+    "@ibezkrovnyi/tslint-rules": "0.0.3",
     "@types/jest": "22.1.0",
-    "@types/node": "^9.4.4",
-    "@types/pngjs": "^3.3.0",
-    "coveralls": "^3.0.0",
+    "@types/node": "9.4.4",
+    "@types/pngjs": "3.3.0",
+    "coveralls": "3.0.0",
     "jest": "22.1.4",
-    "pngjs": "^3.3.1",
+    "pngjs": "3.3.1",
     "rollup": "0.54.1",
     "rollup-plugin-commonjs": "8.2.6",
     "rollup-plugin-local-resolve": "1.0.7",
@@ -90,7 +90,7 @@
     "ts-jest": "22.0.1",
     "tslint": "5.9.1",
     "tslint-config-airbnb": "5.4.2",
-    "tslint-consistent-codestyle": "^1.11.0",
+    "tslint-consistent-codestyle": "1.11.0",
     "tslint-language-service": "0.9.8",
     "typescript": "2.7.1"
   },

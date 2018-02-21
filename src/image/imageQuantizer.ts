@@ -9,7 +9,7 @@ import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
-export abstract class ImageQuantizer {
+export abstract class AbstractImageQuantizer {
   abstract quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue>;
 
   quantize(pointContainer: PointContainer, palette: Palette) {

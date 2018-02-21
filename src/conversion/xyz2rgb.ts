@@ -12,7 +12,7 @@ function correctGamma(n: number) {
   return n > 0.0031308 ? 1.055 * Math.pow(n, 1 / 2.4) - 0.055 : 12.92 * n;
 }
 
-export function xyz2rgb(x: number, y: number, z: number): { r: number; g: number; b: number } {
+export function xyz2rgb(x: number, y: number, z: number) {
   // Observer. = 2°, Illuminant = D65
   const r = correctGamma(x * 3.2406 + y * -1.5372 + z * -0.4986);
   const g = correctGamma(x * -0.9689 + y * 1.8758 + z * 0.0415);

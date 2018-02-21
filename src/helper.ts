@@ -9,7 +9,7 @@
 
 import { AbstractPaletteQuantizer } from "./palette/paletteQuantizer"
 import { AbstractDistanceCalculator } from "./distance/distanceCalculator"
-import { ImageQuantizer } from "./image/imageQuantizer"
+import { AbstractImageQuantizer } from "./image/imageQuantizer"
 import { PointContainer } from "./utils/pointContainer"
 import { Palette } from "./utils/palette"
 import { SSIM } from "./quality/ssim"
@@ -17,9 +17,9 @@ import { SSIM } from "./quality/ssim"
 export class IQ {
   private paletteQuantizer: AbstractPaletteQuantizer;
   private distanceCalculator: AbstractDistanceCalculator;
-  private ditherer: ImageQuantizer;
+  private ditherer: AbstractImageQuantizer;
 
-  constructor(colors: number, DistanceCalculator: new() => AbstractDistanceCalculator, Quantizer: new(distanceCalculator: AbstractDistanceCalculator, color: number) => AbstractPaletteQuantizer, ditherer: ImageQuantizer) {
+  constructor(colors: number, DistanceCalculator: new() => AbstractDistanceCalculator, Quantizer: new(distanceCalculator: AbstractDistanceCalculator, color: number) => AbstractPaletteQuantizer, ditherer: AbstractImageQuantizer) {
     this.ditherer = ditherer;
     this.distanceCalculator = new DistanceCalculator();
     this.paletteQuantizer = new Quantizer(this.distanceCalculator, colors);

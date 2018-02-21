@@ -5,7 +5,7 @@
  *
  * ditherErrorDiffusionArray.ts - part of Image Quantization Library
  */
-import { ImageQuantizer } from './imageQuantizer';
+import { AbstractImageQuantizer } from './imageQuantizer';
 import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
 import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
@@ -28,7 +28,7 @@ export enum ErrorDiffusionArrayKernel {
 }
 
 // http://www.tannerhelland.com/4660/dithering-eleven-algorithms-source-code/
-export class ErrorDiffusionArray extends ImageQuantizer {
+export class ErrorDiffusionArray extends AbstractImageQuantizer {
   private _minColorDistance: number;
   private _serpentine: boolean;
   private _kernel!: number[][];

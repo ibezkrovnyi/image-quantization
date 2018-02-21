@@ -20,7 +20,7 @@ interface Data {
   callback(x: number, y: number): void;
 }
 
-export function * hilbertCurve(width: number, height: number, callback: (x: number, y: number) => void): IterableIterator<ImageQuantizerYieldValue> {
+export function * hilbertCurve(width: number, height: number, callback: (x: number, y: number) => void) {
   const maxBound = Math.max(width, height);
   const level = Math.floor(Math.log(maxBound) / Math.log(2) + 1);
   const tracker = new ProgressTracker(width * height, 99);

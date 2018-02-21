@@ -13,6 +13,7 @@ function pivot(n: number) {
   return n > 0.206893034 ? Math.pow(n, 3) : (n - 16 / 116) / 7.787;
 }
 
+// tslint:disable-next-line:naming-convention
 export function lab2xyz(L: number, a: number, b: number) {
   const y = (L + 16) / 116;
   const x = a / 500 + y;

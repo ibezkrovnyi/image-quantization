@@ -10,6 +10,7 @@ import { rgb2lab } from '../conversion/rgb2lab';
 import { degrees2radians, inRange0to255 } from '../utils/arithmetic';
 
 // tslint:disable:variable-name
+// tslint:disable:naming-convention
 
 /**
  * CIEDE2000 algorithm - Adapted from Sharma et al's MATLAB implementation at
