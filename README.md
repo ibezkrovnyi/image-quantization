@@ -1,5 +1,7 @@
 # README OUTDATED, please use tests as reference
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ibezkrovnyi/image-quantization.svg)](https://greenkeeper.io/)
+
 IQ.ts
 -----
 
