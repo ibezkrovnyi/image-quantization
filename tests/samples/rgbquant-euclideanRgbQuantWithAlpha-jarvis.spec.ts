@@ -3,7 +3,7 @@ import * as iq from '../../src/image-q';
 
 const colors = 64;
 const file = 'clegg.png';
-const distance = new iq.distance.EuclideanRgbQuantWithAlpha();
+const distance = new iq.distance.EuclideanRGBQuantWithAlpha();
 const palette = new iq.palette.RGBQuant(distance, colors);
 const image = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.Jarvis);
 runTest(

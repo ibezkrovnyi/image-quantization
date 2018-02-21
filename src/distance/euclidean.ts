@@ -36,9 +36,9 @@ export class Euclidean extends AbstractEuclidean {
 }
 
 /**
- * Euclidean color distance (RgbQuant modification w Alpha)
+ * Euclidean color distance (RGBQuant modification w Alpha)
  */
-export class EuclideanRgbQuantWithAlpha extends AbstractEuclidean {
+export class EuclideanRGBQuantWithAlpha extends AbstractEuclidean {
   protected _setDefaults() {
     this._kR = Y.RED;
     this._kG = Y.GREEN;
@@ -49,9 +49,9 @@ export class EuclideanRgbQuantWithAlpha extends AbstractEuclidean {
 }
 
 /**
- * Euclidean color distance (RgbQuant modification w/o Alpha)
+ * Euclidean color distance (RGBQuant modification w/o Alpha)
  */
-export class EuclideanRgbQuantWOAlpha extends AbstractEuclidean {
+export class EuclideanRGBQuantWOAlpha extends AbstractEuclidean {
   protected _setDefaults() {
     this._kR = Y.RED;
     this._kG = Y.GREEN;

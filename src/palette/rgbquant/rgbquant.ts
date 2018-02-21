@@ -2,7 +2,7 @@
  * Copyright (c) 2015, Leon Sorokin
  * All rights reserved. (MIT Licensed)
  *
- * RgbQuant.js - an image quantization lib
+ * RGBQuant.js - an image quantization lib
  */
 
 /**

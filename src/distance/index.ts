@@ -9,7 +9,7 @@ import { AbstractDistanceCalculator } from './distanceCalculator';
 import { CIE94Textiles, CIE94GraphicArts } from './cie94';
 import { CIEDE2000 } from './ciede2000';
 import { CMETRIC } from './cmetric';
-import { AbstractEuclidean, Euclidean, EuclideanRgbQuantWOAlpha, EuclideanRgbQuantWithAlpha } from './euclidean';
+import { AbstractEuclidean, Euclidean, EuclideanRGBQuantWOAlpha, EuclideanRGBQuantWithAlpha } from './euclidean';
 import { AbstractManhattan, Manhattan, ManhattanSRGB, ManhattanNommyde } from './manhattan';
 import { PNGQUANT } from './pngQuant';
 
@@ -23,8 +23,8 @@ export {
 
   AbstractEuclidean,
   Euclidean,
-  EuclideanRgbQuantWithAlpha,
-  EuclideanRgbQuantWOAlpha,
+  EuclideanRGBQuantWithAlpha,
+  EuclideanRGBQuantWOAlpha,
 
   AbstractManhattan,
   Manhattan,

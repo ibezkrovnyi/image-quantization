@@ -3,7 +3,7 @@ import * as iq from '../../src/image-q';
 
 const colors = 32;
 const file = 'frymire.png';
-const distance = new iq.distance.EuclideanRgbQuantWOAlpha();
+const distance = new iq.distance.EuclideanRGBQuantWOAlpha();
 const palette = new iq.palette.RGBQuant(distance, colors);
 const image = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.Burkes);
 runTest(
