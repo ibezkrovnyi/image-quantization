@@ -12,6 +12,7 @@ node_modules
 /tests
 
 .*
+*.snap
 
 /npm-debug.log
 /package-lock.json

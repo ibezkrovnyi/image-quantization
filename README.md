@@ -1,17 +1,15 @@
-# README OUTDATED, please use tests as reference
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/ibezkrovnyi/image-quantization.svg)](https://greenkeeper.io/)
-
-IQ.ts
+image-q
 -----
 
 Complete Image Quantization Library in **TypeScript** _(MIT License)_
+> please use tests as reference of progress tracking feature
 
 [![Build Status](https://travis-ci.org/ibezkrovnyi/image-quantization.svg?branch=master)](https://travis-ci.org/ibezkrovnyi/image-quantization)
 [![Coverage Status](https://coveralls.io/repos/github/ibezkrovnyi/image-quantization/badge.svg)](https://coveralls.io/github/ibezkrovnyi/image-quantization)
 [![Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ibezkrovnyi.github.io/image-quantization-demo/)
 [![GitHub](https://img.shields.io/badge/github-.com-brightgreen.svg)](https://github.com/igor-bezkrovny/image-quantization)
 [![NPM](https://badge.fury.io/js/image-q.svg)](https://www.npmjs.com/package/image-q)
+[![Greenkeeper badge](https://badges.greenkeeper.io/ibezkrovnyi/image-quantization.svg)](https://greenkeeper.io/)
 [![API Documentation](https://img.shields.io/badge/API_Documentation-Available-blue.svg)](http://igor-bezkrovny.github.io/image-q/doc)
 [![NPM License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -20,6 +18,7 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 Table of Contents
 -----------------
 
+* [v2.0.0 - breaking changes](#breaking_changes)
 * [Introduction](#introduction)
 * [Capability](#capability)
 * [Usage](#usage)
@@ -56,8 +55,8 @@ Capability
 	 
 4. Color Distance
 	* `Euclidean` - 1/1/1/1 coefficients (originally used in Xiaolin Wu's Quantizer **WuQuant**)
-	* `EuclideanRgbQuantWOAlpha` - BT.709 sRGB coefficients (originally used in **RgbQuant**)
-	* `EuclideanRgbQuantWithAlpha` BT.709 sRGB coefficients + alpha support
+	* `EuclideanRGBQuantWOAlpha` - BT.709 sRGB coefficients (originally used in **RgbQuant**)
+	* `EuclideanRGBQuantWithAlpha` BT.709 sRGB coefficients + alpha support
 	* `Manhattan` - 1/1/1/1 coefficients (originally used in **NeuQuant**) 
 	* `ManhattanSRGB` - BT.709 sRGB coefficients
 	* `ManhattanNommyde` - see https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-234527620
@@ -159,6 +158,13 @@ You may work with resultPointContainer directly or you may convert it to `Uint8A
 var uint8array = resultPointContainer.toUint8Array();
 ```
 
+Breaking changes
+----------------
+
+#### 2.0.1 (2018-02-21)
+    + EuclideanRgbQuantWOAlpha => EuclideanRGBQuantWOAlpha
+    + EuclideanRgbQuantWithAlpha => EuclideanRGBQuantWithAlpha
+
 TODO
 ----
 1. notification about progress  
@@ -243,7 +249,7 @@ References
 	3. [NeuQuant (Tim Oxley)](https://github.com/timoxley/neuquant) `JavaScript`
 	4. [NeuQuant (Devon Govett)](https://github.com/devongovett/neuquant) `JavaScript`
 	5. [NeuQuant32 (Stuart Coyle)](https://github.com/stuart/pngnq/blob/master/src/neuquant32.c) `C`
-	6. [Xiaolin Wu (Xiaolin Wu)](http://www.ece.mcmaster.ca/~xwu/cq.c) `C` 
+	6. [Xiaolin Wu (Xiaolin Wu)](http://www.ece.mcmaster.ca/~xwu/cq.c) `C`
 	7. [Xiaolin Wu (Smart-K8)](http://www.codeproject.com/Articles/66341/A-Simple-Yet-Quite-Powerful-Palette-Quantizer-in-C) `C#`
 	8. Xiaolin Wu w/ Alpha (Matt Wrock) [How to add Alpha](https://code.msdn.microsoft.com/windowsdesktop/Convert-32-bit-PNGs-to-81ef8c81/view/SourceCode#content), [Source Code](https://nquant.codeplex.com) `C#`
 	9. [MedianCut (mwcz)](https://github.com/mwcz/median-cut-js) `GPLv3`
