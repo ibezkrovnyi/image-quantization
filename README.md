@@ -18,7 +18,7 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 Table of Contents
 -----------------
 
-* [v2.0.0 - breaking changes](#breaking_changes)
+* [v2.0.0 - breaking changes](#breaking-changes)
 * [Introduction](#introduction)
 * [Capability](#capability)
 * [Usage](#usage)
@@ -41,8 +41,15 @@ Capability
 	* node.js (Node.js 0.9.0+)
 	
 2. Builds
-	* **iq**.js - UMD build (`import * as iq from "image-q"`)
-	 
+	* cjs/**image-q**.js - commonjs
+	* esm/**image-q**.js - esm (esnext)
+	* cjs/**image-q**.js - umd
+
+```ts
+// will import esm (esnext) or umd version depending on your bundler settings
+import * as iq from "image-q"
+```
+
 3. Import
 	* `HTMLImageElement`
 	* `HTMLCanvasElement`
