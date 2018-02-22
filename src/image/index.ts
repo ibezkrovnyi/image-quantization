@@ -5,6 +5,7 @@
  *
  * iq.ts - Image Quantization Library
  */
+
 import { AbstractImageQuantizer } from './imageQuantizer';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 import { NearestColor } from './nearestColor';

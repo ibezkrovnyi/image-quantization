@@ -11,7 +11,7 @@ export function getFiles() {
       const decoded = decodePng(path.join(dir, file));
       prev[file] = {
         decoded,
-        pointContainer: iq.utils.PointContainer.fromUint8Array(decoded.data, decoded.width, decoded.height),
+        pointContainer: iq.utils.PointContainer.fromBuffer(decoded.data, decoded.width, decoded.height),
       }
       return prev;
     }, {});
@@ -22,7 +22,7 @@ const getFile = (file) => {
   const decoded = decodePng(path.join(dir, file));
   return {
     decoded,
-    pointContainer: iq.utils.PointContainer.fromUint8Array(decoded.data, decoded.width, decoded.height),
+    pointContainer: iq.utils.PointContainer.fromBuffer(decoded.data, decoded.width, decoded.height),
   }
 };
 
@@ -31,7 +31,7 @@ function decodePng(path) {
   return PNG.sync.read(buffer);
 };
 
-export function runTest(title, file, colors, distanceC: iq.distance.AbstractDistanceCalculator, paletteQ: iq.palette.AbstractPaletteQuantizer, imageQ: iq.image.ImageQuantizer) {
+export function runTest(title, file, colors, distanceC: iq.distance.AbstractDistanceCalculator, paletteQ: iq.palette.AbstractPaletteQuantizer, imageQ: iq.image.AbstractImageQuantizer) {
   test(title, function () {
     const { pointContainer } = getFile(file);
 

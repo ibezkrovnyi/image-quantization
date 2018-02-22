@@ -13,7 +13,7 @@
     "test": "npm run lint && jest --maxWorkers=2",
     "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
     "test:watch": "jest --watch",
-    "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags",
+    "release": "npm update && npm run lint && jest && npm run prepublish && npm version patch && git push --follow-tags && npm publish",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "files": [
@@ -92,6 +92,7 @@
     "tslint-config-airbnb": "5.7.0",
     "tslint-consistent-codestyle": "1.11.1",
     "tslint-language-service": "0.9.8",
+    "typedoc": "0.10.0",
     "typescript": "2.7.2"
   },
   "dependencies": {}

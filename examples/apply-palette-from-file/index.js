@@ -26,7 +26,7 @@ const getPalette = () => {
 
 const applyPalette = (outFile, inPng, palette) => {
 	// apply palette using IQ
-	const distance          = new iq.distance.EuclideanRgbQuantWOAlpha(),
+	const distance          = new iq.distance.EuclideanBT709NoAlpha(),
 		  inPointContainer  = iq.utils.PointContainer.fromUint8Array(inPng.data, inPng.width, inPng.height),
 		  image             = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.SierraLite),
 		  outPointContainer = image.quantize(inPointContainer, palette);

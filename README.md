@@ -56,10 +56,10 @@ Capability
 	 
 4. Color Distance
 	* `Euclidean` - 1/1/1/1 coefficients (originally used in Xiaolin Wu's Quantizer **WuQuant**)
-	* `EuclideanRGBQuantWOAlpha` - BT.709 sRGB coefficients (originally used in **RgbQuant**)
-	* `EuclideanRGBQuantWithAlpha` BT.709 sRGB coefficients + alpha support
+	* `EuclideanBT709NoAlpha` - BT.709 sRGB coefficients (originally used in **RgbQuant**)
+	* `EuclideanBT709` BT.709 sRGB coefficients + alpha support
 	* `Manhattan` - 1/1/1/1 coefficients (originally used in **NeuQuant**) 
-	* `ManhattanSRGB` - BT.709 sRGB coefficients
+	* `ManhattanBT709` - BT.709 sRGB coefficients
 	* `ManhattanNommyde` - see https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-234527620
 	* `CIEDE2000` - CIEDE2000 (very slow)
 	* `CIE94Textiles` - CIE94 implementation for textiles
@@ -165,11 +165,15 @@ var uint8array = resultPointContainer.toUint8Array();
 Breaking changes
 ----------------
 
-#### 2.0.1 (2018-02-22)
-    + EuclideanRgbQuantWOAlpha => EuclideanRGBQuantWOAlpha
-    + EuclideanRgbQuantWithAlpha => EuclideanRGBQuantWithAlpha
+#### 2.0.4 (2018-02-22)
+    + EuclideanRgbQuantWOAlpha => EuclideanBT709NoAlpha
+    + EuclideanRgbQuantWithAlpha => EuclideanBT709
+		+ ManhattanSRGB => ManhattanBT709
 		+ IImageDitherer => ImageQuantizer
 		+ IPaletteQuantizer => PaletteQuantizer
+		+ PointContainer.fromNodeCanvas => PointContainer.fromHTMLCanvasElement
+		+ PointContainer.fromArray => PointContainer.fromUint8Array
+    + PointContainer.fromBuffer (Node.js, new)
 
 TODO
 ----
