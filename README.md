@@ -2,7 +2,6 @@ image-q
 -----
 
 Complete Image Quantization Library in **TypeScript** _(MIT License)_
-> please use tests as reference of progress tracking feature
 
 [![Build Status](https://travis-ci.org/ibezkrovnyi/image-quantization.svg?branch=master)](https://travis-ci.org/ibezkrovnyi/image-quantization)
 [![Coverage Status](https://coveralls.io/repos/github/ibezkrovnyi/image-quantization/badge.svg)](https://coveralls.io/github/ibezkrovnyi/image-quantization)
@@ -41,14 +40,9 @@ Capability
 	* node.js (Node.js 0.9.0+)
 	
 2. Builds
-	* cjs/**image-q**.js - commonjs
-	* esm/**image-q**.js - esm (esnext)
-	* cjs/**image-q**.js - umd
-
-```ts
-// will import esm (esnext) or umd version depending on your bundler settings
-import * as iq from "image-q"
-```
+	* `dist/cjs/image-q.js` - CommonJS
+	* `dist/esm/image-q.js` - ESM (ESNext)
+	* `dist/cjs/image-q.js` - UMD
 
 3. Import
 	* `HTMLImageElement`
@@ -97,11 +91,12 @@ import * as iq from "image-q"
 	* `Uint32Array`
 	* `Uint8Array`  
 	 
-Include IQ Library into your project
+Include `image-q` library into your project
 ------------------------------------
 
 ##### ES6 module
 ```javascript
+// will import ESM (ESNext) or UMD version depending on your bundler/node
 import * as iq from "image-q"
 ```
 
@@ -112,7 +107,7 @@ var iq = require("image-q");
 
 ##### As a global variable (Browser)
 ```html
-<script src="<path-to image-q/dist/iq.js>" type="text/javascript" charset="utf-8"></script>
+<script src="<path-to image-q/dist/umd/image-q.js>" type="text/javascript" charset="utf-8"></script>
 ```
 
 Usage
@@ -165,21 +160,40 @@ You may work with resultPointContainer directly or you may convert it to `Uint8A
 var uint8array = resultPointContainer.toUint8Array();
 ```
 
+> please read [tests](tests/samples/utils.ts) as reference of progress tracking feature
+
 Breaking changes
 ----------------
 
-#### 2.0.1 (2018-02-21)
+#### 2.0.1 (2018-02-22)
     + EuclideanRgbQuantWOAlpha => EuclideanRGBQuantWOAlpha
     + EuclideanRgbQuantWithAlpha => EuclideanRGBQuantWithAlpha
+		+ IImageDitherer => ImageQuantizer
+		+ IPaletteQuantizer => PaletteQuantizer
 
 TODO
 ----
-1. notification about progress  
-2. ~~riemersma dithering~~  
-3. ordered dithering
+1. ~~notification about progress~~
+2. ~~riemersma dithering~~
+3. ordered dithering <-- is there anyone who needs it?
+4. readme update, more examples
+5. demo update (latest image-q npm version should be used in demo)
 
 Changelog
 ---------
+
+##### 2.0.2 (2018-02-22)
+    + readme updated
+
+##### 2.0.1 (2018-02-22)
+    + progress tracking api (using es6 generators) added
+		+ strinct lint rules (+code cleanup/renames)
+		+ rollup (3 different versions - umd, cjs, esm + source maps + d.ts)
+		+ latest TypeScript
+		+ jest
+		+ snapshot tests
+		+ coverage (+coveralls)
+		+ greenkeeper
 
 ##### 1.1.1 (2016-08-28)
     + CIEDE2000 - incorrect calculation fixed
