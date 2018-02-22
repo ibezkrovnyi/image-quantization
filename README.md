@@ -182,6 +182,9 @@ TODO
 Changelog
 ---------
 
+##### 2.0.3 (2018-02-22)
+		+ circular dependency removed
+
 ##### 2.0.2 (2018-02-22)
     + readme updated
 
