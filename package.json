@@ -10,10 +10,11 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
-    "test": "npm run lint && jest --maxWorkers=2",
     "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
+    "test": "npm run lint && jest --maxWorkers=2",
     "test:watch": "jest --watch",
-    "release": "npm update && npm run lint && jest && npm run prepublish && npm version patch && git push --follow-tags && npm publish",
+    "release": "npm update && npm run lint && jest && npm run prepublish && npm run docs && npm version patch && git push --follow-tags && npm publish",
+    "docs": "typedoc.cmd src",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "files": [

@@ -49,6 +49,8 @@
       true,
       "no-public"
     ],
+    "prefer-for-of": true,
+    "no-shadowed-variable": false,
     
     "no-var-self": false,
 

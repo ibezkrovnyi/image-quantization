@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`file: sail.png, distance: Euclidean, paletteQuantizer: WuQuant, imageQuantizer: ErrorDiffusionArray-Atkinson, colors: 64 1`] = `
+exports[`file: sail.png, distance: PNGQuant, paletteQuantizer: WuQuant, imageQuantizer: ErrorDiffusionArray-Atkinson, colors: 64 1`] = `
 Uint8Array [
   48,
   74,

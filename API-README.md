@@ -1,16 +1,12 @@
-# image-q
-
-Image Color Number Reduction with alpha support using RgbQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
+Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
 
 # Table of Contents
 * [Tutorial](#usage)
-* [Capability](#capability)
 * [API Documentation Overview](#api-documentation-overview)
-* [License](LICENSE)
 
 # API Documentation Overview
 
-## Image import sources
+## Image Import Sources
 
 | API | Source ||
 |:-----------------------------------------| ----------------------------------------------------------------------------------- |:------------------------|
@@ -23,7 +19,7 @@ Image Color Number Reduction with alpha support using RgbQuant/NeuQuant/Xiaolin 
 | [[PointContainer.fromHTMLImageElement]]  | [HTMLImageElement](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)                          ||
 | [[PointContainer.fromImageData]]         | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)                ||
 | [[PointContainer.fromUint8Array]]        | [Uint8Array](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)   ||
-| [[PointContainer.fromUint8Array]]        | [Uint32Array](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array) ||
+| [[PointContainer.fromUint32Array]]       | [Uint32Array](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array) ||
 | [[PointContainer.fromBuffer]]            | [Buffer (Node.js)](https://nodejs.org/api/buffer.html)                                                   ||
 
   Usage:
@@ -43,36 +39,86 @@ Image Color Number Reduction with alpha support using RgbQuant/NeuQuant/Xiaolin 
 | [[CIEDE2000]]             | CIEDE2000 (very slow)                        |             |
 | [[CIE94Textiles]]         | CIE94 implementation for textiles            |             | 
 | [[CIE94GraphicArts]]      | CIE94 implementation for graphic arts        |             |
-| [[CMETRIC]]               | [see](http://www.compuphase.com/cmetric.htm) |             |
-| [[PNGQUANT]]              | used in PNGQUANT tools                       |             |
+| [[CMetric]]               | [see](http://www.compuphase.com/cmetric.htm) |             |
+| [[PNGQuant]]              | used in PNGQuant tools                       |             |
 | [[EuclideanBT709NoAlpha]] | BT.709 sRGB coefficients                     | RGBQuant    |
 | [[ManhattanNommyde]]      | [discussion](https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-234527620) |  |  |
 
+  Usage:
+  ```ts
+  const distanceCalculator = new EuclideanBT709();
+  ```
+
 ## Palette Quantizers
-	* `NeuQuant` (original code ported, integer calculations)
-	* `NeuQuantFloat` (floating-point calculations)
-	* `RgbQuant`
-	* `WuQuant`
+
+| API                       | Description                                  |
+| ------------------------- |:---------------------------------------------|
+| [[NeuQuant]]              | original code ported, integer calculations   |
+| [[RGBQuant]]              |                                              |
+| [[WuQuant]]               |                                              |
+| [[NeuQuantFloat]]         | floating-point calculations                  |
+
+  Usage:
+  ```ts
+  const paletteQuantizer = new WuQuant(distanceCalculator, 256);
+  paletteQuantizer.sample(pointContainer1);
+  paletteQuantizer.sample(pointContainer2);
+  const palette = paletteQuantizer.quantize();
+  ```
 	
 ## Image Quantizers
-	* `NearestColor`
-	* `ErrorDiffusionArray` - two modes of error propagation are supported: `xnview` and `gimp`
-		1. `FloydSteinberg`
-        2. `FalseFloydSteinberg`
-        3. `Stucki`
-        4. `Atkinson`
-        5. `Jarvis`
-        6. `Burkes`
-        7. `Sierra`
-        8. `TwoSierra`
-        9. `SierraLite`
-	* `ErrorDiffusionRiemersma` - Hilbert space-filling curve is used
+
+| API                          | Description                                                     |
+| ---------------------------- |:----------------------------------------------------------------|
+| [[NearestColor]]             |                                                                 |
+| [[ErrorDiffusionArray]]      | 2 modes of error propagation are supported: `xnview` and `gimp` |
+| - 1. [[FloydSteinberg]]      |                                                                 |
+| - 2. [[FalseFloydSteinberg]] |                                                                 |
+| - 3. [[Stucki]]              |                                                                 |
+| - 4. [[Atkinson]]            |                                                                 |
+| - 5. [[Jarvis]]              |                                                                 |
+| - 6. [[Burkes]]              |                                                                 |
+| - 7. [[Sierra]]              |                                                                 |
+| - 8. [[TwoSierra]]           |                                                                 |
+| - 9. [[SierraLite]]          |                                                                 |
+| [[ErrorDiffusionRiemersma]]  | Hilbert space-filling curve is used                             |
+
+  Usage:
+  ```ts
+  const imageQuantizer = new ErrorDiffusionArray(distanceCalculator, Jarvis);
+  const outPointContainer = imageQuantizer.quantize(inPointContainer, palette);
+  ```
 
 ## Output
-	* `Uint32Array`
-	* `Uint8Array`  
 
+| API                              | Description                                                                                              |
+| -------------------------------- |:---------------------------------------------------------------------------------------------------------|
+| [[PointContainer.toUint8Array]]  | [Uint8Array](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)   |
+| [[PointContainer.toUint32Array]] | [Uint32Array](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array) |
 
-Have fun! Any problems or queries let us know!
+  Usage:
+  ```ts
+  // write PNG using pngjs
+  png.data = outPointContainer.toUint8Array();
+  fs.writeFileSync('filename.png', PNG.sync.write(png))
+  ```
+
+# Advanced API
+
+## Color Conversion
+
+| API                              | Description                                                                                              |
+| -------------------------------- |:---------------------------------------------------------------------------------------------------------|
+| [[lab2rgb]]                      | CIE L*a*b* => CIE RGB                                                                                    |
+| [[lab2xyz]]                      | CIE L*a*b* => CIE XYZ                                                                                    |
+| [[rgb2hsl]]                      | CIE RGB => HSL                                                                                           |
+| [[rgb2lab]]                      | CIE RGB => CIE L*a*b*                                                                                    |
+| [[rgb2xyz]]                      | CIE RGB => CIE XYZ                                                                                       |
+| [[xyz2lab]]                      | CIE XYZ => CIE L*a*b*                                                                                    |
+| [[xyz2rgb]]                      | CIE XYZ => CIE RGB                                                                                       |
+
+https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/
+
+Have fun! Any problems or queries let me know!
 
  -- Igor

@@ -6,10 +6,10 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 [![Build Status](https://travis-ci.org/ibezkrovnyi/image-quantization.svg?branch=master)](https://travis-ci.org/ibezkrovnyi/image-quantization)
 [![Coverage Status](https://coveralls.io/repos/github/ibezkrovnyi/image-quantization/badge.svg)](https://coveralls.io/github/ibezkrovnyi/image-quantization)
 [![Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ibezkrovnyi.github.io/image-quantization-demo/)
-[![GitHub](https://img.shields.io/badge/github-.com-brightgreen.svg)](https://github.com/igor-bezkrovny/image-quantization)
+[![GitHub](https://img.shields.io/badge/github-.com-brightgreen.svg)](https://github.com/ibezkrovnyi/image-quantization)
 [![NPM](https://badge.fury.io/js/image-q.svg)](https://www.npmjs.com/package/image-q)
 [![Greenkeeper badge](https://badges.greenkeeper.io/ibezkrovnyi/image-quantization.svg)](https://greenkeeper.io/)
-[![API Documentation](https://img.shields.io/badge/API_Documentation-Available-blue.svg)](http://igor-bezkrovny.github.io/image-q/doc)
+[![API Documentation](https://img.shields.io/badge/API_Documentation-Available-blue.svg)](http://ibezkrovnyi.github.io/image-quantization/)
 [![NPM License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ![quantization](https://raw.githubusercontent.com/igor-bezkrovny/image-quantization/master/quantization.png "quantization")
@@ -17,11 +17,11 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 Table of Contents
 -----------------
 
-* [v2.0.0 - breaking changes](#breaking-changes)
 * [Introduction](#introduction)
 * [Capability](#capability)
 * [Usage](#usage)
 * [Todo](#todo)
+* [Breaking changes](#breaking-changes)
 * [Changelog](#changelog)
 * [Credits](#credits)
 * [References](#references)
@@ -30,14 +30,14 @@ Table of Contents
 Introduction
 ------------
 
-Image Color Number Reduction with alpha support using RgbQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
+Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
  
 Capability
 ----------
 
 1. Platforms supported
-	* browser (Chrome 7.0+, FireFox 4.0+, IE 10+, Opera 11.6+, Safari 5.1+)
-	* node.js (Node.js 0.9.0+)
+	* Browser (Chrome 7.0+, FireFox 4.0+, IE 10+, Opera 11.6+, Safari 5.1+)
+	* Node.js 6.0+
 	
 2. Builds
 	* `dist/cjs/image-q.js` - CommonJS
@@ -56,7 +56,7 @@ Capability
 	 
 4. Color Distance
 	* `Euclidean` - 1/1/1/1 coefficients (originally used in Xiaolin Wu's Quantizer **WuQuant**)
-	* `EuclideanBT709NoAlpha` - BT.709 sRGB coefficients (originally used in **RgbQuant**)
+	* `EuclideanBT709NoAlpha` - BT.709 sRGB coefficients (originally used in **RGBQuant**)
 	* `EuclideanBT709` BT.709 sRGB coefficients + alpha support
 	* `Manhattan` - 1/1/1/1 coefficients (originally used in **NeuQuant**) 
 	* `ManhattanBT709` - BT.709 sRGB coefficients
@@ -64,13 +64,13 @@ Capability
 	* `CIEDE2000` - CIEDE2000 (very slow)
 	* `CIE94Textiles` - CIE94 implementation for textiles
 	* `CIE94GraphicArts` - CIE94 implementation for graphic arts 
-	* `CMETRIC` - see http://www.compuphase.com/cmetric.htm
-	* `PNGQUANT` - used in pngQuant tool
+	* `CMetric` - see http://www.compuphase.com/cmetric.htm
+	* `PNGQuant` - used in pngQuant tool
 
 5. Palette Quantizers
 	* `NeuQuant` (original code ported, integer calculations)
 	* `NeuQuantFloat` (floating-point calculations)
-	* `RgbQuant`
+	* `RGBQuant`
 	* `WuQuant`
 	
 6. Image Quantizers
@@ -134,7 +134,7 @@ var pointContainer = iq.utils.PointContainer.fromHTMLImageElement(img);
 // create chosen distance calculator (see classes inherited from `iq.distance.AbstractDistanceCalculator`)
 var distanceCalculator = new iq.distance.Euclidean();
 
-// create chosen palette quantizer (see classes implementing `iq.palette.PaletteQuantizer`) 
+// create chosen palette quantizer (see classes implementing `iq.palette.AbstractPaletteQuantizer`) 
 var paletteQuantizer = new iq.palette.RGBQuant(distanceCalculator, targetColors);
 		
 // feed out pointContainer filled with image to paletteQuantizer
@@ -148,7 +148,7 @@ var palette = paletteQuantizer.quantize();
 
 ##### Apply Palette to Image (Image Dithering) 
 ```javascript
-// create image quantizer (see classes implementing `iq.image.ImageQuantizer`)
+// create image quantizer (see classes implementing `iq.image.AbstractImageQuantizer`)
 var imageQuantizer = new iq.image.NearestColor(distanceCalculator);
 
 // apply palette to image
@@ -165,7 +165,7 @@ var uint8array = resultPointContainer.toUint8Array();
 Breaking changes
 ----------------
 
-#### 2.0.4 (2018-02-22)
+#### 2.0.1 - 2.0.4 (2018-02-22)
     + EuclideanRgbQuantWOAlpha => EuclideanBT709NoAlpha
     + EuclideanRgbQuantWithAlpha => EuclideanBT709
 		+ ManhattanSRGB => ManhattanBT709
@@ -240,7 +240,7 @@ Changelog
 	+ Code cleanup, removed unnecessary files
 
 ##### 0.0.5 (2015-06-16)
-	+ PNGQUANT color distance added, need to check its quality
+	+ PNGQuant color distance added, need to check its quality
 	+ CIEDE2000 and CIE94 fixed for use in NeuQuant
 	+ NeuQuant is fixed according to original Anthony Dekker source code (all values should be integer) 
 	+ Code refactoring and cleanup
@@ -250,11 +250,11 @@ Changelog
 	+ CIEDE2000 color distance equation optimized (original CIEDE2000 equation is available as class `CIEDE2000_Original`) 
 
 ##### 0.0.3b (2015-06-11)
-	+ CMETRIC color distance fixed
+	+ CMetric color distance fixed
 
 ##### 0.0.3a (2015-06-11)
 	+ Cleanup
-	+ Draft of CMETRIC color distance added
+	+ Draft of CMetric color distance added
 
 ##### 0.0.2 (2015-06-10)
 	+ rgb2xyz & xyz2lab fixed. CIEDE2000 works much better now.
@@ -265,14 +265,14 @@ Changelog
 
 Credits
 -------
-Thanks to Leon Sorokin for information share and his original RgbQuant!
+Thanks to Leon Sorokin for information share and his original RGBQuant!
 
 References
 ----------
 
 * Palette Quantization Algorithms
 
-	1. [RgbQuant (Leon Sorokin)](https://github.com/leeoniya/RgbQuant.js) `JavaScript`
+	1. [RGBQuant (Leon Sorokin)](https://github.com/leeoniya/RgbQuant.js) `JavaScript`
 	2. [NeuQuant (Johan Nordberg)](https://github.com/jnordberg/gif.js/blob/master/src/TypedNeuQuant.js) `TypeScript`
 	3. [NeuQuant (Tim Oxley)](https://github.com/timoxley/neuquant) `JavaScript`
 	4. [NeuQuant (Devon Govett)](https://github.com/devongovett/neuquant) `JavaScript`
@@ -303,10 +303,10 @@ References
 	   - [Source Code (Greg Fiumara)](https://github.com/gfiumara/CIEDE2000) `C`
 	   - [Source Code (THEjoezack)](https://github.com/THEjoezack/ColorMine/blob/master/ColorMine/ColorSpaces/Comparisons/CieDe2000Comparison.cs) `C#`
 	   - [Online Calculator](http://colormine.org/delta-e-calculator/cie2000)
-	5. Euclidean Distance w/o Alpha (RgbQuant)
+	5. Euclidean Distance w/o Alpha (RGBQuant)
 	6. Euclidean Distance w/o sRGB coefficients (Xiaolin Wu Quant)  
 	7. Manhattan Distance w/o sRGB coefficients (NeuQuant)
-	8. [CMETRIC](http://www.compuphase.com/cmetric.htm) `DRAFT!`
+	8. [CMetric](http://www.compuphase.com/cmetric.htm) `DRAFT!`
 
 * Color conversion formulas
 

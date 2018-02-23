@@ -12,7 +12,7 @@ import { AbstractDistanceCalculator } from "./distance/distanceCalculator"
 import { AbstractImageQuantizer } from "./image/imageQuantizer"
 import { PointContainer } from "./utils/pointContainer"
 import { Palette } from "./utils/palette"
-import { SSIM } from "./quality/ssim"
+import { ssim } from "./quality/ssim"
 
 export class IQ {
   private paletteQuantizer: AbstractPaletteQuantizer;
@@ -38,7 +38,7 @@ export class IQ {
   }
 
   compare(image1: PointContainer, image2: PointContainer) {
-    return new SSIM().compare(image1, image2)
+    return ssim(image1, image2)
   }
 }
 
