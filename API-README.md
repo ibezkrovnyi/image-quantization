@@ -119,6 +119,15 @@ Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin 
 
 https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/
 
+## Structural Similarity
+
+* [[ssim]] - https://en.wikipedia.org/wiki/Structural_similarity
+
+  Usage:
+  ```ts
+  const similarity = ssim(pointContainer1, pointContainer2);
+  ```
+
 Have fun! Any problems or queries let me know!
 
  -- Igor

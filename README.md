@@ -169,11 +169,14 @@ Breaking changes
     + EuclideanRgbQuantWOAlpha => EuclideanBT709NoAlpha
     + EuclideanRgbQuantWithAlpha => EuclideanBT709
 		+ ManhattanSRGB => ManhattanBT709
-		+ IImageDitherer => ImageQuantizer
-		+ IPaletteQuantizer => PaletteQuantizer
+		+ IImageDitherer => AbstractImageQuantizer
+		+ IPaletteQuantizer => AbstractPaletteQuantizer
 		+ PointContainer.fromNodeCanvas => PointContainer.fromHTMLCanvasElement
 		+ PointContainer.fromArray => PointContainer.fromUint8Array
     + PointContainer.fromBuffer (Node.js, new)
+		+ CMETRIC => CMetric
+		+ PNGQUANT => PNGQuant
+		+ SSIM Class => ssim function
 
 TODO
 ----
