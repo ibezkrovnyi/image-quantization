@@ -14,7 +14,7 @@ import { AbstractDistanceCalculator } from './distanceCalculator';
  * {@link http://stackoverflow.com/questions/4754506/color-similarity-distance-in-rgba-color-space/8796867#8796867}
  * {@link https://github.com/pornel/pngquant/blob/cc39b47799a7ff2ef17b529f9415ff6e6b213b8f/lib/pam.h#L148}
  */
-export class PNGQUANT extends AbstractDistanceCalculator {
+export class PNGQuant extends AbstractDistanceCalculator {
   /**
    * Author's comments
    * px_b.rgb = px.rgb + 0*(1-px.a) // blend px on black

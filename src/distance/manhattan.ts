@@ -57,7 +57,7 @@ export class ManhattanNommyde extends AbstractManhattan {
 /**
  * Manhattan distance (sRGB coefficients)
  */
-export class ManhattanSRGB extends AbstractManhattan {
+export class ManhattanBT709 extends AbstractManhattan {
   protected _setDefaults() {
     this._kR = Y.RED;
     this._kG = Y.GREEN;

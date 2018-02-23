@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`file: clegg.png, distance: EuclideanRGBQuantWithAlpha, paletteQuantizer: RGBQuant, imageQuantizer: ErrorDiffusionArray-Jarvis, colors: 64 1`] = `
+exports[`file: clegg.png, distance: EuclideanBT709, paletteQuantizer: RGBQuant, imageQuantizer: ErrorDiffusionArray-Jarvis, colors: 64 1`] = `
 Uint8Array [
   80,
   80,

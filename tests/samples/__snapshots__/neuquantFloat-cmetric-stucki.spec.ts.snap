@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`file: lena3.png, distance: CMETRIC, paletteQuantizer: NeuQuantFloat, imageQuantizer: ErrorDiffusionArray-Stucki, colors: 64 1`] = `
+exports[`file: lena3.png, distance: CMetric, paletteQuantizer: NeuQuantFloat, imageQuantizer: ErrorDiffusionArray-Stucki, colors: 64 1`] = `
 Uint8Array [
   224,
   131,

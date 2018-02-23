@@ -1,6 +1,6 @@
 {
   "name": "image-q",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
@@ -10,23 +10,17 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
-    "test": "npm run lint && jest --maxWorkers=2",
     "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
+    "test": "npm run lint && jest --maxWorkers=2",
     "test:watch": "jest --watch",
-    "release": "npm update && npm run test && npm run prepublish && npm version patch && git push --follow-tags",
+    "release": "npm update && npm run lint && jest && npm run prepublish && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
+    "gh-pages": "rimraf ./docs && typedoc.cmd src && gh-pages -d docs",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "files": [
     "dist"
   ],
   "jest": {
-    "collectCoverage": true,
-    "mapCoverage": true,
-    "coverageReporters": [
-      "lcov",
-      "text-summary",
-      "html"
-    ],
     "roots": [
       "<rootDir>/src",
       "<rootDir>/tests"
@@ -39,7 +33,7 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(test|spec)\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -47,6 +41,15 @@
       "jsx",
       "json",
       "node"
+    ],
+    "collectCoverage": true,
+    "coverageReporters": [
+      "lcov",
+      "text-summary",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
     ]
   },
   "preferGlobal": false,
@@ -81,8 +84,10 @@
     "@types/node": "9.4.6",
     "@types/pngjs": "3.3.0",
     "coveralls": "3.0.0",
+    "gh-pages": "1.1.0",
     "jest": "22.4.0",
     "pngjs": "3.3.2",
+    "rimraf": "*",
     "rollup": "0.56.2",
     "rollup-plugin-commonjs": "8.3.0",
     "rollup-plugin-local-resolve": "1.0.7",
@@ -92,6 +97,7 @@
     "tslint-config-airbnb": "5.7.0",
     "tslint-consistent-codestyle": "1.11.1",
     "tslint-language-service": "0.9.8",
+    "typedoc": "0.10.0",
     "typescript": "2.7.2"
   },
   "dependencies": {}

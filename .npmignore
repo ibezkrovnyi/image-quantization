@@ -1,6 +1,7 @@
 /.vscode
 /.idea
 
+/docs
 /coverage
 /examples/node.js/demo.js
 /examples/node.js/demo.js.map

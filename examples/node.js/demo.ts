@@ -23,7 +23,7 @@ function timeMark(title, callback) {
 timeMark("!!! total time", () => {
 	for (var i = 0; i < 30; i++) {
 		// simulate image loading
-		var pointContainer = iq.utils.PointContainer.fromArray(imageArray, width, height),
+		var pointContainer = iq.utils.PointContainer.fromUint8Array(imageArray, width, height),
 			iqPalette,
 			iqImage,
 			palette;
