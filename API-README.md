@@ -109,12 +109,12 @@ Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin 
 
 | API                              | Description                                                                                              |
 | -------------------------------- |:---------------------------------------------------------------------------------------------------------|
-| [[lab2rgb]]                      | CIE L*a*b* => CIE RGB                                                                                    |
-| [[lab2xyz]]                      | CIE L*a*b* => CIE XYZ                                                                                    |
+| [[lab2rgb]]                      | CIE L\*a\*b\* => CIE RGB                                                                                    |
+| [[lab2xyz]]                      | CIE L\*a\*b\* => CIE XYZ                                                                                    |
 | [[rgb2hsl]]                      | CIE RGB => HSL                                                                                           |
-| [[rgb2lab]]                      | CIE RGB => CIE L*a*b*                                                                                    |
+| [[rgb2lab]]                      | CIE RGB => CIE L\*a\*b\*                                                                                    |
 | [[rgb2xyz]]                      | CIE RGB => CIE XYZ                                                                                       |
-| [[xyz2lab]]                      | CIE XYZ => CIE L*a*b*                                                                                    |
+| [[xyz2lab]]                      | CIE XYZ => CIE L\*a\*b\*                                                                                    |
 | [[xyz2rgb]]                      | CIE XYZ => CIE RGB                                                                                       |
 
 https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/

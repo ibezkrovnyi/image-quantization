@@ -13,8 +13,8 @@
     "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
     "test": "npm run lint && jest --maxWorkers=2",
     "test:watch": "jest --watch",
-    "release": "npm update && npm run lint && jest && npm run prepublish && npm run docs && npm version patch && git push --follow-tags && npm publish",
-    "docs": "typedoc.cmd src",
+    "release": "npm update && npm run lint && jest && npm run prepublish && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
+    "gh-pages": "rimraf ./docs && typedoc.cmd src && gh-pages -d docs",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "files": [
@@ -84,8 +84,10 @@
     "@types/node": "9.4.6",
     "@types/pngjs": "3.3.0",
     "coveralls": "3.0.0",
+    "gh-pages": "1.1.0",
     "jest": "22.4.0",
     "pngjs": "3.3.2",
+    "rimraf": "*",
     "rollup": "0.56.2",
     "rollup-plugin-commonjs": "8.3.0",
     "rollup-plugin-local-resolve": "1.0.7",
