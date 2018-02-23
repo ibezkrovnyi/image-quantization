@@ -1,303 +1,709 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <title>image-quantization by igor-bezkrovny</title>
-  </head>
-
-  <body>
-
-    <header>
-      <div class="container">
-        <h1>image-quantization</h1>
-        <h2>Image Quantization Library with alpha support (based on https://github.com/leeoniya/RgbQuant.js, https://github.com/timoxley/neuquant and http://www.ece.mcmaster.ca/~xwu/cq.c)</h2>
-
-        <section id="downloads">
-          <a href="https://github.com/igor-bezkrovny/image-quantization/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/igor-bezkrovny/image-quantization/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/igor-bezkrovny/image-quantization" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h2>
-<a id="iqts" class="anchor" href="#iqts" aria-hidden="true"><span class="octicon octicon-link"></span></a>IQ.ts</h2>
-
-<p>Image Quantization Library in <strong>TypeScript</strong> <em>(MIT Licensed)</em>
-<img src="https://raw.githubusercontent.com/leeoniya/RgbQuant.js/master/quantization.png" alt="quantization" title="quantization"></p>
-
-<h2>
-<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
-
-<p>This color quantization library was created because I was unable to find high-grade image quantization library with alpha support in TypeScript on the internet.</p>
-
-<p><a href="http://igor-bezkrovny.github.io/image-quantization/doc">API</a><br>
-<a href="http://igor-bezkrovny.github.io/image-quantization-demo">Online Demo</a><br>
-<a href="https://github.com/igor-bezkrovny/igor-bezkrovny.github.io/image-quantization-demo">Demo Source</a></p>
-
-<h2>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<p>All usage is shown in JavaScript, it will be mostly the same for TypeScript. <code>img</code> should be valid already-loaded image.</p>
-
-<h5>
-<a id="load-image-simple-example" class="anchor" href="#load-image-simple-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Load Image (simple example)</h5>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> img <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">createElement</span>(<span class="pl-s"><span class="pl-pds">"</span>img<span class="pl-pds">"</span></span>);
-<span class="pl-c1">img</span>.<span class="pl-en">onload</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
-    <span class="pl-c">// image is loaded, here should be all code utilizing image</span>
-    ...
-}
-img.<span class="pl-c1">src</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-27580_640.png<span class="pl-pds">"</span></span></pre></div>
-
-<h5>
-<a id="generate-palette" class="anchor" href="#generate-palette" aria-hidden="true"><span class="octicon octicon-link"></span></a>Generate Palette</h5>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-c">// desired colors count</span>
-<span class="pl-k">var</span> targetColors <span class="pl-k">=</span> <span class="pl-c1">256</span>;
-
-<span class="pl-c">// create pointContainer and fill it with image</span>
-<span class="pl-k">var</span> pointContainer <span class="pl-k">=</span> <span class="pl-c1">IQ</span>.Utils.PointContainer.fromHTMLImageElement(img);
-
-<span class="pl-c">// create chosen distance calculator (see classes implementing `IQ.IDistanceCalculator`)</span>
-<span class="pl-k">var</span> distanceCalculator <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Distance</span>.DistanceEuclidean();
-
-<span class="pl-c">// create chosen palette quantizer (see classes implementing `IQ.IPaletteQuantizer`) </span>
-<span class="pl-k">var</span> paletteQuantizer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Palette</span>.RgbQuant(distanceCalculator, targetColors);
-
-<span class="pl-c">// feed out pointContainer filled with image to paletteQuantizer</span>
-paletteQuantizer.sample(pointContainer);
-
-... (you may sample more than one image to create mutual palette) 
-
-<span class="pl-c">// take generated palette</span>
-<span class="pl-k">var</span> palette <span class="pl-k">=</span> paletteQuantizer.quantize();</pre></div>
-
-<h5>
-<a id="apply-palette-to-image-image-dithering" class="anchor" href="#apply-palette-to-image-image-dithering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Apply Palette to Image (Image Dithering)</h5>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-c">// create image ditherer (see classes implementing `IQ.IImageDitherer`)</span>
-<span class="pl-k">var</span> imageDitherer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IQ.Image</span>.NearestColor(distanceCalculator);
-
-<span class="pl-c">// take generated image using given palette </span>
-<span class="pl-k">var</span> resultPointContainer <span class="pl-k">=</span> imageQuantizer.quantize(pointContainer, palette);</pre></div>
-
-<p>You may work with resultPointContainer directly or you may convert it to <code>Uint8Array</code>/<code>Uint32Array</code></p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> uint8array <span class="pl-k">=</span> resultPointContainer.toUint8Array();</pre></div>
-
-<h2>
-<a id="palette-quantization-algorithms" class="anchor" href="#palette-quantization-algorithms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Palette Quantization Algorithms</h2>
-
-<p>Image Quantization Library is based <strong>RgbQuant</strong> by Leon Sorokin and <strong>NeuQuant</strong> by Tim Oxley (see below).</p>
-
-<ol>
-<li>
-<a href="https://github.com/leeoniya/RgbQuant.js">RgbQuant (Leon Sorokin)</a> <code>JavaScript</code>
-</li>
-<li>
-<a href="https://github.com/jnordberg/gif.js/blob/master/src/TypedNeuQuant.js">NeuQuant (Johan Nordberg)</a> <code>TypeScript</code>
-</li>
-<li>
-<a href="https://github.com/timoxley/neuquant">NeuQuant (Tim Oxley)</a> <code>JavaScript</code>
-</li>
-<li>
-<a href="https://github.com/devongovett/neuquant">NeuQuant (Devon Govett)</a> <code>JavaScript</code>
-</li>
-<li>
-<a href="https://github.com/stuart/pngnq/blob/master/src/neuquant32.c">NeuQuant32 (Stuart Coyle)</a> <code>C</code>
-</li>
-<li>
-<a href="http://www.ece.mcmaster.ca/%7Exwu/cq.c">Xiaolin Wu (Xiaolin Wu)</a> <code>C</code> </li>
-<li>
-<a href="http://www.codeproject.com/Articles/66341/A-Simple-Yet-Quite-Powerful-Palette-Quantizer-in-C">Xiaolin Wu (Smart-K8)</a> <code>C#</code>
-</li>
-<li>Xiaolin Wu w/ Alpha (Matt Wrock) <a href="https://code.msdn.microsoft.com/windowsdesktop/Convert-32-bit-PNGs-to-81ef8c81/view/SourceCode#content">How to add Alpha</a>, <a href="https://nquant.codeplex.com">Source Code</a> <code>C#</code>
-</li>
-<li>
-<a href="https://github.com/mwcz/median-cut-js">MedianCut (mwcz)</a> <code>GPLv3</code>
-&gt; all NeuQuant implementations above are based on Anthony Dekker's implementation and thus needs to save his original copyright notice in the source code</li>
-</ol>
-
-<h2>
-<a id="image-quantization-algorithms" class="anchor" href="#image-quantization-algorithms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image Quantization Algorithms</h2>
-
-<p>Image Quantization Library supports <strong>Error Diffusion dithering</strong> and <strong>Nearest Neighbour</strong> methods. </p>
-
-<ol>
-<li><a href="http://www.imagemagick.org/Usage/quantize/#dither">All (ImageMagik doc)</a></li>
-<li><a href="http://www.tannerhelland.com/4660/dithering-eleven-algorithms-source-code">Error Diffusion dithering (Tanner Helland)</a></li>
-<li>
-<a href="http://www.compuphase.com/riemer.htm">Riemersma dithering</a> <code>TODO: Check License</code>
-</li>
-<li><a href="http://bisqwit.iki.fi/story/howto/dither/jy">Ordered dithering (Joel Yliluoma)</a></li>
-</ol>
-
-<h2>
-<a id="color-distance-formulas" class="anchor" href="#color-distance-formulas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Color Distance Formulas</h2>
-
-<p>Image Quantization Library supports: </p>
-
-<ol>
-<li>Euclidean Distance</li>
-<li>Manhattan Distance</li>
-<li>CIE94 Distance
-
-<ul>
-<li><a href="https://github.com/iuliux/CIE94.js">Source Code (Iulius Curt)</a></li>
-</ul>
-</li>
-<li>CIEDE2000
-
-<ul>
-<li>
-<a href="http://www.ece.rochester.edu/%7Egsharma/ciede2000/ciede2000noteCRNA.pdf">Math and Test Data Table (PDF)</a> </li>
-<li>
-<a href="https://github.com/gfiumara/CIEDE2000">Source Code (Greg Fiumara)</a> <code>C</code> </li>
-</ul>
-</li>
-<li>Euclidean Distance w/o Alpha (RgbQuant)</li>
-<li>Euclidean Distance w/o sRGB coefficients (Xiaolin Wu Quant)<br>
-</li>
-<li>Manhattan Distance w/o sRGB coefficients (NeuQuant)</li>
-<li>
-<a href="http://www.compuphase.com/cmetric.htm">CMETRIC</a> <code>DRAFT!</code>
-</li>
-</ol>
-
-<h2>
-<a id="color-conversion-formulas" class="anchor" href="#color-conversion-formulas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Color conversion formulas</h2>
-
-<ol>
-<li><a href="http://www.easyrgb.com/?X=MATH">Pseudo-code</a></li>
-</ol>
-
-<blockquote>
-<p>Be sure to fix rgb2xyz/xyz2lab. Issue is with strange part of code: <code>r = r &gt; 0.04045 ? ...</code>. Check <a href="http://en.wikipedia.org/wiki/Lab_color_space">http://en.wikipedia.org/wiki/Lab_color_space</a>   </p>
-</blockquote>
-
-<h2>
-<a id="image-quality-assessment" class="anchor" href="#image-quality-assessment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Image Quality Assessment</h2>
-
-<ol>
-<li><a href="http://en.wikipedia.org/wiki/Structural_similarity">SSIM info</a></li>
-<li>
-<a href="https://github.com/rhys-e/structural-similarity">SSIM (Rhys-e)</a> <code>Java</code> <code>License: MIT</code>
-</li>
-<li>PSNR ? TBD</li>
-<li>MSE ? TBD</li>
-</ol>
-
-<h2>
-<a id="other" class="anchor" href="#other" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other</h2>
-
-<ol>
-<li><a href="http://www.husl-colors.org">HUSL (Boronine) - info</a></li>
-<li><a href="https://github.com/husl-colors/husl">HUSL (Boronine) - code</a></li>
-</ol>
-
-<h2>
-<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h2>
-
-<ol>
-<li>notification about progress</li>
-<li>riemersma dithering</li>
-</ol>
-
-<h2>
-<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
-
-<h5>
-<a id="012-2015-06-16" class="anchor" href="#012-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.2 (2015-06-16)</h5>
-
-<ul>
-<li>Documentation generation fixed</li>
-<li>File name case problem fixed</li>
-</ul>
-
-<h5>
-<a id="011-2015-06-16" class="anchor" href="#011-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.1 (2015-06-16)</h5>
-
-<ul>
-<li>Auto-generated documentation added</li>
-<li>Refactoring </li>
-</ul>
-
-<h5>
-<a id="010-2015-06-16" class="anchor" href="#010-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.0 (2015-06-16)</h5>
-
-<ul>
-<li>Code cleanup, removed unnecessary files</li>
-</ul>
-
-<h5>
-<a id="005-2015-06-16" class="anchor" href="#005-2015-06-16" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.5 (2015-06-16)</h5>
-
-<ul>
-<li>PNGQUANT color distance added, need to check its quality</li>
-<li>CIEDE2000 and CIE94 fixed for use in NeuQuant</li>
-<li>NeuQuant is fixed according to original Anthony Dekker source code (all values should be integer) </li>
-<li>Code refactoring and cleanup</li>
-<li>We have some slowdown because of red/green/blue/alpha normalization according to white point per each calculateRaw/calculateNormalized call </li>
-</ul>
-
-<h5>
-<a id="004-2015-06-15" class="anchor" href="#004-2015-06-15" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.4 (2015-06-15)</h5>
-
-<ul>
-<li>CIEDE2000 color distance equation optimized (original CIEDE2000 equation is available as class <code>CIEDE2000_Original</code>) </li>
-</ul>
-
-<h5>
-<a id="003b-2015-06-11" class="anchor" href="#003b-2015-06-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.3b (2015-06-11)</h5>
-
-<ul>
-<li>CMETRIC color distance fixed</li>
-</ul>
-
-<h5>
-<a id="003a-2015-06-11" class="anchor" href="#003a-2015-06-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.3a (2015-06-11)</h5>
-
-<ul>
-<li>Cleanup</li>
-<li>Draft of CMETRIC color distance added</li>
-</ul>
-
-<h5>
-<a id="002-2015-06-10" class="anchor" href="#002-2015-06-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.2 (2015-06-10)</h5>
-
-<ul>
-<li>rgb2xyz &amp; xyz2lab fixed. CIEDE2000 works much better now.</li>
-<li>CIE94 distance formula added. More investigation is needed.</li>
-</ul>
-
-<h5>
-<a id="001" class="anchor" href="#001" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.0.1</h5>
-
-<ul>
-<li>Initial</li>
-</ul>
-
-<h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
-
-<p>License MIT <a href="./src/paletteQuantizers/neuquant/neuquant.ts">(NeuQuant use also forces to add it's copyright notice into source code)</a></p>
-
-<h2>
-<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
-
-<p>Thanks to Leon Sorokin for information share and his original RgbQuant!</p>
-      </section>
-    </div>
-
-    
-  </body>
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>image-q</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">image-q</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> image-q</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p>Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu&#39;s algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript</p>
+				<h1 id="table-of-contents">Table of Contents</h1>
+				<ul>
+					<li><a href="#usage">Tutorial</a></li>
+					<li><a href="#api-documentation-overview">API Documentation Overview</a></li>
+				</ul>
+				<h1 id="api-documentation-overview">API Documentation Overview</h1>
+				<h2 id="image-import-sources">Image Import Sources</h2>
+				<table>
+					<thead>
+						<tr>
+							<th style="text-align:left">API</th>
+							<th>Source</th>
+							<th style="text-align:left"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="text-align:left"><strong><em>Canvas related</em></strong></td>
+							<td></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromhtmlcanvaselement">PointContainer.fromHTMLCanvasElement</a></td>
+							<td><a href="https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromimagedata">PointContainer.fromImageData</a></td>
+							<td><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">ImageData</a></td>
+							<td style="text-align:left">ctx.getImageData()</td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint8array">PointContainer.fromUint8Array</a></td>
+							<td><a href="https://developer.mozilla.org/docs/Web/API/ImageData/data">Uint8ClampedArray</a></td>
+							<td style="text-align:left">ctx.getImageData().data</td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint8array">PointContainer.fromUint8Array</a></td>
+							<td><a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=12586">deprecated CanvasPixelArray</a></td>
+							<td style="text-align:left">ctx.getImageData().data</td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><strong><em>Other</em></strong></td>
+							<td></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromhtmlimageelement">PointContainer.fromHTMLImageElement</a></td>
+							<td><a href="https://developer.mozilla.org/docs/Web/API/HTMLImageElement">HTMLImageElement</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromimagedata">PointContainer.fromImageData</a></td>
+							<td><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint8array">PointContainer.fromUint8Array</a></td>
+							<td><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint32array">PointContainer.fromUint32Array</a></td>
+							<td><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array">Uint32Array</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td style="text-align:left"><a href="classes/pointcontainer.html#frombuffer">PointContainer.fromBuffer</a></td>
+							<td><a href="https://nodejs.org/api/buffer.html">Buffer (Node.js)</a></td>
+						</tr>
+					</tbody>
+				</table>
+				<p>  Usage:</p>
+				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> canvas = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#canvas'</span>);
+  <span class="hljs-keyword">const</span> pointContainer = PointContainer.fromHTMLCanvasElement(canvas);
+</code></pre>
+				<h2 id="color-distance">Color Distance</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>API</th>
+							<th style="text-align:left">Description</th>
+							<th>Originally used by</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="classes/euclidean.html">Euclidean</a></td>
+							<td style="text-align:left">1/1/1/1 coefficients</td>
+							<td>WuQuant</td>
+						</tr>
+						<tr>
+							<td><a href="classes/euclideanbt709.html">EuclideanBT709</a></td>
+							<td style="text-align:left">BT.709 sRGB coefficients</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><a href="classes/manhattan.html">Manhattan</a></td>
+							<td style="text-align:left">1/1/1/1 coefficients</td>
+							<td>NeuQuant</td>
+						</tr>
+						<tr>
+							<td><a href="classes/manhattanbt709.html">ManhattanBT709</a></td>
+							<td style="text-align:left">BT.709 sRGB coefficients</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><a href="classes/ciede2000.html">CIEDE2000</a></td>
+							<td style="text-align:left">CIEDE2000 (very slow)</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><a href="classes/cie94textiles.html">CIE94Textiles</a></td>
+							<td style="text-align:left">CIE94 implementation for textiles</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><a href="classes/cie94graphicarts.html">CIE94GraphicArts</a></td>
+							<td style="text-align:left">CIE94 implementation for graphic arts</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><a href="classes/cmetric.html">CMetric</a></td>
+							<td style="text-align:left"><a href="http://www.compuphase.com/cmetric.htm">see</a></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><a href="classes/pngquant.html">PNGQuant</a></td>
+							<td style="text-align:left">used in PNGQuant tools</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><a href="classes/euclideanbt709noalpha.html">EuclideanBT709NoAlpha</a></td>
+							<td style="text-align:left">BT.709 sRGB coefficients</td>
+							<td>RGBQuant</td>
+						</tr>
+						<tr>
+							<td><a href="classes/manhattannommyde.html">ManhattanNommyde</a></td>
+							<td style="text-align:left"><a href="https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-234527620">discussion</a></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p>  Usage:</p>
+				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> distanceCalculator = <span class="hljs-keyword">new</span> EuclideanBT709();
+</code></pre>
+				<h2 id="palette-quantizers">Palette Quantizers</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>API</th>
+							<th style="text-align:left">Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="classes/neuquant.html">NeuQuant</a></td>
+							<td style="text-align:left">original code ported, integer calculations</td>
+						</tr>
+						<tr>
+							<td><a href="classes/rgbquant.html">RGBQuant</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td><a href="classes/wuquant.html">WuQuant</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td><a href="classes/neuquantfloat.html">NeuQuantFloat</a></td>
+							<td style="text-align:left">floating-point calculations</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>  Usage:</p>
+				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> paletteQuantizer = <span class="hljs-keyword">new</span> WuQuant(distanceCalculator, <span class="hljs-number">256</span>);
+  paletteQuantizer.sample(pointContainer1);
+  paletteQuantizer.sample(pointContainer2);
+  <span class="hljs-keyword">const</span> palette = paletteQuantizer.quantize();
+</code></pre>
+				<h2 id="image-quantizers">Image Quantizers</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>API</th>
+							<th style="text-align:left">Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="classes/nearestcolor.html">NearestColor</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td><a href="classes/errordiffusionarray.html">ErrorDiffusionArray</a></td>
+							<td style="text-align:left">2 modes of error propagation are supported: <code>xnview</code> and <code>gimp</code></td>
+						</tr>
+						<tr>
+							<td>- 1. <a href="enums/errordiffusionarraykernel.html#floydsteinberg">FloydSteinberg</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 2. <a href="enums/errordiffusionarraykernel.html#falsefloydsteinberg">FalseFloydSteinberg</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 3. <a href="enums/errordiffusionarraykernel.html#stucki">Stucki</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 4. <a href="enums/errordiffusionarraykernel.html#atkinson">Atkinson</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 5. <a href="enums/errordiffusionarraykernel.html#jarvis">Jarvis</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 6. <a href="enums/errordiffusionarraykernel.html#burkes">Burkes</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 7. <a href="enums/errordiffusionarraykernel.html#sierra">Sierra</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 8. <a href="enums/errordiffusionarraykernel.html#twosierra">TwoSierra</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td>- 9. <a href="enums/errordiffusionarraykernel.html#sierralite">SierraLite</a></td>
+							<td style="text-align:left"></td>
+						</tr>
+						<tr>
+							<td><a href="classes/errordiffusionriemersma.html">ErrorDiffusionRiemersma</a></td>
+							<td style="text-align:left">Hilbert space-filling curve is used</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>  Usage:</p>
+				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, Jarvis);
+  <span class="hljs-keyword">const</span> outPointContainer = imageQuantizer.quantize(inPointContainer, palette);
+</code></pre>
+				<h2 id="output">Output</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>API</th>
+							<th style="text-align:left">Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="classes/pointcontainer.html#touint8array">PointContainer.toUint8Array</a></td>
+							<td style="text-align:left"><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></td>
+						</tr>
+						<tr>
+							<td><a href="classes/pointcontainer.html#touint32array">PointContainer.toUint32Array</a></td>
+							<td style="text-align:left"><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array">Uint32Array</a></td>
+						</tr>
+					</tbody>
+				</table>
+				<p>  Usage:</p>
+				<pre><code class="lang-ts">  <span class="hljs-comment">// write PNG using pngjs</span>
+  png.data = outPointContainer.toUint8Array();
+  fs.writeFileSync(<span class="hljs-string">'filename.png'</span>, PNG.sync.write(png))
+</code></pre>
+				<h1 id="advanced-api">Advanced API</h1>
+				<h2 id="color-conversion">Color Conversion</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>API</th>
+							<th style="text-align:left">Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="globals.html#lab2rgb">lab2rgb</a></td>
+							<td style="text-align:left">CIE L<em>a</em>b* =&gt; CIE RGB</td>
+						</tr>
+						<tr>
+							<td><a href="globals.html#lab2xyz">lab2xyz</a></td>
+							<td style="text-align:left">CIE L<em>a</em>b* =&gt; CIE XYZ</td>
+						</tr>
+						<tr>
+							<td><a href="globals.html#rgb2hsl">rgb2hsl</a></td>
+							<td style="text-align:left">CIE RGB =&gt; HSL</td>
+						</tr>
+						<tr>
+							<td><a href="globals.html#rgb2lab">rgb2lab</a></td>
+							<td style="text-align:left">CIE RGB =&gt; CIE L<em>a</em>b*</td>
+						</tr>
+						<tr>
+							<td><a href="globals.html#rgb2xyz">rgb2xyz</a></td>
+							<td style="text-align:left">CIE RGB =&gt; CIE XYZ</td>
+						</tr>
+						<tr>
+							<td><a href="globals.html#xyz2lab">xyz2lab</a></td>
+							<td style="text-align:left">CIE XYZ =&gt; CIE L<em>a</em>b*</td>
+						</tr>
+						<tr>
+							<td><a href="globals.html#xyz2rgb">xyz2rgb</a></td>
+							<td style="text-align:left">CIE XYZ =&gt; CIE RGB</td>
+						</tr>
+					</tbody>
+				</table>
+				<p><a href="https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/">https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/</a></p>
+				<h2 id="structural-similarity">Structural Similarity</h2>
+				<ul>
+					<li><p><a href="globals.html#ssim">ssim</a> - <a href="https://en.wikipedia.org/wiki/Structural_similarity">https://en.wikipedia.org/wiki/Structural_similarity</a></p>
+						<p>Usage:</p>
+						<pre><code class="lang-ts"><span class="hljs-keyword">const</span> similarity = ssim(pointContainer1, pointContainer2);
+</code></pre>
+					</li>
+				</ul>
+				<p>Have fun! Any problems or queries let me know!</p>
+				<p> -- Igor</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-is-not-exported">
+						<a href="enums/direction.html" class="tsd-kind-icon">Direction</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/errordiffusionarraykernel.html" class="tsd-kind-icon">Error<wbr>Diffusion<wbr>Array<wbr>Kernel</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/y.html" class="tsd-kind-icon">Y</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/x.html" class="tsd-kind-icon">x</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/y.html" class="tsd-kind-icon">y</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/abstractcie94.html" class="tsd-kind-icon">AbstractCIE94</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/abstractdistancecalculator.html" class="tsd-kind-icon">Abstract<wbr>Distance<wbr>Calculator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/abstracteuclidean.html" class="tsd-kind-icon">Abstract<wbr>Euclidean</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/abstractimagequantizer.html" class="tsd-kind-icon">Abstract<wbr>Image<wbr>Quantizer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/abstractmanhattan.html" class="tsd-kind-icon">Abstract<wbr>Manhattan</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/abstractpalettequantizer.html" class="tsd-kind-icon">Abstract<wbr>Palette<wbr>Quantizer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/cie94graphicarts.html" class="tsd-kind-icon">CIE94<wbr>Graphic<wbr>Arts</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/cie94textiles.html" class="tsd-kind-icon">CIE94<wbr>Textiles</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/ciede2000.html" class="tsd-kind-icon">CIEDE2000</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/cmetric.html" class="tsd-kind-icon">CMetric</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/colorhistogram.html" class="tsd-kind-icon">Color<wbr>Histogram</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/errordiffusionarray.html" class="tsd-kind-icon">Error<wbr>Diffusion<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/errordiffusionriemersma.html" class="tsd-kind-icon">Error<wbr>Diffusion<wbr>Riemersma</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/euclidean.html" class="tsd-kind-icon">Euclidean</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/euclideanbt709.html" class="tsd-kind-icon">EuclideanBT709</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/euclideanbt709noalpha.html" class="tsd-kind-icon">EuclideanBT709<wbr>NoAlpha</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="classes/huegroup.html" class="tsd-kind-icon">Hue<wbr>Group</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/huestatistics.html" class="tsd-kind-icon">Hue<wbr>Statistics</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/iq.html" class="tsd-kind-icon">IQ</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/manhattan.html" class="tsd-kind-icon">Manhattan</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/manhattanbt709.html" class="tsd-kind-icon">ManhattanBT709</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/manhattannommyde.html" class="tsd-kind-icon">Manhattan<wbr>Nommyde</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/nearestcolor.html" class="tsd-kind-icon">Nearest<wbr>Color</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/neuquant.html" class="tsd-kind-icon">Neu<wbr>Quant</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/neuquantfloat.html" class="tsd-kind-icon">Neu<wbr>Quant<wbr>Float</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="classes/neuron.html" class="tsd-kind-icon">Neuron</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="classes/neuronfloat.html" class="tsd-kind-icon">Neuron<wbr>Float</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/pngquant.html" class="tsd-kind-icon">PNGQuant</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/palette.html" class="tsd-kind-icon">Palette</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/point.html" class="tsd-kind-icon">Point</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/pointcontainer.html" class="tsd-kind-icon">Point<wbr>Container</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/progresstracker.html" class="tsd-kind-icon">Progress<wbr>Tracker</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rgbquant.html" class="tsd-kind-icon">RGBQuant</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-not-exported">
+						<a href="classes/removedcolor.html" class="tsd-kind-icon">Removed<wbr>Color</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/wucolorcube.html" class="tsd-kind-icon">Wu<wbr>Color<wbr>Cube</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/wuquant.html" class="tsd-kind-icon">Wu<wbr>Quant</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/box.html" class="tsd-kind-icon">Box</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/data.html" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/imagequantizeryieldvalue.html" class="tsd-kind-icon">Image<wbr>Quantizer<wbr>Yield<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/palettequantizeryieldvalue.html" class="tsd-kind-icon">Palette<wbr>Quantizer<wbr>Yield<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#k1" class="tsd-kind-icon">K1</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#k2" class="tsd-kind-icon">K2</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#huegroups" class="tsd-kind-icon">hue<wbr>Groups</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#networkbiasshift" class="tsd-kind-icon">network<wbr>Bias<wbr>Shift</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#refx" class="tsd-kind-icon">refX</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#refy" class="tsd-kind-icon">refY</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#refz" class="tsd-kind-icon">refZ</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#calculateaverageluma" class="tsd-kind-icon">calculate<wbr>Average<wbr>Luma</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#calculatelumavaluesforwindow" class="tsd-kind-icon">calculate<wbr>Luma<wbr>Values<wbr>For<wbr>Window</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#correctgamma" class="tsd-kind-icon">correct<wbr>Gamma</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#createarray1d" class="tsd-kind-icon">create<wbr>Array1D</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#createarray3d" class="tsd-kind-icon">create<wbr>Array3D</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#createarray4d" class="tsd-kind-icon">create<wbr>Array4D</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#degrees2radians" class="tsd-kind-icon">degrees2radians</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+						<a href="globals.html#fillarray1d" class="tsd-kind-icon">fill<wbr>Array1D</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
+						<a href="globals.html#fillarray3d" class="tsd-kind-icon">fill<wbr>Array3D</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#hilbertcurve" class="tsd-kind-icon">hilbert<wbr>Curve</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#huegroup" class="tsd-kind-icon">hue<wbr>Group</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#inrange0to255" class="tsd-kind-icon">in<wbr>Range0to255</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#inrange0to255rounded" class="tsd-kind-icon">in<wbr>Range0to255<wbr>Rounded</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#intinrange" class="tsd-kind-icon">int<wbr>InRange</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#iterate" class="tsd-kind-icon">iterate</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#lab2rgb" class="tsd-kind-icon">lab2rgb</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#lab2xyz" class="tsd-kind-icon">lab2xyz</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#max3" class="tsd-kind-icon">max3</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#min3" class="tsd-kind-icon">min3</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#pivot" class="tsd-kind-icon">pivot</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#rgb2hsl" class="tsd-kind-icon">rgb2hsl</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#rgb2lab" class="tsd-kind-icon">rgb2lab</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#rgb2xyz" class="tsd-kind-icon">rgb2xyz</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#ssim" class="tsd-kind-icon">ssim</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#stablesort" class="tsd-kind-icon">stable<wbr>Sort</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#visit" class="tsd-kind-icon">visit</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#walkhilbert" class="tsd-kind-icon">walk<wbr>Hilbert</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#xyz2lab" class="tsd-kind-icon">xyz2lab</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#xyz2rgb" class="tsd-kind-icon">xyz2rgb</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
 </html>
