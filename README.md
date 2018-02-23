@@ -189,6 +189,13 @@ TODO
 Changelog
 ---------
 
+##### 2.0.5 (2018-02-23)
+    + @types/node moved to 'dependencies'
+
+##### 2.0.4 (2018-02-23)
+    + documentation added
+		+ some refactorings/renames, see breaking changes
+
 ##### 2.0.3 (2018-02-22)
 		+ circular dependency removed
 
