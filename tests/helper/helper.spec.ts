@@ -14,23 +14,11 @@ beforeEach(function() {
 
 test(`applyPalette`, async function () {
   let buildPaletteProgressMarks = [];
-  const palette = await buildPalette(
-    [pointContainer], 
-    ColorDistanceFormula.Euclidean, 
-    PaletteQuantization.WuQuant, 
-    128, 
-    progress => buildPaletteProgressMarks.push(progress),
-  );
+  const palette = await buildPalette([pointContainer], { onProgress: progress => buildPaletteProgressMarks.push(progress) });
   expect(palette).toBeInstanceOf(utils.Palette);
 
   let applyPaletteProgressMarks = [];
-  const outPointContainer = await applyPalette(
-    pointContainer,
-    palette,
-    ColorDistanceFormula.Euclidean, 
-    ImageQuantization.FloydSteinberg, 
-    progress => applyPaletteProgressMarks.push(progress),
-  );
+  const outPointContainer = await applyPalette(pointContainer, palette, { onProgress: progress => applyPaletteProgressMarks.push(progress) });
   expect(outPointContainer).toBeInstanceOf(utils.PointContainer);
 
   // test progress notifications

@@ -5,6 +5,7 @@
  *
  * helper.ts - part of Image Quantization Library
  */
+import * as setImmediate from 'core-js/fn/set-immediate';
 import * as distance from './distance';
 import * as image from './image';
 import * as palette from './palette';
@@ -15,56 +16,68 @@ import { PointContainer } from './utils/pointContainer';
 import { Palette } from './utils/palette';
 import { ssim } from './quality/ssim';
 
-export const enum ColorDistanceFormula {
-  CIE94Textiles = 'cie94-textiles',
-  CIE94GraphicArts = 'cie94-graphic-arts',
-  CIEDE2000 = 'ciede2000',
-  CMetric = 'color-metric',
-  Euclidean = 'euclidean',
-  EuclideanBT709NoAlpha = 'euclidean-bt709-noalpha',
-  EuclideanBT709 = 'euclidean-bt709',
-  Manhattan = 'manhattan',
-  ManhattanBT709 = 'manhattan-bt709',
-  ManhattanNommyde = 'manhattan-nommyde',
-  PNGQuant = 'pngquant',
+export type ColorDistanceFormula =
+  | 'cie94-textiles'
+  | 'cie94-graphic-arts'
+  | 'ciede2000'
+  | 'color-metric'
+  | 'euclidean'
+  | 'euclidean-bt709-noalpha'
+  | 'euclidean-bt709'
+  | 'manhattan'
+  | 'manhattan-bt709'
+  | 'manhattan-nommyde'
+  | 'pngquant';
+
+export type PaletteQuantization =
+  | 'neuquant'
+  | 'neuquant-float'
+  | 'rgbquant'
+  | 'wuquant';
+
+export type ImageQuantization =
+  | 'nearest'
+  | 'riemersma'
+  | 'floyd-steinberg'
+  | 'false-floyd-steinberg'
+  | 'stucki'
+  | 'atkinson'
+  | 'jarvis'
+  | 'burkes'
+  | 'sierra'
+  | 'two-sierra'
+  | 'sierra-lite';
+
+export interface ProgressOptions {
+  onProgress?: (progress: number) => void;
 }
 
-export const enum PaletteQuantization {
-  NeuQuant = 'neuquant',
-  NeuQuantFloat = 'neuquant-float',
-  RGBQuant = 'rgbquant',
-  WuQuant = 'wuquant',
+export interface ApplyPaletteOptions {
+  colorDistanceFormula?: ColorDistanceFormula;
+  imageQuantization?: ImageQuantization;
 }
 
-export const enum ImageQuantization {
-  Nearest = 'nearest',
-  Riemersma = 'riemersma',
-  FloydSteinberg = 'floyd-steinberg',
-  FalseFloydSteinberg = 'false-floyd-steinberg',
-  Stucki = 'stucki',
-  Atkinson = 'atkinson',
-  Jarvis = 'jarvis',
-  Burkes = 'burkes',
-  Sierra = 'sierra',
-  TwoSierra = 'two-sierra',
-  SierraLite = 'sierra-lite',
+export interface BuildPaletteOptions {
+  colorDistanceFormula?: ColorDistanceFormula;
+  paletteQuantization?: PaletteQuantization;
+  colors?: number;
 }
 
-export function buildPaletteSync(images: PointContainer[], colorDistanceFormula = ColorDistanceFormula.EuclideanBT709, paletteQuantization = PaletteQuantization.NeuQuant, colors = 256) {
+export function buildPaletteSync(images: PointContainer[], { colorDistanceFormula, paletteQuantization, colors }: BuildPaletteOptions) {
   const distanceCalculator = colorDistanceFormulaToColorDistance(colorDistanceFormula);
-  const paletteQuantizer = paletteQuantizationToPaletteQuantizer(paletteQuantization, distanceCalculator, colors);
+  const paletteQuantizer = paletteQuantizationToPaletteQuantizer(distanceCalculator, paletteQuantization, colors);
   images.forEach(image => paletteQuantizer.sample(image));
   return paletteQuantizer.quantize();
 }
 
-export async function buildPalette(images: PointContainer[], colorDistanceFormula: typeof ColorDistanceFormula[keyof typeof ColorDistanceFormula] = ColorDistanceFormula.EuclideanBT709, paletteQuantization = PaletteQuantization.NeuQuant, colors = 256, onProgress?: (progress: number) => void) {
+export async function buildPalette(images: PointContainer[], { colorDistanceFormula, paletteQuantization, colors, onProgress }: BuildPaletteOptions & ProgressOptions) {
   return new Promise<Palette>((resolve, reject) => {
     const distanceCalculator = colorDistanceFormulaToColorDistance(colorDistanceFormula);
-    const paletteQuantizer = paletteQuantizationToPaletteQuantizer(paletteQuantization, distanceCalculator, colors);
+    const paletteQuantizer = paletteQuantizationToPaletteQuantizer(distanceCalculator, paletteQuantization, colors);
     images.forEach(image => paletteQuantizer.sample(image));
 
     let palette: Palette;
-    let timerId: NodeJS.Timer;
+    let timerId: number;
     const iterator = paletteQuantizer.quantizeAsync();
     const next = () => {
       try {
@@ -74,30 +87,30 @@ export async function buildPalette(images: PointContainer[], colorDistanceFormul
         } else {
           if (result.value.palette) palette = result.value.palette;
           if (onProgress) onProgress(result.value.progress);
-          timerId = setTimeout(next, 4);
+          timerId = setImmediate(next);
         }
       } catch (error) {
         clearTimeout(timerId);
         reject(error);
       }
     };
-    timerId = setTimeout(next, 4);
+    timerId = setImmediate(next);
   });
 }
 
-export function applyPaletteSync(image: PointContainer, palette: Palette, colorDistanceFormula = ColorDistanceFormula.EuclideanBT709, imageQuantization = ImageQuantization.FloydSteinberg) {
+export function applyPaletteSync(image: PointContainer, palette: Palette, { colorDistanceFormula, imageQuantization }: ApplyPaletteOptions = {}) {
   const distanceCalculator = colorDistanceFormulaToColorDistance(colorDistanceFormula);
-  const imageQuantizer = imageQuantizationToImageQuantizer(imageQuantization, distanceCalculator);
+  const imageQuantizer = imageQuantizationToImageQuantizer(distanceCalculator, imageQuantization);
   return imageQuantizer.quantize(image, palette);
 }
 
-export async function applyPalette(image: PointContainer, palette: Palette, colorDistanceFormula = ColorDistanceFormula.EuclideanBT709, imageQuantization = ImageQuantization.FloydSteinberg, onProgress?: (progress: number) => void) {
+export async function applyPalette(image: PointContainer, palette: Palette, { colorDistanceFormula, imageQuantization, onProgress }: ApplyPaletteOptions & ProgressOptions = {}) {
   return new Promise<PointContainer>((resolve, reject) => {
     const distanceCalculator = colorDistanceFormulaToColorDistance(colorDistanceFormula);
-    const imageQuantizer = imageQuantizationToImageQuantizer(imageQuantization, distanceCalculator);
+    const imageQuantizer = imageQuantizationToImageQuantizer(distanceCalculator, imageQuantization);
 
     let outPointContainer: PointContainer;
-    let timerId: NodeJS.Timer;
+    let timerId: number;
     const iterator = imageQuantizer.quantizeAsync(image, palette);
     const next = () => {
       try {
@@ -107,57 +120,57 @@ export async function applyPalette(image: PointContainer, palette: Palette, colo
         } else {
           if (result.value.pointContainer) outPointContainer = result.value.pointContainer;
           if (onProgress) onProgress(result.value.progress);
-          timerId = setTimeout(next, 4);
+          timerId = setImmediate(next);
         }
       } catch (error) {
         clearTimeout(timerId);
         reject(error);
       }
     };
-    timerId = setTimeout(next, 4);
+    timerId = setImmediate(next);
   });
 }
 
-function colorDistanceFormulaToColorDistance(colorDistanceFormula: ColorDistanceFormula) {
+function colorDistanceFormulaToColorDistance(colorDistanceFormula: ColorDistanceFormula = 'euclidean-bt709') {
   switch (colorDistanceFormula) {
-    case ColorDistanceFormula.CIE94GraphicArts: return new distance.CIE94GraphicArts();
-    case ColorDistanceFormula.CIE94Textiles: return new distance.CIE94Textiles();
-    case ColorDistanceFormula.CIEDE2000: return new distance.CIEDE2000();
-    case ColorDistanceFormula.CMetric: return new distance.CMetric();
-    case ColorDistanceFormula.Euclidean: return new distance.Euclidean();
-    case ColorDistanceFormula.EuclideanBT709: return new distance.EuclideanBT709();
-    case ColorDistanceFormula.EuclideanBT709NoAlpha: return new distance.EuclideanBT709NoAlpha();
-    case ColorDistanceFormula.Manhattan: return new distance.Manhattan();
-    case ColorDistanceFormula.ManhattanBT709: return new distance.ManhattanBT709();
-    case ColorDistanceFormula.ManhattanNommyde: return new distance.ManhattanNommyde();
-    case ColorDistanceFormula.PNGQuant: return new distance.PNGQuant();
+    case 'cie94-graphic-arts': return new distance.CIE94GraphicArts();
+    case 'cie94-textiles': return new distance.CIE94Textiles();
+    case 'ciede2000': return new distance.CIEDE2000();
+    case 'color-metric': return new distance.CMetric();
+    case 'euclidean': return new distance.Euclidean();
+    case 'euclidean-bt709': return new distance.EuclideanBT709();
+    case 'euclidean-bt709-noalpha': return new distance.EuclideanBT709NoAlpha();
+    case 'manhattan': return new distance.Manhattan();
+    case 'manhattan-bt709': return new distance.ManhattanBT709();
+    case 'manhattan-nommyde': return new distance.ManhattanNommyde();
+    case 'pngquant': return new distance.PNGQuant();
     default: throw new Error(`Unknown colorDistanceFormula ${colorDistanceFormula}`);
   }
 }
 
-function imageQuantizationToImageQuantizer(imageQuantization: ImageQuantization, distanceCalculator: AbstractDistanceCalculator) {
+function imageQuantizationToImageQuantizer(distanceCalculator: AbstractDistanceCalculator, imageQuantization: ImageQuantization = 'floyd-steinberg') {
   switch (imageQuantization) {
-    case ImageQuantization.Nearest: return new image.NearestColor(distanceCalculator);
-    case ImageQuantization.Riemersma: return new image.ErrorDiffusionRiemersma(distanceCalculator);
-    case ImageQuantization.FloydSteinberg: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.FloydSteinberg);
-    case ImageQuantization.FalseFloydSteinberg: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.FalseFloydSteinberg);
-    case ImageQuantization.Stucki: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Stucki);
-    case ImageQuantization.Atkinson: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Atkinson);
-    case ImageQuantization.Jarvis: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Jarvis);
-    case ImageQuantization.Burkes: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Burkes);
-    case ImageQuantization.Sierra: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Sierra);
-    case ImageQuantization.TwoSierra: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.TwoSierra);
-    case ImageQuantization.SierraLite: return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.SierraLite);
+    case 'nearest': return new image.NearestColor(distanceCalculator);
+    case 'riemersma': return new image.ErrorDiffusionRiemersma(distanceCalculator);
+    case 'floyd-steinberg': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.FloydSteinberg);
+    case 'false-floyd-steinberg': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.FalseFloydSteinberg);
+    case 'stucki': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Stucki);
+    case 'atkinson': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Atkinson);
+    case 'jarvis': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Jarvis);
+    case 'burkes': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Burkes);
+    case 'sierra': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.Sierra);
+    case 'two-sierra': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.TwoSierra);
+    case 'sierra-lite': return new image.ErrorDiffusionArray(distanceCalculator, image.ErrorDiffusionArrayKernel.SierraLite);
     default: throw new Error(`Unknown imageQuantization ${imageQuantization}`);
   }
 }
 
-function paletteQuantizationToPaletteQuantizer(paletteQuantization: PaletteQuantization, distanceCalculator: AbstractDistanceCalculator, colors: number) {
+function paletteQuantizationToPaletteQuantizer(distanceCalculator: AbstractDistanceCalculator, paletteQuantization: PaletteQuantization = 'wuquant', colors = 256) {
   switch (paletteQuantization) {
-    case PaletteQuantization.NeuQuant: return new palette.NeuQuant(distanceCalculator, colors);
-    case PaletteQuantization.RGBQuant: return new palette.RGBQuant(distanceCalculator, colors);
-    case PaletteQuantization.WuQuant: return new palette.WuQuant(distanceCalculator, colors);
-    case PaletteQuantization.NeuQuantFloat: return new palette.NeuQuantFloat(distanceCalculator, colors);
+    case 'neuquant': return new palette.NeuQuant(distanceCalculator, colors);
+    case 'rgbquant': return new palette.RGBQuant(distanceCalculator, colors);
+    case 'wuquant': return new palette.WuQuant(distanceCalculator, colors);
+    case 'neuquant-float': return new palette.NeuQuantFloat(distanceCalculator, colors);
     default: throw new Error(`Unknown paletteQuantization ${paletteQuantization}`);
   }
 }
