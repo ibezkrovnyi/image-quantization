@@ -48,5 +48,5 @@ test(`applyPalette`, async function () {
     if (index === array.length - 1) expect(cur).toBe(100);
     return cur;
   }, 0);
-});
+}, 60000);
 
