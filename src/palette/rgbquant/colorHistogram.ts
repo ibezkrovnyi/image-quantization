@@ -55,7 +55,7 @@ export class ColorHistogram {
     // HueStatistics instance
     this._hueStats = new HueStatistics(ColorHistogram._hueGroups, this._minHueCols);
 
-    this._histogram = Object.create(null);
+    this._histogram = Object.create(null); // tslint:disable-line:no-null-keyword
   }
 
   sample(pointContainer: PointContainer) {
@@ -106,7 +106,7 @@ export class ColorHistogram {
     }
 
     // int32-ify values
-    return (idxi32 as any as string[]).map(function (v: string) {
+    return idxi32.map(function (v: string) { // TODO: why no-inferred-types rule cannot find this (v: string) ?
       return +v;
     });
   }

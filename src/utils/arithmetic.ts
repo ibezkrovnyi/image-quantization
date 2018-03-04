@@ -40,15 +40,15 @@ export function stableSort<T>(arrayToSort: T[], callback: (a: T, b: T) => number
   let sorted: T[];
 
   if (type === 'number' || type === 'string') {
-    const ord = Object.create(null);
+    const ord = Object.create(null); // tslint:disable-line:no-null-keyword
     for (let i = 0, l = arrayToSort.length; i < l; i++) {
-      const val: string = arrayToSort[ i ] as any;
+      const val: string = arrayToSort[ i ] as any; // tslint:disable-line:no-any
       if (ord[ val ] || ord[ val ] === 0) continue;
       ord[ val ] = i;
     }
 
     sorted = arrayToSort.sort(function (a, b) {
-      return callback(a, b) || ord[ a as any ] - ord[ b as any ];
+      return callback(a, b) || ord[ a ] - ord[ b ];
     });
   } else {
     const ord2 = arrayToSort.slice(0);

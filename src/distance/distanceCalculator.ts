@@ -5,7 +5,7 @@
  *
  * common.ts - part of Image Quantization Library
  */
-import { Point } from '../utils/point';
+import { Point, PointRGBA } from '../utils/point';
 
 export abstract class AbstractDistanceCalculator {
   protected _maxDistance!: number;
@@ -33,7 +33,7 @@ export abstract class AbstractDistanceCalculator {
     this._maxDistance = this.calculateRaw(r, g, b, a, 0, 0, 0, 0);
   }
 
-  calculateNormalized(colorA: Point, colorB: Point) {
+  calculateNormalized(colorA: PointRGBA, colorB: PointRGBA) {
     return this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a) / this._maxDistance;
   }
 

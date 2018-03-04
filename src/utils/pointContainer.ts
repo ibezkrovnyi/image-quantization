@@ -77,7 +77,7 @@ export class PointContainer {
     canvas.width = width;
     canvas.height = height;
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d')!; // tslint:disable-line:no-non-null-assertion
     ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
 
     return PointContainer.fromHTMLCanvasElement(canvas);
@@ -87,7 +87,7 @@ export class PointContainer {
     const width = canvas.width;
     const height = canvas.height;
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d')!; // tslint:disable-line:no-non-null-assertion
     const imgData = ctx.getImageData(0, 0, width, height);
 
     return PointContainer.fromImageData(imgData);
