@@ -9,11 +9,14 @@
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
-    "prepublish": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
-    "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
+    "prepublish": "npm run build",
     "test": "npm run lint && jest --maxWorkers=2",
+
+    "build": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
     "test:watch": "jest --watch",
-    "release": "npm update && npm run lint && jest && npm run prepublish && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
+    "deploy": "npm update && npm run lint && jest && npm run build && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
+
+    "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
     "gh-pages": "rimraf ./docs && typedoc.cmd src && gh-pages -d docs",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
