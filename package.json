@@ -30,6 +30,7 @@
     ],
     "globals": {
       "ts-jest": {
+        "tsConfigFile": "./tests/tsconfig.json",
         "skipBabel": true
       }
     },
