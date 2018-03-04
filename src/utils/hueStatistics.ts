@@ -75,7 +75,7 @@ export class HueStatistics {
   injectIntoArray(histG: string[]) {
     for (let i = 0; i <= this._numGroups; i++) {
       if (this._stats[ i ].num <= this._minCols) {
-        this._stats[ i ].cols.forEach((col: any) => {
+        this._stats[ i ].cols.forEach((col: any) => { // tslint:disable-line:no-any
           if (histG.indexOf(col) === -1) {
             histG.push(col);
           }

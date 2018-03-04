@@ -350,7 +350,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
 
     for (let i = 0; i < this._networkSize; i++) {
       const n = this._network[ i ];
-      const dist = this._distance.calculateNormalized(n as any, { r, g, b, a } as any) * multiplier | 0;
+      const dist = this._distance.calculateNormalized(n, { r, g, b, a }) * multiplier | 0;
 
       if (dist < bestd) {
         bestd = dist;

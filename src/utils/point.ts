@@ -7,12 +7,19 @@
  */
 import { Y } from '../constants/bt709';
 
+export interface PointRGBA {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
 /**
  * v8 optimized class
  * 1) "constructor" should have initialization with worst types
  * 2) "set" should have |0 / >>> 0
  */
-export class Point {
+export class Point implements PointRGBA {
   r: number;
   g: number;
   b: number;

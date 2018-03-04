@@ -50,6 +50,12 @@
       "no-public"
     ],
     "prefer-for-of": true,
+    "one-variable-per-declaration": [true, "ignore-for-loop"],
+    "no-non-null-assertion": true,
+    "no-null-keyword": true,
+    "no-any": true,
+    "no-inferred-empty-object-type": true,
+    "ban-types": [true, ["Object", "Use {} instead."], ["String"]],
     "no-shadowed-variable": false,
     
     "no-var-self": false,

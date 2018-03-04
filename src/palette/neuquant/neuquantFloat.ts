@@ -330,7 +330,7 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
 
     for (let i = 0; i < this._networkSize; i++) {
       const n = this._network[ i ];
-      const dist = this._distance.calculateNormalized(n as any, { r, g, b, a: al } as any) * multiplier;
+      const dist = this._distance.calculateNormalized(n, { r, g, b, a: al }) * multiplier;
 
       if (dist < bestd) {
         bestd = dist;
