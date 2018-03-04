@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AbstractImageQuantizer | image-q</title>
+	<title>ApplyPaletteOptions | image-q</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="abstractimagequantizer.html">AbstractImageQuantizer</a>
+					<a href="applypaletteoptions.html">ApplyPaletteOptions</a>
 				</li>
 			</ul>
-			<h1>Class AbstractImageQuantizer</h1>
+			<h1>Interface ApplyPaletteOptions</h1>
 		</div>
 	</div>
 </header>
@@ -68,18 +68,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AbstractImageQuantizer</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="nearestcolor.html" class="tsd-signature-type">NearestColor</a>
-							</li>
-							<li>
-								<a href="errordiffusionarray.html" class="tsd-signature-type">ErrorDiffusionArray</a>
-							</li>
-							<li>
-								<a href="errordiffusionriemersma.html" class="tsd-signature-type">ErrorDiffusionRiemersma</a>
-							</li>
-						</ul>
+						<span class="target">ApplyPaletteOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -88,68 +77,36 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Methods</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="abstractimagequantizer.html#quantize" class="tsd-kind-icon">quantize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="abstractimagequantizer.html#quantizeasync" class="tsd-kind-icon">quantize<wbr>Async</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="applypaletteoptions.html#colordistanceformula" class="tsd-kind-icon">color<wbr>Distance<wbr>Formula</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="applypaletteoptions.html#imagequantization" class="tsd-kind-icon">image<wbr>Quantization</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="quantize" class="tsd-anchor"></a>
-					<h3>quantize</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">quantize<span class="tsd-signature-symbol">(</span>pointContainer<span class="tsd-signature-symbol">: </span><a href="pointcontainer.html" class="tsd-signature-type">PointContainer</a>, palette<span class="tsd-signature-symbol">: </span><a href="palette.html" class="tsd-signature-type">Palette</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="pointcontainer.html" class="tsd-signature-type">PointContainer</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/image/imageQuantizer.ts#L15">image/imageQuantizer.ts:15</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>pointContainer: <a href="pointcontainer.html" class="tsd-signature-type">PointContainer</a></h5>
-								</li>
-								<li>
-									<h5>palette: <a href="palette.html" class="tsd-signature-type">Palette</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="pointcontainer.html" class="tsd-signature-type">PointContainer</a></h4>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="colordistanceformula" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> color<wbr>Distance<wbr>Formula</h3>
+					<div class="tsd-signature tsd-kind-icon">color<wbr>Distance<wbr>Formula<span class="tsd-signature-symbol">:</span> <a href="../globals.html#colordistanceformula" class="tsd-signature-type">ColorDistanceFormula</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/helper.ts#L56">helper.ts:56</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="quantizeasync" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> quantize<wbr>Async</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">quantize<wbr>Async<span class="tsd-signature-symbol">(</span>pointContainer<span class="tsd-signature-symbol">: </span><a href="pointcontainer.html" class="tsd-signature-type">PointContainer</a>, palette<span class="tsd-signature-symbol">: </span><a href="palette.html" class="tsd-signature-type">Palette</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/imagequantizeryieldvalue.html" class="tsd-signature-type">ImageQuantizerYieldValue</a><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/image/imageQuantizer.ts#L13">image/imageQuantizer.ts:13</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>pointContainer: <a href="pointcontainer.html" class="tsd-signature-type">PointContainer</a></h5>
-								</li>
-								<li>
-									<h5>palette: <a href="palette.html" class="tsd-signature-type">Palette</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/imagequantizeryieldvalue.html" class="tsd-signature-type">ImageQuantizerYieldValue</a><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="imagequantization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> image<wbr>Quantization</h3>
+					<div class="tsd-signature tsd-kind-icon">image<wbr>Quantization<span class="tsd-signature-symbol">:</span> <a href="../globals.html#imagequantization" class="tsd-signature-type">ImageQuantization</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/helper.ts#L57">helper.ts:57</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -165,14 +122,14 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="abstractimagequantizer.html" class="tsd-kind-icon">Abstract<wbr>Image<wbr>Quantizer</a>
+					<li class="current tsd-kind-interface">
+						<a href="applypaletteoptions.html" class="tsd-kind-icon">Apply<wbr>Palette<wbr>Options</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="abstractimagequantizer.html#quantize" class="tsd-kind-icon">quantize</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="applypaletteoptions.html#colordistanceformula" class="tsd-kind-icon">color<wbr>Distance<wbr>Formula</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="abstractimagequantizer.html#quantizeasync" class="tsd-kind-icon">quantize<wbr>Async</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="applypaletteoptions.html#imagequantization" class="tsd-kind-icon">image<wbr>Quantization</a>
 							</li>
 						</ul>
 					</li>
