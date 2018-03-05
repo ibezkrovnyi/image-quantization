@@ -147,7 +147,7 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
     this._pointArray = this._pointArray.concat(pointContainer.getPointArray());
   }
 
-  * quantizeAsync() {
+  * quantize() {
     this._init();
     yield * this._learn();
 

@@ -17,8 +17,9 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 Table of Contents
 -----------------
 
+* [<span style="color: red">API Documentation</span>](http://ibezkrovnyi.github.io/image-quantization/)
 * [Introduction](#introduction)
-* [Capability](#capability)
+* [Features](#features)
 * [Usage](#usage)
 * [Todo](#todo)
 * [Breaking changes](#breaking-changes)
@@ -32,12 +33,16 @@ Introduction
 
 Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
  
-Capability
+Features
 ----------
 
 1. Platforms supported
 	* Browser (Chrome 7.0+, FireFox 4.0+, IE 10+, Opera 11.6+, Safari 5.1+)
 	* Node.js 6.0+
+
+2. API
+  * Basic API: sync and promise-based async
+  * Advanced API: sync and generator-based
 	
 2. Builds
 	* `dist/cjs/image-q.js` - CommonJS
@@ -165,6 +170,10 @@ var uint8array = resultPointContainer.toUint8Array();
 Breaking changes
 ----------------
 
+#### 2.1.1
+    + PaletteQuantizer#quantize => PaletteQuantizer#quantizeSync
+		+ ImageQuantizer#quantize => ImageQuantizer#quantizeSync
+
 #### 2.0.1 - 2.0.4 (2018-02-22)
     + EuclideanRgbQuantWOAlpha => EuclideanBT709NoAlpha
     + EuclideanRgbQuantWithAlpha => EuclideanBT709
@@ -188,6 +197,10 @@ TODO
 
 Changelog
 ---------
+
+##### 2.1.1
+    + Basic (Simple) API implemented
+		+ see breaking changes
 
 ##### 2.0.5 (2018-02-23)
     + @types/node moved to 'dependencies'

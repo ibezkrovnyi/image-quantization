@@ -1,6 +1,6 @@
 {
   "name": "image-q",
-  "version": "2.0.7",
+  "version": "2.1.0",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],

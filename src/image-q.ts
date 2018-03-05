@@ -13,7 +13,16 @@ import * as image from './image';
 import * as quality from './quality';
 import * as utils from './utils';
 
-export { buildPalette, applyPalette, buildPaletteSync, applyPaletteSync, ImageQuantization, PaletteQuantization, ColorDistanceFormula } from './helper';
+export {
+  buildPalette,
+  buildPaletteSync,
+  applyPalette,
+  applyPaletteSync,
+  ImageQuantization,
+  PaletteQuantization,
+  ColorDistanceFormula,
+} from './basicAPI';
+
 export {
   constants,
   conversion,

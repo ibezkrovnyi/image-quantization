@@ -63,14 +63,14 @@ export interface BuildPaletteOptions {
   colors?: number;
 }
 
-export function buildPaletteSync(images: PointContainer[], { colorDistanceFormula, paletteQuantization, colors }: BuildPaletteOptions) {
+export function buildPaletteSync(images: PointContainer[], { colorDistanceFormula, paletteQuantization, colors }: BuildPaletteOptions = {}) {
   const distanceCalculator = colorDistanceFormulaToColorDistance(colorDistanceFormula);
   const paletteQuantizer = paletteQuantizationToPaletteQuantizer(distanceCalculator, paletteQuantization, colors);
   images.forEach(image => paletteQuantizer.sample(image));
-  return paletteQuantizer.quantize();
+  return paletteQuantizer.quantizeSync();
 }
 
-export async function buildPalette(images: PointContainer[], { colorDistanceFormula, paletteQuantization, colors, onProgress }: BuildPaletteOptions & ProgressOptions) {
+export async function buildPalette(images: PointContainer[], { colorDistanceFormula, paletteQuantization, colors, onProgress }: BuildPaletteOptions & ProgressOptions = {}) {
   return new Promise<Palette>((resolve, reject) => {
     const distanceCalculator = colorDistanceFormulaToColorDistance(colorDistanceFormula);
     const paletteQuantizer = paletteQuantizationToPaletteQuantizer(distanceCalculator, paletteQuantization, colors);
@@ -78,7 +78,7 @@ export async function buildPalette(images: PointContainer[], { colorDistanceForm
 
     let palette: Palette;
     let timerId: number;
-    const iterator = paletteQuantizer.quantizeAsync();
+    const iterator = paletteQuantizer.quantize();
     const next = () => {
       try {
         const result = iterator.next();
@@ -101,7 +101,7 @@ export async function buildPalette(images: PointContainer[], { colorDistanceForm
 export function applyPaletteSync(image: PointContainer, palette: Palette, { colorDistanceFormula, imageQuantization }: ApplyPaletteOptions = {}) {
   const distanceCalculator = colorDistanceFormulaToColorDistance(colorDistanceFormula);
   const imageQuantizer = imageQuantizationToImageQuantizer(distanceCalculator, imageQuantization);
-  return imageQuantizer.quantize(image, palette);
+  return imageQuantizer.quantizeSync(image, palette);
 }
 
 export async function applyPalette(image: PointContainer, palette: Palette, { colorDistanceFormula, imageQuantization, onProgress }: ApplyPaletteOptions & ProgressOptions = {}) {
@@ -111,7 +111,7 @@ export async function applyPalette(image: PointContainer, palette: Palette, { co
 
     let outPointContainer: PointContainer;
     let timerId: number;
-    const iterator = imageQuantizer.quantizeAsync(image, palette);
+    const iterator = imageQuantizer.quantize(image, palette);
     const next = () => {
       try {
         const result = iterator.next();

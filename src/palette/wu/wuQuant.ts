@@ -132,7 +132,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
     this._pixels = this._pixels.concat(pointArray);
   }
 
-  * quantizeAsync() {
+  * quantize() {
     yield * this._preparePalette();
 
     const palette = new Palette();

@@ -11,10 +11,10 @@ import { PaletteQuantizerYieldValue } from './paletteQuantizerYieldValue';
 
 export abstract class AbstractPaletteQuantizer {
   abstract sample(pointContainer: PointContainer): void;
-  abstract quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue>;
+  abstract quantize(): IterableIterator<PaletteQuantizerYieldValue>;
 
-  quantize() {
-    for (const value of this.quantizeAsync()) {
+  quantizeSync() {
+    for (const value of this.quantize()) {
       if (value.palette) {
         return value.palette;
       }
