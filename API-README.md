@@ -1,10 +1,113 @@
 Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu's algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript
 
 # Table of Contents
-* [Tutorial](#usage)
-* [API Documentation Overview](#api-documentation-overview)
+* [Basic API](#basic-api)
+  + [Build Palette](#build-palette)
+  + [Apply Palette to Image](#apply-palette-to-image)
+  + [Optional parameters](#optional-parameters)
+* [Advanced API](#advanced-api)
+  + [Image Import Sources](#image-import-sources)
+  + [Color Distance](#color-distance)
+  + [Palette Quantizers](#palette-quantizers)
+  + [Image Quantizers](#image-quantizers)
+  + [Output](#output)
+* [Misc API](#misc-api)
+  + [Color Conversion](#color-conversion)
+  + [Structural Similarity](#structural-similarity)
 
-# API Documentation Overview
+# Basic API
+
+## Build Palette
+This API allows to Build (quantize) palette using Sample Images, returns [[Palette]] instance.
+
+### Async
+```ts
+import { buildPalette } from 'image-q'; // or const buildPalette = require('image-q').buildPalette
+const palette = await buildPalette([pointContainer], { 
+  colorDistanceFormula: 'euclidean', // optional
+  paletteQuantization: 'neuquant', // optional
+  colors: 128, // optional
+  onProgress: progress => console.log('applyPalette', progress), // optional
+});
+```
+
+### Sync
+```ts
+import { buildPaletteSync } from 'image-q'; // or const buildPaletteSync = require('image-q').buildPaletteSync
+const palette = buildPaletteSync([pointContainer], { 
+  colorDistanceFormula: 'euclidean', // optional
+  paletteQuantization: 'neuquant', // optional
+  colors: 128, // optional
+});
+```
+> implementation detail: generator is wrapped with setImmediate (polyfilled)
+
+## Apply Palette to Image
+This API applies given [[Palette]] to the [[PointContainer]], returns [[PointContainer]] containing new image.
+
+### Async (Promise-based)
+```ts
+import { applyPalette } from 'image-q'; // or const applyPalette = require('image-q').applyPalette
+const outPointContainer = await applyPalette(pointContainer, palette, {
+  colorDistanceFormula: 'euclidean', // optional
+  imageQuantization: 'floyd-steinberg', // optional
+  onProgress: progress => console.log('applyPalette', progress), // optional
+});
+```
+
+### Sync
+```ts
+import { applyPaletteSync } from 'image-q'; // or const applyPaletteSync = require('image-q').applyPaletteSync
+const outPointContainer = applyPaletteSync(pointContainer, palette, {
+  colorDistanceFormula: 'euclidean', // optional
+  imageQuantization: 'floyd-steinberg', // optional
+});
+```
+
+## Optional parameters
+See description of string constants in [Advanced API](#advanced-api) Section
+
+```ts
+export type ColorDistanceFormula =
+  | 'cie94-textiles'
+  | 'cie94-graphic-arts'
+  | 'ciede2000'
+  | 'color-metric'
+  | 'euclidean'
+  | 'euclidean-bt709-noalpha'
+  | 'euclidean-bt709'
+  | 'manhattan'
+  | 'manhattan-bt709'
+  | 'manhattan-nommyde'
+  | 'pngquant';
+```
+
+```ts
+export type PaletteQuantization =
+  | 'neuquant'
+  | 'neuquant-float'
+  | 'rgbquant'
+  | 'wuquant';
+```
+
+```ts
+export type ImageQuantization =
+  | 'nearest'
+  | 'riemersma'
+  | 'floyd-steinberg'
+  | 'false-floyd-steinberg'
+  | 'stucki'
+  | 'atkinson'
+  | 'jarvis'
+  | 'burkes'
+  | 'sierra'
+  | 'two-sierra'
+  | 'sierra-lite';
+```
+
+## Apply Palette to Image
+
+# Advanced API
 
 ## Image Import Sources
 
@@ -58,14 +161,36 @@ Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin 
 | [[WuQuant]]               |                                              |
 | [[NeuQuantFloat]]         | floating-point calculations                  |
 
-  Usage:
+  Usage (sync):
   ```ts
   const paletteQuantizer = new WuQuant(distanceCalculator, 256);
   paletteQuantizer.sample(pointContainer1);
   paletteQuantizer.sample(pointContainer2);
-  const palette = paletteQuantizer.quantize();
+  const palette = paletteQuantizer.quantizeSync();
   ```
-	
+
+  Usage (generator):
+  ```ts
+  // example 1
+  const paletteQuantizer = new WuQuant(distanceCalculator, 256);
+  paletteQuantizer.sample(pointContainer1);
+  paletteQuantizer.sample(pointContainer2);
+  const generator = paletteQuantizer.quantize();
+  let palette;
+  while(true) {
+    // calling to generator.next() may be easily wrapped with setTimeout to make it async
+    const result = generator.next();
+    if (result.done) break;
+    if (result.value.palette) palette = result.palette;
+    console.log(`${result.value.progress}% done`);
+  }
+  // example 2
+  const paletteQuantizer = new WuQuant(distanceCalculator, 256);
+  paletteQuantizer.sample(pointContainer1);
+  paletteQuantizer.sample(pointContainer2);
+  const palette = Array.from(paletteQuantizer.quantize()).pop().palette;
+  ```
+
 ## Image Quantizers
 
 | API                          | Description                                                     |
@@ -83,11 +208,30 @@ Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin 
 | - 9. [[SierraLite]]          |                                                                 |
 | [[ErrorDiffusionRiemersma]]  | Hilbert space-filling curve is used                             |
 
-  Usage:
+  Usage (sync):
   ```ts
-  const imageQuantizer = new ErrorDiffusionArray(distanceCalculator, Jarvis);
-  const outPointContainer = imageQuantizer.quantize(inPointContainer, palette);
+  const imageQuantizer = new ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
+  const outPointContainer = imageQuantizer.quantizeSync(inPointContainer, palette);
   ```
+
+  Usage (generator):
+  ```ts
+  // example 1
+  const imageQuantizer = new ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
+  const generator = imageQuantizer.quantize(inPointContainer, palette);
+  let outPointContainer;
+  while(true) {
+    // calling to generator.next() may be easily wrapped with setTimeout to make it async
+    const result = generator.next();
+    if (result.done) break;
+    if (result.value.pointContainer) outPointContainer = result.pointContainer;
+    console.log(`${result.value.progress}% done`);
+  }
+  // example 2
+  const imageQuantizer = new ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
+  const outPointContainer = Array.from(imageQuantizer.quantize(inPointContainer, palette)).pop().pointContainer;
+  ```
+
 
 ## Output
 
@@ -103,7 +247,7 @@ Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin 
   fs.writeFileSync('filename.png', PNG.sync.write(png))
   ```
 
-# Advanced API
+# Misc API
 
 ## Color Conversion
 

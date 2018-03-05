@@ -7,7 +7,7 @@ module.exports = {
 
   excludePrivate: true,
   excludeExternals: true,
-  excludeNotExported: false,
+  excludeNotExported: true,
   stripInternal: true,
   listInvalidSymbolLinks: true,
   ignoreCompilerErrors: true,

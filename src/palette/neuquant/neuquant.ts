@@ -168,7 +168,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
     this._pointArray = this._pointArray.concat(pointContainer.getPointArray());
   }
 
-  * quantizeAsync(): IterableIterator<PaletteQuantizerYieldValue> {
+  * quantize(): IterableIterator<PaletteQuantizerYieldValue> {
     this._init();
 
     yield * this._learn();

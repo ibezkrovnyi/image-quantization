@@ -1,6 +1,6 @@
 {
   "name": "image-q",
-  "version": "2.0.7",
+  "version": "2.1.1",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
@@ -92,7 +92,7 @@
     "pngjs": "3.3.2",
     "rimraf": "*",
     "rollup": "0.56.4",
-    "rollup-plugin-commonjs": "8.3.0",
+    "rollup-plugin-commonjs": "8.4.0",
     "rollup-plugin-local-resolve": "1.0.7",
     "rollup-plugin-node-resolve": "3.0.3",
     "ts-jest": "22.4.1",
@@ -100,7 +100,7 @@
     "tslint-config-airbnb": "5.7.0",
     "tslint-consistent-codestyle": "1.11.1",
     "tslint-language-service": "0.9.8",
-    "typedoc": "0.10.0",
+    "typedoc": "0.11.0",
     "typescript": "2.7.2"
   },
   "dependencies": {

@@ -10,10 +10,10 @@ import { Palette } from '../utils/palette';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
 export abstract class AbstractImageQuantizer {
-  abstract quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue>;
+  abstract quantize(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue>;
 
-  quantize(pointContainer: PointContainer, palette: Palette) {
-    for (const value of this.quantizeAsync(pointContainer, palette)) {
+  quantizeSync(pointContainer: PointContainer, palette: Palette) {
+    for (const value of this.quantize(pointContainer, palette)) {
       if (value.pointContainer) {
         return value.pointContainer;
       }

@@ -23,7 +23,7 @@ export class NearestColor extends AbstractImageQuantizer {
   /**
    * Mutates pointContainer
    */
-  * quantizeAsync(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
+  * quantize(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
     const pointArray = pointContainer.getPointArray();
     const width = pointContainer.getWidth();
     const height = pointContainer.getHeight();

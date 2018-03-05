@@ -1,4 +1,5 @@
-import { buildPalette, applyPalette, utils, ColorDistanceFormula, PaletteQuantization, ImageQuantization } from '../../src/image-q';
+import { buildPalette, applyPalette, buildPaletteSync, applyPaletteSync, utils, ColorDistanceFormula, PaletteQuantization, ImageQuantization } from '../../src/image-q';
+import {  } from '../../src/helper';
 
 
 let pointContainer: utils.PointContainer;
@@ -12,7 +13,8 @@ beforeEach(function() {
   pointContainer = utils.PointContainer.fromUint8Array(imageArray, width, height);
 });
 
-test(`applyPalette`, async function () {
+test(`Simple API`, async function () {
+  // test async
   let buildPaletteProgressMarks = [];
   const palette = await buildPalette([pointContainer], { onProgress: progress => buildPaletteProgressMarks.push(progress) });
   expect(palette).toBeInstanceOf(utils.Palette);
@@ -20,6 +22,12 @@ test(`applyPalette`, async function () {
   let applyPaletteProgressMarks = [];
   const outPointContainer = await applyPalette(pointContainer, palette, { onProgress: progress => applyPaletteProgressMarks.push(progress) });
   expect(outPointContainer).toBeInstanceOf(utils.PointContainer);
+
+  // test sync
+  const paletteSync = buildPaletteSync([pointContainer]);
+  expect(palette.getPointContainer()).toEqual(paletteSync.getPointContainer());
+  const outPointContainerSync = applyPaletteSync(pointContainer, paletteSync);
+  expect(outPointContainer).toEqual(outPointContainerSync);
 
   // test progress notifications
   expect(buildPaletteProgressMarks.length).toBeGreaterThan(0);

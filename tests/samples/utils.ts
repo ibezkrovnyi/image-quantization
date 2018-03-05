@@ -37,7 +37,7 @@ export function runTest(title, file, colors, distanceC: iq.distance.AbstractDist
 
     paletteQ.sample(pointContainer);
 
-    const generator = paletteQ.quantizeAsync();
+    const generator = paletteQ.quantize();
     const runGenerator = () => {
       const { done, value } = generator.next();
       if (done) {
@@ -45,7 +45,7 @@ export function runTest(title, file, colors, distanceC: iq.distance.AbstractDist
         return;
       }
       if (value.palette) {
-        const outPointContainer = imageQ.quantize(pointContainer, value.palette);
+        const outPointContainer = imageQ.quantizeSync(pointContainer, value.palette);
         const outData = outPointContainer.toUint8Array();
         expect(outData).toMatchSnapshot();
       }

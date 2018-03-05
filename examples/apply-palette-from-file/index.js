@@ -36,7 +36,7 @@ function applyPaletteAndWritePNG(outFile, inPng, palette) {
 	const distance = new iq.distance.EuclideanBT709NoAlpha();
 	const inPointContainer = iq.utils.PointContainer.fromUint8Array(inPng.data, inPng.width, inPng.height);
 	const image = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.SierraLite);
-	const outPointContainer = image.quantize(inPointContainer, palette);
+	const outPointContainer = image.quantizeSync(inPointContainer, palette);
 
 	// write PNG using pngjs
 	inPng.data = outPointContainer.toUint8Array();
