@@ -32,25 +32,25 @@ timeMark("!!! total time", () => {
 		timeMark("palette: neuquant", function () {
 			iqPalette = new iq.palette.NeuQuant(distance, 256);
 			iqPalette.sample(pointContainer);
-			palette = iqPalette.quantize();
+			palette = iqPalette.quantizeSync();
 		});
 
 		timeMark("palette: rgbquant", function () {
 			iqPalette = new iq.palette.RGBQuant(distance, 256);
 			iqPalette.sample(pointContainer);
-			palette = iqPalette.quantize();
+			palette = iqPalette.quantizeSync();
 		});
 
 		timeMark("palette: wuquant", function () {
 			iqPalette = new iq.palette.WuQuant(distance, 256);
 			iqPalette.sample(pointContainer);
-			palette = iqPalette.quantize();
+			palette = iqPalette.quantizeSync();
 		});
 
 		// quantize image
 		timeMark("image: error diffusion: sierra lite", function () {
 			iqImage = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.SierraLite);
-			iqImage.quantize(pointContainer, palette);
+			iqImage.quantizeSync(pointContainer, palette);
 		});
 	}
 });

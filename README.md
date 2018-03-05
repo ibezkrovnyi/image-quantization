@@ -41,15 +41,15 @@ Features
 	* Node.js 6.0+
 
 2. API
-  * Basic API: sync and promise-based async
-  * Advanced API: sync and generator-based
+	* Basic API: sync and promise-based async
+	* Advanced API: sync and generator-based
 	
-2. Builds
+3. Builds
 	* `dist/cjs/image-q.js` - CommonJS
 	* `dist/esm/image-q.js` - ESM (ESNext)
 	* `dist/cjs/image-q.js` - UMD
 
-3. Import
+4. Import
 	* `HTMLImageElement`
 	* `HTMLCanvasElement`
 	* `NodeCanvas`
@@ -59,7 +59,7 @@ Features
 	* `Uint8Array`
 	* `Uint32Array`
 	 
-4. Color Distance
+5. Color Distance
 	* `Euclidean` - 1/1/1/1 coefficients (originally used in Xiaolin Wu's Quantizer **WuQuant**)
 	* `EuclideanBT709NoAlpha` - BT.709 sRGB coefficients (originally used in **RGBQuant**)
 	* `EuclideanBT709` BT.709 sRGB coefficients + alpha support
@@ -72,13 +72,13 @@ Features
 	* `CMetric` - see http://www.compuphase.com/cmetric.htm
 	* `PNGQuant` - used in pngQuant tool
 
-5. Palette Quantizers
+6. Palette Quantizers
 	* `NeuQuant` (original code ported, integer calculations)
 	* `NeuQuantFloat` (floating-point calculations)
 	* `RGBQuant`
 	* `WuQuant`
 	
-6. Image Quantizers
+7. Image Quantizers
 	* `NearestColor`
 	* `ErrorDiffusionArray` - two modes of error propagation are supported: `xnview` and `gimp`
 		1. `FloydSteinberg`
@@ -92,7 +92,7 @@ Features
         9. `SierraLite`
 	* `ErrorDiffusionRiemersma` - Hilbert space-filling curve is used
 
-7. Output
+8. Output
 	* `Uint32Array`
 	* `Uint8Array`  
 	 
