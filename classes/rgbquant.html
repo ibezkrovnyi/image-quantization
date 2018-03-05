@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -90,8 +88,8 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rgbquant.html#quantize" class="tsd-kind-icon">quantize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="rgbquant.html#quantizeasync" class="tsd-kind-icon">quantize<wbr>Async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="rgbquant.html#quantize" class="tsd-kind-icon">quantize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="rgbquant.html#quantizesync" class="tsd-kind-icon">quantize<wbr>Sync</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="rgbquant.html#sample" class="tsd-kind-icon">sample</a></li>
 							</ul>
 						</section>
@@ -110,7 +108,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/palette/rgbquant/rgbquant.ts#L51">palette/rgbquant/rgbquant.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/a61d3fc/src/palette/rgbquant/rgbquant.ts#L51">palette/rgbquant/rgbquant.ts:51</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -132,39 +130,39 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="quantize" class="tsd-anchor"></a>
 					<h3>quantize</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">quantize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="palette.html" class="tsd-signature-type">Palette</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="abstractpalettequantizer.html">AbstractPaletteQuantizer</a>.<a href="abstractpalettequantizer.html#quantize">quantize</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/palette/paletteQuantizer.ts#L16">palette/paletteQuantizer.ts:16</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="palette.html" class="tsd-signature-type">Palette</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-					<a name="quantizeasync" class="tsd-anchor"></a>
-					<h3>quantize<wbr>Async</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">quantize<wbr>Async<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/palettequantizeryieldvalue.html" class="tsd-signature-type">PaletteQuantizerYieldValue</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">quantize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/palettequantizeryieldvalue.html" class="tsd-signature-type">PaletteQuantizerYieldValue</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="abstractpalettequantizer.html">AbstractPaletteQuantizer</a>.<a href="abstractpalettequantizer.html#quantizeasync">quantizeAsync</a></p>
+								<p>Overrides <a href="abstractpalettequantizer.html">AbstractPaletteQuantizer</a>.<a href="abstractpalettequantizer.html#quantize">quantize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/palette/rgbquant/rgbquant.ts#L88">palette/rgbquant/rgbquant.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/a61d3fc/src/palette/rgbquant/rgbquant.ts#L88">palette/rgbquant/rgbquant.ts:88</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/palettequantizeryieldvalue.html" class="tsd-signature-type">PaletteQuantizerYieldValue</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="quantizesync" class="tsd-anchor"></a>
+					<h3>quantize<wbr>Sync</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">quantize<wbr>Sync<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="palette.html" class="tsd-signature-type">Palette</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractpalettequantizer.html">AbstractPaletteQuantizer</a>.<a href="abstractpalettequantizer.html#quantizesync">quantizeSync</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/a61d3fc/src/palette/paletteQuantizer.ts#L16">palette/paletteQuantizer.ts:16</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="palette.html" class="tsd-signature-type">Palette</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -179,7 +177,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="abstractpalettequantizer.html">AbstractPaletteQuantizer</a>.<a href="abstractpalettequantizer.html#sample">sample</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/1b0ac2a/src/palette/rgbquant/rgbquant.ts#L67">palette/rgbquant/rgbquant.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/ibezkrovnyi/image-quantization/blob/a61d3fc/src/palette/rgbquant/rgbquant.ts#L67">palette/rgbquant/rgbquant.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -212,11 +210,11 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="rgbquant.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="rgbquant.html#quantize" class="tsd-kind-icon">quantize</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="rgbquant.html#quantizeasync" class="tsd-kind-icon">quantize<wbr>Async</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="rgbquant.html#quantizesync" class="tsd-kind-icon">quantize<wbr>Sync</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="rgbquant.html#sample" class="tsd-kind-icon">sample</a>

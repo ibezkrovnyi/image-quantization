@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -65,10 +63,102 @@
 				<p>Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu&#39;s algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript</p>
 				<h1 id="table-of-contents">Table of Contents</h1>
 				<ul>
-					<li><a href="#usage">Tutorial</a></li>
-					<li><a href="#api-documentation-overview">API Documentation Overview</a></li>
+					<li><a href="#basic-api">Basic API</a><ul>
+							<li><a href="#build-palette">Build Palette</a></li>
+							<li><a href="#apply-palette-to-image">Apply Palette to Image</a></li>
+							<li><a href="#optional-parameters">Optional parameters</a></li>
+						</ul>
+					</li>
+					<li><a href="#advanced-api">Advanced API</a><ul>
+							<li><a href="#image-import-sources">Image Import Sources</a></li>
+							<li><a href="#color-distance">Color Distance</a></li>
+							<li><a href="#palette-quantizers">Palette Quantizers</a></li>
+							<li><a href="#image-quantizers">Image Quantizers</a></li>
+							<li><a href="#output">Output</a></li>
+						</ul>
+					</li>
+					<li><a href="#misc-api">Misc API</a><ul>
+							<li><a href="#color-conversion">Color Conversion</a></li>
+							<li><a href="#structural-similarity">Structural Similarity</a></li>
+						</ul>
+					</li>
 				</ul>
-				<h1 id="api-documentation-overview">API Documentation Overview</h1>
+				<h1 id="basic-api">Basic API</h1>
+				<h2 id="build-palette">Build Palette</h2>
+				<p>This API allows to Build (quantize) palette using Sample Images, returns <a href="classes/palette.html">Palette</a> instance.</p>
+				<h3 id="async">Async</h3>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { buildPalette } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const buildPalette = require('image-q').buildPalette</span>
+<span class="hljs-keyword">const</span> palette = <span class="hljs-keyword">await</span> buildPalette([pointContainer], { 
+  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
+  paletteQuantization: <span class="hljs-string">'neuquant'</span>, <span class="hljs-comment">// optional</span>
+  colors: <span class="hljs-number">128</span>, <span class="hljs-comment">// optional</span>
+  onProgress: <span class="hljs-function"><span class="hljs-params">progress</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'applyPalette'</span>, progress), <span class="hljs-comment">// optional</span>
+});
+</code></pre>
+				<h3 id="sync">Sync</h3>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { buildPaletteSync } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const buildPaletteSync = require('image-q').buildPaletteSync</span>
+<span class="hljs-keyword">const</span> palette = buildPaletteSync([pointContainer], { 
+  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
+  paletteQuantization: <span class="hljs-string">'neuquant'</span>, <span class="hljs-comment">// optional</span>
+  colors: <span class="hljs-number">128</span>, <span class="hljs-comment">// optional</span>
+});
+</code></pre>
+				<blockquote>
+					<p>implementation detail: generator is wrapped with setImmediate (polyfilled)</p>
+				</blockquote>
+				<h2 id="apply-palette-to-image">Apply Palette to Image</h2>
+				<p>This API applies given <a href="classes/palette.html">Palette</a> to the <a href="classes/pointcontainer.html">PointContainer</a>, returns <a href="classes/pointcontainer.html">PointContainer</a> containing new image.</p>
+				<h3 id="async-promise-based-">Async (Promise-based)</h3>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { applyPalette } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const applyPalette = require('image-q').applyPalette</span>
+<span class="hljs-keyword">const</span> outPointContainer = <span class="hljs-keyword">await</span> applyPalette(pointContainer, palette, {
+  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
+  imageQuantization: <span class="hljs-string">'floyd-steinberg'</span>, <span class="hljs-comment">// optional</span>
+  onProgress: <span class="hljs-function"><span class="hljs-params">progress</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'applyPalette'</span>, progress), <span class="hljs-comment">// optional</span>
+});
+</code></pre>
+				<h3 id="sync">Sync</h3>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { applyPaletteSync } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const applyPaletteSync = require('image-q').applyPaletteSync</span>
+<span class="hljs-keyword">const</span> outPointContainer = applyPaletteSync(pointContainer, palette, {
+  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
+  imageQuantization: <span class="hljs-string">'floyd-steinberg'</span>, <span class="hljs-comment">// optional</span>
+});
+</code></pre>
+				<h2 id="optional-parameters">Optional parameters</h2>
+				<p>See description of string constants in <a href="#advanced-api">Advanced API</a> Section</p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ColorDistanceFormula =
+  | <span class="hljs-string">'cie94-textiles'</span>
+  | <span class="hljs-string">'cie94-graphic-arts'</span>
+  | <span class="hljs-string">'ciede2000'</span>
+  | <span class="hljs-string">'color-metric'</span>
+  | <span class="hljs-string">'euclidean'</span>
+  | <span class="hljs-string">'euclidean-bt709-noalpha'</span>
+  | <span class="hljs-string">'euclidean-bt709'</span>
+  | <span class="hljs-string">'manhattan'</span>
+  | <span class="hljs-string">'manhattan-bt709'</span>
+  | <span class="hljs-string">'manhattan-nommyde'</span>
+  | <span class="hljs-string">'pngquant'</span>;
+</code></pre>
+				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> PaletteQuantization =
+  | <span class="hljs-string">'neuquant'</span>
+  | <span class="hljs-string">'neuquant-float'</span>
+  | <span class="hljs-string">'rgbquant'</span>
+  | <span class="hljs-string">'wuquant'</span>;
+</code></pre>
+				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ImageQuantization =
+  | <span class="hljs-string">'nearest'</span>
+  | <span class="hljs-string">'riemersma'</span>
+  | <span class="hljs-string">'floyd-steinberg'</span>
+  | <span class="hljs-string">'false-floyd-steinberg'</span>
+  | <span class="hljs-string">'stucki'</span>
+  | <span class="hljs-string">'atkinson'</span>
+  | <span class="hljs-string">'jarvis'</span>
+  | <span class="hljs-string">'burkes'</span>
+  | <span class="hljs-string">'sierra'</span>
+  | <span class="hljs-string">'two-sierra'</span>
+  | <span class="hljs-string">'sierra-lite'</span>;
+</code></pre>
+				<h2 id="apply-palette-to-image">Apply Palette to Image</h2>
+				<h1 id="advanced-api">Advanced API</h1>
 				<h2 id="image-import-sources">Image Import Sources</h2>
 				<table>
 					<thead>
@@ -236,11 +326,31 @@
 						</tr>
 					</tbody>
 				</table>
-				<p>  Usage:</p>
+				<p>  Usage (sync):</p>
 				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> paletteQuantizer = <span class="hljs-keyword">new</span> WuQuant(distanceCalculator, <span class="hljs-number">256</span>);
   paletteQuantizer.sample(pointContainer1);
   paletteQuantizer.sample(pointContainer2);
-  <span class="hljs-keyword">const</span> palette = paletteQuantizer.quantize();
+  <span class="hljs-keyword">const</span> palette = paletteQuantizer.quantizeSync();
+</code></pre>
+				<p>  Usage (generator):</p>
+				<pre><code class="lang-ts">  <span class="hljs-comment">// example 1</span>
+  <span class="hljs-keyword">const</span> paletteQuantizer = <span class="hljs-keyword">new</span> WuQuant(distanceCalculator, <span class="hljs-number">256</span>);
+  paletteQuantizer.sample(pointContainer1);
+  paletteQuantizer.sample(pointContainer2);
+  <span class="hljs-keyword">const</span> generator = paletteQuantizer.quantize();
+  <span class="hljs-keyword">let</span> palette;
+  <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
+    <span class="hljs-comment">// calling to generator.next() may be easily wrapped with setTimeout to make it async</span>
+    <span class="hljs-keyword">const</span> result = generator.next();
+    <span class="hljs-keyword">if</span> (result.done) <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">if</span> (result.value.palette) palette = result.palette;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${result.value.progress}</span>% done`</span>);
+  }
+  <span class="hljs-comment">// example 2</span>
+  <span class="hljs-keyword">const</span> paletteQuantizer = <span class="hljs-keyword">new</span> WuQuant(distanceCalculator, <span class="hljs-number">256</span>);
+  paletteQuantizer.sample(pointContainer1);
+  paletteQuantizer.sample(pointContainer2);
+  <span class="hljs-keyword">const</span> palette = <span class="hljs-built_in">Array</span>.from(paletteQuantizer.quantize()).pop().palette;
 </code></pre>
 				<h2 id="image-quantizers">Image Quantizers</h2>
 				<table>
@@ -301,9 +411,25 @@
 						</tr>
 					</tbody>
 				</table>
-				<p>  Usage:</p>
-				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, Jarvis);
-  <span class="hljs-keyword">const</span> outPointContainer = imageQuantizer.quantize(inPointContainer, palette);
+				<p>  Usage (sync):</p>
+				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
+  <span class="hljs-keyword">const</span> outPointContainer = imageQuantizer.quantizeSync(inPointContainer, palette);
+</code></pre>
+				<p>  Usage (generator):</p>
+				<pre><code class="lang-ts">  <span class="hljs-comment">// example 1</span>
+  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
+  <span class="hljs-keyword">const</span> generator = imageQuantizer.quantize(inPointContainer, palette);
+  <span class="hljs-keyword">let</span> outPointContainer;
+  <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
+    <span class="hljs-comment">// calling to generator.next() may be easily wrapped with setTimeout to make it async</span>
+    <span class="hljs-keyword">const</span> result = generator.next();
+    <span class="hljs-keyword">if</span> (result.done) <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">if</span> (result.value.pointContainer) outPointContainer = result.pointContainer;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${result.value.progress}</span>% done`</span>);
+  }
+  <span class="hljs-comment">// example 2</span>
+  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
+  <span class="hljs-keyword">const</span> outPointContainer = <span class="hljs-built_in">Array</span>.from(imageQuantizer.quantize(inPointContainer, palette)).pop().pointContainer;
 </code></pre>
 				<h2 id="output">Output</h2>
 				<table>
@@ -329,7 +455,7 @@
   png.data = outPointContainer.toUint8Array();
   fs.writeFileSync(<span class="hljs-string">'filename.png'</span>, PNG.sync.write(png))
 </code></pre>
-				<h1 id="advanced-api">Advanced API</h1>
+				<h1 id="misc-api">Misc API</h1>
 				<h2 id="color-conversion">Color Conversion</h2>
 				<table>
 					<thead>
@@ -392,9 +518,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-is-not-exported">
-						<a href="enums/direction.html" class="tsd-kind-icon">Direction</a>
-					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/errordiffusionarraykernel.html" class="tsd-kind-icon">Error<wbr>Diffusion<wbr>Array<wbr>Kernel</a>
 					</li>
@@ -455,9 +578,6 @@
 					<li class=" tsd-kind-class">
 						<a href="classes/euclideanbt709noalpha.html" class="tsd-kind-icon">EuclideanBT709<wbr>NoAlpha</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="classes/huegroup.html" class="tsd-kind-icon">Hue<wbr>Group</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/huestatistics.html" class="tsd-kind-icon">Hue<wbr>Statistics</a>
 					</li>
@@ -479,12 +599,6 @@
 					<li class=" tsd-kind-class">
 						<a href="classes/neuquantfloat.html" class="tsd-kind-icon">Neu<wbr>Quant<wbr>Float</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="classes/neuron.html" class="tsd-kind-icon">Neuron</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="classes/neuronfloat.html" class="tsd-kind-icon">Neuron<wbr>Float</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/pngquant.html" class="tsd-kind-icon">PNGQuant</a>
 					</li>
@@ -503,9 +617,6 @@
 					<li class=" tsd-kind-class">
 						<a href="classes/rgbquant.html" class="tsd-kind-icon">RGBQuant</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-not-exported">
-						<a href="classes/removedcolor.html" class="tsd-kind-icon">Removed<wbr>Color</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/wucolorcube.html" class="tsd-kind-icon">Wu<wbr>Color<wbr>Cube</a>
 					</li>
@@ -515,14 +626,8 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/applypaletteoptions.html" class="tsd-kind-icon">Apply<wbr>Palette<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/box.html" class="tsd-kind-icon">Box</a>
-					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/buildpaletteoptions.html" class="tsd-kind-icon">Build<wbr>Palette<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="interfaces/data.html" class="tsd-kind-icon">Data</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/imagequantizeryieldvalue.html" class="tsd-kind-icon">Image<wbr>Quantizer<wbr>Yield<wbr>Value</a>
@@ -545,27 +650,6 @@
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#palettequantization" class="tsd-kind-icon">Palette<wbr>Quantization</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#k1" class="tsd-kind-icon">K1</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#k2" class="tsd-kind-icon">K2</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#huegroups" class="tsd-kind-icon">hue<wbr>Groups</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#networkbiasshift" class="tsd-kind-icon">network<wbr>Bias<wbr>Shift</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#refx" class="tsd-kind-icon">refX</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#refy" class="tsd-kind-icon">refY</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#refz" class="tsd-kind-icon">refZ</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#applypalette" class="tsd-kind-icon">apply<wbr>Palette</a>
 					</li>
@@ -578,44 +662,14 @@
 					<li class=" tsd-kind-function">
 						<a href="globals.html#buildpalettesync" class="tsd-kind-icon">build<wbr>Palette<wbr>Sync</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#calculateaverageluma" class="tsd-kind-icon">calculate<wbr>Average<wbr>Luma</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#calculatelumavaluesforwindow" class="tsd-kind-icon">calculate<wbr>Luma<wbr>Values<wbr>For<wbr>Window</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#colordistanceformulatocolordistance" class="tsd-kind-icon">color<wbr>Distance<wbr>Formula<wbr>ToColor<wbr>Distance</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#correctgamma" class="tsd-kind-icon">correct<wbr>Gamma</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#createarray1d" class="tsd-kind-icon">create<wbr>Array1D</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#createarray3d" class="tsd-kind-icon">create<wbr>Array3D</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#createarray4d" class="tsd-kind-icon">create<wbr>Array4D</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#degrees2radians" class="tsd-kind-icon">degrees2radians</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
-						<a href="globals.html#fillarray1d" class="tsd-kind-icon">fill<wbr>Array1D</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-not-exported">
-						<a href="globals.html#fillarray3d" class="tsd-kind-icon">fill<wbr>Array3D</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#hilbertcurve" class="tsd-kind-icon">hilbert<wbr>Curve</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#huegroup" class="tsd-kind-icon">hue<wbr>Group</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#imagequantizationtoimagequantizer" class="tsd-kind-icon">image<wbr>Quantization<wbr>ToImage<wbr>Quantizer</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#inrange0to255" class="tsd-kind-icon">in<wbr>Range0to255</a>
@@ -625,9 +679,6 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#intinrange" class="tsd-kind-icon">int<wbr>InRange</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#iterate" class="tsd-kind-icon">iterate</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#lab2rgb" class="tsd-kind-icon">lab2rgb</a>
@@ -640,12 +691,6 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#min3" class="tsd-kind-icon">min3</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#palettequantizationtopalettequantizer" class="tsd-kind-icon">palette<wbr>Quantization<wbr>ToPalette<wbr>Quantizer</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#pivot" class="tsd-kind-icon">pivot</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#rgb2hsl" class="tsd-kind-icon">rgb2hsl</a>
@@ -661,12 +706,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#stablesort" class="tsd-kind-icon">stable<wbr>Sort</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#visit" class="tsd-kind-icon">visit</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#walkhilbert" class="tsd-kind-icon">walk<wbr>Hilbert</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#xyz2lab" class="tsd-kind-icon">xyz2lab</a>
