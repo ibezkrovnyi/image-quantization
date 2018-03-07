@@ -64,6 +64,7 @@
 				<h1 id="table-of-contents">Table of Contents</h1>
 				<ul>
 					<li><a href="#basic-api">Basic API</a><ul>
+							<li><a href="#basic-api-tutorial">Tutorial</a></li>
 							<li><a href="#build-palette">Build Palette</a></li>
 							<li><a href="#apply-palette-to-image">Apply Palette to Image</a></li>
 							<li><a href="#optional-parameters">Optional parameters</a></li>
@@ -84,6 +85,21 @@
 					</li>
 				</ul>
 				<h1 id="basic-api">Basic API</h1>
+				<h2 id="basic-api-tutorial">Basic API Tutorial</h2>
+				<h3 id="convert-24-bit-png-to-indexed-8-bit">Convert 24 bit PNG to indexed 8 bit</h3>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { PNG } <span class="hljs-keyword">from</span> <span class="hljs-string">'pngjs'</span>;
+<span class="hljs-keyword">import</span> { buildPaletteSync, utils } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>;
+
+<span class="hljs-comment">// read file</span>
+<span class="hljs-keyword">const</span> { data, width, height } = PNG.sync.read(fs.readFileSync(<span class="hljs-string">'file.png'</span>));
+<span class="hljs-keyword">const</span> inPointContainer = utils.PointContainer.fromUint8Array(data, width, height);
+
+<span class="hljs-comment">// convert</span>
+<span class="hljs-keyword">const</span> palette = buildPaletteSync([inPointContainer]);
+<span class="hljs-keyword">const</span> outPointContainer = applyPaletteSync(inPointContainer, palette);
+
+<span class="hljs-comment">// use outPointContainer.toUint8Array() somehow</span>
+</code></pre>
 				<h2 id="build-palette">Build Palette</h2>
 				<p>This API allows to Build (quantize) palette using Sample Images, returns <a href="classes/palette.html">Palette</a> instance.</p>
 				<h3 id="async">Async</h3>
@@ -455,6 +471,49 @@
   png.data = outPointContainer.toUint8Array();
   fs.writeFileSync(<span class="hljs-string">'filename.png'</span>, PNG.sync.write(png))
 </code></pre>
+				<h1 id="advanced-api-usage">Advanced API Usage</h1>
+				<h2 id="load-image-simple-example-">Load Image (simple example)</h2>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> img = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"img"</span>);
+img.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">// image is loaded, here should be all code utilizing image</span>
+    ...
+}
+img.src = <span class="hljs-string">"http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-27580_640.png"</span>
+</code></pre>
+				<h2 id="generate-palette">Generate Palette</h2>
+				<pre><code class="lang-javascript"><span class="hljs-comment">// desired colors number</span>
+<span class="hljs-keyword">var</span> targetColors = <span class="hljs-number">256</span>;
+
+<span class="hljs-comment">// create pointContainer and fill it with image</span>
+<span class="hljs-keyword">var</span> pointContainer = iq.utils.PointContainer.fromHTMLImageElement(img);
+
+<span class="hljs-comment">// create chosen distance calculator (see classes inherited from `iq.distance.AbstractDistanceCalculator`)</span>
+<span class="hljs-keyword">var</span> distanceCalculator = <span class="hljs-keyword">new</span> iq.distance.Euclidean();
+
+<span class="hljs-comment">// create chosen palette quantizer (see classes implementing `iq.palette.AbstractPaletteQuantizer`) </span>
+<span class="hljs-keyword">var</span> paletteQuantizer = <span class="hljs-keyword">new</span> iq.palette.RGBQuant(distanceCalculator, targetColors);
+
+<span class="hljs-comment">// feed out pointContainer filled with image to paletteQuantizer</span>
+paletteQuantizer.sample(pointContainer);
+
+... (you may sample more than one image to create mutual palette) 
+
+<span class="hljs-comment">// take generated palette</span>
+<span class="hljs-keyword">var</span> palette = paletteQuantizer.quantizeSync();
+</code></pre>
+				<h2 id="apply-palette-to-image-image-dithering-">Apply Palette to Image (Image Dithering)</h2>
+				<pre><code class="lang-javascript"><span class="hljs-comment">// create image quantizer (see classes implementing `iq.image.AbstractImageQuantizer`)</span>
+<span class="hljs-keyword">var</span> imageQuantizer = <span class="hljs-keyword">new</span> iq.image.NearestColor(distanceCalculator);
+
+<span class="hljs-comment">// apply palette to image</span>
+<span class="hljs-keyword">var</span> resultPointContainer = imageQuantizer.quantizeSync(pointContainer, palette);
+</code></pre>
+				<p>You may work with resultPointContainer directly or you may convert it to <code>Uint8Array</code>/<code>Uint32Array</code></p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> uint8array = resultPointContainer.toUint8Array();
+</code></pre>
+				<blockquote>
+					<p>please also refer to <a href="tests/samples/utils.ts">tests</a></p>
+				</blockquote>
 				<h1 id="misc-api">Misc API</h1>
 				<h2 id="color-conversion">Color Conversion</h2>
 				<table>
