@@ -17,10 +17,9 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 Table of Contents
 -----------------
 
-* [<span style="color: red">API Documentation</span>](http://ibezkrovnyi.github.io/image-quantization/)
+* [<span style="color: red">API Documentation and Usage</span>](http://ibezkrovnyi.github.io/image-quantization/)
 * [Introduction](#introduction)
 * [Features](#features)
-* [Usage](#usage)
 * [Todo](#todo)
 * [Breaking changes](#breaking-changes)
 * [Changelog](#changelog)
@@ -115,57 +114,10 @@ var iq = require("image-q");
 <script src="<path-to image-q/dist/umd/image-q.js>" type="text/javascript" charset="utf-8"></script>
 ```
 
-Usage
------
+How to use
+----------
 
-##### Load Image (simple example)
-```javascript
-var img = document.createElement("img");
-img.onload = function() {
-	// image is loaded, here should be all code utilizing image
-	...
-}
-img.src = "http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-27580_640.png"
-```
-
-##### Generate Palette   
-```javascript
-// desired colors number
-var targetColors = 256;
-   
-// create pointContainer and fill it with image
-var pointContainer = iq.utils.PointContainer.fromHTMLImageElement(img);
-
-// create chosen distance calculator (see classes inherited from `iq.distance.AbstractDistanceCalculator`)
-var distanceCalculator = new iq.distance.Euclidean();
-
-// create chosen palette quantizer (see classes implementing `iq.palette.AbstractPaletteQuantizer`) 
-var paletteQuantizer = new iq.palette.RGBQuant(distanceCalculator, targetColors);
-		
-// feed out pointContainer filled with image to paletteQuantizer
-paletteQuantizer.sample(pointContainer);
-
-... (you may sample more than one image to create mutual palette) 
-
-// take generated palette
-var palette = paletteQuantizer.quantize();
-```
-
-##### Apply Palette to Image (Image Dithering) 
-```javascript
-// create image quantizer (see classes implementing `iq.image.AbstractImageQuantizer`)
-var imageQuantizer = new iq.image.NearestColor(distanceCalculator);
-
-// apply palette to image
-var resultPointContainer = imageQuantizer.quantize(pointContainer, palette);
-```
-
-You may work with resultPointContainer directly or you may convert it to `Uint8Array`/`Uint32Array`
-```javascript
-var uint8array = resultPointContainer.toUint8Array();
-```
-
-> please read [tests](tests/samples/utils.ts) as reference of progress tracking feature
+Please refer to [API Documentation and Usage](http://ibezkrovnyi.github.io/image-quantization/)
 
 Breaking changes
 ----------------

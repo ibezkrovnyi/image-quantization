@@ -2,6 +2,7 @@ Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin 
 
 # Table of Contents
 * [Basic API](#basic-api)
+  + [Tutorial](#basic-api-tutorial)
   + [Build Palette](#build-palette)
   + [Apply Palette to Image](#apply-palette-to-image)
   + [Optional parameters](#optional-parameters)
@@ -16,6 +17,25 @@ Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin 
   + [Structural Similarity](#structural-similarity)
 
 # Basic API
+
+## Basic API Tutorial
+
+### Convert 24 bit PNG to indexed 8 bit
+
+```ts
+import { PNG } from 'pngjs';
+import { buildPaletteSync, utils } from 'image-q';
+
+// read file
+const { data, width, height } = PNG.sync.read(fs.readFileSync('file.png'));
+const inPointContainer = utils.PointContainer.fromUint8Array(data, width, height);
+
+// convert
+const palette = buildPaletteSync([inPointContainer]);
+const outPointContainer = applyPaletteSync(inPointContainer, palette);
+
+// use outPointContainer.toUint8Array() somehow
+```
 
 ## Build Palette
 This API allows to Build (quantize) palette using Sample Images, returns [[Palette]] instance.
@@ -246,6 +266,57 @@ export type ImageQuantization =
   png.data = outPointContainer.toUint8Array();
   fs.writeFileSync('filename.png', PNG.sync.write(png))
   ```
+
+# Advanced API Usage
+
+## Load Image (simple example)
+```javascript
+var img = document.createElement("img");
+img.onload = function() {
+	// image is loaded, here should be all code utilizing image
+	...
+}
+img.src = "http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-27580_640.png"
+```
+
+## Generate Palette   
+```javascript
+// desired colors number
+var targetColors = 256;
+   
+// create pointContainer and fill it with image
+var pointContainer = iq.utils.PointContainer.fromHTMLImageElement(img);
+
+// create chosen distance calculator (see classes inherited from `iq.distance.AbstractDistanceCalculator`)
+var distanceCalculator = new iq.distance.Euclidean();
+
+// create chosen palette quantizer (see classes implementing `iq.palette.AbstractPaletteQuantizer`) 
+var paletteQuantizer = new iq.palette.RGBQuant(distanceCalculator, targetColors);
+		
+// feed out pointContainer filled with image to paletteQuantizer
+paletteQuantizer.sample(pointContainer);
+
+... (you may sample more than one image to create mutual palette) 
+
+// take generated palette
+var palette = paletteQuantizer.quantizeSync();
+```
+
+## Apply Palette to Image (Image Dithering) 
+```javascript
+// create image quantizer (see classes implementing `iq.image.AbstractImageQuantizer`)
+var imageQuantizer = new iq.image.NearestColor(distanceCalculator);
+
+// apply palette to image
+var resultPointContainer = imageQuantizer.quantizeSync(pointContainer, palette);
+```
+
+You may work with resultPointContainer directly or you may convert it to `Uint8Array`/`Uint32Array`
+```javascript
+var uint8array = resultPointContainer.toUint8Array();
+```
+
+> please also refer to [tests](tests/samples/utils.ts)
 
 # Misc API
 
