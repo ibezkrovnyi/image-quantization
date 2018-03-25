@@ -99,7 +99,7 @@
     "tslint": "5.9.1",
     "tslint-config-airbnb": "5.7.0",
     "tslint-consistent-codestyle": "1.11.1",
-    "tslint-language-service": "0.9.8",
+    "tslint-language-service": "0.9.9",
     "typedoc": "0.11.1",
     "typescript": "2.7.2"
   },
