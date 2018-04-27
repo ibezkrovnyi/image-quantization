@@ -4,6 +4,7 @@ node_js:
   - "7"
   - "6"
   - "6.1"
+  - "10"
 
 deploy:
   provider: npm
