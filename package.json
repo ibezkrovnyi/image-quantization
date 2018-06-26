@@ -32,9 +32,6 @@
         "skipBabel": true
       }
     },
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
     "testRegex": "(test|spec)\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
@@ -45,6 +42,10 @@
       "node"
     ],
     "collectCoverage": true,
+    "transform": {
+      "^1111.+\\.tsx?$": "ts-jest",
+      ".tsx?": "<rootDir>/typewiz-preprocessor.js"
+    },
     "coverageReporters": [
       "lcov",
       "text-summary",
@@ -104,6 +105,8 @@
     "typescript": "2.7.2"
   },
   "dependencies": {
-    "@types/node": "9.4.6"
+    "@types/node": "9.4.6",
+    "typewiz-core": "^1.0.0-beta.1",
+    "typewiz-node": "^1.0.0-beta.1"
   }
 }

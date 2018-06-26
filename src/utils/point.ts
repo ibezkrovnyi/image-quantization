@@ -28,7 +28,7 @@ export class Point implements PointRGBA {
   rgba: number[]; // TODO: better name is quadruplet or quad may be?
   // Lab : { L : number; a : number; b : number };
 
-  static createByQuadruplet(quadruplet: number[]) {
+  static createByQuadruplet(quadruplet) {
     const point = new Point();
 
     point.r = quadruplet[ 0 ] | 0;
@@ -41,7 +41,7 @@ export class Point implements PointRGBA {
     return point;
   }
 
-  static createByRGBA(red: number, green: number, blue: number, alpha: number) {
+  static createByRGBA(red, green, blue: number, alpha: number) {
     const point = new Point();
 
     point.r = red | 0;
@@ -54,7 +54,7 @@ export class Point implements PointRGBA {
     return point;
   }
 
-  static createByUint32(uint32: number) {
+  static createByUint32(uint32) {
     const point = new Point();
 
     point.uint32 = uint32 >>> 0;
