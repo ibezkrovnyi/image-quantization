@@ -83,7 +83,7 @@
   "devDependencies": {
     "@ibezkrovnyi/tslint-rules": "0.0.3",
     "@types/core-js": "0.9.46",
-    "@types/jest": "22.2.0",
+    "@types/jest": "23.1.6",
     "@types/pngjs": "3.3.0",
     "core-js": "2.5.3",
     "coveralls": "3.0.0",
