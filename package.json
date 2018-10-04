@@ -87,7 +87,7 @@
     "@types/pngjs": "3.3.0",
     "core-js": "2.5.3",
     "coveralls": "3.0.0",
-    "gh-pages": "1.1.0",
+    "gh-pages": "2.0.1",
     "jest": "22.4.0",
     "pngjs": "3.3.2",
     "rimraf": "*",
