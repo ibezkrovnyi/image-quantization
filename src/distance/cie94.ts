@@ -6,7 +6,7 @@
  * cie94.ts - part of Image Quantization Library
  */
 import { AbstractDistanceCalculator } from './distanceCalculator';
-import { rgb2lab } from '../conversion/rgb2lab';
+import { rgb2lab } from '../conversion';
 import { inRange0to255 } from '../utils/arithmetic';
 
 /**

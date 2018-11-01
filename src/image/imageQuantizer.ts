@@ -5,8 +5,7 @@
  *
  * common.ts - part of Image Quantization Library
  */
-import { PointContainer } from '../utils/pointContainer';
-import { Palette } from '../utils/palette';
+import { Palette, PointContainer } from '../utils';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
 export abstract class AbstractImageQuantizer {

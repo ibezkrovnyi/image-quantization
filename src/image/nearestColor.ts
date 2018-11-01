@@ -6,11 +6,9 @@
  * nearestColor.ts - part of Image Quantization Library
  */
 import { AbstractImageQuantizer } from './imageQuantizer';
-import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
-import { PointContainer } from '../utils/pointContainer';
-import { Palette } from '../utils/palette';
+import { AbstractDistanceCalculator } from '../distance';
+import { Palette, PointContainer, ProgressTracker } from '../utils';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
-import { ProgressTracker } from '../utils/progressTracker';
 
 export class NearestColor extends AbstractImageQuantizer {
   private _distance: AbstractDistanceCalculator;

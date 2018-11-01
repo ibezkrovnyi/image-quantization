@@ -6,13 +6,10 @@
  * ditherErrorDiffusionArray.ts - part of Image Quantization Library
  */
 import { AbstractImageQuantizer } from './imageQuantizer';
-import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
-import { PointContainer } from '../utils/pointContainer';
-import { Palette } from '../utils/palette';
-import { Point } from '../utils/point';
+import { AbstractDistanceCalculator } from '../distance';
+import { Point, Palette, PointContainer, ProgressTracker } from '../utils';
 import { inRange0to255Rounded } from '../utils/arithmetic';
 import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
-import { ProgressTracker } from '../utils/progressTracker';
 
 // TODO: is it the best name for this enum "kernel"?
 export enum ErrorDiffusionArrayKernel {

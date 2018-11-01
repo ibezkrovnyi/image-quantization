@@ -7,14 +7,15 @@
 		"target": "esnext",
 		"moduleResolution": "node",
 		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"noErrorTruncation": true,
 		"preserveConstEnums": true,
 		"pretty": false,
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"declaration": true,
+		"declarationMap": true,
 		"downlevelIteration": true,
 		"lib": [
 			"dom",
@@ -29,6 +30,6 @@
 		]
 	},
 	"files": [
-		"src/image-q.ts"
+		"./src/image-q.ts"
 	]
 }

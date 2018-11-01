@@ -6,7 +6,7 @@
  * ciede2000.ts - part of Image Quantization Library
  */
 import { AbstractDistanceCalculator } from './distanceCalculator';
-import { rgb2lab } from '../conversion/rgb2lab';
+import { rgb2lab } from '../conversion';
 import { degrees2radians, inRange0to255 } from '../utils/arithmetic';
 
 // tslint:disable:variable-name

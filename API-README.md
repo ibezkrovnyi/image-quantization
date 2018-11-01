@@ -133,12 +133,12 @@ export type ImageQuantization =
 
 | API | Source ||
 |:-----------------------------------------| ----------------------------------------------------------------------------------- |:------------------------|
-| **_Canvas related_**                     |                                                                                     |                         |
+| **_Canvas related_**                     |
 | [[PointContainer.fromHTMLCanvasElement]] | [HTMLCanvasElement](https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement)   |                         |
 | [[PointContainer.fromImageData]]         | [ImageData](https://developer.mozilla.org/en-US/docs/Web/API/ImageData)             | ctx.getImageData()      |
 | [[PointContainer.fromUint8Array]]        | [Uint8ClampedArray](https://developer.mozilla.org/docs/Web/API/ImageData/data)      | ctx.getImageData().data |
 | [[PointContainer.fromUint8Array]]        | [deprecated CanvasPixelArray](https://www.w3.org/Bugs/Public/show_bug.cgi?id=12586) | ctx.getImageData().data |
-| **_Other_**                              |                                                                                                          ||
+| **_Other_**                              |
 | [[PointContainer.fromHTMLImageElement]]  | [HTMLImageElement](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)                          ||
 | [[PointContainer.fromImageData]]         | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)                ||
 | [[PointContainer.fromUint8Array]]        | [Uint8Array](https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)   ||
@@ -343,6 +343,6 @@ https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy
   const similarity = ssim(pointContainer1, pointContainer2);
   ```
 
-Have fun! Any problems or queries let me know!
+Have fun! If you have any problems or questions - please let me know!
 
  -- Igor

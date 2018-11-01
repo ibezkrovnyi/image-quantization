@@ -26,12 +26,9 @@
  */
 import { AbstractImageQuantizer } from './imageQuantizer';
 import { hilbertCurve } from './spaceFillingCurves/hilbertCurve';
-import { AbstractDistanceCalculator } from '../distance/distanceCalculator';
-import { PointContainer } from '../utils/pointContainer';
-import { Palette } from '../utils/palette';
-import { Point } from '../utils/point';
+import { AbstractDistanceCalculator } from '../distance';
+import { Point, Palette, PointContainer } from '../utils';
 import { inRange0to255Rounded } from '../utils/arithmetic';
-import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
 export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
   private _distance: AbstractDistanceCalculator;

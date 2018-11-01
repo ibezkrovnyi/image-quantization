@@ -69,9 +69,9 @@
     "dithering",
     "floyd-steinberg"
   ],
-  "author": "Igor Bezkrovny",
+  "author": "Igor Bezkrovnyi",
   "engines": {
-    "node": ">=0.9.0"
+    "node": ">=6"
   },
   "repository": {
     "type": "git",
@@ -100,8 +100,8 @@
     "tslint-config-airbnb": "5.7.0",
     "tslint-consistent-codestyle": "1.11.1",
     "tslint-language-service": "0.9.8",
-    "typedoc": "0.11.1",
-    "typescript": "2.7.2"
+    "typedoc": "0.13.0",
+    "typescript": "3.1.5"
   },
   "dependencies": {
     "@types/node": "9.4.7"

@@ -6,7 +6,7 @@ module.exports = {
   exclude: '**/*.spec.ts',
 
   excludePrivate: true,
-  excludeExternals: true,
+  // excludeExternals: true,
   excludeNotExported: true,
   stripInternal: true,
   listInvalidSymbolLinks: true,

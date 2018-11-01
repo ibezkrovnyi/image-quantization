@@ -9,12 +9,7 @@ import * as setImmediate from 'core-js/fn/set-immediate';
 import * as distance from './distance';
 import * as image from './image';
 import * as palette from './palette';
-import { AbstractPaletteQuantizer } from './palette/paletteQuantizer';
-import { AbstractDistanceCalculator } from './distance/distanceCalculator';
-import { AbstractImageQuantizer } from './image/imageQuantizer';
-import { PointContainer } from './utils/pointContainer';
-import { Palette } from './utils/palette';
-import { ssim } from './quality/ssim';
+import { Palette, PointContainer } from './utils';
 
 export type ColorDistanceFormula =
   | 'cie94-textiles'
@@ -148,7 +143,7 @@ function colorDistanceFormulaToColorDistance(colorDistanceFormula: ColorDistance
   }
 }
 
-function imageQuantizationToImageQuantizer(distanceCalculator: AbstractDistanceCalculator, imageQuantization: ImageQuantization = 'floyd-steinberg') {
+function imageQuantizationToImageQuantizer(distanceCalculator: distance.AbstractDistanceCalculator, imageQuantization: ImageQuantization = 'floyd-steinberg') {
   switch (imageQuantization) {
     case 'nearest': return new image.NearestColor(distanceCalculator);
     case 'riemersma': return new image.ErrorDiffusionRiemersma(distanceCalculator);
@@ -165,7 +160,7 @@ function imageQuantizationToImageQuantizer(distanceCalculator: AbstractDistanceC
   }
 }
 
-function paletteQuantizationToPaletteQuantizer(distanceCalculator: AbstractDistanceCalculator, paletteQuantization: PaletteQuantization = 'wuquant', colors = 256) {
+function paletteQuantizationToPaletteQuantizer(distanceCalculator: distance.AbstractDistanceCalculator, paletteQuantization: PaletteQuantization = 'wuquant', colors = 256) {
   switch (paletteQuantization) {
     case 'neuquant': return new palette.NeuQuant(distanceCalculator, colors);
     case 'rgbquant': return new palette.RGBQuant(distanceCalculator, colors);

@@ -13,15 +13,12 @@
  * rgbquant.ts - part of Image Quantization Library
  */
 
-import { Palette } from '../../utils/palette';
-import { Point } from '../../utils/point';
-import { PointContainer } from '../../utils/pointContainer';
-import { AbstractDistanceCalculator } from '../../distance/distanceCalculator';
+import { Point, Palette, PointContainer, ProgressTracker } from '../../utils';
+import { AbstractDistanceCalculator } from '../../distance';
 import { ColorHistogram } from './colorHistogram';
 import { AbstractPaletteQuantizer } from '../paletteQuantizer';
 import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { stableSort } from '../../utils/arithmetic';
-import { ProgressTracker } from '../../utils';
 
 class RemovedColor {
   readonly index: number;
