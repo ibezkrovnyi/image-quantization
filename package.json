@@ -85,7 +85,7 @@
     "@types/core-js": "0.9.46",
     "@types/jest": "22.2.0",
     "@types/pngjs": "3.3.0",
-    "core-js": "2.5.3",
+    "core-js": "2.6.1",
     "coveralls": "3.0.0",
     "gh-pages": "1.1.0",
     "jest": "22.4.0",
