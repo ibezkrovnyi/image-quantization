@@ -104,6 +104,6 @@
     "typescript": "2.7.2"
   },
   "dependencies": {
-    "@types/node": "9.4.7"
+    "@types/node": "11.10.5"
   }
 }
