@@ -91,7 +91,7 @@
     "jest": "22.4.0",
     "pngjs": "3.3.3",
     "rimraf": "*",
-    "rollup": "0.56.4",
+    "rollup": "1.7.1",
     "rollup-plugin-commonjs": "8.4.0",
     "rollup-plugin-local-resolve": "1.0.7",
     "rollup-plugin-node-resolve": "3.1.0",
