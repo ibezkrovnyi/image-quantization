@@ -47,13 +47,16 @@ export class ColorHistogram {
     this._method = method;
 
     // if > 0, enables hues stats and min-color retention per group
-    this._minHueCols = colors << 2;// opts.minHueCols || 0;
+    this._minHueCols = colors << 2; // opts.minHueCols || 0;
 
     // # of highest-frequency colors to start with for palette reduction
     this._initColors = colors << 2;
 
     // HueStatistics instance
-    this._hueStats = new HueStatistics(ColorHistogram._hueGroups, this._minHueCols);
+    this._hueStats = new HueStatistics(
+      ColorHistogram._hueGroups,
+      this._minHueCols,
+    );
 
     this._histogram = Object.create(null); // tslint:disable-line:no-null-keyword
   }
@@ -72,7 +75,10 @@ export class ColorHistogram {
 
   getImportanceSortedColorsIDXI32() {
     // TODO: fix typing issue in stableSort func
-    const sorted = stableSort(Object.keys(this._histogram), (a, b) => this._histogram[ b ] - this._histogram[ a ]);
+    const sorted = stableSort(
+      Object.keys(this._histogram),
+      (a, b) => this._histogram[b] - this._histogram[a],
+    );
     if (sorted.length === 0) {
       return [];
     }
@@ -117,15 +123,15 @@ export class ColorHistogram {
     const len = pointArray.length;
 
     for (let i = 0; i < len; i++) {
-      const col = pointArray[ i ].uint32;
+      const col = pointArray[i].uint32;
 
       // collect hue stats
       this._hueStats.check(col);
 
       if (col in histG) {
-        histG[ col ]++;
+        histG[col]++;
       } else {
-        histG[ col ] = 1;
+        histG[col] = 1;
       }
     }
   }
@@ -138,8 +144,8 @@ export class ColorHistogram {
     const height = pointContainer.getHeight();
     const pointArray = pointContainer.getPointArray();
 
-    const boxW = ColorHistogram._boxSize[ 0 ];
-    const boxH = ColorHistogram._boxSize[ 1 ];
+    const boxW = ColorHistogram._boxSize[0];
+    const boxH = ColorHistogram._boxSize[1];
     const area = boxW * boxH;
     const boxes = this._makeBoxes(width, height, boxW, boxH);
     const histG = this._histogram;
@@ -149,27 +155,26 @@ export class ColorHistogram {
       if (effc < 2) effc = 2;
 
       const histL: Record<string, number> = {};
-      this._iterateBox(box, width, (i) => {
-        const col = pointArray[ i ].uint32;
+      this._iterateBox(box, width, i => {
+        const col = pointArray[i].uint32;
 
         // collect hue stats
         this._hueStats.check(col);
 
         if (col in histG) {
-          histG[ col ]++;
+          histG[col]++;
         } else if (col in histL) {
-          if (++histL[ col ] >= effc) {
-            histG[ col ] = histL[ col ];
+          if (++histL[col] >= effc) {
+            histG[col] = histL[col];
           }
         } else {
-          histL[ col ] = 1;
+          histL[col] = 1;
         }
       });
     });
 
     // inject min huegroup colors
     this._hueStats.injectIntoDictionary(histG);
-
   }
 
   // iterates @bbox within a parent rect of width @wid; calls @fn, passing index within parent
@@ -184,7 +189,7 @@ export class ColorHistogram {
 
     do {
       fn.call(this, i);
-      i += (++cnt % b.w === 0) ? incr : 1;
+      i += ++cnt % b.w === 0 ? incr : 1;
     } while (i <= i1);
   }
 
@@ -192,7 +197,12 @@ export class ColorHistogram {
    *    partitions a rectangle of width x height into
    *    array of boxes stepX x stepY (or less)
    */
-  private _makeBoxes(width: number, height: number, stepX: number, stepY: number) {
+  private _makeBoxes(
+    width: number,
+    height: number,
+    stepX: number,
+    stepY: number,
+  ) {
     const wrem = width % stepX;
     const hrem = height % stepY;
     const xend = width - wrem;
@@ -201,11 +211,15 @@ export class ColorHistogram {
 
     for (let y = 0; y < height; y += stepY) {
       for (let x = 0; x < width; x += stepX) {
-        boxesArray.push({ x, y, w: (x === xend ? wrem : stepX), h: (y === yend ? hrem : stepY) });
+        boxesArray.push({
+          x,
+          y,
+          w: x === xend ? wrem : stepX,
+          h: y === yend ? hrem : stepY,
+        });
       }
     }
 
     return boxesArray;
   }
-
 }

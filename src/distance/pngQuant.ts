@@ -31,11 +31,34 @@ export class PNGQuant extends AbstractDistanceCalculator {
    * (px.rgb - py.rgb) + (py.a - px.a)
    *
    */
-  calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number) {
+  calculateRaw(
+    r1: number,
+    g1: number,
+    b1: number,
+    a1: number,
+    r2: number,
+    g2: number,
+    b2: number,
+    a2: number,
+  ) {
     const alphas = (a2 - a1) * this._whitePoint.a;
-    return this._colordifferenceCh(r1 * this._whitePoint.r, r2 * this._whitePoint.r, alphas) +
-      this._colordifferenceCh(g1 * this._whitePoint.g, g2 * this._whitePoint.g, alphas) +
-      this._colordifferenceCh(b1 * this._whitePoint.b, b2 * this._whitePoint.b, alphas);
+    return (
+      this._colordifferenceCh(
+        r1 * this._whitePoint.r,
+        r2 * this._whitePoint.r,
+        alphas,
+      ) +
+      this._colordifferenceCh(
+        g1 * this._whitePoint.g,
+        g2 * this._whitePoint.g,
+        alphas,
+      ) +
+      this._colordifferenceCh(
+        b1 * this._whitePoint.b,
+        b2 * this._whitePoint.b,
+        alphas,
+      )
+    );
   }
 
   private _colordifferenceCh(x: number, y: number, alphas: number) {

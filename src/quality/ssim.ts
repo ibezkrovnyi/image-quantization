@@ -14,7 +14,10 @@ const K1 = 0.01; // tslint:disable-line:naming-convention
 const K2 = 0.03; // tslint:disable-line:naming-convention
 
 export function ssim(image1: PointContainer, image2: PointContainer) {
-  if (image1.getHeight() !== image2.getHeight() || image1.getWidth() !== image2.getWidth()) {
+  if (
+    image1.getHeight() !== image2.getHeight() ||
+    image1.getWidth() !== image2.getWidth()
+  ) {
     throw new Error('Images have different sizes!');
   }
 
@@ -27,37 +30,54 @@ export function ssim(image1: PointContainer, image2: PointContainer) {
   let mssim = 0.0;
 
   // calculate ssim for each window
-  iterate(image1, image2, (lumaValues1, lumaValues2, averageLumaValue1, averageLumaValue2) => {
-    // calculate variance and covariance
-    let sigxy = 0.0;
-    let sigsqx = 0.0;
-    let sigsqy = 0.0;
+  iterate(
+    image1,
+    image2,
+    (lumaValues1, lumaValues2, averageLumaValue1, averageLumaValue2) => {
+      // calculate variance and covariance
+      let sigxy = 0.0;
+      let sigsqx = 0.0;
+      let sigsqy = 0.0;
 
-    for (let i = 0; i < lumaValues1.length; i++) {
-      sigsqx += (lumaValues1[i] - averageLumaValue1) ** 2;
-      sigsqy += (lumaValues2[i] - averageLumaValue2) ** 2;
+      for (let i = 0; i < lumaValues1.length; i++) {
+        sigsqx += (lumaValues1[i] - averageLumaValue1) ** 2;
+        sigsqy += (lumaValues2[i] - averageLumaValue2) ** 2;
 
-      sigxy += (lumaValues1[i] - averageLumaValue1) * (lumaValues2[i] - averageLumaValue2);
-    }
+        sigxy +=
+          (lumaValues1[i] - averageLumaValue1) *
+          (lumaValues2[i] - averageLumaValue2);
+      }
 
-    const numPixelsInWin = lumaValues1.length - 1;
-    sigsqx /= numPixelsInWin;
-    sigsqy /= numPixelsInWin;
-    sigxy /= numPixelsInWin;
+      const numPixelsInWin = lumaValues1.length - 1;
+      sigsqx /= numPixelsInWin;
+      sigsqy /= numPixelsInWin;
+      sigxy /= numPixelsInWin;
 
-    // perform ssim calculation on window
-    const numerator = (2 * averageLumaValue1 * averageLumaValue2 + c1) * (2 * sigxy + c2);
-    const denominator = (averageLumaValue1 ** 2 + averageLumaValue2 ** 2 + c1) * (sigsqx + sigsqy + c2);
-    const ssim = numerator / denominator;
+      // perform ssim calculation on window
+      const numerator =
+        (2 * averageLumaValue1 * averageLumaValue2 + c1) * (2 * sigxy + c2);
+      const denominator =
+        (averageLumaValue1 ** 2 + averageLumaValue2 ** 2 + c1) *
+        (sigsqx + sigsqy + c2);
+      const ssim = numerator / denominator;
 
-    mssim += ssim;
-    numWindows++;
-
-  });
+      mssim += ssim;
+      numWindows++;
+    },
+  );
   return mssim / numWindows;
 }
 
-function iterate(image1: PointContainer, image2: PointContainer, callback: (lumaValues1: number[], lumaValues2: number[], averageLumaValue1: number, averageLumaValue2: number) => void) {
+function iterate(
+  image1: PointContainer,
+  image2: PointContainer,
+  callback: (
+    lumaValues1: number[],
+    lumaValues2: number[],
+    averageLumaValue1: number,
+    averageLumaValue2: number,
+  ) => void,
+) {
   const windowSize = 8;
   const width = image1.getWidth();
   const height = image1.getHeight();
@@ -68,8 +88,20 @@ function iterate(image1: PointContainer, image2: PointContainer, callback: (luma
       const windowWidth = Math.min(windowSize, width - x);
       const windowHeight = Math.min(windowSize, height - y);
 
-      const lumaValues1 = calculateLumaValuesForWindow(image1, x, y, windowWidth, windowHeight);
-      const lumaValues2 = calculateLumaValuesForWindow(image2, x, y, windowWidth, windowHeight);
+      const lumaValues1 = calculateLumaValuesForWindow(
+        image1,
+        x,
+        y,
+        windowWidth,
+        windowHeight,
+      );
+      const lumaValues2 = calculateLumaValuesForWindow(
+        image2,
+        x,
+        y,
+        windowWidth,
+        windowHeight,
+      );
       const averageLuma1 = calculateAverageLuma(lumaValues1);
       const averageLuma2 = calculateAverageLuma(lumaValues2);
 
@@ -78,7 +110,13 @@ function iterate(image1: PointContainer, image2: PointContainer, callback: (luma
   }
 }
 
-function calculateLumaValuesForWindow(image: PointContainer, x: number, y: number, width: number, height: number) {
+function calculateLumaValuesForWindow(
+  image: PointContainer,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
   const pointArray = image.getPointArray();
   const lumaValues = [];
 
@@ -88,7 +126,8 @@ function calculateLumaValuesForWindow(image: PointContainer, x: number, y: numbe
     const offset = j * image.getWidth();
     for (let i = x; i < x + width; i++) {
       const point = pointArray[offset + i];
-      lumaValues[counter] = point.r * Y.RED + point.g * Y.GREEN + point.b * Y.BLUE;
+      lumaValues[counter] =
+        point.r * Y.RED + point.g * Y.GREEN + point.b * Y.BLUE;
       counter++;
     }
   }

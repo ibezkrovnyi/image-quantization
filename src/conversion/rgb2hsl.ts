@@ -21,16 +21,16 @@ export function rgb2hsl(r: number, g: number, b: number) {
   const l = (min + max) / 510;
 
   let s = 0;
-  if (l > 0 && l < 1) s = delta / (l < 0.5 ? (max + min) : (510 - max - min));
+  if (l > 0 && l < 1) s = delta / (l < 0.5 ? max + min : 510 - max - min);
 
   let h = 0;
   if (delta > 0) {
     if (max === r) {
       h = (g - b) / delta;
     } else if (max === g) {
-      h = (2 + (b - r) / delta);
+      h = 2 + (b - r) / delta;
     } else {
-      h = (4 + (r - g) / delta);
+      h = 4 + (r - g) / delta;
     }
 
     h *= 60;

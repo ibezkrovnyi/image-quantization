@@ -23,12 +23,4 @@ export {
   ColorDistanceFormula,
 } from './basicAPI';
 
-export {
-  constants,
-  conversion,
-  distance,
-  palette,
-  image,
-  quality,
-  utils,
-};
+export { constants, conversion, distance, palette, image, quality, utils };

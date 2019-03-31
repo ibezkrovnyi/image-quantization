@@ -37,21 +37,33 @@ export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
   private _weights: number[];
   private _errorQueueSize: number;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, errorQueueSize = 16, errorPropagation = 1) {
+  constructor(
+    colorDistanceCalculator: AbstractDistanceCalculator,
+    errorQueueSize = 16,
+    errorPropagation = 1,
+  ) {
     super();
     this._distance = colorDistanceCalculator;
     this._errorQueueSize = errorQueueSize;
-    this._weights = ErrorDiffusionRiemersma._createWeights(errorPropagation, errorQueueSize);
+    this._weights = ErrorDiffusionRiemersma._createWeights(
+      errorPropagation,
+      errorQueueSize,
+    );
   }
 
   /**
    * Mutates pointContainer
    */
-  * quantize(pointContainer: PointContainer, palette: Palette) {
+  *quantize(pointContainer: PointContainer, palette: Palette) {
     const pointArray = pointContainer.getPointArray();
     const width = pointContainer.getWidth();
     const height = pointContainer.getHeight();
-    const errorQueue: Array<{ r: number; g: number; b: number; a: number }> = [];
+    const errorQueue: Array<{
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    }> = [];
 
     let head = 0;
 
@@ -59,7 +71,7 @@ export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
       errorQueue[i] = { r: 0, g: 0, b: 0, a: 0 };
     }
 
-    yield * hilbertCurve(width, height, (x, y) => {
+    yield* hilbertCurve(width, height, (x, y) => {
       const p = pointArray[x + y * width];
       let { r, g, b, a } = p;
       for (let i = 0; i < this._errorQueueSize; i++) {
@@ -79,7 +91,10 @@ export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
         inRange0to255Rounded(a),
       );
 
-      const quantizedPoint = palette.getNearestColor(this._distance, correctedPoint);
+      const quantizedPoint = palette.getNearestColor(
+        this._distance,
+        correctedPoint,
+      );
 
       // update head and calculate tail
       head = (head + 1) % this._errorQueueSize;
@@ -101,10 +116,15 @@ export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
     };
   }
 
-  private static _createWeights(errorPropagation: number, errorQueueSize: number) {
+  private static _createWeights(
+    errorPropagation: number,
+    errorQueueSize: number,
+  ) {
     const weights = [];
 
-    const multiplier = Math.exp(Math.log(errorQueueSize) / (errorQueueSize - 1));
+    const multiplier = Math.exp(
+      Math.log(errorQueueSize) / (errorQueueSize - 1),
+    );
     for (let i = 0, next = 1; i < errorQueueSize; i++) {
       weights[i] = (((next + 0.5) | 0) / errorQueueSize) * errorPropagation;
       next *= multiplier;

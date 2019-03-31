@@ -29,7 +29,7 @@ export function hueGroup(hue: number, segmentsNumber: number) {
 export class Palette {
   private readonly _pointContainer: PointContainer;
   private readonly _pointArray: Point[] = [];
-  private _i32idx: { [ key: string ]: number } = {};
+  private _i32idx: { [key: string]: number } = {};
 
   constructor() {
     this._pointContainer = new PointContainer();
@@ -44,15 +44,20 @@ export class Palette {
 
   has(color: Point) {
     for (let i = this._pointArray.length - 1; i >= 0; i--) {
-      if (color.uint32 === this._pointArray[ i ].uint32) return true;
+      if (color.uint32 === this._pointArray[i].uint32) return true;
     }
 
     return false;
   }
 
   // TOTRY: use HUSL - http://boronine.com/husl/ http://www.husl-colors.org/ https://github.com/husl-colors/husl
-  getNearestColor(colorDistanceCalculator: AbstractDistanceCalculator, color: Point) {
-    return this._pointArray[ this._getNearestIndex(colorDistanceCalculator, color) | 0 ];
+  getNearestColor(
+    colorDistanceCalculator: AbstractDistanceCalculator,
+    color: Point,
+  ) {
+    return this._pointArray[
+      this._getNearestIndex(colorDistanceCalculator, color) | 0
+    ];
   }
 
   getPointContainer() {
@@ -90,10 +95,13 @@ export class Palette {
    */
 
   private _nearestPointFromCache(key: string) {
-    return typeof this._i32idx[ key ] === 'number' ? this._i32idx[ key ] : -1;
+    return typeof this._i32idx[key] === 'number' ? this._i32idx[key] : -1;
   }
 
-  private _getNearestIndex(colorDistanceCalculator: AbstractDistanceCalculator, point: Point) {
+  private _getNearestIndex(
+    colorDistanceCalculator: AbstractDistanceCalculator,
+    point: Point,
+  ) {
     let idx = this._nearestPointFromCache('' + point.uint32); // eslint-disable-line prefer-template
     if (idx >= 0) return idx;
 
@@ -101,8 +109,17 @@ export class Palette {
 
     idx = 0;
     for (let i = 0, l = this._pointArray.length; i < l; i++) {
-      const p = this._pointArray[ i ];
-      const distance = colorDistanceCalculator.calculateRaw(point.r, point.g, point.b, point.a, p.r, p.g, p.b, p.a);
+      const p = this._pointArray[i];
+      const distance = colorDistanceCalculator.calculateRaw(
+        point.r,
+        point.g,
+        point.b,
+        point.a,
+        p.r,
+        p.g,
+        p.b,
+        p.a,
+      );
 
       if (distance < minimalDistance) {
         minimalDistance = distance;
@@ -110,7 +127,7 @@ export class Palette {
       }
     }
 
-    this._i32idx[ point.uint32 ] = idx;
+    this._i32idx[point.uint32] = idx;
     return idx;
   }
 
@@ -172,8 +189,10 @@ export class Palette {
       const hslB = rgb2hsl(b.r, b.g, b.b);
 
       // sort all grays + whites together
-      const hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + hueGroup(hslA.h, hueGroups);
-      const hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + hueGroup(hslB.h, hueGroups);
+      const hueA =
+        a.r === a.g && a.g === a.b ? 0 : 1 + hueGroup(hslA.h, hueGroups);
+      const hueB =
+        b.r === b.g && b.g === b.b ? 0 : 1 + hueGroup(hslB.h, hueGroups);
       /*
        var hueA = (a.r === a.g && a.g === a.b) ? 0 : 1 + Utils.hueGroup(hslA.h, hueGroups);
        var hueB = (b.r === b.g && b.g === b.b) ? 0 : 1 + Utils.hueGroup(hslB.h, hueGroups);

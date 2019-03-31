@@ -11,15 +11,24 @@
  * http://en.wikipedia.org/wiki/SRGB
  */
 export enum Y {
-  RED = .2126, GREEN = .7152, BLUE = .0722, WHITE = 1,
+  RED = 0.2126,
+  GREEN = 0.7152,
+  BLUE = 0.0722,
+  WHITE = 1,
 }
 
 // tslint:disable-next-line:naming-convention
 export enum x {
-  RED = .6400, GREEN = .3000, BLUE = .1500, WHITE = .3127,
+  RED = 0.64,
+  GREEN = 0.3,
+  BLUE = 0.15,
+  WHITE = 0.3127,
 }
 
 // tslint:disable-next-line:naming-convention
 export enum y {
-  RED = .3300, GREEN = .6000, BLUE = .0600, WHITE = .3290,
+  RED = 0.33,
+  GREEN = 0.6,
+  BLUE = 0.06,
+  WHITE = 0.329,
 }

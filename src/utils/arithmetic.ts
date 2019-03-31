@@ -35,22 +35,27 @@ export function inRange0to255(n: number) {
   return n;
 }
 
-export function stableSort<T>(arrayToSort: T[], callback: (a: T, b: T) => number) {
-  const type = typeof arrayToSort[ 0 ];
+export function stableSort<T>(
+  arrayToSort: T[],
+  callback: (a: T, b: T) => number,
+) {
+  const type = typeof arrayToSort[0];
   let sorted: T[];
 
   if (type === 'number' || type === 'string') {
     const ord = Object.create(null); // tslint:disable-line:no-null-keyword
     for (let i = 0, l = arrayToSort.length; i < l; i++) {
-      const val = arrayToSort[ i ] as unknown as string;
-      if (ord[ val ] || ord[ val ] === 0) continue;
-      ord[ val ] = i;
+      const val = (arrayToSort[i] as unknown) as string;
+      if (ord[val] || ord[val] === 0) continue;
+      ord[val] = i;
     }
 
-    sorted = arrayToSort.sort((a, b) => callback(a, b) || ord[ a ] - ord[ b ]);
+    sorted = arrayToSort.sort((a, b) => callback(a, b) || ord[a] - ord[b]);
   } else {
     const ord2 = arrayToSort.slice(0);
-    sorted = arrayToSort.sort((a, b) => callback(a, b) || ord2.indexOf(a) - ord2.indexOf(b));
+    sorted = arrayToSort.sort(
+      (a, b) => callback(a, b) || ord2.indexOf(a) - ord2.indexOf(b),
+    );
   }
 
   return sorted;

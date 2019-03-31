@@ -9,6 +9,7 @@
     "no-inferrable-return-types": true,
     "no-unnecessary-type-annotation": [true, "check-return-type"],
     "no-inferrable-types": true,
+    "space-in-parens": false,
     "naming-convention": [
       true,
       // forbid leading and trailing underscores and enforce camelCase on EVERY name. will be overridden by subtypes if needed
