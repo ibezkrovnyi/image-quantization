@@ -118,10 +118,10 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
         }
 
         // Component distance
-        let er: number;
-        let eg: number;
-        let eb: number;
-        let ea: number;
+        let er;
+        let eg;
+        let eb;
+        let ea;
         if (this._calculateErrorLikeGIMP) {
           er = correctedPoint.r - palettePoint.r;
           eg = correctedPoint.g - palettePoint.g;
