@@ -30,7 +30,7 @@
 		"pretty": true,
 		"plugins": [
 			{
-				"name": "tslint-language-service",
+				"name": "1tslint-language-service",
 				"supressWhileTypeErrorsPresent": false,
 				"ignoreDefinitionFiles": true
 			}

@@ -20,8 +20,8 @@ export function ssim(image1: PointContainer, image2: PointContainer) {
 
   const bitsPerComponent = 8;
   const L = (1 << bitsPerComponent) - 1; // tslint:disable-line:naming-convention
-  const c1 = Math.pow((K1 * L), 2);
-  const c2 = Math.pow((K2 * L), 2);
+  const c1 = (K1 * L) ** 2;
+  const c2 = (K2 * L) ** 2;
 
   let numWindows = 0;
   let mssim = 0.0;
@@ -34,8 +34,8 @@ export function ssim(image1: PointContainer, image2: PointContainer) {
     let sigsqy = 0.0;
 
     for (let i = 0; i < lumaValues1.length; i++) {
-      sigsqx += Math.pow((lumaValues1[i] - averageLumaValue1), 2);
-      sigsqy += Math.pow((lumaValues2[i] - averageLumaValue2), 2);
+      sigsqx += (lumaValues1[i] - averageLumaValue1) ** 2;
+      sigsqy += (lumaValues2[i] - averageLumaValue2) ** 2;
 
       sigxy += (lumaValues1[i] - averageLumaValue1) * (lumaValues2[i] - averageLumaValue2);
     }
@@ -47,7 +47,7 @@ export function ssim(image1: PointContainer, image2: PointContainer) {
 
     // perform ssim calculation on window
     const numerator = (2 * averageLumaValue1 * averageLumaValue2 + c1) * (2 * sigxy + c2);
-    const denominator = (Math.pow(averageLumaValue1, 2) + Math.pow(averageLumaValue2, 2) + c1) * (sigsqx + sigsqy + c2);
+    const denominator = (averageLumaValue1 ** 2 + averageLumaValue2 ** 2 + c1) * (sigsqx + sigsqy + c2);
     const ssim = numerator / denominator;
 
     mssim += ssim;

@@ -33,8 +33,7 @@ export class HueStatistics {
 
   check(i32: number) {
     if (this._groupsFull === this._numGroups + 1) {
-      this.check = function () {
-      };
+      this.check = () => {};
     }
 
     const r = (i32 & 0xff);
@@ -75,9 +74,9 @@ export class HueStatistics {
   injectIntoArray(histG: string[]) {
     for (let i = 0; i <= this._numGroups; i++) {
       if (this._stats[ i ].num <= this._minCols) {
-        this._stats[ i ].cols.forEach((col: any) => { // tslint:disable-line:no-any
-          if (histG.indexOf(col) === -1) {
-            histG.push(col);
+        this._stats[ i ].cols.forEach((col: unknown) => {
+          if (histG.indexOf(col as string) === -1) {
+            histG.push(col as string);
           }
         });
       }

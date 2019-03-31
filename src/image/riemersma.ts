@@ -61,10 +61,7 @@ export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
 
     yield * hilbertCurve(width, height, (x, y) => {
       const p = pointArray[x + y * width];
-      let r = p.r;
-      let g = p.g;
-      let b = p.b;
-      let a = p.a;
+      let { r, g, b, a } = p;
       for (let i = 0; i < this._errorQueueSize; i++) {
         const weight = this._weights[i];
         const e = errorQueue[(i + head) % this._errorQueueSize];

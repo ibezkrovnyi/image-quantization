@@ -59,6 +59,7 @@ export class ColorHistogram {
   }
 
   sample(pointContainer: PointContainer) {
+    // eslint-disable-next-line default-case
     switch (this._method) {
       case 1:
         this._colorStats1D(pointContainer);
@@ -80,16 +81,16 @@ export class ColorHistogram {
     switch (this._method) {
       case 1:
         const initialColorsLimit = Math.min(sorted.length, this._initColors);
-        const last = sorted[ initialColorsLimit - 1 ];
-        const freq = this._histogram[ last ];
+        const last = sorted[initialColorsLimit - 1];
+        const freq = this._histogram[last];
 
         idxi32 = sorted.slice(0, initialColorsLimit);
 
         // add any cut off colors with same freq as last
         let pos = initialColorsLimit;
         const len = sorted.length;
-        while (pos < len && this._histogram[ sorted[ pos ] ] === freq) {
-          idxi32.push(sorted[ pos++ ]);
+        while (pos < len && this._histogram[sorted[pos]] === freq) {
+          idxi32.push(sorted[pos++]);
         }
 
         // inject min huegroup colors
@@ -106,9 +107,7 @@ export class ColorHistogram {
     }
 
     // int32-ify values
-    return idxi32.map(function (v: string) { // TODO: why no-inferred-types rule cannot find this (v: string) ?
-      return +v;
-    });
+    return idxi32.map(v => +v);
   }
 
   // global top-population

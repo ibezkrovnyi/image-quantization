@@ -6,7 +6,7 @@
  * rgb2xyz.ts - part of Image Quantization Library
  */
 function correctGamma(n: number) {
-  return n > 0.04045 ? Math.pow((n + 0.055) / 1.055, 2.4) : n / 12.92;
+  return n > 0.04045 ? ((n + 0.055) / 1.055) ** 2.4 : n / 12.92;
 }
 
 export function rgb2xyz(r: number, g: number, b: number) {

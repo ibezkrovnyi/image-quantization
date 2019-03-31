@@ -95,6 +95,7 @@ function visit(data: Data, direction: Direction) {
     data.callback(data.x, data.y);
     data.index++;
   }
+  // eslint-disable-next-line default-case
   switch (direction) {
     case Direction.LEFT:
       data.x--;
