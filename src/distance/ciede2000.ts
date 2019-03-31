@@ -23,14 +23,14 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
    * Max DeltaA: 255
    */
   private static readonly _kA = 0.25 * 100 / 255;
-  private static readonly _pow25to7: number = Math.pow(25, 7);
-  private static readonly _deg360InRad: number = degrees2radians(360);
-  private static readonly _deg180InRad: number = degrees2radians(180);
-  private static readonly _deg30InRad: number = degrees2radians(30);
-  private static readonly _deg6InRad: number = degrees2radians(6);
-  private static readonly _deg63InRad: number = degrees2radians(63);
-  private static readonly _deg275InRad: number = degrees2radians(275);
-  private static readonly _deg25InRad: number = degrees2radians(25);
+  private static readonly _pow25to7 = Math.pow(25, 7);
+  private static readonly _deg360InRad = degrees2radians(360);
+  private static readonly _deg180InRad = degrees2radians(180);
+  private static readonly _deg30InRad = degrees2radians(30);
+  private static readonly _deg6InRad = degrees2radians(6);
+  private static readonly _deg63InRad = degrees2radians(63);
+  private static readonly _deg275InRad = degrees2radians(275);
+  private static readonly _deg25InRad = degrees2radians(25);
 
   protected _setDefaults() {}
 
@@ -60,7 +60,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
   }
 
   private static _calculate_dHp(C1pC2p: number, h_bar: number, h2p: number, h1p: number) {
-    let dhp: number;
+    let dhp;
     if (C1pC2p === 0) {
       dhp = 0;
     } else if (h_bar <= CIEDE2000._deg180InRad) {

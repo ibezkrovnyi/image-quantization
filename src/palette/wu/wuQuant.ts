@@ -14,7 +14,7 @@ import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { ProgressTracker } from '../../utils';
 
 function createArray1D(dimension1: number) {
-  const a: number[] = [];
+  const a = [];
   for (let k = 0; k < dimension1; k++) {
     a[ k ] = 0;
   }
@@ -194,10 +194,10 @@ export class WuQuant extends AbstractPaletteQuantizer {
       }
     }
 
-    const lookupRed: number[] = [];
-    const lookupGreen: number[] = [];
-    const lookupBlue: number[] = [];
-    const lookupAlpha: number[] = [];
+    const lookupRed = [];
+    const lookupGreen = [];
+    const lookupBlue = [];
+    const lookupAlpha = [];
 
     // precalculates lookup tables
     for (let k = 0; k < this._colors; ++k) {
@@ -390,7 +390,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
    * Splits the cube in given position][and color direction.
    */
   private static _top(cube: WuColorCube, direction: number, position: number, moment: number[][][][]) {
-    let result: number;
+    let result;
     switch (direction) {
       case WuQuant._alpha:
         result = (moment[ position ][ cube.redMaximum ][ cube.greenMaximum ][ cube.blueMaximum ] -
@@ -557,7 +557,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
 
   // Cuts a cube with another one.
   private _cut(first: WuColorCube, second: WuColorCube) {
-    let direction: number;
+    let direction;
 
     const wholeRed = WuQuant._volume(first, this._momentsRed);
     const wholeGreen = WuQuant._volume(first, this._momentsGreen);
