@@ -108,7 +108,7 @@ export class RGBQuant extends AbstractPaletteQuantizer {
     }
 
     const len = colorArray.length;
-    const memDist: RemovedColor[] = [];
+    const memDist = [];
 
     let palLen = len;
     let thold = this._initialDistance;
