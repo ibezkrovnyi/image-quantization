@@ -154,9 +154,7 @@ export class RGBQuant extends AbstractPaletteQuantizer {
     // if palette is over-reduced, re-add removed colors with largest distances from last round
     if (palLen < this._colors) {
       // sort descending
-      stableSort(memDist, function (a: RemovedColor, b: RemovedColor) {
-        return b.distance - a.distance;
-      });
+      stableSort(memDist, (a, b) => b.distance - a.distance);
 
       let k = 0;
       while (palLen < this._colors && k < memDist.length) {

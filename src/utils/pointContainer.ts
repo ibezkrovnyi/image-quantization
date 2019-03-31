@@ -73,10 +73,12 @@ export class PointContainer {
     const width = img.naturalWidth;
     const height = img.naturalHeight;
 
+    // eslint-disable-next-line no-undef
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const ctx = canvas.getContext('2d')!; // tslint:disable-line:no-non-null-assertion
     ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
 
@@ -87,6 +89,7 @@ export class PointContainer {
     const width = canvas.width;
     const height = canvas.height;
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const ctx = canvas.getContext('2d')!; // tslint:disable-line:no-non-null-assertion
     const imgData = ctx.getImageData(0, 0, width, height);
 

@@ -575,14 +575,12 @@ export class WuQuant extends AbstractPaletteQuantizer {
 
       // cannot split empty cube
       if (alpha.position < 0) return false;
+    } else if (red.max >= alpha.max && red.max >= green.max && red.max >= blue.max) {
+      direction = WuQuant._red;
+    } else if (green.max >= alpha.max && green.max >= red.max && green.max >= blue.max) {
+      direction = WuQuant._green;
     } else {
-      if (red.max >= alpha.max && red.max >= green.max && red.max >= blue.max) {
-        direction = WuQuant._red;
-      } else if (green.max >= alpha.max && green.max >= red.max && green.max >= blue.max) {
-        direction = WuQuant._green;
-      } else {
-        direction = WuQuant._blue;
-      }
+      direction = WuQuant._blue;
     }
 
     second.redMaximum = first.redMaximum;
@@ -591,6 +589,7 @@ export class WuQuant extends AbstractPaletteQuantizer {
     second.alphaMaximum = first.alphaMaximum;
 
     // cuts in a certain direction
+    // eslint-disable-next-line default-case
     switch (direction) {
       case WuQuant._red:
         second.redMinimum = first.redMaximum = red.position;

@@ -10,7 +10,7 @@ const refY = 1.00000; // ref_Y = 100.000
 const refZ = 1.08883; // ref_Z = 108.883
 
 function pivot(n: number) {
-  return n > 0.008856 ? Math.pow(n, 1 / 3) : (7.787 * n + 16 / 116);
+  return n > 0.008856 ? n ** (1 / 3) : (7.787 * n + 16 / 116);
 }
 
 export function xyz2lab(x: number, y: number, z: number) {

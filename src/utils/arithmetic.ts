@@ -42,19 +42,15 @@ export function stableSort<T>(arrayToSort: T[], callback: (a: T, b: T) => number
   if (type === 'number' || type === 'string') {
     const ord = Object.create(null); // tslint:disable-line:no-null-keyword
     for (let i = 0, l = arrayToSort.length; i < l; i++) {
-      const val: string = arrayToSort[ i ] as any; // tslint:disable-line:no-any
+      const val = arrayToSort[ i ] as unknown as string;
       if (ord[ val ] || ord[ val ] === 0) continue;
       ord[ val ] = i;
     }
 
-    sorted = arrayToSort.sort(function (a, b) {
-      return callback(a, b) || ord[ a ] - ord[ b ];
-    });
+    sorted = arrayToSort.sort((a, b) => callback(a, b) || ord[ a ] - ord[ b ]);
   } else {
     const ord2 = arrayToSort.slice(0);
-    sorted = arrayToSort.sort(function (a, b) {
-      return callback(a, b) || ord2.indexOf(a) - ord2.indexOf(b);
-    });
+    sorted = arrayToSort.sort((a, b) => callback(a, b) || ord2.indexOf(a) - ord2.indexOf(b));
   }
 
   return sorted;

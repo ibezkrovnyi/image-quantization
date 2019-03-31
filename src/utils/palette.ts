@@ -94,7 +94,7 @@ export class Palette {
   }
 
   private _getNearestIndex(colorDistanceCalculator: AbstractDistanceCalculator, point: Point) {
-    let idx = this._nearestPointFromCache('' + point.uint32);
+    let idx = this._nearestPointFromCache('' + point.uint32); // eslint-disable-line prefer-template
     if (idx >= 0) return idx;
 
     let minimalDistance = Number.MAX_VALUE;

@@ -23,7 +23,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
    * Max DeltaA: 255
    */
   private static readonly _kA = 0.25 * 100 / 255;
-  private static readonly _pow25to7 = Math.pow(25, 7);
+  private static readonly _pow25to7 = 25 ** 7; // 1Math.pow(25, 7);
   private static readonly _deg360InRad = degrees2radians(360);
   private static readonly _deg180InRad = degrees2radians(180);
   private static readonly _deg30InRad = degrees2radians(30);
@@ -41,9 +41,9 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
   }
 
   private static _calculateRT(ahp: number, aCp: number) {
-    const aCp_to_7 = Math.pow(aCp, 7.0);
+    const aCp_to_7 = aCp ** 7.0;
     const R_C = 2.0 * Math.sqrt(aCp_to_7 / (aCp_to_7 + CIEDE2000._pow25to7)); // 25^7
-    const delta_theta = CIEDE2000._deg30InRad * Math.exp(-Math.pow((ahp - CIEDE2000._deg275InRad) / CIEDE2000._deg25InRad, 2.0));
+    const delta_theta = CIEDE2000._deg30InRad * Math.exp(-(((ahp - CIEDE2000._deg275InRad) / CIEDE2000._deg25InRad) ** 2.0));
     return -Math.sin(2.0 * delta_theta) * R_C;
   }
 
@@ -96,7 +96,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
     // Calculate Cprime1, Cprime2, Cabbar
     const C1 = Math.sqrt(a1 * a1 + b1 * b1);
     const C2 = Math.sqrt(a2 * a2 + b2 * b2);
-    const pow_a_C1_C2_to_7 = Math.pow((C1 + C2) / 2.0, 7.0);
+    const pow_a_C1_C2_to_7 = ((C1 + C2) / 2.0) ** 7.0;
 
     const G = 0.5 * (1.0 - Math.sqrt(pow_a_C1_C2_to_7 / (pow_a_C1_C2_to_7 + CIEDE2000._pow25to7))); // 25^7
     const a1p = (1.0 + G) * a1;
@@ -118,7 +118,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
     const T = CIEDE2000._calculateT(ahp);
 
     const aCp = (C1p + C2p) / 2.0;
-    const aLp_minus_50_square = Math.pow((L1 + L2) / 2.0 - 50.0, 2.0);
+    const aLp_minus_50_square = ((L1 + L2) / 2.0 - 50.0) ** 2.0;
     const S_L = 1.0 + (.015 * aLp_minus_50_square) / Math.sqrt(20.0 + aLp_minus_50_square);
     const S_C = 1.0 + .045 * aCp;
     const S_H = 1.0 + .015 * T * aCp;
@@ -129,6 +129,6 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
     const dCpSC = dCp / S_C; // S_C * kC, where kC is 1.0
     const dHpSH = dHp / S_H; // S_H * kH, where kH is 1.0
 
-    return Math.pow(dLpSL, 2) + Math.pow(dCpSC, 2) + Math.pow(dHpSH, 2) + R_T * dCpSC * dHpSH;
+    return dLpSL ** 2 + dCpSC ** 2 + dHpSH ** 2 + R_T * dCpSC * dHpSH;
   }
 }

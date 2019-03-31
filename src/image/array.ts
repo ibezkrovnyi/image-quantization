@@ -80,7 +80,7 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
       }
 
       // always serpentine
-      if (this._serpentine) dir = dir * -1;
+      if (this._serpentine) dir *= -1;
 
       const lni = y * width;
       const xStart = dir === 1 ? 0 : width - 1;
@@ -145,10 +145,10 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
             const d = this._kernel[ i ][ 0 ];
             const e = errorLines[ y1 ][ x1 + x ];
 
-            e[ 0 ] = e[ 0 ] + er * d;
-            e[ 1 ] = e[ 1 ] + eg * d;
-            e[ 2 ] = e[ 2 ] + eb * d;
-            e[ 3 ] = e[ 3 ] + ea * d;
+            e[ 0 ] += er * d;
+            e[ 1 ] += eg * d;
+            e[ 2 ] += eb * d;
+            e[ 3 ] += ea * d;
           }
         }
       }
@@ -291,7 +291,7 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
         break;
 
       default:
-        throw new Error('ErrorDiffusionArray: unknown kernel = ' + kernel);
+        throw new Error(`ErrorDiffusionArray: unknown kernel = ${kernel}`);
     }
   }
 }

@@ -10,7 +10,7 @@ const refY = 1.00000; // ref_Y = 100.000
 const refZ = 1.08883; // ref_Z = 108.883
 
 function pivot(n: number) {
-  return n > 0.206893034 ? Math.pow(n, 3) : (n - 16 / 116) / 7.787;
+  return n > 0.206893034 ? n ** 3 : (n - 16 / 116) / 7.787;
 }
 
 // tslint:disable-next-line:naming-convention

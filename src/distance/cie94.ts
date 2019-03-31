@@ -42,10 +42,10 @@ export abstract class AbstractCIE94 extends AbstractDistanceCalculator {
 
     // TODO: add alpha channel support
     return Math.sqrt(
-      Math.pow(dL / this._Kl, 2) +
-      Math.pow(dC / (1.0 + this._K1 * c1), 2) +
-      Math.pow(deltaH / (1.0 + this._K2 * c1), 2) +
-      Math.pow(dAlpha, 2),
+      (dL / this._Kl) ** 2 +
+      (dC / (1.0 + this._K1 * c1)) ** 2 +
+      (deltaH / (1.0 + this._K2 * c1)) ** 2 +
+      dAlpha ** 2,
     );
   }
 }
