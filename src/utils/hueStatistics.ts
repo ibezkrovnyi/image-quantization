@@ -58,7 +58,7 @@ export class HueStatistics {
     }
   }
 
-  injectIntoDictionary(histG: { [key: string ]: number }) {
+  injectIntoDictionary(histG: Record<string, number>) {
     for (let i = 0; i <= this._numGroups; i++) {
       if (this._stats[ i ].num <= this._minCols) {
         this._stats[ i ].cols.forEach((col: number) => {
