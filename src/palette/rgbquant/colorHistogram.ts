@@ -76,7 +76,7 @@ export class ColorHistogram {
       return [];
     }
 
-    let idxi32: string[];
+    let idxi32;
     switch (this._method) {
       case 1:
         const initialColorsLimit = Math.min(sorted.length, this._initColors);
@@ -149,7 +149,7 @@ export class ColorHistogram {
       let effc = Math.round((box.w * box.h) / area) * ColorHistogram._boxPixels;
       if (effc < 2) effc = 2;
 
-      const histL: { [key: string ]: number } = {};
+      const histL: Record<string, number> = {};
       this._iterateBox(box, width, (i) => {
         const col = pointArray[ i ].uint32;
 
@@ -195,10 +195,10 @@ export class ColorHistogram {
    */
   private _makeBoxes(width: number, height: number, stepX: number, stepY: number) {
     const wrem = width % stepX;
-    const  hrem = height % stepY;
+    const hrem = height % stepY;
     const xend = width - wrem;
     const yend = height - hrem;
-    const boxesArray: Box[] = [];
+    const boxesArray = [];
 
     for (let y = 0; y < height; y += stepY) {
       for (let x = 0; x < width; x += stepX) {

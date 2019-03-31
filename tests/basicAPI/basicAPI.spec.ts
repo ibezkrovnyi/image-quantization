@@ -1,6 +1,4 @@
 import { buildPalette, applyPalette, buildPaletteSync, applyPaletteSync, utils, ColorDistanceFormula, PaletteQuantization, ImageQuantization } from '../../src/image-q';
-import {  } from '../../src/helper';
-
 
 let pointContainer: utils.PointContainer;
 beforeEach(function() {
