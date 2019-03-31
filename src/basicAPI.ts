@@ -9,12 +9,9 @@ import * as setImmediate from 'core-js/fn/set-immediate';
 import * as distance from './distance';
 import * as image from './image';
 import * as palette from './palette';
-import { AbstractPaletteQuantizer } from './palette/paletteQuantizer';
 import { AbstractDistanceCalculator } from './distance/distanceCalculator';
-import { AbstractImageQuantizer } from './image/imageQuantizer';
 import { PointContainer } from './utils/pointContainer';
 import { Palette } from './utils/palette';
-import { ssim } from './quality/ssim';
 
 export type ColorDistanceFormula =
   | 'cie94-textiles'
