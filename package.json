@@ -10,9 +10,9 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "prepublish": "npm run build",
-    "test": "npm run lint && jest --maxWorkers=2",
+    "test": "npm run lint && jest --maxWorkers=2 --env=node",
     "build": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --env=node",
     "deploy": "npm update && npm run lint && jest && npm run build && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
     "lint": "tslint --format verbose --config tslint.json --project tsconfig.json",
     "gh-pages": "rimraf ./docs && typedoc.cmd src && gh-pages -d docs",
@@ -101,7 +101,7 @@
     "tslint-consistent-codestyle": "1.11.1",
     "tslint-language-service": "0.9.8",
     "typedoc": "0.11.1",
-    "typescript": "2.7.2"
+    "typescript": "3.4.1"
   },
   "dependencies": {
     "@types/node": "9.4.7"

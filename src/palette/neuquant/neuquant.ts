@@ -89,55 +89,55 @@ export class NeuQuant extends AbstractPaletteQuantizer {
    four primes near 500 - assume no image has a length so large
    that it is divisible by all four primes
    */
-  private static readonly _prime1: number = 499;
-  private static readonly _prime2: number = 491;
-  private static readonly _prime3: number = 487;
-  private static readonly _prime4: number = 503;
-  private static readonly _minpicturebytes: number = NeuQuant._prime4;
+  private static readonly _prime1 = 499;
+  private static readonly _prime2 = 491;
+  private static readonly _prime3 = 487;
+  private static readonly _prime4 = 503;
+  private static readonly _minpicturebytes = NeuQuant._prime4;
 
   // no. of learning cycles
-  private static readonly _nCycles: number = 100;
+  private static readonly _nCycles = 100;
 
   // defs for freq and bias
-  private static readonly _initialBiasShift: number = 16;
+  private static readonly _initialBiasShift = 16;
 
   // bias for fractions
-  private static readonly _initialBias: number = (1 << NeuQuant._initialBiasShift);
-  private static readonly _gammaShift: number = 10;
+  private static readonly _initialBias = (1 << NeuQuant._initialBiasShift);
+  private static readonly _gammaShift = 10;
 
   // gamma = 1024
   // TODO: why gamma is never used?
   // private static _gamma : number     = (1 << NeuQuant._gammaShift);
-  private static readonly _betaShift: number = 10;
-  private static readonly _beta: number = (NeuQuant._initialBias >> NeuQuant._betaShift);
+  private static readonly _betaShift = 10;
+  private static readonly _beta = (NeuQuant._initialBias >> NeuQuant._betaShift);
 
   // beta = 1/1024
-  private static readonly _betaGamma: number = (NeuQuant._initialBias << (NeuQuant._gammaShift - NeuQuant._betaShift));
+  private static readonly _betaGamma = (NeuQuant._initialBias << (NeuQuant._gammaShift - NeuQuant._betaShift));
 
   /*
    * for 256 cols, radius starts
    */
-  private static readonly _radiusBiasShift: number = 6;
+  private static readonly _radiusBiasShift = 6;
 
   // at 32.0 biased by 6 bits
-  private static readonly _radiusBias: number = 1 << NeuQuant._radiusBiasShift;
+  private static readonly _radiusBias = 1 << NeuQuant._radiusBiasShift;
 
   // and decreases by a factor of 1/30 each cycle
-  private static readonly _radiusDecrease: number = 30;
+  private static readonly _radiusDecrease = 30;
 
   /* defs for decreasing alpha factor */
 
   // alpha starts at 1.0
-  private static readonly _alphaBiasShift: number = 10;
+  private static readonly _alphaBiasShift = 10;
 
   // biased by 10 bits
-  private static readonly _initAlpha: number = (1 << NeuQuant._alphaBiasShift);
+  private static readonly _initAlpha = (1 << NeuQuant._alphaBiasShift);
 
   /* radBias and alphaRadBias used for radpower calculation */
-  private static readonly _radBiasShift: number = 8;
-  private static readonly _radBias: number = 1 << NeuQuant._radBiasShift;
-  private static readonly _alphaRadBiasShift: number = NeuQuant._alphaBiasShift + NeuQuant._radBiasShift;
-  private static readonly _alphaRadBias: number = 1 << NeuQuant._alphaRadBiasShift;
+  private static readonly _radBiasShift = 8;
+  private static readonly _radBias = 1 << NeuQuant._radBiasShift;
+  private static readonly _alphaRadBiasShift = NeuQuant._alphaBiasShift + NeuQuant._radBiasShift;
+  private static readonly _alphaRadBias = 1 << NeuQuant._alphaRadBiasShift;
 
   private _pointArray: Point[];
   private readonly _networkSize: number;
@@ -215,7 +215,7 @@ export class NeuQuant extends AbstractPaletteQuantizer {
       this._radPower[ i ] = alpha * (((rad * rad - i * i) * NeuQuant._radBias) / (rad * rad)) >>> 0;
     }
 
-    let step: number;
+    let step;
     if (pointsNumber < NeuQuant._minpicturebytes) {
       step = 1;
     } else if (pointsNumber % NeuQuant._prime1 !== 0) {

@@ -5,7 +5,7 @@
  *
  * common.ts - part of Image Quantization Library
  */
-import { Point, PointRGBA } from '../utils/point';
+import { PointRGBA } from '../utils/point';
 
 export abstract class AbstractDistanceCalculator {
   protected _maxDistance!: number;
