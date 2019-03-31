@@ -31,7 +31,6 @@ import { PointContainer } from '../utils/pointContainer';
 import { Palette } from '../utils/palette';
 import { Point } from '../utils/point';
 import { inRange0to255Rounded } from '../utils/arithmetic';
-import { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 
 export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
   private _distance: AbstractDistanceCalculator;
@@ -106,7 +105,7 @@ export class ErrorDiffusionRiemersma extends AbstractImageQuantizer {
   }
 
   private static _createWeights(errorPropagation: number, errorQueueSize: number) {
-    const weights: number[] = [];
+    const weights = [];
 
     const multiplier = Math.exp(Math.log(errorQueueSize) / (errorQueueSize - 1));
     for (let i = 0, next = 1; i < errorQueueSize; i++) {
