@@ -80,7 +80,7 @@ function iterate(image1: PointContainer, image2: PointContainer, callback: (luma
 
 function calculateLumaValuesForWindow(image: PointContainer, x: number, y: number, width: number, height: number) {
   const pointArray = image.getPointArray();
-  const lumaValues: number[] = [];
+  const lumaValues = [];
 
   let counter = 0;
 
