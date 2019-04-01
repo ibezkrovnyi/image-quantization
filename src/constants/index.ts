@@ -7,6 +7,4 @@
  */
 import * as bt709 from './bt709';
 
-export {
-  bt709,
-};
+export { bt709 };

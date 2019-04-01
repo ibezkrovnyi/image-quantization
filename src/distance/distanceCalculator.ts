@@ -25,22 +25,42 @@ export abstract class AbstractDistanceCalculator {
 
   setWhitePoint(r: number, g: number, b: number, a: number) {
     this._whitePoint = {
-      r: (r > 0) ? 255 / r : 0,
-      g: (g > 0) ? 255 / g : 0,
-      b: (b > 0) ? 255 / b : 0,
-      a: (a > 0) ? 255 / a : 0,
+      r: r > 0 ? 255 / r : 0,
+      g: g > 0 ? 255 / g : 0,
+      b: b > 0 ? 255 / b : 0,
+      a: a > 0 ? 255 / a : 0,
     };
     this._maxDistance = this.calculateRaw(r, g, b, a, 0, 0, 0, 0);
   }
 
   calculateNormalized(colorA: PointRGBA, colorB: PointRGBA) {
-    return this.calculateRaw(colorA.r, colorA.g, colorA.b, colorA.a, colorB.r, colorB.g, colorB.b, colorB.a) / this._maxDistance;
+    return (
+      this.calculateRaw(
+        colorA.r,
+        colorA.g,
+        colorA.b,
+        colorA.a,
+        colorB.r,
+        colorB.g,
+        colorB.b,
+        colorB.a,
+      ) / this._maxDistance
+    );
   }
 
   /**
    * Calculate raw distance (non-normalized)
    */
-  abstract calculateRaw(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number): number;
+  abstract calculateRaw(
+    r1: number,
+    g1: number,
+    b1: number,
+    a1: number,
+    r2: number,
+    g2: number,
+    b2: number,
+    a2: number,
+  ): number;
 
   protected abstract _setDefaults(): void;
 }

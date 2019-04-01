@@ -31,10 +31,10 @@ export class Point implements PointRGBA {
   static createByQuadruplet(quadruplet: number[]) {
     const point = new Point();
 
-    point.r = quadruplet[ 0 ] | 0;
-    point.g = quadruplet[ 1 ] | 0;
-    point.b = quadruplet[ 2 ] | 0;
-    point.a = quadruplet[ 3 ] | 0;
+    point.r = quadruplet[0] | 0;
+    point.g = quadruplet[1] | 0;
+    point.b = quadruplet[2] | 0;
+    point.a = quadruplet[3] | 0;
     point._loadUINT32();
     point._loadQuadruplet();
     // point._loadLab();
@@ -68,10 +68,10 @@ export class Point implements PointRGBA {
     this.uint32 = -1 >>> 0;
     this.r = this.g = this.b = this.a = 0;
     this.rgba = new Array(4);
-    this.rgba[ 0 ] = 0;
-    this.rgba[ 1 ] = 0;
-    this.rgba[ 2 ] = 0;
-    this.rgba[ 3 ] = 0;
+    this.rgba[0] = 0;
+    this.rgba[1] = 0;
+    this.rgba[2] = 0;
+    this.rgba[3] = 0;
     /*
      this.Lab = {
      L : 0.0,
@@ -87,10 +87,10 @@ export class Point implements PointRGBA {
     this.b = point.b;
     this.a = point.a;
     this.uint32 = point.uint32;
-    this.rgba[ 0 ] = point.r;
-    this.rgba[ 1 ] = point.g;
-    this.rgba[ 2 ] = point.b;
-    this.rgba[ 3 ] = point.a;
+    this.rgba[0] = point.r;
+    this.rgba[1] = point.g;
+    this.rgba[2] = point.b;
+    this.rgba[3] = point.a;
 
     /*
      this.Lab.L = point.Lab.L;
@@ -113,9 +113,9 @@ export class Point implements PointRGBA {
     let b = this.b;
 
     if (useAlphaChannel) {
-      r = Math.min(255, 255 - this.a + this.a * r / 255);
-      g = Math.min(255, 255 - this.a + this.a * g / 255);
-      b = Math.min(255, 255 - this.a + this.a * b / 255);
+      r = Math.min(255, 255 - this.a + (this.a * r) / 255);
+      g = Math.min(255, 255 - this.a + (this.a * g) / 255);
+      b = Math.min(255, 255 - this.a + (this.a * b) / 255);
     }
 
     // var luma = this.r * Point._RED_COEFFICIENT + this.g * Point._GREEN_COEFFICIENT + this.b * Point._BLUE_COEFFICIENT;
@@ -130,7 +130,8 @@ export class Point implements PointRGBA {
   }
 
   private _loadUINT32() {
-    this.uint32 = (this.a << 24 | this.b << 16 | this.g << 8 | this.r) >>> 0;
+    this.uint32 =
+      ((this.a << 24) | (this.b << 16) | (this.g << 8) | this.r) >>> 0;
   }
 
   private _loadRGBA() {
@@ -141,10 +142,10 @@ export class Point implements PointRGBA {
   }
 
   private _loadQuadruplet() {
-    this.rgba[ 0 ] = this.r;
-    this.rgba[ 1 ] = this.g;
-    this.rgba[ 2 ] = this.b;
-    this.rgba[ 3 ] = this.a;
+    this.rgba[0] = this.r;
+    this.rgba[1] = this.g;
+    this.rgba[2] = this.b;
+    this.rgba[3] = this.a;
 
     /*
      var xyz = rgb2xyz(this.r, this.g, this.b);

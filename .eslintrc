@@ -8,7 +8,9 @@
     /* Local version of @typescript-eslint/eslint-plugin */
     "@typescript-eslint",
     /* Local version of @typescript-eslint/eslint-plugin-tslint */
-    "@typescript-eslint/tslint"
+    "@typescript-eslint/tslint",
+ 
+    "prettier"
   ],
   
   "env": {
@@ -55,6 +57,7 @@
       ]
     }],
 
+    "prettier/prettier": "error",
     "no-case-declarations": "off",
     "no-continue": "off",
     "no-shadow": "off",

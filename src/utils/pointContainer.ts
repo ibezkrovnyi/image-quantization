@@ -48,7 +48,9 @@ export class PointContainer {
     clone._height = this._height;
 
     for (let i = 0, l = this._pointArray.length; i < l; i++) {
-      clone._pointArray[i] = Point.createByUint32(this._pointArray[i].uint32 | 0); // "| 0" is added for v8 optimization
+      clone._pointArray[i] = Point.createByUint32(
+        this._pointArray[i].uint32 | 0,
+      ); // "| 0" is added for v8 optimization
     }
 
     return clone;
@@ -103,7 +105,11 @@ export class PointContainer {
     return PointContainer.fromUint8Array(imageData.data, width, height);
   }
 
-  static fromUint8Array(uint8Array: number[] | Uint8Array | Uint8ClampedArray, width: number, height: number) {
+  static fromUint8Array(
+    uint8Array: number[] | Uint8Array | Uint8ClampedArray,
+    width: number,
+    height: number,
+  ) {
     switch (Object.prototype.toString.call(uint8Array)) {
       case '[object Uint8ClampedArray]':
       case '[object Uint8Array]':
@@ -117,7 +123,11 @@ export class PointContainer {
     return PointContainer.fromUint32Array(uint32Array, width, height);
   }
 
-  static fromUint32Array(uint32Array: Uint32Array, width: number, height: number) {
+  static fromUint32Array(
+    uint32Array: Uint32Array,
+    width: number,
+    height: number,
+  ) {
     const container = new PointContainer();
 
     container._width = width;
@@ -131,7 +141,11 @@ export class PointContainer {
   }
 
   static fromBuffer(buffer: Buffer, width: number, height: number) {
-    const uint32Array = new Uint32Array(buffer.buffer, buffer.byteOffset, buffer.byteLength / Uint32Array.BYTES_PER_ELEMENT);
+    const uint32Array = new Uint32Array(
+      buffer.buffer,
+      buffer.byteOffset,
+      buffer.byteLength / Uint32Array.BYTES_PER_ELEMENT,
+    );
     return PointContainer.fromUint32Array(uint32Array, width, height);
   }
 }

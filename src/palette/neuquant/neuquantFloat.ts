@@ -52,7 +52,12 @@ class NeuronFloat {
    * r = Math.min(255, (neuron.r + (1 << (networkBiasShift - 1))) >> networkBiasShift);
    */
   toPoint() {
-    return Point.createByRGBA(this.r >> networkBiasShift, this.g >> networkBiasShift, this.b >> networkBiasShift, this.a >> networkBiasShift);
+    return Point.createByRGBA(
+      this.r >> networkBiasShift,
+      this.g >> networkBiasShift,
+      this.b >> networkBiasShift,
+      this.a >> networkBiasShift,
+    );
   }
 
   subtract(r: number, g: number, b: number, a: number) {
@@ -81,17 +86,20 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
   private static readonly _initialBiasShift = 16;
 
   // bias for fractions
-  private static readonly _initialBias = (1 << NeuQuantFloat._initialBiasShift);
+  private static readonly _initialBias = 1 << NeuQuantFloat._initialBiasShift;
   private static readonly _gammaShift = 10;
 
   // gamma = 1024
   // TODO: why gamma is never used?
   // private static _gamma : number     = (1 << NeuQuantFloat._gammaShift);
   private static readonly _betaShift = 10;
-  private static readonly _beta = (NeuQuantFloat._initialBias >> NeuQuantFloat._betaShift);
+  private static readonly _beta =
+    NeuQuantFloat._initialBias >> NeuQuantFloat._betaShift;
 
   // beta = 1/1024
-  private static readonly _betaGamma = (NeuQuantFloat._initialBias << (NeuQuantFloat._gammaShift - NeuQuantFloat._betaShift));
+  private static readonly _betaGamma =
+    NeuQuantFloat._initialBias <<
+    (NeuQuantFloat._gammaShift - NeuQuantFloat._betaShift);
 
   /*
    * for 256 cols, radius starts
@@ -110,12 +118,13 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
   private static readonly _alphaBiasShift = 10;
 
   // biased by 10 bits
-  private static readonly _initAlpha = (1 << NeuQuantFloat._alphaBiasShift);
+  private static readonly _initAlpha = 1 << NeuQuantFloat._alphaBiasShift;
 
   /* radBias and alphaRadBias used for radpower calculation */
   private static readonly _radBiasShift = 8;
   private static readonly _radBias = 1 << NeuQuantFloat._radBiasShift;
-  private static readonly _alphaRadBiasShift = NeuQuantFloat._alphaBiasShift + NeuQuantFloat._radBiasShift;
+  private static readonly _alphaRadBiasShift =
+    NeuQuantFloat._alphaBiasShift + NeuQuantFloat._radBiasShift;
   private static readonly _alphaRadBias = 1 << NeuQuantFloat._alphaRadBiasShift;
 
   private _pointArray!: Point[];
@@ -133,23 +142,31 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
   private _bias!: number[];
   private readonly _distance: AbstractDistanceCalculator;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors = 256) {
+  constructor(
+    colorDistanceCalculator: AbstractDistanceCalculator,
+    colors = 256,
+  ) {
     super();
     this._distance = colorDistanceCalculator;
     this._pointArray = [];
     this._sampleFactor = 1;
     this._networkSize = colors;
 
-    this._distance.setWhitePoint(255 << networkBiasShift, 255 << networkBiasShift, 255 << networkBiasShift, 255 << networkBiasShift);
+    this._distance.setWhitePoint(
+      255 << networkBiasShift,
+      255 << networkBiasShift,
+      255 << networkBiasShift,
+      255 << networkBiasShift,
+    );
   }
 
   sample(pointContainer: PointContainer) {
     this._pointArray = this._pointArray.concat(pointContainer.getPointArray());
   }
 
-  * quantize() {
+  *quantize() {
     this._init();
-    yield * this._learn();
+    yield* this._learn();
 
     yield {
       palette: this._buildPalette(),
@@ -163,18 +180,20 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
     this._radPower = [];
     this._network = [];
     for (let i = 0; i < this._networkSize; i++) {
-      this._network[ i ] = new NeuronFloat((i << (networkBiasShift + 8)) / this._networkSize);
+      this._network[i] = new NeuronFloat(
+        (i << (networkBiasShift + 8)) / this._networkSize,
+      );
 
       // 1/this._networkSize
-      this._freq[ i ] = NeuQuantFloat._initialBias / this._networkSize;
-      this._bias[ i ] = 0;
+      this._freq[i] = NeuQuantFloat._initialBias / this._networkSize;
+      this._bias[i] = 0;
     }
   }
 
   /**
    * Main Learning Loop
    */
-  private * _learn(): IterableIterator<PaletteQuantizerYieldValue> {
+  private *_learn(): IterableIterator<PaletteQuantizerYieldValue> {
     let sampleFactor = this._sampleFactor;
 
     const pointsNumber = this._pointArray.length;
@@ -183,7 +202,7 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
     const alphadec = 30 + (sampleFactor - 1) / 3;
     const pointsToSample = pointsNumber / sampleFactor;
 
-    let delta = pointsToSample / NeuQuantFloat._nCycles | 0;
+    let delta = (pointsToSample / NeuQuantFloat._nCycles) | 0;
     let alpha = NeuQuantFloat._initAlpha;
     let radius = (this._networkSize >> 3) * NeuQuantFloat._radiusBias;
 
@@ -191,7 +210,8 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
     if (rad <= 1) rad = 0;
 
     for (let i = 0; i < rad; i++) {
-      this._radPower[ i ] = alpha * (((rad * rad - i * i) * NeuQuantFloat._radBias) / (rad * rad));
+      this._radPower[i] =
+        alpha * (((rad * rad - i * i) * NeuQuantFloat._radBias) / (rad * rad));
     }
 
     let step;
@@ -199,23 +219,23 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
       step = 1;
     } else if (pointsNumber % NeuQuantFloat._prime1 !== 0) {
       step = NeuQuantFloat._prime1;
-    } else if ((pointsNumber % NeuQuantFloat._prime2) !== 0) {
+    } else if (pointsNumber % NeuQuantFloat._prime2 !== 0) {
       step = NeuQuantFloat._prime2;
-    } else if ((pointsNumber % NeuQuantFloat._prime3) !== 0) {
+    } else if (pointsNumber % NeuQuantFloat._prime3 !== 0) {
       step = NeuQuantFloat._prime3;
     } else {
       step = NeuQuantFloat._prime4;
     }
 
     const tracker = new ProgressTracker(pointsToSample, 99);
-    for (let i = 0, pointIndex = 0; i < pointsToSample;) {
+    for (let i = 0, pointIndex = 0; i < pointsToSample; ) {
       if (tracker.shouldNotify(i)) {
         yield {
           progress: tracker.progress,
         };
       }
 
-      const point = this._pointArray[ pointIndex ];
+      const point = this._pointArray[pointIndex];
       const b = point.b << networkBiasShift;
       const g = point.g << networkBiasShift;
       const r = point.r << networkBiasShift;
@@ -233,15 +253,18 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
       if (delta === 0) delta = 1;
 
       if (i % delta === 0) {
-        alpha -= (alpha / alphadec);
-        radius -= (radius / NeuQuantFloat._radiusDecrease);
+        alpha -= alpha / alphadec;
+        radius -= radius / NeuQuantFloat._radiusDecrease;
         rad = radius >> NeuQuantFloat._radiusBiasShift;
 
         if (rad <= 1) rad = 0;
-        for (let j = 0; j < rad; j++) this._radPower[ j ] = alpha * (((rad * rad - j * j) * NeuQuantFloat._radBias) / (rad * rad));
+        for (let j = 0; j < rad; j++) {
+          this._radPower[j] =
+            alpha *
+            (((rad * rad - j * j) * NeuQuantFloat._radBias) / (rad * rad));
+        }
       }
     }
-
   }
 
   private _buildPalette() {
@@ -258,7 +281,14 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
   /**
    * Move adjacent neurons by precomputed alpha*(1-((i-j)^2/[r]^2)) in radpower[|i-j|]
    */
-  private _alterNeighbour(rad: number, i: number, b: number, g: number, r: number, al: number) {
+  private _alterNeighbour(
+    rad: number,
+    i: number,
+    b: number,
+    g: number,
+    r: number,
+    al: number,
+  ) {
     let lo = i - rad;
     if (lo < -1) lo = -1;
 
@@ -270,25 +300,15 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
     let m = 1;
 
     while (j < hi || k > lo) {
-      const a = this._radPower[ m++ ] / NeuQuantFloat._alphaRadBias;
+      const a = this._radPower[m++] / NeuQuantFloat._alphaRadBias;
       if (j < hi) {
-        const p = this._network[ j++ ];
-        p.subtract(
-          a * (p.r - r),
-          a * (p.g - g),
-          a * (p.b - b),
-          a * (p.a - al),
-        );
+        const p = this._network[j++];
+        p.subtract(a * (p.r - r), a * (p.g - g), a * (p.b - b), a * (p.a - al));
       }
 
       if (k > lo) {
-        const p = this._network[ k-- ];
-        p.subtract(
-          a * (p.r - r),
-          a * (p.g - g),
-          a * (p.b - b),
-          a * (p.a - al),
-        );
+        const p = this._network[k--];
+        p.subtract(a * (p.r - r), a * (p.g - g), a * (p.b - b), a * (p.a - al));
       }
     }
   }
@@ -296,11 +316,18 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
   /**
    * Move neuron i towards biased (b,g,r) by factor alpha
    */
-  private _alterSingle(alpha: number, i: number, b: number, g: number, r: number, a: number) {
+  private _alterSingle(
+    alpha: number,
+    i: number,
+    b: number,
+    g: number,
+    r: number,
+    a: number,
+  ) {
     alpha /= NeuQuantFloat._initAlpha;
 
     /* alter hit neuron */
-    const n = this._network[ i ];
+    const n = this._network[i];
     n.subtract(
       alpha * (n.r - r),
       alpha * (n.g - g),
@@ -329,25 +356,28 @@ export class NeuQuantFloat extends AbstractPaletteQuantizer {
     let bestbiaspos = bestpos;
 
     for (let i = 0; i < this._networkSize; i++) {
-      const n = this._network[ i ];
-      const dist = this._distance.calculateNormalized(n, { r, g, b, a: al }) * multiplier;
+      const n = this._network[i];
+      const dist =
+        this._distance.calculateNormalized(n, { r, g, b, a: al }) * multiplier;
 
       if (dist < bestd) {
         bestd = dist;
         bestpos = i;
       }
 
-      const biasdist = dist - ((this._bias[ i ]) >> (NeuQuantFloat._initialBiasShift - networkBiasShift));
+      const biasdist =
+        dist -
+        (this._bias[i] >> (NeuQuantFloat._initialBiasShift - networkBiasShift));
       if (biasdist < bestbiasd) {
         bestbiasd = biasdist;
         bestbiaspos = i;
       }
-      const betafreq = (this._freq[ i ] >> NeuQuantFloat._betaShift);
-      this._freq[ i ] -= betafreq;
-      this._bias[ i ] += (betafreq << NeuQuantFloat._gammaShift);
+      const betafreq = this._freq[i] >> NeuQuantFloat._betaShift;
+      this._freq[i] -= betafreq;
+      this._bias[i] += betafreq << NeuQuantFloat._gammaShift;
     }
-    this._freq[ bestpos ] += NeuQuantFloat._beta;
-    this._bias[ bestpos ] -= NeuQuantFloat._betaGamma;
+    this._freq[bestpos] += NeuQuantFloat._beta;
+    this._bias[bestpos] -= NeuQuantFloat._betaGamma;
     return bestbiaspos;
   }
 }

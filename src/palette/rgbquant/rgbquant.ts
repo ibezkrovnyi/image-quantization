@@ -50,7 +50,11 @@ export class RGBQuant extends AbstractPaletteQuantizer {
   private readonly _histogram: ColorHistogram;
   private readonly _distance: AbstractDistanceCalculator;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, colors = 256, method = 2) {
+  constructor(
+    colorDistanceCalculator: AbstractDistanceCalculator,
+    colors = 256,
+    method = 2,
+  ) {
     super();
     this._distance = colorDistanceCalculator;
     // desired final palette size
@@ -85,17 +89,19 @@ export class RGBQuant extends AbstractPaletteQuantizer {
   }
 
   // reduces histogram to palette, remaps & memoizes reduced colors
-  * quantize() {
+  *quantize() {
     const idxi32 = this._histogram.getImportanceSortedColorsIDXI32();
     if (idxi32.length === 0) {
       throw new Error('No colors in image');
     }
 
-    yield * this._buildPalette(idxi32);
+    yield* this._buildPalette(idxi32);
   }
 
   // reduces similar colors from an importance-sorted Uint32 rgba array
-  private * _buildPalette(idxi32: number[]): IterableIterator<PaletteQuantizerYieldValue> {
+  private *_buildPalette(
+    idxi32: number[],
+  ): IterableIterator<PaletteQuantizerYieldValue> {
     // reduce histogram to create initial palette
     // build full rgb palette
     const palette = new Palette();
@@ -103,8 +109,8 @@ export class RGBQuant extends AbstractPaletteQuantizer {
     const usageArray = new Array(idxi32.length); // tslint:disable-line:prefer-array-literal
 
     for (let i = 0; i < idxi32.length; i++) {
-      colorArray.push(Point.createByUint32(idxi32[ i ]));
-      usageArray[ i ] = 1;
+      colorArray.push(Point.createByUint32(idxi32[i]));
+      usageArray[i] = 1;
     }
 
     const len = colorArray.length;
@@ -126,20 +132,20 @@ export class RGBQuant extends AbstractPaletteQuantizer {
           };
         }
 
-        if (usageArray[ i ] === 0) continue;
-        const pxi = colorArray[ i ];
+        if (usageArray[i] === 0) continue;
+        const pxi = colorArray[i];
         // if (!pxi) continue;
 
         for (let j = i + 1; j < len; j++) {
-          if (usageArray[ j ] === 0) continue;
-          const pxj = colorArray[ j ];
+          if (usageArray[j] === 0) continue;
+          const pxj = colorArray[j];
           // if (!pxj) continue;
 
           const dist = this._distance.calculateNormalized(pxi, pxj);
           if (dist < thold) {
             // store index,rgb,dist
             memDist.push(new RemovedColor(j, pxj, dist));
-            usageArray[ j ] = 0;
+            usageArray[j] = 0;
             palLen--;
           }
         }
@@ -148,7 +154,10 @@ export class RGBQuant extends AbstractPaletteQuantizer {
       // console.log("palette length: " + palLen);
 
       // if palette is still much larger than target, increment by larger initDist
-      thold += (palLen > this._colors * 3) ? this._initialDistance : this._distanceIncrement;
+      thold +=
+        palLen > this._colors * 3
+          ? this._initialDistance
+          : this._distanceIncrement;
     }
 
     // if palette is over-reduced, re-add removed colors with largest distances from last round
@@ -158,9 +167,9 @@ export class RGBQuant extends AbstractPaletteQuantizer {
 
       let k = 0;
       while (palLen < this._colors && k < memDist.length) {
-        const removedColor = memDist[ k ];
+        const removedColor = memDist[k];
         // re-inject rgb into final palette
-        usageArray[ removedColor.index ] = 1;
+        usageArray[removedColor.index] = 1;
         palLen++;
         k++;
       }
@@ -168,9 +177,9 @@ export class RGBQuant extends AbstractPaletteQuantizer {
 
     let colors = colorArray.length;
     for (let colorIndex = colors - 1; colorIndex >= 0; colorIndex--) {
-      if (usageArray[ colorIndex ] === 0) {
+      if (usageArray[colorIndex] === 0) {
         if (colorIndex !== colors - 1) {
-          colorArray[ colorIndex ] = colorArray[ colors - 1 ];
+          colorArray[colorIndex] = colorArray[colors - 1];
         }
         --colors;
       }
@@ -184,5 +193,4 @@ export class RGBQuant extends AbstractPaletteQuantizer {
       progress: 100,
     };
   }
-
 }

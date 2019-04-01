@@ -37,7 +37,13 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
 
   private _distance: AbstractDistanceCalculator;
 
-  constructor(colorDistanceCalculator: AbstractDistanceCalculator, kernel: ErrorDiffusionArrayKernel, serpentine = true, minimumColorDistanceToDither = 0, calculateErrorLikeGIMP = false) {
+  constructor(
+    colorDistanceCalculator: AbstractDistanceCalculator,
+    kernel: ErrorDiffusionArrayKernel,
+    serpentine = true,
+    minimumColorDistanceToDither = 0,
+    calculateErrorLikeGIMP = false,
+  ) {
     super();
     this._setKernel(kernel);
 
@@ -52,7 +58,10 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
    * fixed version. it doesn't use image pixels as error storage, also it doesn't have 0.3 + 0.3 + 0.3 + 0.3 = 0 error
    * Mutates pointContainer
    */
-  * quantize(pointContainer: PointContainer, palette: Palette): IterableIterator<ImageQuantizerYieldValue> {
+  *quantize(
+    pointContainer: PointContainer,
+    palette: Palette,
+  ): IterableIterator<ImageQuantizerYieldValue> {
     const pointArray = pointContainer.getPointArray();
     const originalPoint = new Point();
     const width = pointContainer.getWidth();
@@ -64,11 +73,11 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
 
     // initial error lines (number is taken from dithering kernel)
     for (const kernel of this._kernel) {
-      const kernelErrorLines = kernel[ 2 ] + 1;
+      const kernelErrorLines = kernel[2] + 1;
       if (maxErrorLines < kernelErrorLines) maxErrorLines = kernelErrorLines;
     }
     for (let i = 0; i < maxErrorLines; i++) {
-      this._fillErrorLine(errorLines[ i ] = [], width);
+      this._fillErrorLine((errorLines[i] = []), width);
     }
 
     const tracker = new ProgressTracker(height, 99);
@@ -87,28 +96,35 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
       const xEnd = dir === 1 ? width : -1;
 
       // cyclic shift with erasing
-      this._fillErrorLine(errorLines[ 0 ], width);
+      this._fillErrorLine(errorLines[0], width);
       // TODO: why it is needed to cast types here?
       errorLines.push(errorLines.shift() as number[][]);
 
-      const errorLine = errorLines[ 0 ];
-      for (let x = xStart, idx = lni + xStart; x !== xEnd; x += dir, idx += dir) {
+      const errorLine = errorLines[0];
+      for (
+        let x = xStart, idx = lni + xStart;
+        x !== xEnd;
+        x += dir, idx += dir
+      ) {
         // Image pixel
-        const point = pointArray[ idx ];
+        const point = pointArray[idx];
         // originalPoint = new Utils.Point(),
-        const error = errorLine[ x ];
+        const error = errorLine[x];
 
         originalPoint.from(point);
 
         const correctedPoint = Point.createByRGBA(
-          inRange0to255Rounded(point.r + error[ 0 ]),
-          inRange0to255Rounded(point.g + error[ 1 ]),
-          inRange0to255Rounded(point.b + error[ 2 ]),
-          inRange0to255Rounded(point.a + error[ 3 ]),
+          inRange0to255Rounded(point.r + error[0]),
+          inRange0to255Rounded(point.g + error[1]),
+          inRange0to255Rounded(point.b + error[2]),
+          inRange0to255Rounded(point.a + error[3]),
         );
 
         // Reduced pixel
-        const palettePoint = palette.getNearestColor(this._distance, correctedPoint);
+        const palettePoint = palette.getNearestColor(
+          this._distance,
+          correctedPoint,
+        );
         point.from(palettePoint);
 
         // dithering strength
@@ -138,17 +154,17 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
         const dEnd = dir === 1 ? this._kernel.length : -1;
 
         for (let i = dStart; i !== dEnd; i += dir) {
-          const x1 = this._kernel[ i ][ 1 ] * dir;
-          const y1 = this._kernel[ i ][ 2 ];
+          const x1 = this._kernel[i][1] * dir;
+          const y1 = this._kernel[i][2];
 
           if (x1 + x >= 0 && x1 + x < width && y1 + y >= 0 && y1 + y < height) {
-            const d = this._kernel[ i ][ 0 ];
-            const e = errorLines[ y1 ][ x1 + x ];
+            const d = this._kernel[i][0];
+            const e = errorLines[y1][x1 + x];
 
-            e[ 0 ] += er * d;
-            e[ 1 ] += eg * d;
-            e[ 2 ] += eb * d;
-            e[ 3 ] += ea * d;
+            e[0] += er * d;
+            e[1] += eg * d;
+            e[2] += eb * d;
+            e[3] += ea * d;
           }
         }
       }
@@ -169,13 +185,13 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
     // reuse existing arrays
     const l = errorLine.length;
     for (let i = 0; i < l; i++) {
-      const error = errorLine[ i ];
-      error[ 0 ] = error[ 1 ] = error[ 2 ] = error[ 3 ] = 0;
+      const error = errorLine[i];
+      error[0] = error[1] = error[2] = error[3] = 0;
     }
 
     // create missing arrays
     for (let i = l; i < width; i++) {
-      errorLine[ i ] = [0.0, 0.0, 0.0, 0.0];
+      errorLine[i] = [0.0, 0.0, 0.0, 0.0];
     }
   }
 
@@ -191,11 +207,7 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
         break;
 
       case ErrorDiffusionArrayKernel.FalseFloydSteinberg:
-        this._kernel = [
-          [3 / 8, 1, 0],
-          [3 / 8, 0, 1],
-          [2 / 8, 1, 1],
-        ];
+        this._kernel = [[3 / 8, 1, 0], [3 / 8, 0, 1], [2 / 8, 1, 1]];
         break;
 
       case ErrorDiffusionArrayKernel.Stucki:
@@ -227,7 +239,8 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
         break;
 
       case ErrorDiffusionArrayKernel.Jarvis:
-        this._kernel = [			// Jarvis, Judice, and Ninke / JJN?
+        this._kernel = [
+          // Jarvis, Judice, and Ninke / JJN?
           [7 / 48, 1, 0],
           [5 / 48, 2, 0],
           [3 / 48, -2, 1],
@@ -283,11 +296,7 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
         break;
 
       case ErrorDiffusionArrayKernel.SierraLite:
-        this._kernel = [
-          [2 / 4, 1, 0],
-          [1 / 4, -1, 1],
-          [1 / 4, 0, 1],
-        ];
+        this._kernel = [[2 / 4, 1, 0], [1 / 4, -1, 1], [1 / 4, 0, 1]];
         break;
 
       default:

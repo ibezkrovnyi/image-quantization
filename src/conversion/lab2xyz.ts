@@ -6,7 +6,7 @@
  * lab2xyz.ts - part of Image Quantization Library
  */
 const refX = 0.95047; // ref_X =  95.047   Observer= 2°, Illuminant = D65
-const refY = 1.00000; // ref_Y = 100.000
+const refY = 1.0; // ref_Y = 100.000
 const refZ = 1.08883; // ref_Z = 108.883
 
 function pivot(n: number) {
