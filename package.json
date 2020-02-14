@@ -82,7 +82,7 @@
   },
   "devDependencies": {
     "@ibezkrovnyi/tslint-rules": "0.0.3",
-    "@types/core-js": "2.5.0",
+    "@types/core-js": "2.5.3",
     "@types/jest": "22.2.0",
     "@types/pngjs": "3.3.0",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
