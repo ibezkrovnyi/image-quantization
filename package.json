@@ -97,7 +97,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "gh-pages": "1.2.0",
     "jest": "22.4.0",
-    "pngjs": "3.3.3",
+    "pngjs": "4.0.1",
     "prettier": "^1.16.4",
     "rimraf": "*",
     "rollup": "0.57.0",
