@@ -100,7 +100,7 @@
     "pngjs": "3.3.3",
     "prettier": "^1.16.4",
     "rimraf": "*",
-    "rollup": "0.57.0",
+    "rollup": "2.7.3",
     "rollup-plugin-commonjs": "9.1.0",
     "rollup-plugin-local-resolve": "1.0.7",
     "rollup-plugin-node-resolve": "3.3.0",
