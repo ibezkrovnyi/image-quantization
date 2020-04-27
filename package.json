@@ -85,7 +85,7 @@
     "@types/core-js": "2.5.0",
     "@types/jest": "22.2.0",
     "@types/pngjs": "3.3.0",
-    "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/eslint-plugin-tslint": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
     "core-js": "2.5.4",
