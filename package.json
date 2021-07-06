@@ -10,6 +10,7 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "prepublish": "npm run build",
+    "prepare": "npm run build",
     "test": "npm run lint && jest --maxWorkers=2 --env=node",
     "build": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
     "test:watch": "jest --watch --env=node",
