@@ -10,6 +10,7 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "prepublish": "npm run build",
+    "prepare": "npm run build",
     "test": "npm run lint && jest --maxWorkers=2 --env=node",
     "build": "tsc --outDir dist/esm && tsc -m commonjs -t es5 --outDir dist/cjs && rollup -i dist/cjs/image-q.js -o dist/umd/image-q.js -f umd -n image-q --config",
     "test:watch": "jest --watch --env=node",
@@ -88,7 +89,7 @@
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/eslint-plugin-tslint": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
-    "core-js": "2.5.4",
+    "core-js": "^3.6.0",
     "coveralls": "3.0.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
