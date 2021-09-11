@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "es5",
+    "tsBuildInfoFile": "./node_modules/.cache/tsc/tsconfig.jest.tsbuildinfo"
+  },
+  "include": ["src", "tests"]
+}

@@ -5,7 +5,6 @@
  *
  * pointContainer.ts - part of Image Quantization Library
  */
-import { Buffer } from 'node:buffer';
 import { Point } from './point';
 
 /**
