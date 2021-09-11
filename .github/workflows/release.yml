@@ -31,7 +31,7 @@ jobs:
         # pnpm -r test
     - name: Publish
       run: |
-        node ./2.js
+        # node ./2.js
         pnpm -r publish --no-git-checks --access=public
       env:
         CI: true
