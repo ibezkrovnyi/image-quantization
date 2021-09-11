@@ -28,10 +28,9 @@ jobs:
       run: |
         pnpm install
         pnpm -r build
-        # pnpm -r test
+        pnpm -r test
     - name: Publish
       run: |
-        # node ./2.js
         pnpm -r publish --no-git-checks --access=public
       env:
         CI: true
