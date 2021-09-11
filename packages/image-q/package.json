@@ -10,7 +10,7 @@
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
     "test": "jest --maxWorkers=2 --env=node",
-    "build": "tsc -p tsconfig.build-esm.json && tsc -p tsconfig.build-cjs.json && tsc -p tsconfig.build-umd.json && webpack",
+    "build": "tsc -p tsconfig.build-esm.json && tsc -p tsconfig.build-cjs.json && webpack",
     "test:watch": "jest --watch --env=node",
     "deploy": "jest && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
     "gh-pages": "rimraf ./docs && typedoc.cmd src && gh-pages -d docs",
