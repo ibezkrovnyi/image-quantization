@@ -19,8 +19,8 @@ export function initialize() {
   };
 }
 
-export function update(quantize: boolean) {
-  if (quantize) {
+export function update(quantizationIsNeeded: boolean) {
+  if (quantizationIsNeeded) {
     var imageFoldersControl = <webix.ui.grouplist>$$('image');
     var selectedId = imageFoldersControl.getSelectedId(true);
     if (selectedId.length > 0) {
@@ -29,36 +29,48 @@ export function update(quantize: boolean) {
         var img: HTMLImageElement = (<any>node).firstElementChild;
 
         if (img.tagName === 'IMG') {
-          var colors = parseInt(
-              (<webix.ui.richselect>$$('option-colors')).getValue(),
-              10,
-            ),
-            paletteQuantizerMethod = parseInt(
-              (<webix.ui.richselect>$$('option-palette')).getValue(),
-              10,
-            ),
-            imageQuantizerMethod =
-              parseInt(
-                (<webix.ui.richselect>$$('option-image')).getValue(),
-                10,
-              ) - 2,
-            colorDistanceMethod = parseInt(
-              (<webix.ui.richselect>$$('option-distance')).getValue(),
-              10,
-            );
-
-          quantizeResult = new QuantizationUsage().quantize(
-            img,
-            colors,
-            paletteQuantizerMethod,
-            imageQuantizerMethod,
-            colorDistanceMethod,
-          );
+          quantize(img.src);
         }
       }
     }
+  } else {
+    applyQuantizationResult();
   }
+}
 
+function quantize(imgURL: string) {
+  var img = new Image();
+
+  img.onload = function () {
+    var colors = parseInt(
+        (<webix.ui.richselect>$$('option-colors')).getValue(),
+        10,
+      ),
+      paletteQuantizerMethod = parseInt(
+        (<webix.ui.richselect>$$('option-palette')).getValue(),
+        10,
+      ),
+      imageQuantizerMethod =
+        parseInt((<webix.ui.richselect>$$('option-image')).getValue(), 10) - 2,
+      colorDistanceMethod = parseInt(
+        (<webix.ui.richselect>$$('option-distance')).getValue(),
+        10,
+      );
+
+    quantizeResult = new QuantizationUsage().quantize(
+      img,
+      colors,
+      paletteQuantizerMethod,
+      imageQuantizerMethod,
+      colorDistanceMethod,
+    );
+    applyQuantizationResult();
+  };
+
+  img.src = imgURL; // this must be done AFTER setting onload
+}
+
+function applyQuantizationResult() {
   if (quantizeResult) {
     fillClickToCompare(quantizeResult);
     fillOriginalVsQuantized(quantizeResult);

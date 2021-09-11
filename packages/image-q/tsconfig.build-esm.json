@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "dist/esm",
     "module": "esnext",
-    "types": ["node"]
+    "types": ["node"],
+    "tsBuildInfoFile": "./node_modules/.cache/tsc/tsconfig.build-esm.tsbuildinfo"
   },
   "include": ["src/**/*"]
 }

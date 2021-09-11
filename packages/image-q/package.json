@@ -1,24 +1,23 @@
 {
   "name": "image-q",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
-  "homepage": "https://github.com/ibezkrovnyi/image-quantization",
+  "homepage": "https://github.com/ibezkrovnyi/image-quantization/tree/main/packages/image-q",
   "main": "dist/umd/image-q.js",
-  "module": "dist/esm/image-q.js",
-  "types": "dist/esm/image-q.d.ts",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "exports": {
-    "import": "./dist/esm/image-q.js",
-    "require": "./dist/cjs/image-q.js",
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js",
     "default": "./dist/umd/image-q.js"
   },
   "scripts": {
-    "test": "jest --env=node",
+    "test": "jest",
     "build": "tsc -p tsconfig.build-esm.json && tsc -p tsconfig.build-cjs.json && webpack",
-    "test:watch": "jest --watch --env=node",
     "deploy": "jest && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
-    "gh-pages": "rimraf ./docs && typedoc.cmd src && gh-pages -d docs",
+    "gh-pages": "shx rm -rf ./docs && typedoc.cmd src && gh-pages -d docs",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "files": [
@@ -54,9 +53,9 @@
     "@types/pngjs": "3.3.0",
     "core-js": "^3.17.3",
     "coveralls": "3.0.1",
-    "gh-pages": "1.2.0",
+    "gh-pages": "3.2.3",
     "pngjs": "3.3.3",
-    "typedoc": "0.11.1"
+    "typedoc": "0.22.2"
   },
   "dependencies": {
     "@types/node": "16.9.1"

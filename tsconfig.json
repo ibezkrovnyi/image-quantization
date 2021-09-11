@@ -1,4 +1,7 @@
 {
   "files": [],
+  "compilerOptions": {
+    "composite": true
+  },
   "references": [{ "path": "./packages/image-q/tsconfig.json" }]
 }

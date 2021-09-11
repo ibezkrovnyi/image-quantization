@@ -27,7 +27,8 @@
     "url": "https://github.com/igor-bezkrovny/image-quantization/issues"
   },
   "scripts": {
-    "start": "webpack && http-server ./ -c-1"
+    "build": "webpack",
+    "start": "pnpm build && http-server ./ -c-1"
   },
   "preferGlobal": false,
   "license": "MIT",

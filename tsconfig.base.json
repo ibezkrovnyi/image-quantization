@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -11,8 +9,9 @@
     "target": "esnext",
     "moduleResolution": "node",
     "downlevelIteration": true,
+
     "lib": ["dom", "esnext"],
-    "types": ["node"],
+    "types": ["node", "jest"],
 
     "strict": true,
     "noUnusedLocals": true,
@@ -22,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
 
-    "pretty": true
-  },
-  "include": ["src"]
+    "pretty": true,
+    "composite": true
+  }
 }

@@ -1,4 +1,4 @@
-import iq = require('../../dist/cjs/image-q');
+import * as iq from 'image-q';
 
 var p1 = iq.utils.Point.createByRGBA(0, 0, 0, 0),
   p2 = iq.utils.Point.createByRGBA(255, 255, 255, 0);
@@ -7,14 +7,14 @@ console.log(new iq.distance.CIEDE2000().calculateNormalized(p1, p2));
 
 var width = 16,
   height = 16,
-  imageArray = [],
+  imageArray: number[] = [],
   distance = new iq.distance.CIEDE2000();
 
 for (var i = 0; i < width * height * 4; i++) {
   imageArray[i] = (Math.random() * 256) | 0;
 }
 
-function timeMark(title, callback) {
+function timeMark(title: string, callback: () => void) {
   var start = Date.now();
   callback();
   console.log(title + ': ' + (Date.now() - start));
@@ -30,7 +30,7 @@ timeMark('!!! total time', () => {
       ),
       iqPalette,
       iqImage,
-      palette;
+      palette: iq.utils.Palette;
 
     // quantize palette
     timeMark('palette: neuquant', function () {

@@ -2,7 +2,7 @@ module.exports = {
   out: 'docs',
   mode: 'file',
   theme: 'default',
-  tsconfig: 'tsconfig.json',
+  tsconfig: 'tsconfig.build-esm.json',
   exclude: '**/*.spec.ts',
 
   excludePrivate: true,

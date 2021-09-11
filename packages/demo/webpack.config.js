@@ -12,9 +12,6 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  externals: {
-    'image-q': 'window image-q',
-  },
   module: {
     rules: [
       {

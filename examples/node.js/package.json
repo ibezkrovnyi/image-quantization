@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "image-q-node-js-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pnpm build && node ./dist/src/index.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+"devDependencies": {
+  "image-q": "workspace:*"
+}
+}

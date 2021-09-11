@@ -3,6 +3,8 @@ module.exports = {
     '<rootDir>/src',
     '<rootDir>/tests',
   ],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
   globals: {
     'ts-jest': {
       tsconfig: './tests/tsconfig.json',
@@ -26,5 +28,5 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
   ],
-  preset: 'ts-jest',
+  cacheDirectory: '<rootDir>/node_modules/.cache/jest'
 }
