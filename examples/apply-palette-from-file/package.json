@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "apply-palette-from-file",
   "version": "0.0.1",
   "description": "Image-Quantization Demo: Apply Palette From File",

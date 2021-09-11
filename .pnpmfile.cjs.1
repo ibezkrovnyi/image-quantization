@@ -1,0 +1,75 @@
+const packagesNeverInDependencies = [
+  /typescript/,
+  /webpack/,
+  /typescript-eslint/,
+];
+
+const hardcodedVersions = {
+  '@types/node': '16.9.1',
+};
+
+const filter = (pkg, depKeys, handler, context) => {
+  for (const depKey of depKeys) {
+    const dependencies = pkg[depKey];
+    if (!dependencies) continue;
+
+    const result = {};
+    for (const [name, versionSpec] of Object.entries(dependencies)) {
+      const handlerResult = handler([name, versionSpec]);
+      if (Array.isArray(handlerResult)) {
+        result[handlerResult[0]] = handlerResult[1];
+        if (versionSpec !== result[name]) {
+          context.log(name, versionSpec, result[name]);
+        } else {
+          context.log(pkg.name, name, versionSpec, 'no change');
+        }
+      } else {
+        context.log(pkg.name, name, 'error');
+      }
+    }
+    pkg[depKey] = result;
+  }
+};
+
+function readPackage(pkg, context) {
+  pkg.dependencies = Object.fromEntries(
+    Object.entries(pkg.dependencies).filter(([name, _versionSpec]) => {
+      return packagesNeverInDependencies.some((forbiddenName) =>
+        forbiddenName.test(name),
+      );
+    }),
+  );
+
+  filter(
+    pkg,
+    [
+      'dependencies',
+      'devDependencies',
+      'optionalDependencies',
+      'peerDependencies',
+    ],
+    ([name, versionSpec]) =>
+      Object.keys(hardcodedVersions).includes(name)
+        ? [name, hardcodedVersions[name]]
+        : [name, versionSpec],
+    context,
+  );
+
+  // context.log(JSON.stringify(pkg, null, '  '));
+
+  if (pkg.name === '@types/jest') {
+    pkg.dependencies = {
+      ...pkg.dependencies,
+      '@types/jest-diff': '^24.3.0',
+      '@types/pretty-format': '^24.3.0',
+    };
+  }
+  // context.log('')
+  return pkg;
+}
+
+module.exports = {
+  hooks: {
+    readPackage,
+  },
+};

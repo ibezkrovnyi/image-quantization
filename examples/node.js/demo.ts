@@ -1,58 +1,65 @@
-import iq = require("../../dist/cjs/image-q")
+import iq = require('../../dist/cjs/image-q');
 
 var p1 = iq.utils.Point.createByRGBA(0, 0, 0, 0),
-	p2 = iq.utils.Point.createByRGBA(255, 255, 255, 0);
+  p2 = iq.utils.Point.createByRGBA(255, 255, 255, 0);
 
-console.log(new iq.distance.CIEDE2000().calculateNormalized(p1, p2))
+console.log(new iq.distance.CIEDE2000().calculateNormalized(p1, p2));
 
-var width      = 16,
-	height     = 16,
-	imageArray = [],
-	distance   = new iq.distance.CIEDE2000();
+var width = 16,
+  height = 16,
+  imageArray = [],
+  distance = new iq.distance.CIEDE2000();
 
 for (var i = 0; i < width * height * 4; i++) {
-	imageArray[ i ] = (Math.random() * 256) | 0;
+  imageArray[i] = (Math.random() * 256) | 0;
 }
 
 function timeMark(title, callback) {
-	var start = Date.now();
-	callback();
-	console.log(title + ": " + (Date.now() - start));
+  var start = Date.now();
+  callback();
+  console.log(title + ': ' + (Date.now() - start));
 }
 
-timeMark("!!! total time", () => {
-	for (var i = 0; i < 30; i++) {
-		// simulate image loading
-		var pointContainer = iq.utils.PointContainer.fromUint8Array(imageArray, width, height),
-			iqPalette,
-			iqImage,
-			palette;
+timeMark('!!! total time', () => {
+  for (var i = 0; i < 30; i++) {
+    // simulate image loading
+    var pointContainer = iq.utils.PointContainer.fromUint8Array(
+        imageArray,
+        width,
+        height,
+      ),
+      iqPalette,
+      iqImage,
+      palette;
 
-		// quantize palette
-		timeMark("palette: neuquant", function () {
-			iqPalette = new iq.palette.NeuQuant(distance, 256);
-			iqPalette.sample(pointContainer);
-			palette = iqPalette.quantizeSync();
-		});
+    // quantize palette
+    timeMark('palette: neuquant', function () {
+      iqPalette = new iq.palette.NeuQuant(distance, 256);
+      iqPalette.sample(pointContainer);
+      palette = iqPalette.quantizeSync();
+    });
 
-		timeMark("palette: rgbquant", function () {
-			iqPalette = new iq.palette.RGBQuant(distance, 256);
-			iqPalette.sample(pointContainer);
-			palette = iqPalette.quantizeSync();
-		});
+    timeMark('palette: rgbquant', function () {
+      iqPalette = new iq.palette.RGBQuant(distance, 256);
+      iqPalette.sample(pointContainer);
+      palette = iqPalette.quantizeSync();
+    });
 
-		timeMark("palette: wuquant", function () {
-			iqPalette = new iq.palette.WuQuant(distance, 256);
-			iqPalette.sample(pointContainer);
-			palette = iqPalette.quantizeSync();
-		});
+    timeMark('palette: wuquant', function () {
+      iqPalette = new iq.palette.WuQuant(distance, 256);
+      iqPalette.sample(pointContainer);
+      palette = iqPalette.quantizeSync();
+    });
 
-		// quantize image
-		timeMark("image: error diffusion: sierra lite", function () {
-			iqImage = new iq.image.ErrorDiffusionArray(distance, iq.image.ErrorDiffusionArrayKernel.SierraLite);
-			iqImage.quantizeSync(pointContainer, palette);
-		});
-	}
+    // quantize image
+    timeMark('image: error diffusion: sierra lite', function () {
+      iqImage = new iq.image.ErrorDiffusionArray(
+        distance,
+        iq.image.ErrorDiffusionArrayKernel.SierraLite,
+      );
+      iqImage.quantizeSync(pointContainer, palette);
+    });
+  }
 });
 
 /*
