@@ -5,7 +5,7 @@
  *
  * helper.ts - part of Image Quantization Library
  */
-import setImmediate from 'core-js/features/set-immediate';
+import * as setImmediate from 'core-js/features/set-immediate';
 import * as distance from './distance';
 import * as image from './image';
 import * as palette from './palette';

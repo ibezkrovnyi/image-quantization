@@ -4,10 +4,7 @@ import {
   buildPaletteSync,
   applyPaletteSync,
   utils,
-  ColorDistanceFormula,
-  PaletteQuantization,
-  ImageQuantization,
-} from '../../src/image-q';
+} from '../../src';
 
 let pointContainer: utils.PointContainer;
 beforeEach(function () {
@@ -26,13 +23,13 @@ beforeEach(function () {
 
 test(`Simple API`, async function () {
   // test async
-  let buildPaletteProgressMarks = [];
+  const buildPaletteProgressMarks: number[] = [];
   const palette = await buildPalette([pointContainer], {
     onProgress: (progress) => buildPaletteProgressMarks.push(progress),
   });
   expect(palette).toBeInstanceOf(utils.Palette);
 
-  let applyPaletteProgressMarks = [];
+  const applyPaletteProgressMarks: number[] = [];
   const outPointContainer = await applyPalette(pointContainer, palette, {
     onProgress: (progress) => applyPaletteProgressMarks.push(progress),
   });

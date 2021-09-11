@@ -1,4 +1,4 @@
-import { conversion } from '../../../src/image-q';
+import { conversion } from '../../../src';
 import { dataLab2RGB } from './dataLab2RGB';
 import { dataRGB2Lab } from './dataRGB2Lab';
 
@@ -70,7 +70,7 @@ describe('lab2rgb', function () {
   });
 });
 
-function deepRound(obj, digitsAfterPoint) {
+function deepRound(obj: Record<string, number>, digitsAfterPoint: number) {
   Object.keys(obj).forEach((propertyName) => {
     const n = obj[propertyName];
     const multiplier = Math.pow(10, digitsAfterPoint);
@@ -78,15 +78,15 @@ function deepRound(obj, digitsAfterPoint) {
   });
 }
 
-function roundLike(n, likeThisValue) {
-  const s = likeThisValue.toString();
-  const pointPosition = s.indexOf('.');
+// function roundLike(n, likeThisValue) {
+//   const s = likeThisValue.toString();
+//   const pointPosition = s.indexOf('.');
 
-  if (pointPosition < 0) {
-    return Math.round(n);
-  }
+//   if (pointPosition < 0) {
+//     return Math.round(n);
+//   }
 
-  const digitsAfterPoint = s.length - pointPosition - 1;
-  const multiplier = Math.pow(10, digitsAfterPoint);
-  return Math.round(n * multiplier) / multiplier;
-}
+//   const digitsAfterPoint = s.length - pointPosition - 1;
+//   const multiplier = Math.pow(10, digitsAfterPoint);
+//   return Math.round(n * multiplier) / multiplier;
+// }

@@ -1,5 +1,5 @@
-import { getFiles, runTest } from './utils';
-import * as iq from '../../src/image-q';
+import { runTest } from './utils';
+import * as iq from '../../src';
 
 const colors = 32;
 const file = 'frymire.png';

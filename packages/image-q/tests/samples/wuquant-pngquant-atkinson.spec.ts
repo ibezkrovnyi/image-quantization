@@ -1,5 +1,5 @@
-import { getFiles, runTest } from './utils';
-import * as iq from '../../src/image-q';
+import { runTest } from './utils';
+import * as iq from '../../src';
 
 const colors = 64;
 const file = 'sail.png';

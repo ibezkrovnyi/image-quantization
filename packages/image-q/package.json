@@ -9,7 +9,6 @@
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
   "scripts": {
-    "prepack": "pnpm run build",
     "test": "jest --maxWorkers=2 --env=node",
     "build": "tsc -p tsconfig.build-esm.json && tsc -p tsconfig.build-cjs.json && tsc -p tsconfig.build-umd.json && webpack",
     "test:watch": "jest --watch --env=node",

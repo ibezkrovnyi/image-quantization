@@ -1,5 +1,5 @@
 import { data as dataInLab } from './dataInLab';
-import { conversion, distance, utils } from '../../../src/image-q';
+import { conversion, distance, utils } from '../../../src';
 
 describe(`CIEDE2000`, function () {
   const ciede2000 = new distance.CIEDE2000();
@@ -7,7 +7,7 @@ describe(`CIEDE2000`, function () {
   doTests(ciede2000);
 });
 
-function doTests(ciede2000) {
+function doTests(ciede2000: distance.CIEDE2000) {
   describe('color distance should be correctly calculated (Lab)', function () {
     dataInLab.forEach((item) => {
       test(`Colors: Lab1 = ${dir(item.Lab1)}, Lab2 = ${dir(
@@ -39,6 +39,6 @@ function doTests(ciede2000) {
   });
 }
 
-function dir(obj) {
+function dir(obj: unknown) {
   return JSON.stringify(obj);
 }

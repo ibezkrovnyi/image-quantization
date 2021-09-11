@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { PNG } from 'pngjs';
-import * as iq from '../../src/image-q';
+import * as iq from '../../src';
+import { PointContainer } from '../../src/utils';
 
 export function getFiles() {
   const dir = path.join(__dirname, 'images');
@@ -21,10 +22,13 @@ export function getFiles() {
         ),
       };
       return prev;
-    }, {});
+    }, {} as Record<string, {
+      decoded: PNG,
+      pointContainer: PointContainer,
+    }>);
 }
 
-const getFile = (file) => {
+const getFile = (file: string) => {
   const dir = path.join(__dirname, 'images');
   const decoded = decodePng(path.join(dir, file));
   return {
@@ -37,16 +41,16 @@ const getFile = (file) => {
   };
 };
 
-function decodePng(path) {
+function decodePng(path: string) {
   const buffer = fs.readFileSync(path);
   return PNG.sync.read(buffer);
 }
 
 export function runTest(
-  title,
-  file,
-  colors,
-  distanceC: iq.distance.AbstractDistanceCalculator,
+  title: string,
+  file: string,
+  _colors: unknown,
+  _distanceC: iq.distance.AbstractDistanceCalculator,
   paletteQ: iq.palette.AbstractPaletteQuantizer,
   imageQ: iq.image.AbstractImageQuantizer,
 ) {
