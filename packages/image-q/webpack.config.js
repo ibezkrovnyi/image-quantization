@@ -11,6 +11,9 @@ const baseConfig = {
   output: {
     path: path.resolve(__dirname, 'dist', 'umd'),
     filename: '[name].js',
+    library: 'image-q',
+    libraryTarget: 'umd',
+    globalObject: `typeof globalThis !== 'undefined' ? globalThis : typeof this !== 'undefined' ? this : typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : null`,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],

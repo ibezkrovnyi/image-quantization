@@ -14,7 +14,7 @@
     "default": "./dist/umd/image-q.js"
   },
   "scripts": {
-    "clean": "shx rm -rf ./node_modules",
+    "clean": "shx rm -rf ./node_modules/.cache",
     "build": "tsc -p tsconfig.build-esm.json && webpack",
     "test": "jest",
     "gh-pages-DISABLED": "shx rm -rf ./docs && typedoc.cmd src && gh-pages -d docs",
