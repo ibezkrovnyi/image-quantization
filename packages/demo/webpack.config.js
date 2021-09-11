@@ -15,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /(.js|.jsx|.ts|.tsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         loader: 'esbuild-loader',
         options: {
           loader: 'tsx',
