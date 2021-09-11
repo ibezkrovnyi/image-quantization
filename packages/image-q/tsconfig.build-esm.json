@@ -6,5 +6,5 @@
     "types": ["node"],
     "tsBuildInfoFile": "./node_modules/.cache/tsc/tsconfig.build-esm.tsbuildinfo"
   },
-  "include": ["src/**/*"]
+  "include": ["src"]
 }

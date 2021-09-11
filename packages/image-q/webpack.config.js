@@ -23,7 +23,7 @@ const baseConfig = {
         options: {
           loader: 'tsx',
           target: 'es2015',
-          tsconfigRaw: require('./tsconfig.json'),
+          tsconfigRaw: require('./tsconfig.build-webpack.json'),
         },
       },
     ],

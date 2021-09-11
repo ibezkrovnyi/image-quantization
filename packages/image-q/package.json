@@ -6,22 +6,23 @@
   "contributors": [],
   "homepage": "https://github.com/ibezkrovnyi/image-quantization/tree/main/packages/image-q",
   "main": "dist/umd/image-q.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "module": "dist/esm/src/index.js",
+  "types": "dist/esm/src/index.d.ts",
   "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/src/index.js",
+    "require": "./dist/cjs/src/index.js",
     "default": "./dist/umd/image-q.js"
   },
   "scripts": {
-    "test": "jest",
+    "clean": "shx rm -rf ./node_modules",
     "build": "tsc -p tsconfig.build-esm.json && tsc -p tsconfig.build-cjs.json && webpack",
-    "deploy": "jest && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
-    "gh-pages": "shx rm -rf ./docs && typedoc.cmd src && gh-pages -d docs",
+    "test": "jest",
+    "gh-pages-DISABLED": "shx rm -rf ./docs && typedoc.cmd src && gh-pages -d docs",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "preferGlobal": false,
   "keywords": [
@@ -39,9 +40,6 @@
     "floyd-steinberg"
   ],
   "author": "Igor Bezkrovny",
-  "engines": {
-    "node": ">=0.9.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ibezkrovnyi/image-quantization"
