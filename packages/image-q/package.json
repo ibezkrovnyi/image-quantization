@@ -8,8 +8,13 @@
   "main": "dist/umd/image-q.js",
   "module": "dist/esm/image-q.js",
   "types": "dist/esm/image-q.d.ts",
+  "exports": {
+    "import": "./dist/esm/image-q.js",
+    "require": "./dist/cjs/image-q.js",
+    "default": "./dist/umd/image-q.js"
+  },
   "scripts": {
-    "test": "jest --maxWorkers=2 --env=node",
+    "test": "jest --env=node",
     "build": "tsc -p tsconfig.build-esm.json && tsc -p tsconfig.build-cjs.json && webpack",
     "test:watch": "jest --watch --env=node",
     "deploy": "jest && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
