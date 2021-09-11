@@ -5,11 +5,12 @@
   "description": "Image-Quantization Demo: Apply Palette From File",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "build": "node index.js"
   },
   "author": "Igor Bezkrovnyi",
   "license": "MIT",
   "dependencies": {
+    "image-q": "workspace:*",
     "pngjs": "^3.0.0"
   }
 }

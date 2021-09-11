@@ -30,8 +30,10 @@ importers:
 
   examples/apply-palette-from-file:
     specifiers:
+      image-q: workspace:*
       pngjs: ^3.0.0
     dependencies:
+      image-q: link:../../packages/image-q
       pngjs: 3.3.3
 
   examples/node.js:

@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('fs');
-const iq = require('../../packages/image-q/dist/cjs/image-q');
+const iq = require('image-q');
 const PNG = require('pngjs').PNG;
 
 const files = {
