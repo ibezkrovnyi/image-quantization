@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "inlineSources": true,
+
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "downlevelIteration": true,
+    "lib": ["dom", "esnext"],
+    "types": ["node"],
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noErrorTruncation": true,
+    "preserveConstEnums": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "pretty": true
+  },
+  "include": ["src/**/*"]
+}

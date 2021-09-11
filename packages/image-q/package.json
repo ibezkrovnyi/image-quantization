@@ -1,0 +1,60 @@
+{
+  "name": "image-q",
+  "version": "3.0.0",
+  "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
+  "license": "MIT",
+  "contributors": [],
+  "homepage": "https://github.com/ibezkrovnyi/image-quantization",
+  "main": "dist/umd/image-q.js",
+  "module": "dist/esm/image-q.js",
+  "types": "dist/esm/image-q.d.ts",
+  "scripts": {
+    "prepack": "pnpm run build",
+    "test": "jest --maxWorkers=2 --env=node",
+    "build": "tsc -p tsconfig.build-esm.json && tsc -p tsconfig.build-cjs.json && tsc -p tsconfig.build-umd.json && webpack",
+    "test:watch": "jest --watch --env=node",
+    "deploy": "jest && npm run gh-pages && npm version patch && git push --follow-tags && npm publish",
+    "gh-pages": "rimraf ./docs && typedoc.cmd src && gh-pages -d docs",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+  },
+  "files": [
+    "dist"
+  ],
+  "preferGlobal": false,
+  "keywords": [
+    "image",
+    "palette",
+    "quantization",
+    "quantizer",
+    "color",
+    "neuquant",
+    "rgbquant",
+    "xiaolin wu",
+    "cie94 distance",
+    "ciede2000",
+    "dithering",
+    "floyd-steinberg"
+  ],
+  "author": "Igor Bezkrovny",
+  "engines": {
+    "node": ">=0.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibezkrovnyi/image-quantization"
+  },
+  "bugs": {
+    "url": "https://github.com/ibezkrovnyi/image-quantization/issues"
+  },
+  "devDependencies": {
+    "@types/pngjs": "3.3.0",
+    "core-js": "^3.17.3",
+    "coveralls": "3.0.1",
+    "gh-pages": "1.2.0",
+    "pngjs": "3.3.3",
+    "typedoc": "0.11.1"
+  },
+  "dependencies": {
+    "@types/node": "16.9.1"
+  }
+}
