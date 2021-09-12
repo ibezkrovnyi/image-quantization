@@ -10,31 +10,66 @@ jobs:
       matrix:
         node-version: [14]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-        registry-url: "https://registry.npmjs.org"
-        always-auth: true
-    - name: Cache .pnpm-store
-      uses: actions/cache@v1
-      with:
-        path: ~/.pnpm-store
-        key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-    - name: Install pnpm
-      run: curl -f https://get.pnpm.io/v6.14.js | node - add --global pnpm@6
-    - name: Install, Build, Test
-      run: |
-        pnpm install
-        pnpm -r build
-        pnpm -r test
-    # - name: Create tags
-    #     pnpm -r --filter=image-q --no-bail exec "git tag $(node -e 'pj=require(\'./package.json\');console.log(pj.name+'@'+pj.version')"
-    #     git push --follow-tags
-    - name: Publish
-      run: |
-        pnpm -r publish --no-git-checks --access=public
-      env:
-        CI: true
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/checkout@v2
+
+      - name: '[nodejs] Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: "https://registry.npmjs.org"
+          always-auth: true
+
+      - name: '[cache] .pnpm-store'
+        uses: actions/cache@v1
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: '[pnpm] download pnpm binary'
+        run: curl -f https://get.pnpm.io/v6.14.js | node - add --global pnpm@6
+
+      - name: '[pnpm] configure SINCE git ref'
+        run: |
+          echo "SINCE=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
+
+      - name: '[pnpm] install, build, test'
+        run: |
+          pnpm --filter=...[$SINCE]... install
+          pnpm --filter=...[$SINCE]... build
+          pnpm --filter=...[$SINCE] test
+
+      - name: '[log] SINCE'
+        run: |
+          echo 'SINCE=$SINCE'
+          echo 'Changed projects'
+          pnpm --filter=[$SINCE] ls --depth -1
+          echo 'Changed and dependent projects'
+          pnpm --filter=...[$SINCE] ls --depth -1
+          echo 'Changed projects, dependent projects and dependencies'
+          pnpm --filter=...[$SINCE]... ls --depth -1
+
+      # - name: Create tags
+      #     pnpm -r --filter=image-q --no-bail exec "git tag $(node -e 'pj=require(\'./package.json\');console.log(pj.name+'@'+pj.version')"
+      #     git push --follow-tags
+
+      - name: '[pnpm] publish'
+        run: |
+          pnpm --filter=[$SINCE] publish --no-git-checks --access=public
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # - name: '[github] create release'
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      #   with:
+      #     tag_name: ${{ github.ref }}
+      #     release_name: Release ${{ github.ref }}
+      #     body: |
+      #       Changes in this Release
+      #       - First Change
+      #       - Second Change
+      #     draft: false
+      #     prerelease: false
