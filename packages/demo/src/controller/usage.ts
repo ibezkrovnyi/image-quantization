@@ -115,6 +115,13 @@ export class QuantizationUsage {
       palette = paletteQuantizer.quantizeSync();
     });
 
+    // window['xxx'] = !window['xxx'];
+    // const alpha = window['xxx'] ? 255 : 0;
+    // console.log('255,255,255,', alpha)
+    // palette = new iq.utils.Palette();
+    // palette.add(iq.utils.Point.createByRGBA(0, 0, 0, 255))
+    // palette.add(iq.utils.Point.createByRGBA(255, 255, 255, alpha))
+
     this._timeMark('...dither', () => {
       var distance: iq.distance.AbstractDistanceCalculator =
         this._getColorDistanceCalculator(optionColorDistance);

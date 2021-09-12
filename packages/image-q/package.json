@@ -1,13 +1,13 @@
 {
   "name": "image-q",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
   "homepage": "https://github.com/ibezkrovnyi/image-quantization/tree/main/packages/image-q",
   "main": "dist/umd/image-q.js",
   "module": "dist/esm/src/index.js",
-  "types": "dist/esm/src/index.d.ts",
+  "types": "dist/types/src/index.d.ts",
   "exports": {
     "import": "./dist/esm/src/index.js",
     "require": "./dist/umd/image-q.js",

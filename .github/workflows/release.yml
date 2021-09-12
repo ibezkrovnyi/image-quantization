@@ -29,6 +29,9 @@ jobs:
         pnpm install
         pnpm -r build
         pnpm -r test
+    # - name: Create tags
+    #     pnpm -r --filter=image-q --no-bail exec "git tag $(node -e 'pj=require(\'./package.json\');console.log(pj.name+'@'+pj.version')"
+    #     git push --follow-tags
     - name: Publish
       run: |
         pnpm -r publish --no-git-checks --access=public
