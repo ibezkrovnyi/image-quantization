@@ -11,6 +11,8 @@ jobs:
         node-version: [12, 14, 16]
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: '[nodejs] Use Node.js ${{ matrix.node-version }}'
         uses: actions/setup-node@v2
@@ -30,7 +32,7 @@ jobs:
 
       - name: '[pnpm] configure SINCE git ref'
         run: |
-          echo "SINCE=main" >> $GITHUB_ENV
+          echo "SINCE=origin/main" >> $GITHUB_ENV
           pnpm -r --filter=[$SINCE] ls --depth -1
 
       - name: '[pnpm] install, build, test'
