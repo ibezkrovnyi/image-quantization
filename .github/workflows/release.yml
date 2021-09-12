@@ -31,14 +31,22 @@ jobs:
       - name: '[pnpm] configure SINCE git ref'
         run: |
           echo "SINCE=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
-          # echo "filter=[$SINCE]" >> .npmrc
-          pnpm -r --filter=[$SINCE] ls --depth -1
 
       - name: '[pnpm] install, build, test'
         run: |
           pnpm --filter=...[$SINCE]... install
           pnpm --filter=...[$SINCE]... build
           pnpm --filter=...[$SINCE] test
+
+      - name: '[log] SINCE'
+        run: |
+          echo 'SINCE=$SINCE'
+          echo 'Changed projects'
+          pnpm --filter=[$SINCE] ls --depth -1
+          echo 'Changed and dependent projects'
+          pnpm --filter=...[$SINCE] ls --depth -1
+          echo 'Changed projects, dependent projects and dependencies'
+          pnpm --filter=...[$SINCE]... ls --depth -1
 
       # - name: Create tags
       #     pnpm -r --filter=image-q --no-bail exec "git tag $(node -e 'pj=require(\'./package.json\');console.log(pj.name+'@'+pj.version')"
