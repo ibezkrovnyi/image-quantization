@@ -20,6 +20,7 @@ module.exports = {
     'tsx',
   ],
   collectCoverage: true,
+  coverageDirectory: '<rootDir>/reports/jest',
   coverageReporters: [
     'lcov',
     'text-summary',

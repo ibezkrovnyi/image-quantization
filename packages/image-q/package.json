@@ -1,6 +1,6 @@
 {
   "name": "image-q",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
@@ -17,8 +17,7 @@
     "clean": "shx rm -rf ./node_modules/.cache",
     "build": "tsc -p tsconfig.build-esm.json && webpack",
     "test": "jest",
-    "gh-pages-DISABLED": "shx rm -rf ./docs && typedoc.cmd src && gh-pages -d docs",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+    "gh-pages-DISABLED": "shx rm -rf ./docs && typedoc.cmd src && gh-pages -d docs"
   },
   "files": [
     "dist",
@@ -49,8 +48,6 @@
   },
   "devDependencies": {
     "@types/pngjs": "3.3.0",
-    "core-js": "^3.17.3",
-    "coveralls": "3.0.1",
     "gh-pages": "3.2.3",
     "pngjs": "3.3.3",
     "typedoc": "0.22.2"

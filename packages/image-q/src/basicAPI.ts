@@ -5,13 +5,19 @@
  *
  * helper.ts - part of Image Quantization Library
  */
-import setImmediate from 'core-js/features/set-immediate';
 import * as distance from './distance';
 import * as image from './image';
 import * as palette from './palette';
 import { AbstractDistanceCalculator } from './distance/distanceCalculator';
 import { PointContainer } from './utils/pointContainer';
 import { Palette } from './utils/palette';
+
+const setImmediateImpl =
+  typeof setImmediate === 'function'
+    ? setImmediate
+    : typeof process !== 'undefined' && typeof process?.nextTick === 'function'
+    ? (callback: () => void) => process.nextTick(callback)
+    : (callback: () => void) => setTimeout(callback, 0);
 
 export type ColorDistanceFormula =
   | 'cie94-textiles'
@@ -99,7 +105,6 @@ export async function buildPalette(
     images.forEach((image) => paletteQuantizer.sample(image));
 
     let palette: Palette;
-    let timerId: number;
     const iterator = paletteQuantizer.quantize();
     const next = () => {
       try {
@@ -109,14 +114,13 @@ export async function buildPalette(
         } else {
           if (result.value.palette) palette = result.value.palette;
           if (onProgress) onProgress(result.value.progress);
-          timerId = setImmediate(next);
+          setImmediateImpl(next);
         }
       } catch (error) {
-        clearTimeout(timerId);
         reject(error);
       }
     };
-    timerId = setImmediate(next);
+    setImmediateImpl(next);
   });
 }
 
@@ -152,7 +156,6 @@ export async function applyPalette(
     );
 
     let outPointContainer: PointContainer;
-    let timerId: number;
     const iterator = imageQuantizer.quantize(image, palette);
     const next = () => {
       try {
@@ -164,14 +167,13 @@ export async function applyPalette(
             outPointContainer = result.value.pointContainer;
           }
           if (onProgress) onProgress(result.value.progress);
-          timerId = setImmediate(next);
+          setImmediateImpl(next);
         }
       } catch (error) {
-        clearTimeout(timerId);
         reject(error);
       }
     };
-    timerId = setImmediate(next);
+    setImmediateImpl(next);
   });
 }
 

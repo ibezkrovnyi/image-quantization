@@ -3,12 +3,10 @@
 Complete Image Quantization Library in **TypeScript** _(MIT License)_
 
 [![Build Status](https://travis-ci.org/ibezkrovnyi/image-quantization.svg?branch=master)](https://travis-ci.org/ibezkrovnyi/image-quantization)
-[![Coverage Status](https://coveralls.io/repos/github/ibezkrovnyi/image-quantization/badge.svg)](https://coveralls.io/github/ibezkrovnyi/image-quantization)
-[![Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ibezkrovnyi.github.io/image-quantization-demo/)
+[![Demo (outdated, use /packages/demo for up-to-date demo)](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ibezkrovnyi.github.io/image-quantization-demo/)
 [![GitHub](https://img.shields.io/badge/github-.com-brightgreen.svg)](https://github.com/ibezkrovnyi/image-quantization)
 [![NPM](https://badge.fury.io/js/image-q.svg)](https://www.npmjs.com/package/image-q)
-[![Greenkeeper badge](https://badges.greenkeeper.io/ibezkrovnyi/image-quantization.svg)](https://greenkeeper.io/)
-[![API](https://img.shields.io/badge/API-Available-blue.svg)](http://ibezkrovnyi.github.io/image-quantization/)
+[![API)](https://img.shields.io/badge/API-Available-blue.svg)](http://ibezkrovnyi.github.io/image-quantization/)
 [![NPM License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ![quantization](quantization.png)
