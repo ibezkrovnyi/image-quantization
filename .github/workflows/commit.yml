@@ -33,11 +33,16 @@ jobs:
       - name: '[pnpm] configure SINCE git ref'
         run: |
           echo "SINCE=origin/main" >> $GITHUB_ENV
-          git diff $SINCE
-          pnpm -r --filter=[$SINCE] ls --depth -1
+
+      - name: [log] SINCE
+        run: |
+          echo 'SINCE=$SINCE'
+          echo 'Changed projects'
           pnpm --filter=[$SINCE] ls --depth -1
-          echo $SINCE
-          echo ${SINCE}
+          echo 'Changed and dependent projects'
+          pnpm --filter=...[$SINCE] ls --depth -1
+          echo 'Changed projects, dependent projects and dependencies'
+          pnpm --filter=...[$SINCE]... ls --depth -1
 
       - name: '[pnpm] install, build, test'
         run: |
