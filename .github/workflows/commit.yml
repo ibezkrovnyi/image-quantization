@@ -34,7 +34,7 @@ jobs:
         run: |
           echo "SINCE=origin/main" >> $GITHUB_ENV
 
-      - name: [log] SINCE
+      - name: '[log] SINCE'
         run: |
           echo 'SINCE=$SINCE'
           echo 'Changed projects'
