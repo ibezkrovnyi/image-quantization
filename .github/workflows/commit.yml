@@ -30,7 +30,7 @@ jobs:
 
       - name: '[pnpm] configure SINCE git ref'
         run: |
-          echo "SINCE=origin/main" >> $GITHUB_ENV
+          echo "SINCE=main" >> $GITHUB_ENV
           pnpm -r --filter=[$SINCE] ls --depth -1
 
       - name: '[pnpm] install, build, test'
