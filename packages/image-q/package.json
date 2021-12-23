@@ -1,6 +1,6 @@
 {
   "name": "image-q",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "clean": "shx rm -rf ./node_modules/.cache",
-    "build": "tsc -p tsconfig.build-esm.json && webpack",
+    "build": "tsc -p tsconfig.build-esm.json && webpack && shx cp ../../README.md ./",
     "test": "jest",
     "gh-pages": "shx rm -rf ./docs && typedoc && gh-pages -d docs"
   },
