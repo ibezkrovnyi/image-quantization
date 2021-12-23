@@ -1,846 +1,398 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>image-q</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">image-q</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
-			<h1> image-q</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<p>Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu&#39;s algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript</p>
-				<h1 id="table-of-contents">Table of Contents</h1>
-				<ul>
-					<li><a href="#basic-api">Basic API</a><ul>
-							<li><a href="#basic-api-tutorial">Tutorial</a></li>
-							<li><a href="#build-palette">Build Palette</a></li>
-							<li><a href="#apply-palette-to-image">Apply Palette to Image</a></li>
-							<li><a href="#optional-parameters">Optional parameters</a></li>
-						</ul>
-					</li>
-					<li><a href="#advanced-api">Advanced API</a><ul>
-							<li><a href="#image-import-sources">Image Import Sources</a></li>
-							<li><a href="#color-distance">Color Distance</a></li>
-							<li><a href="#palette-quantizers">Palette Quantizers</a></li>
-							<li><a href="#image-quantizers">Image Quantizers</a></li>
-							<li><a href="#output">Output</a></li>
-						</ul>
-					</li>
-					<li><a href="#misc-api">Misc API</a><ul>
-							<li><a href="#color-conversion">Color Conversion</a></li>
-							<li><a href="#structural-similarity">Structural Similarity</a></li>
-						</ul>
-					</li>
-				</ul>
-				<h1 id="basic-api">Basic API</h1>
-				<h2 id="basic-api-tutorial">Basic API Tutorial</h2>
-				<h3 id="convert-24-bit-png-to-indexed-8-bit">Convert 24 bit PNG to indexed 8 bit</h3>
-				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { PNG } <span class="hljs-keyword">from</span> <span class="hljs-string">'pngjs'</span>;
-<span class="hljs-keyword">import</span> { buildPaletteSync, utils } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>;
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>image-q</title><meta name="description" content="Documentation for image-q"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">image-q</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>image-q</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography"><p>Image Color Number Reduction with alpha support using RGBQuant/NeuQuant/Xiaolin Wu&#39;s algorithms and Euclidean/Manhattan/CIEDE2000 color distance formulas in TypeScript</p>
 
-<span class="hljs-comment">// read file</span>
-<span class="hljs-keyword">const</span> { data, width, height } = PNG.sync.read(fs.readFileSync(<span class="hljs-string">'file.png'</span>));
-<span class="hljs-keyword">const</span> inPointContainer = utils.PointContainer.fromUint8Array(data, width, height);
+<a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
+  <h1>Table of Contents</h1>
+</a>
+<ul>
+<li><a href="#basic-api">Basic API</a><ul>
+<li><a href="#basic-api-tutorial">Tutorial</a></li>
+<li><a href="#build-palette">Build Palette</a></li>
+<li><a href="#apply-palette-to-image">Apply Palette to Image</a></li>
+<li><a href="#optional-parameters">Optional parameters</a></li>
+</ul>
+</li>
+<li><a href="#advanced-api">Advanced API</a><ul>
+<li><a href="#image-import-sources">Image Import Sources</a></li>
+<li><a href="#color-distance">Color Distance</a></li>
+<li><a href="#palette-quantizers">Palette Quantizers</a></li>
+<li><a href="#image-quantizers">Image Quantizers</a></li>
+<li><a href="#output">Output</a></li>
+</ul>
+</li>
+<li><a href="#misc-api">Misc API</a><ul>
+<li><a href="#color-conversion">Color Conversion</a></li>
+<li><a href="#structural-similarity">Structural Similarity</a></li>
+</ul>
+</li>
+</ul>
 
-<span class="hljs-comment">// convert</span>
-<span class="hljs-keyword">const</span> palette = buildPaletteSync([inPointContainer]);
-<span class="hljs-keyword">const</span> outPointContainer = applyPaletteSync(inPointContainer, palette);
+<a href="#basic-api" id="basic-api" style="color: inherit; text-decoration: none;">
+  <h1>Basic API</h1>
+</a>
 
-<span class="hljs-comment">// use outPointContainer.toUint8Array() somehow</span>
-</code></pre>
-				<h2 id="build-palette">Build Palette</h2>
-				<p>This API allows to Build (quantize) palette using Sample Images, returns <a href="classes/palette.html">Palette</a> instance.</p>
-				<h3 id="async">Async</h3>
-				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { buildPalette } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const buildPalette = require('image-q').buildPalette</span>
-<span class="hljs-keyword">const</span> palette = <span class="hljs-keyword">await</span> buildPalette([pointContainer], { 
-  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
-  paletteQuantization: <span class="hljs-string">'neuquant'</span>, <span class="hljs-comment">// optional</span>
-  colors: <span class="hljs-number">128</span>, <span class="hljs-comment">// optional</span>
-  onProgress: <span class="hljs-function"><span class="hljs-params">progress</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'applyPalette'</span>, progress), <span class="hljs-comment">// optional</span>
-});
-</code></pre>
-				<h3 id="sync">Sync</h3>
-				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { buildPaletteSync } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const buildPaletteSync = require('image-q').buildPaletteSync</span>
-<span class="hljs-keyword">const</span> palette = buildPaletteSync([pointContainer], { 
-  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
-  paletteQuantization: <span class="hljs-string">'neuquant'</span>, <span class="hljs-comment">// optional</span>
-  colors: <span class="hljs-number">128</span>, <span class="hljs-comment">// optional</span>
-});
-</code></pre>
-				<blockquote>
-					<p>implementation detail: generator is wrapped with setImmediate (polyfilled)</p>
-				</blockquote>
-				<h2 id="apply-palette-to-image">Apply Palette to Image</h2>
-				<p>This API applies given <a href="classes/palette.html">Palette</a> to the <a href="classes/pointcontainer.html">PointContainer</a>, returns <a href="classes/pointcontainer.html">PointContainer</a> containing new image.</p>
-				<h3 id="async-promise-based-">Async (Promise-based)</h3>
-				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { applyPalette } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const applyPalette = require('image-q').applyPalette</span>
-<span class="hljs-keyword">const</span> outPointContainer = <span class="hljs-keyword">await</span> applyPalette(pointContainer, palette, {
-  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
-  imageQuantization: <span class="hljs-string">'floyd-steinberg'</span>, <span class="hljs-comment">// optional</span>
-  onProgress: <span class="hljs-function"><span class="hljs-params">progress</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'applyPalette'</span>, progress), <span class="hljs-comment">// optional</span>
-});
-</code></pre>
-				<h3 id="sync">Sync</h3>
-				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { applyPaletteSync } <span class="hljs-keyword">from</span> <span class="hljs-string">'image-q'</span>; <span class="hljs-comment">// or const applyPaletteSync = require('image-q').applyPaletteSync</span>
-<span class="hljs-keyword">const</span> outPointContainer = applyPaletteSync(pointContainer, palette, {
-  colorDistanceFormula: <span class="hljs-string">'euclidean'</span>, <span class="hljs-comment">// optional</span>
-  imageQuantization: <span class="hljs-string">'floyd-steinberg'</span>, <span class="hljs-comment">// optional</span>
-});
-</code></pre>
-				<h2 id="optional-parameters">Optional parameters</h2>
-				<p>See description of string constants in <a href="#advanced-api">Advanced API</a> Section</p>
-				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ColorDistanceFormula =
-  | <span class="hljs-string">'cie94-textiles'</span>
-  | <span class="hljs-string">'cie94-graphic-arts'</span>
-  | <span class="hljs-string">'ciede2000'</span>
-  | <span class="hljs-string">'color-metric'</span>
-  | <span class="hljs-string">'euclidean'</span>
-  | <span class="hljs-string">'euclidean-bt709-noalpha'</span>
-  | <span class="hljs-string">'euclidean-bt709'</span>
-  | <span class="hljs-string">'manhattan'</span>
-  | <span class="hljs-string">'manhattan-bt709'</span>
-  | <span class="hljs-string">'manhattan-nommyde'</span>
-  | <span class="hljs-string">'pngquant'</span>;
-</code></pre>
-				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> PaletteQuantization =
-  | <span class="hljs-string">'neuquant'</span>
-  | <span class="hljs-string">'neuquant-float'</span>
-  | <span class="hljs-string">'rgbquant'</span>
-  | <span class="hljs-string">'wuquant'</span>;
-</code></pre>
-				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ImageQuantization =
-  | <span class="hljs-string">'nearest'</span>
-  | <span class="hljs-string">'riemersma'</span>
-  | <span class="hljs-string">'floyd-steinberg'</span>
-  | <span class="hljs-string">'false-floyd-steinberg'</span>
-  | <span class="hljs-string">'stucki'</span>
-  | <span class="hljs-string">'atkinson'</span>
-  | <span class="hljs-string">'jarvis'</span>
-  | <span class="hljs-string">'burkes'</span>
-  | <span class="hljs-string">'sierra'</span>
-  | <span class="hljs-string">'two-sierra'</span>
-  | <span class="hljs-string">'sierra-lite'</span>;
-</code></pre>
-				<h2 id="apply-palette-to-image">Apply Palette to Image</h2>
-				<h1 id="advanced-api">Advanced API</h1>
-				<h2 id="image-import-sources">Image Import Sources</h2>
-				<table>
-					<thead>
-						<tr>
-							<th style="text-align:left">API</th>
-							<th>Source</th>
-							<th style="text-align:left"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td style="text-align:left"><strong><em>Canvas related</em></strong></td>
-							<td></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromhtmlcanvaselement">PointContainer.fromHTMLCanvasElement</a></td>
-							<td><a href="https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromimagedata">PointContainer.fromImageData</a></td>
-							<td><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">ImageData</a></td>
-							<td style="text-align:left">ctx.getImageData()</td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint8array">PointContainer.fromUint8Array</a></td>
-							<td><a href="https://developer.mozilla.org/docs/Web/API/ImageData/data">Uint8ClampedArray</a></td>
-							<td style="text-align:left">ctx.getImageData().data</td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint8array">PointContainer.fromUint8Array</a></td>
-							<td><a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=12586">deprecated CanvasPixelArray</a></td>
-							<td style="text-align:left">ctx.getImageData().data</td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><strong><em>Other</em></strong></td>
-							<td></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromhtmlimageelement">PointContainer.fromHTMLImageElement</a></td>
-							<td><a href="https://developer.mozilla.org/docs/Web/API/HTMLImageElement">HTMLImageElement</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromimagedata">PointContainer.fromImageData</a></td>
-							<td><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint8array">PointContainer.fromUint8Array</a></td>
-							<td><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#fromuint32array">PointContainer.fromUint32Array</a></td>
-							<td><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array">Uint32Array</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td style="text-align:left"><a href="classes/pointcontainer.html#frombuffer">PointContainer.fromBuffer</a></td>
-							<td><a href="https://nodejs.org/api/buffer.html">Buffer (Node.js)</a></td>
-						</tr>
-					</tbody>
-				</table>
-				<p>  Usage:</p>
-				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> canvas = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#canvas'</span>);
-  <span class="hljs-keyword">const</span> pointContainer = PointContainer.fromHTMLCanvasElement(canvas);
-</code></pre>
-				<h2 id="color-distance">Color Distance</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>API</th>
-							<th style="text-align:left">Description</th>
-							<th>Originally used by</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><a href="classes/euclidean.html">Euclidean</a></td>
-							<td style="text-align:left">1/1/1/1 coefficients</td>
-							<td>WuQuant</td>
-						</tr>
-						<tr>
-							<td><a href="classes/euclideanbt709.html">EuclideanBT709</a></td>
-							<td style="text-align:left">BT.709 sRGB coefficients</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a href="classes/manhattan.html">Manhattan</a></td>
-							<td style="text-align:left">1/1/1/1 coefficients</td>
-							<td>NeuQuant</td>
-						</tr>
-						<tr>
-							<td><a href="classes/manhattanbt709.html">ManhattanBT709</a></td>
-							<td style="text-align:left">BT.709 sRGB coefficients</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a href="classes/ciede2000.html">CIEDE2000</a></td>
-							<td style="text-align:left">CIEDE2000 (very slow)</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a href="classes/cie94textiles.html">CIE94Textiles</a></td>
-							<td style="text-align:left">CIE94 implementation for textiles</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a href="classes/cie94graphicarts.html">CIE94GraphicArts</a></td>
-							<td style="text-align:left">CIE94 implementation for graphic arts</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a href="classes/cmetric.html">CMetric</a></td>
-							<td style="text-align:left"><a href="http://www.compuphase.com/cmetric.htm">see</a></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a href="classes/pngquant.html">PNGQuant</a></td>
-							<td style="text-align:left">used in PNGQuant tools</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a href="classes/euclideanbt709noalpha.html">EuclideanBT709NoAlpha</a></td>
-							<td style="text-align:left">BT.709 sRGB coefficients</td>
-							<td>RGBQuant</td>
-						</tr>
-						<tr>
-							<td><a href="classes/manhattannommyde.html">ManhattanNommyde</a></td>
-							<td style="text-align:left"><a href="https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-234527620">discussion</a></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<p>  Usage:</p>
-				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> distanceCalculator = <span class="hljs-keyword">new</span> EuclideanBT709();
-</code></pre>
-				<h2 id="palette-quantizers">Palette Quantizers</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>API</th>
-							<th style="text-align:left">Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><a href="classes/neuquant.html">NeuQuant</a></td>
-							<td style="text-align:left">original code ported, integer calculations</td>
-						</tr>
-						<tr>
-							<td><a href="classes/rgbquant.html">RGBQuant</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td><a href="classes/wuquant.html">WuQuant</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td><a href="classes/neuquantfloat.html">NeuQuantFloat</a></td>
-							<td style="text-align:left">floating-point calculations</td>
-						</tr>
-					</tbody>
-				</table>
-				<p>  Usage (sync):</p>
-				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> paletteQuantizer = <span class="hljs-keyword">new</span> WuQuant(distanceCalculator, <span class="hljs-number">256</span>);
-  paletteQuantizer.sample(pointContainer1);
-  paletteQuantizer.sample(pointContainer2);
-  <span class="hljs-keyword">const</span> palette = paletteQuantizer.quantizeSync();
-</code></pre>
-				<p>  Usage (generator):</p>
-				<pre><code class="lang-ts">  <span class="hljs-comment">// example 1</span>
-  <span class="hljs-keyword">const</span> paletteQuantizer = <span class="hljs-keyword">new</span> WuQuant(distanceCalculator, <span class="hljs-number">256</span>);
-  paletteQuantizer.sample(pointContainer1);
-  paletteQuantizer.sample(pointContainer2);
-  <span class="hljs-keyword">const</span> generator = paletteQuantizer.quantize();
-  <span class="hljs-keyword">let</span> palette;
-  <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
-    <span class="hljs-comment">// calling to generator.next() may be easily wrapped with setTimeout to make it async</span>
-    <span class="hljs-keyword">const</span> result = generator.next();
-    <span class="hljs-keyword">if</span> (result.done) <span class="hljs-keyword">break</span>;
-    <span class="hljs-keyword">if</span> (result.value.palette) palette = result.palette;
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${result.value.progress}</span>% done`</span>);
-  }
-  <span class="hljs-comment">// example 2</span>
-  <span class="hljs-keyword">const</span> paletteQuantizer = <span class="hljs-keyword">new</span> WuQuant(distanceCalculator, <span class="hljs-number">256</span>);
-  paletteQuantizer.sample(pointContainer1);
-  paletteQuantizer.sample(pointContainer2);
-  <span class="hljs-keyword">const</span> palette = <span class="hljs-built_in">Array</span>.from(paletteQuantizer.quantize()).pop().palette;
-</code></pre>
-				<h2 id="image-quantizers">Image Quantizers</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>API</th>
-							<th style="text-align:left">Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><a href="classes/nearestcolor.html">NearestColor</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td><a href="classes/errordiffusionarray.html">ErrorDiffusionArray</a></td>
-							<td style="text-align:left">2 modes of error propagation are supported: <code>xnview</code> and <code>gimp</code></td>
-						</tr>
-						<tr>
-							<td>- 1. <a href="enums/errordiffusionarraykernel.html#floydsteinberg">FloydSteinberg</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 2. <a href="enums/errordiffusionarraykernel.html#falsefloydsteinberg">FalseFloydSteinberg</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 3. <a href="enums/errordiffusionarraykernel.html#stucki">Stucki</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 4. <a href="enums/errordiffusionarraykernel.html#atkinson">Atkinson</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 5. <a href="enums/errordiffusionarraykernel.html#jarvis">Jarvis</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 6. <a href="enums/errordiffusionarraykernel.html#burkes">Burkes</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 7. <a href="enums/errordiffusionarraykernel.html#sierra">Sierra</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 8. <a href="enums/errordiffusionarraykernel.html#twosierra">TwoSierra</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td>- 9. <a href="enums/errordiffusionarraykernel.html#sierralite">SierraLite</a></td>
-							<td style="text-align:left"></td>
-						</tr>
-						<tr>
-							<td><a href="classes/errordiffusionriemersma.html">ErrorDiffusionRiemersma</a></td>
-							<td style="text-align:left">Hilbert space-filling curve is used</td>
-						</tr>
-					</tbody>
-				</table>
-				<p>  Usage (sync):</p>
-				<pre><code class="lang-ts">  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
-  <span class="hljs-keyword">const</span> outPointContainer = imageQuantizer.quantizeSync(inPointContainer, palette);
-</code></pre>
-				<p>  Usage (generator):</p>
-				<pre><code class="lang-ts">  <span class="hljs-comment">// example 1</span>
-  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
-  <span class="hljs-keyword">const</span> generator = imageQuantizer.quantize(inPointContainer, palette);
-  <span class="hljs-keyword">let</span> outPointContainer;
-  <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
-    <span class="hljs-comment">// calling to generator.next() may be easily wrapped with setTimeout to make it async</span>
-    <span class="hljs-keyword">const</span> result = generator.next();
-    <span class="hljs-keyword">if</span> (result.done) <span class="hljs-keyword">break</span>;
-    <span class="hljs-keyword">if</span> (result.value.pointContainer) outPointContainer = result.pointContainer;
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${result.value.progress}</span>% done`</span>);
-  }
-  <span class="hljs-comment">// example 2</span>
-  <span class="hljs-keyword">const</span> imageQuantizer = <span class="hljs-keyword">new</span> ErrorDiffusionArray(distanceCalculator, ErrorDiffusionArrayKernel.Jarvis);
-  <span class="hljs-keyword">const</span> outPointContainer = <span class="hljs-built_in">Array</span>.from(imageQuantizer.quantize(inPointContainer, palette)).pop().pointContainer;
-</code></pre>
-				<h2 id="output">Output</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>API</th>
-							<th style="text-align:left">Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><a href="classes/pointcontainer.html#touint8array">PointContainer.toUint8Array</a></td>
-							<td style="text-align:left"><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></td>
-						</tr>
-						<tr>
-							<td><a href="classes/pointcontainer.html#touint32array">PointContainer.toUint32Array</a></td>
-							<td style="text-align:left"><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array">Uint32Array</a></td>
-						</tr>
-					</tbody>
-				</table>
-				<p>  Usage:</p>
-				<pre><code class="lang-ts">  <span class="hljs-comment">// write PNG using pngjs</span>
-  png.data = outPointContainer.toUint8Array();
-  fs.writeFileSync(<span class="hljs-string">'filename.png'</span>, PNG.sync.write(png))
-</code></pre>
-				<h1 id="advanced-api-usage">Advanced API Usage</h1>
-				<h2 id="load-image-simple-example-">Load Image (simple example)</h2>
-				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> img = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"img"</span>);
-img.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-comment">// image is loaded, here should be all code utilizing image</span>
-    ...
-}
-img.src = <span class="hljs-string">"http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-27580_640.png"</span>
-</code></pre>
-				<h2 id="generate-palette">Generate Palette</h2>
-				<pre><code class="lang-javascript"><span class="hljs-comment">// desired colors number</span>
-<span class="hljs-keyword">var</span> targetColors = <span class="hljs-number">256</span>;
+<a href="#basic-api-tutorial" id="basic-api-tutorial" style="color: inherit; text-decoration: none;">
+  <h2>Basic API Tutorial</h2>
+</a>
 
-<span class="hljs-comment">// create pointContainer and fill it with image</span>
-<span class="hljs-keyword">var</span> pointContainer = iq.utils.PointContainer.fromHTMLImageElement(img);
-
-<span class="hljs-comment">// create chosen distance calculator (see classes inherited from `iq.distance.AbstractDistanceCalculator`)</span>
-<span class="hljs-keyword">var</span> distanceCalculator = <span class="hljs-keyword">new</span> iq.distance.Euclidean();
-
-<span class="hljs-comment">// create chosen palette quantizer (see classes implementing `iq.palette.AbstractPaletteQuantizer`) </span>
-<span class="hljs-keyword">var</span> paletteQuantizer = <span class="hljs-keyword">new</span> iq.palette.RGBQuant(distanceCalculator, targetColors);
-
-<span class="hljs-comment">// feed out pointContainer filled with image to paletteQuantizer</span>
-paletteQuantizer.sample(pointContainer);
-
-... (you may sample more than one image to create mutual palette) 
-
-<span class="hljs-comment">// take generated palette</span>
-<span class="hljs-keyword">var</span> palette = paletteQuantizer.quantizeSync();
+<a href="#convert-24-bit-png-to-indexed-8-bit" id="convert-24-bit-png-to-indexed-8-bit" style="color: inherit; text-decoration: none;">
+  <h3>Convert 24 bit PNG to indexed 8 bit</h3>
+</a>
+<pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">PNG</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;pngjs&#39;</span><span class="hl-1">;</span><br/><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">buildPaletteSync</span><span class="hl-1">, </span><span class="hl-2">utils</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;image-q&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">// read file</span><br/><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1">, </span><span class="hl-6">width</span><span class="hl-1">, </span><span class="hl-6">height</span><span class="hl-1"> } = </span><span class="hl-6">PNG</span><span class="hl-1">.</span><span class="hl-2">sync</span><span class="hl-1">.</span><span class="hl-7">read</span><span class="hl-1">(</span><span class="hl-2">fs</span><span class="hl-1">.</span><span class="hl-7">readFileSync</span><span class="hl-1">(</span><span class="hl-3">&#39;file.png&#39;</span><span class="hl-1">));</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">inPointContainer</span><span class="hl-1"> = </span><span class="hl-2">utils</span><span class="hl-1">.</span><span class="hl-2">PointContainer</span><span class="hl-1">.</span><span class="hl-7">fromUint8Array</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">data</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">width</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">height</span><span class="hl-1">,</span><br/><span class="hl-1">);</span><br/><br/><span class="hl-4">// convert</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">palette</span><span class="hl-1"> = </span><span class="hl-7">buildPaletteSync</span><span class="hl-1">([</span><span class="hl-2">inPointContainer</span><span class="hl-1">]);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">outPointContainer</span><span class="hl-1"> = </span><span class="hl-7">applyPaletteSync</span><span class="hl-1">(</span><span class="hl-2">inPointContainer</span><span class="hl-1">, </span><span class="hl-2">palette</span><span class="hl-1">);</span><br/><br/><span class="hl-4">// use outPointContainer.toUint8Array() somehow</span>
 </code></pre>
-				<h2 id="apply-palette-to-image-image-dithering-">Apply Palette to Image (Image Dithering)</h2>
-				<pre><code class="lang-javascript"><span class="hljs-comment">// create image quantizer (see classes implementing `iq.image.AbstractImageQuantizer`)</span>
-<span class="hljs-keyword">var</span> imageQuantizer = <span class="hljs-keyword">new</span> iq.image.NearestColor(distanceCalculator);
 
-<span class="hljs-comment">// apply palette to image</span>
-<span class="hljs-keyword">var</span> resultPointContainer = imageQuantizer.quantizeSync(pointContainer, palette);
+<a href="#build-palette" id="build-palette" style="color: inherit; text-decoration: none;">
+  <h2>Build Palette</h2>
+</a>
+<p>This API allows to Build (quantize) palette using Sample Images, returns <a href="classes/utils.Palette.html">Palette</a> instance.</p>
+
+<a href="#async" id="async" style="color: inherit; text-decoration: none;">
+  <h3>Async</h3>
+</a>
+<pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">buildPalette</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;image-q&#39;</span><span class="hl-1">; </span><span class="hl-4">// or const buildPalette = require(&#39;image-q&#39;).buildPalette</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">palette</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-7">buildPalette</span><span class="hl-1">([</span><span class="hl-2">pointContainer</span><span class="hl-1">], {</span><br/><span class="hl-1">  </span><span class="hl-2">colorDistanceFormula:</span><span class="hl-1"> </span><span class="hl-3">&#39;euclidean&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-2">paletteQuantization:</span><span class="hl-1"> </span><span class="hl-3">&#39;neuquant&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-2">colors:</span><span class="hl-1"> </span><span class="hl-8">128</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-7">onProgress</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">progress</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-3">&#39;applyPalette&#39;</span><span class="hl-1">, </span><span class="hl-2">progress</span><span class="hl-1">), </span><span class="hl-4">// optional</span><br/><span class="hl-1">});</span>
 </code></pre>
-				<p>You may work with resultPointContainer directly or you may convert it to <code>Uint8Array</code>/<code>Uint32Array</code></p>
-				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> uint8array = resultPointContainer.toUint8Array();
+
+<a href="#sync" id="sync" style="color: inherit; text-decoration: none;">
+  <h3>Sync</h3>
+</a>
+<pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">buildPaletteSync</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;image-q&#39;</span><span class="hl-1">; </span><span class="hl-4">// or const buildPaletteSync = require(&#39;image-q&#39;).buildPaletteSync</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">palette</span><span class="hl-1"> = </span><span class="hl-7">buildPaletteSync</span><span class="hl-1">([</span><span class="hl-2">pointContainer</span><span class="hl-1">], {</span><br/><span class="hl-1">  </span><span class="hl-2">colorDistanceFormula:</span><span class="hl-1"> </span><span class="hl-3">&#39;euclidean&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-2">paletteQuantization:</span><span class="hl-1"> </span><span class="hl-3">&#39;neuquant&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-2">colors:</span><span class="hl-1"> </span><span class="hl-8">128</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">});</span>
 </code></pre>
-				<blockquote>
-					<p>please also refer to <a href="tests/samples/utils.ts">tests</a></p>
-				</blockquote>
-				<h1 id="misc-api">Misc API</h1>
-				<h2 id="color-conversion">Color Conversion</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>API</th>
-							<th style="text-align:left">Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><a href="globals.html#lab2rgb">lab2rgb</a></td>
-							<td style="text-align:left">CIE L*a*b* =&gt; CIE RGB</td>
-						</tr>
-						<tr>
-							<td><a href="globals.html#lab2xyz">lab2xyz</a></td>
-							<td style="text-align:left">CIE L*a*b* =&gt; CIE XYZ</td>
-						</tr>
-						<tr>
-							<td><a href="globals.html#rgb2hsl">rgb2hsl</a></td>
-							<td style="text-align:left">CIE RGB =&gt; HSL</td>
-						</tr>
-						<tr>
-							<td><a href="globals.html#rgb2lab">rgb2lab</a></td>
-							<td style="text-align:left">CIE RGB =&gt; CIE L*a*b*</td>
-						</tr>
-						<tr>
-							<td><a href="globals.html#rgb2xyz">rgb2xyz</a></td>
-							<td style="text-align:left">CIE RGB =&gt; CIE XYZ</td>
-						</tr>
-						<tr>
-							<td><a href="globals.html#xyz2lab">xyz2lab</a></td>
-							<td style="text-align:left">CIE XYZ =&gt; CIE L*a*b*</td>
-						</tr>
-						<tr>
-							<td><a href="globals.html#xyz2rgb">xyz2rgb</a></td>
-							<td style="text-align:left">CIE XYZ =&gt; CIE RGB</td>
-						</tr>
-					</tbody>
-				</table>
-				<p><a href="https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/">https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/</a></p>
-				<h2 id="structural-similarity">Structural Similarity</h2>
-				<ul>
-					<li><p><a href="globals.html#ssim">ssim</a> - <a href="https://en.wikipedia.org/wiki/Structural_similarity">https://en.wikipedia.org/wiki/Structural_similarity</a></p>
-						<p>Usage:</p>
-						<pre><code class="lang-ts"><span class="hljs-keyword">const</span> similarity = ssim(pointContainer1, pointContainer2);
+<blockquote>
+<p>implementation detail: generator is wrapped with setImmediate (polyfilled)</p>
+</blockquote>
+
+<a href="#apply-palette-to-image" id="apply-palette-to-image" style="color: inherit; text-decoration: none;">
+  <h2>Apply Palette to Image</h2>
+</a>
+<p>This API applies given <a href="classes/utils.Palette.html">Palette</a> to the <a href="classes/utils.PointContainer.html">PointContainer</a>, returns <a href="classes/utils.PointContainer.html">PointContainer</a> containing new image.</p>
+
+<a href="#async-promise-based" id="async-promise-based" style="color: inherit; text-decoration: none;">
+  <h3>Async (Promise-based)</h3>
+</a>
+<pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">applyPalette</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;image-q&#39;</span><span class="hl-1">; </span><span class="hl-4">// or const applyPalette = require(&#39;image-q&#39;).applyPalette</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">outPointContainer</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-7">applyPalette</span><span class="hl-1">(</span><span class="hl-2">pointContainer</span><span class="hl-1">, </span><span class="hl-2">palette</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-2">colorDistanceFormula:</span><span class="hl-1"> </span><span class="hl-3">&#39;euclidean&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-2">imageQuantization:</span><span class="hl-1"> </span><span class="hl-3">&#39;floyd-steinberg&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-7">onProgress</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">progress</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-3">&#39;applyPalette&#39;</span><span class="hl-1">, </span><span class="hl-2">progress</span><span class="hl-1">), </span><span class="hl-4">// optional</span><br/><span class="hl-1">});</span>
 </code></pre>
-					</li>
-				</ul>
-				<p>Have fun! Any problems or queries let me know!</p>
-				<p> -- Igor</p>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="enums/errordiffusionarraykernel.html" class="tsd-kind-icon">Error<wbr>Diffusion<wbr>Array<wbr>Kernel</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="enums/y.html" class="tsd-kind-icon">Y</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="enums/x.html" class="tsd-kind-icon">x</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="enums/y.html" class="tsd-kind-icon">y</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/abstractcie94.html" class="tsd-kind-icon">AbstractCIE94</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/abstractdistancecalculator.html" class="tsd-kind-icon">Abstract<wbr>Distance<wbr>Calculator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/abstracteuclidean.html" class="tsd-kind-icon">Abstract<wbr>Euclidean</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/abstractimagequantizer.html" class="tsd-kind-icon">Abstract<wbr>Image<wbr>Quantizer</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/abstractmanhattan.html" class="tsd-kind-icon">Abstract<wbr>Manhattan</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/abstractpalettequantizer.html" class="tsd-kind-icon">Abstract<wbr>Palette<wbr>Quantizer</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/cie94graphicarts.html" class="tsd-kind-icon">CIE94<wbr>Graphic<wbr>Arts</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/cie94textiles.html" class="tsd-kind-icon">CIE94<wbr>Textiles</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/ciede2000.html" class="tsd-kind-icon">CIEDE2000</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/cmetric.html" class="tsd-kind-icon">CMetric</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/colorhistogram.html" class="tsd-kind-icon">Color<wbr>Histogram</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/errordiffusionarray.html" class="tsd-kind-icon">Error<wbr>Diffusion<wbr>Array</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/errordiffusionriemersma.html" class="tsd-kind-icon">Error<wbr>Diffusion<wbr>Riemersma</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/euclidean.html" class="tsd-kind-icon">Euclidean</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/euclideanbt709.html" class="tsd-kind-icon">EuclideanBT709</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/euclideanbt709noalpha.html" class="tsd-kind-icon">EuclideanBT709<wbr>NoAlpha</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/huestatistics.html" class="tsd-kind-icon">Hue<wbr>Statistics</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/manhattan.html" class="tsd-kind-icon">Manhattan</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/manhattanbt709.html" class="tsd-kind-icon">ManhattanBT709</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/manhattannommyde.html" class="tsd-kind-icon">Manhattan<wbr>Nommyde</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/nearestcolor.html" class="tsd-kind-icon">Nearest<wbr>Color</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/neuquant.html" class="tsd-kind-icon">Neu<wbr>Quant</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/neuquantfloat.html" class="tsd-kind-icon">Neu<wbr>Quant<wbr>Float</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/pngquant.html" class="tsd-kind-icon">PNGQuant</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/palette.html" class="tsd-kind-icon">Palette</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/point.html" class="tsd-kind-icon">Point</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/pointcontainer.html" class="tsd-kind-icon">Point<wbr>Container</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/progresstracker.html" class="tsd-kind-icon">Progress<wbr>Tracker</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/rgbquant.html" class="tsd-kind-icon">RGBQuant</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/wucolorcube.html" class="tsd-kind-icon">Wu<wbr>Color<wbr>Cube</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/wuquant.html" class="tsd-kind-icon">Wu<wbr>Quant</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/applypaletteoptions.html" class="tsd-kind-icon">Apply<wbr>Palette<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/buildpaletteoptions.html" class="tsd-kind-icon">Build<wbr>Palette<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/imagequantizeryieldvalue.html" class="tsd-kind-icon">Image<wbr>Quantizer<wbr>Yield<wbr>Value</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/palettequantizeryieldvalue.html" class="tsd-kind-icon">Palette<wbr>Quantizer<wbr>Yield<wbr>Value</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pointrgba.html" class="tsd-kind-icon">PointRGBA</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/progressoptions.html" class="tsd-kind-icon">Progress<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#colordistanceformula" class="tsd-kind-icon">Color<wbr>Distance<wbr>Formula</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#imagequantization" class="tsd-kind-icon">Image<wbr>Quantization</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#palettequantization" class="tsd-kind-icon">Palette<wbr>Quantization</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#applypalette" class="tsd-kind-icon">apply<wbr>Palette</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#applypalettesync" class="tsd-kind-icon">apply<wbr>Palette<wbr>Sync</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#buildpalette" class="tsd-kind-icon">build<wbr>Palette</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#buildpalettesync" class="tsd-kind-icon">build<wbr>Palette<wbr>Sync</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#degrees2radians" class="tsd-kind-icon">degrees2radians</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#hilbertcurve" class="tsd-kind-icon">hilbert<wbr>Curve</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#huegroup" class="tsd-kind-icon">hue<wbr>Group</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#inrange0to255" class="tsd-kind-icon">in<wbr>Range0to255</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#inrange0to255rounded" class="tsd-kind-icon">in<wbr>Range0to255<wbr>Rounded</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#intinrange" class="tsd-kind-icon">int<wbr>InRange</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#lab2rgb" class="tsd-kind-icon">lab2rgb</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#lab2xyz" class="tsd-kind-icon">lab2xyz</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#max3" class="tsd-kind-icon">max3</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#min3" class="tsd-kind-icon">min3</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#rgb2hsl" class="tsd-kind-icon">rgb2hsl</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#rgb2lab" class="tsd-kind-icon">rgb2lab</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#rgb2xyz" class="tsd-kind-icon">rgb2xyz</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#ssim" class="tsd-kind-icon">ssim</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#stablesort" class="tsd-kind-icon">stable<wbr>Sort</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#xyz2lab" class="tsd-kind-icon">xyz2lab</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#xyz2rgb" class="tsd-kind-icon">xyz2rgb</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
-</body>
-</html>
+
+<a href="#sync-1" id="sync-1" style="color: inherit; text-decoration: none;">
+  <h3>Sync</h3>
+</a>
+<pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">applyPaletteSync</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;image-q&#39;</span><span class="hl-1">; </span><span class="hl-4">// or const applyPaletteSync = require(&#39;image-q&#39;).applyPaletteSync</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">outPointContainer</span><span class="hl-1"> = </span><span class="hl-7">applyPaletteSync</span><span class="hl-1">(</span><span class="hl-2">pointContainer</span><span class="hl-1">, </span><span class="hl-2">palette</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-2">colorDistanceFormula:</span><span class="hl-1"> </span><span class="hl-3">&#39;euclidean&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">  </span><span class="hl-2">imageQuantization:</span><span class="hl-1"> </span><span class="hl-3">&#39;floyd-steinberg&#39;</span><span class="hl-1">, </span><span class="hl-4">// optional</span><br/><span class="hl-1">});</span>
+</code></pre>
+
+<a href="#optional-parameters" id="optional-parameters" style="color: inherit; text-decoration: none;">
+  <h2>Optional parameters</h2>
+</a>
+<p>See description of string constants in <a href="#advanced-api">Advanced API</a> Section</p>
+<pre><code class="language-ts"><span class="hl-0">export</span><span class="hl-1"> </span><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-9">ColorDistanceFormula</span><span class="hl-1"> =</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;cie94-textiles&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;cie94-graphic-arts&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;ciede2000&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;color-metric&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;euclidean&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;euclidean-bt709-noalpha&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;euclidean-bt709&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;manhattan&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;manhattan-bt709&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;manhattan-nommyde&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;pngquant&#39;</span><span class="hl-1">;</span>
+</code></pre>
+<pre><code class="language-ts"><span class="hl-0">export</span><span class="hl-1"> </span><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-9">PaletteQuantization</span><span class="hl-1"> =</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;neuquant&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;neuquant-float&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;rgbquant&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;wuquant&#39;</span><span class="hl-1">;</span>
+</code></pre>
+<pre><code class="language-ts"><span class="hl-0">export</span><span class="hl-1"> </span><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-9">ImageQuantization</span><span class="hl-1"> =</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;nearest&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;riemersma&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;floyd-steinberg&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;false-floyd-steinberg&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;stucki&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;atkinson&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;jarvis&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;burkes&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;sierra&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;two-sierra&#39;</span><br/><span class="hl-1">  | </span><span class="hl-3">&#39;sierra-lite&#39;</span><span class="hl-1">;</span>
+</code></pre>
+
+<a href="#apply-palette-to-image-1" id="apply-palette-to-image-1" style="color: inherit; text-decoration: none;">
+  <h2>Apply Palette to Image</h2>
+</a>
+
+<a href="#advanced-api" id="advanced-api" style="color: inherit; text-decoration: none;">
+  <h1>Advanced API</h1>
+</a>
+
+<a href="#image-import-sources" id="image-import-sources" style="color: inherit; text-decoration: none;">
+  <h2>Image Import Sources</h2>
+</a>
+<table>
+<thead>
+<tr>
+<th align="left">API</th>
+<th>Source</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><em>Canvas related</em></strong></td>
+<td></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromHTMLCanvasElement">PointContainer.fromHTMLCanvasElement</a></td>
+<td><a href="https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromImageData">PointContainer.fromImageData</a></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">ImageData</a></td>
+<td align="left">ctx.getImageData()</td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromUint8Array">PointContainer.fromUint8Array</a></td>
+<td><a href="https://developer.mozilla.org/docs/Web/API/ImageData/data">Uint8ClampedArray</a></td>
+<td align="left">ctx.getImageData().data</td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromUint8Array">PointContainer.fromUint8Array</a></td>
+<td><a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=12586">deprecated CanvasPixelArray</a></td>
+<td align="left">ctx.getImageData().data</td>
+</tr>
+<tr>
+<td align="left"><strong><em>Other</em></strong></td>
+<td></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromHTMLImageElement">PointContainer.fromHTMLImageElement</a></td>
+<td><a href="https://developer.mozilla.org/docs/Web/API/HTMLImageElement">HTMLImageElement</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromImageData">PointContainer.fromImageData</a></td>
+<td><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromUint8Array">PointContainer.fromUint8Array</a></td>
+<td><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromUint32Array">PointContainer.fromUint32Array</a></td>
+<td><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array">Uint32Array</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><a href="classes/utils.PointContainer.html#fromBuffer">PointContainer.fromBuffer</a></td>
+<td><a href="https://nodejs.org/api/buffer.html">Buffer (Node.js)</a></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>Usage:</p>
+<pre><code class="language-ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">canvas</span><span class="hl-1"> = </span><span class="hl-2">document</span><span class="hl-1">.</span><span class="hl-7">querySelector</span><span class="hl-1">(</span><span class="hl-3">&#39;#canvas&#39;</span><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">pointContainer</span><span class="hl-1"> = </span><span class="hl-2">PointContainer</span><span class="hl-1">.</span><span class="hl-7">fromHTMLCanvasElement</span><span class="hl-1">(</span><span class="hl-2">canvas</span><span class="hl-1">);</span>
+</code></pre>
+
+<a href="#color-distance" id="color-distance" style="color: inherit; text-decoration: none;">
+  <h2>Color Distance</h2>
+</a>
+<p>| API                       | Description                                                                                        | Originally used by |
+| ------------------------- | :------------------------------------------------------------------------------------------------- | ------------------ | --- |
+| <a href="classes/distance.Euclidean.html">Euclidean</a>             | 1/1/1/1 coefficients                                                                               | WuQuant            |
+| <a href="classes/distance.EuclideanBT709.html">EuclideanBT709</a>        | BT.709 sRGB coefficients                                                                           |                    |
+| <a href="classes/distance.Manhattan.html">Manhattan</a>             | 1/1/1/1 coefficients                                                                               | NeuQuant           |
+| <a href="classes/distance.ManhattanBT709.html">ManhattanBT709</a>        | BT.709 sRGB coefficients                                                                           |                    |
+| <a href="classes/distance.CIEDE2000.html">CIEDE2000</a>             | CIEDE2000 (very slow)                                                                              |                    |
+| <a href="classes/distance.CIE94Textiles.html">CIE94Textiles</a>         | CIE94 implementation for textiles                                                                  |                    |
+| <a href="classes/distance.CIE94GraphicArts.html">CIE94GraphicArts</a>      | CIE94 implementation for graphic arts                                                              |                    |
+| <a href="classes/distance.CMetric.html">CMetric</a>               | <a href="http://www.compuphase.com/cmetric.htm">see</a>                                                       |                    |
+| <a href="classes/distance.PNGQuant.html">PNGQuant</a>              | used in PNGQuant tools                                                                             |                    |
+| <a href="classes/distance.EuclideanBT709NoAlpha.html">EuclideanBT709NoAlpha</a> | BT.709 sRGB coefficients                                                                           | RGBQuant           |
+| <a href="classes/distance.ManhattanNommyde.html">ManhattanNommyde</a>      | <a href="https://github.com/igor-bezkrovny/image-quantization/issues/4#issuecomment-234527620">discussion</a> |                    |     |</p>
+<p>Usage:</p>
+<pre><code class="language-ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">distanceCalculator</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">EuclideanBT709</span><span class="hl-1">();</span>
+</code></pre>
+
+<a href="#palette-quantizers" id="palette-quantizers" style="color: inherit; text-decoration: none;">
+  <h2>Palette Quantizers</h2>
+</a>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="classes/palette.NeuQuant.html">NeuQuant</a></td>
+<td align="left">original code ported, integer calculations</td>
+</tr>
+<tr>
+<td><a href="classes/palette.RGBQuant.html">RGBQuant</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td><a href="classes/palette.WuQuant.html">WuQuant</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td><a href="classes/palette.NeuQuantFloat.html">NeuQuantFloat</a></td>
+<td align="left">floating-point calculations</td>
+</tr>
+</tbody></table>
+<p>Usage (sync):</p>
+<pre><code class="language-ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">paletteQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">WuQuant</span><span class="hl-1">(</span><span class="hl-2">distanceCalculator</span><span class="hl-1">, </span><span class="hl-8">256</span><span class="hl-1">);</span><br/><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">sample</span><span class="hl-1">(</span><span class="hl-2">pointContainer1</span><span class="hl-1">);</span><br/><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">sample</span><span class="hl-1">(</span><span class="hl-2">pointContainer2</span><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">palette</span><span class="hl-1"> = </span><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantizeSync</span><span class="hl-1">();</span>
+</code></pre>
+<p>Usage (generator):</p>
+<pre><code class="language-ts"><span class="hl-4">// example 1</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">paletteQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">WuQuant</span><span class="hl-1">(</span><span class="hl-2">distanceCalculator</span><span class="hl-1">, </span><span class="hl-8">256</span><span class="hl-1">);</span><br/><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">sample</span><span class="hl-1">(</span><span class="hl-2">pointContainer1</span><span class="hl-1">);</span><br/><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">sample</span><span class="hl-1">(</span><span class="hl-2">pointContainer2</span><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">generator</span><span class="hl-1"> = </span><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantize</span><span class="hl-1">();</span><br/><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-2">palette</span><span class="hl-1">;</span><br/><span class="hl-0">while</span><span class="hl-1"> (</span><span class="hl-5">true</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-4">// calling to generator.next() may be easily wrapped with setTimeout to make it async</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">result</span><span class="hl-1"> = </span><span class="hl-2">generator</span><span class="hl-1">.</span><span class="hl-7">next</span><span class="hl-1">();</span><br/><span class="hl-1">  </span><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">result</span><span class="hl-1">.</span><span class="hl-2">done</span><span class="hl-1">) </span><span class="hl-0">break</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">result</span><span class="hl-1">.</span><span class="hl-2">value</span><span class="hl-1">.</span><span class="hl-2">palette</span><span class="hl-1">) </span><span class="hl-2">palette</span><span class="hl-1"> = </span><span class="hl-2">result</span><span class="hl-1">.</span><span class="hl-2">palette</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-3">`</span><span class="hl-5">${</span><span class="hl-2">result</span><span class="hl-10">.</span><span class="hl-2">value</span><span class="hl-10">.</span><span class="hl-2">progress</span><span class="hl-5">}</span><span class="hl-3">% done`</span><span class="hl-1">);</span><br/><span class="hl-1">}</span><br/><span class="hl-4">// example 2</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">paletteQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">WuQuant</span><span class="hl-1">(</span><span class="hl-2">distanceCalculator</span><span class="hl-1">, </span><span class="hl-8">256</span><span class="hl-1">);</span><br/><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">sample</span><span class="hl-1">(</span><span class="hl-2">pointContainer1</span><span class="hl-1">);</span><br/><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">sample</span><span class="hl-1">(</span><span class="hl-2">pointContainer2</span><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">palette</span><span class="hl-1"> = </span><span class="hl-9">Array</span><span class="hl-1">.</span><span class="hl-7">from</span><span class="hl-1">(</span><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantize</span><span class="hl-1">()).</span><span class="hl-7">pop</span><span class="hl-1">().</span><span class="hl-2">palette</span><span class="hl-1">;</span>
+</code></pre>
+
+<a href="#image-quantizers" id="image-quantizers" style="color: inherit; text-decoration: none;">
+  <h2>Image Quantizers</h2>
+</a>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="classes/image.NearestColor.html">NearestColor</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td><a href="classes/image.ErrorDiffusionArray.html">ErrorDiffusionArray</a></td>
+<td align="left">2 modes of error propagation are supported: <code>xnview</code> and <code>gimp</code></td>
+</tr>
+<tr>
+<td>- 1. <a href="enums/image.ErrorDiffusionArrayKernel.html#FloydSteinberg">FloydSteinberg</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 2. <a href="enums/image.ErrorDiffusionArrayKernel.html#FalseFloydSteinberg">FalseFloydSteinberg</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 3. <a href="enums/image.ErrorDiffusionArrayKernel.html#Stucki">Stucki</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 4. <a href="enums/image.ErrorDiffusionArrayKernel.html#Atkinson">Atkinson</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 5. <a href="enums/image.ErrorDiffusionArrayKernel.html#Jarvis">Jarvis</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 6. <a href="enums/image.ErrorDiffusionArrayKernel.html#Burkes">Burkes</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 7. <a href="enums/image.ErrorDiffusionArrayKernel.html#Sierra">Sierra</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 8. <a href="enums/image.ErrorDiffusionArrayKernel.html#TwoSierra">TwoSierra</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>- 9. <a href="enums/image.ErrorDiffusionArrayKernel.html#SierraLite">SierraLite</a></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td><a href="classes/image.ErrorDiffusionRiemersma.html">ErrorDiffusionRiemersma</a></td>
+<td align="left">Hilbert space-filling curve is used</td>
+</tr>
+</tbody></table>
+<p>Usage (sync):</p>
+<pre><code class="language-ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">imageQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">ErrorDiffusionArray</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">distanceCalculator</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">ErrorDiffusionArrayKernel</span><span class="hl-1">.</span><span class="hl-2">Jarvis</span><span class="hl-1">,</span><br/><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">outPointContainer</span><span class="hl-1"> = </span><span class="hl-2">imageQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantizeSync</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">inPointContainer</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">palette</span><span class="hl-1">,</span><br/><span class="hl-1">);</span>
+</code></pre>
+<p>Usage (generator):</p>
+<pre><code class="language-ts"><span class="hl-4">// example 1</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">imageQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">ErrorDiffusionArray</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">distanceCalculator</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">ErrorDiffusionArrayKernel</span><span class="hl-1">.</span><span class="hl-2">Jarvis</span><span class="hl-1">,</span><br/><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">generator</span><span class="hl-1"> = </span><span class="hl-2">imageQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantize</span><span class="hl-1">(</span><span class="hl-2">inPointContainer</span><span class="hl-1">, </span><span class="hl-2">palette</span><span class="hl-1">);</span><br/><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-2">outPointContainer</span><span class="hl-1">;</span><br/><span class="hl-0">while</span><span class="hl-1"> (</span><span class="hl-5">true</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-4">// calling to generator.next() may be easily wrapped with setTimeout to make it async</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">result</span><span class="hl-1"> = </span><span class="hl-2">generator</span><span class="hl-1">.</span><span class="hl-7">next</span><span class="hl-1">();</span><br/><span class="hl-1">  </span><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">result</span><span class="hl-1">.</span><span class="hl-2">done</span><span class="hl-1">) </span><span class="hl-0">break</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">result</span><span class="hl-1">.</span><span class="hl-2">value</span><span class="hl-1">.</span><span class="hl-2">pointContainer</span><span class="hl-1">) </span><span class="hl-2">outPointContainer</span><span class="hl-1"> = </span><span class="hl-2">result</span><span class="hl-1">.</span><span class="hl-2">pointContainer</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-3">`</span><span class="hl-5">${</span><span class="hl-2">result</span><span class="hl-10">.</span><span class="hl-2">value</span><span class="hl-10">.</span><span class="hl-2">progress</span><span class="hl-5">}</span><span class="hl-3">% done`</span><span class="hl-1">);</span><br/><span class="hl-1">}</span><br/><span class="hl-4">// example 2</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">imageQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">ErrorDiffusionArray</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">distanceCalculator</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">ErrorDiffusionArrayKernel</span><span class="hl-1">.</span><span class="hl-2">Jarvis</span><span class="hl-1">,</span><br/><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">outPointContainer</span><span class="hl-1"> = </span><span class="hl-9">Array</span><span class="hl-1">.</span><span class="hl-7">from</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">imageQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantize</span><span class="hl-1">(</span><span class="hl-2">inPointContainer</span><span class="hl-1">, </span><span class="hl-2">palette</span><span class="hl-1">),</span><br/><span class="hl-1">).</span><span class="hl-7">pop</span><span class="hl-1">().</span><span class="hl-2">pointContainer</span><span class="hl-1">;</span>
+</code></pre>
+
+<a href="#output" id="output" style="color: inherit; text-decoration: none;">
+  <h2>Output</h2>
+</a>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="classes/utils.PointContainer.html#toUint8Array">PointContainer.toUint8Array</a></td>
+<td align="left"><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></td>
+</tr>
+<tr>
+<td><a href="classes/utils.PointContainer.html#toUint32Array">PointContainer.toUint32Array</a></td>
+<td align="left"><a href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array">Uint32Array</a></td>
+</tr>
+</tbody></table>
+<p>Usage:</p>
+<pre><code class="language-ts"><span class="hl-4">// write PNG using pngjs</span><br/><span class="hl-2">png</span><span class="hl-1">.</span><span class="hl-2">data</span><span class="hl-1"> = </span><span class="hl-2">outPointContainer</span><span class="hl-1">.</span><span class="hl-7">toUint8Array</span><span class="hl-1">();</span><br/><span class="hl-2">fs</span><span class="hl-1">.</span><span class="hl-7">writeFileSync</span><span class="hl-1">(</span><span class="hl-3">&#39;filename.png&#39;</span><span class="hl-1">, </span><span class="hl-6">PNG</span><span class="hl-1">.</span><span class="hl-2">sync</span><span class="hl-1">.</span><span class="hl-7">write</span><span class="hl-1">(</span><span class="hl-2">png</span><span class="hl-1">));</span>
+</code></pre>
+
+<a href="#advanced-api-usage" id="advanced-api-usage" style="color: inherit; text-decoration: none;">
+  <h1>Advanced API Usage</h1>
+</a>
+
+<a href="#load-image-simple-example" id="load-image-simple-example" style="color: inherit; text-decoration: none;">
+  <h2>Load Image (simple example)</h2>
+</a>
+<pre><code class="language-javascript"><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">img</span><span class="hl-1"> = </span><span class="hl-2">document</span><span class="hl-1">.</span><span class="hl-7">createElement</span><span class="hl-1">(</span><span class="hl-3">&quot;img&quot;</span><span class="hl-1">);</span><br/><span class="hl-2">img</span><span class="hl-1">.</span><span class="hl-7">onload</span><span class="hl-1"> = </span><span class="hl-5">function</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-4">// image is loaded, here should be all code utilizing image</span><br/><span class="hl-1">    ...</span><br/><span class="hl-1">}</span><br/><span class="hl-2">img</span><span class="hl-1">.</span><span class="hl-2">src</span><span class="hl-1"> = </span><span class="hl-3">&quot;http://pixabay.com/static/uploads/photo/2012/04/11/11/32/letter-a-27580_640.png&quot;</span>
+</code></pre>
+
+<a href="#generate-palette" id="generate-palette" style="color: inherit; text-decoration: none;">
+  <h2>Generate Palette</h2>
+</a>
+<pre><code class="language-javascript"><span class="hl-4">// desired colors number</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">targetColors</span><span class="hl-1"> = </span><span class="hl-8">256</span><span class="hl-1">;</span><br/><br/><span class="hl-4">// create pointContainer and fill it with image</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">pointContainer</span><span class="hl-1"> = </span><span class="hl-2">iq</span><span class="hl-1">.</span><span class="hl-2">utils</span><span class="hl-1">.</span><span class="hl-2">PointContainer</span><span class="hl-1">.</span><span class="hl-7">fromHTMLImageElement</span><span class="hl-1">(</span><span class="hl-2">img</span><span class="hl-1">);</span><br/><br/><span class="hl-4">// create chosen distance calculator (see classes inherited from `iq.distance.AbstractDistanceCalculator`)</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">distanceCalculator</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-2">iq</span><span class="hl-1">.</span><span class="hl-2">distance</span><span class="hl-1">.</span><span class="hl-7">Euclidean</span><span class="hl-1">();</span><br/><br/><span class="hl-4">// create chosen palette quantizer (see classes implementing `iq.palette.AbstractPaletteQuantizer`)</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">paletteQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-2">iq</span><span class="hl-1">.</span><span class="hl-2">palette</span><span class="hl-1">.</span><span class="hl-7">RGBQuant</span><span class="hl-1">(</span><span class="hl-2">distanceCalculator</span><span class="hl-1">, </span><span class="hl-2">targetColors</span><span class="hl-1">);</span><br/><br/><span class="hl-4">// feed out pointContainer filled with image to paletteQuantizer</span><br/><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">sample</span><span class="hl-1">(</span><span class="hl-2">pointContainer</span><span class="hl-1">);</span><br/><br/><span class="hl-1">... (</span><span class="hl-2">you</span><span class="hl-1"> </span><span class="hl-2">may</span><span class="hl-1"> </span><span class="hl-2">sample</span><span class="hl-1"> </span><span class="hl-2">more</span><span class="hl-1"> </span><span class="hl-2">than</span><span class="hl-1"> </span><span class="hl-2">one</span><span class="hl-1"> </span><span class="hl-2">image</span><span class="hl-1"> </span><span class="hl-2">to</span><span class="hl-1"> </span><span class="hl-2">create</span><span class="hl-1"> </span><span class="hl-2">mutual</span><span class="hl-1"> </span><span class="hl-2">palette</span><span class="hl-1">)</span><br/><br/><span class="hl-4">// take generated palette</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">palette</span><span class="hl-1"> = </span><span class="hl-2">paletteQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantizeSync</span><span class="hl-1">();</span>
+</code></pre>
+
+<a href="#apply-palette-to-image-image-dithering" id="apply-palette-to-image-image-dithering" style="color: inherit; text-decoration: none;">
+  <h2>Apply Palette to Image (Image Dithering)</h2>
+</a>
+<pre><code class="language-javascript"><span class="hl-4">// create image quantizer (see classes implementing `iq.image.AbstractImageQuantizer`)</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">imageQuantizer</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-2">iq</span><span class="hl-1">.</span><span class="hl-2">image</span><span class="hl-1">.</span><span class="hl-7">NearestColor</span><span class="hl-1">(</span><span class="hl-2">distanceCalculator</span><span class="hl-1">);</span><br/><br/><span class="hl-4">// apply palette to image</span><br/><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">resultPointContainer</span><span class="hl-1"> = </span><span class="hl-2">imageQuantizer</span><span class="hl-1">.</span><span class="hl-7">quantizeSync</span><span class="hl-1">(</span><span class="hl-2">pointContainer</span><span class="hl-1">, </span><span class="hl-2">palette</span><span class="hl-1">);</span>
+</code></pre>
+<p>You may work with resultPointContainer directly or you may convert it to <code>Uint8Array</code>/<code>Uint32Array</code></p>
+<pre><code class="language-javascript"><span class="hl-5">var</span><span class="hl-1"> </span><span class="hl-2">uint8array</span><span class="hl-1"> = </span><span class="hl-2">resultPointContainer</span><span class="hl-1">.</span><span class="hl-7">toUint8Array</span><span class="hl-1">();</span>
+</code></pre>
+<blockquote>
+<p>please also refer to <a href="tests/samples/utils.ts">tests</a></p>
+</blockquote>
+
+<a href="#misc-api" id="misc-api" style="color: inherit; text-decoration: none;">
+  <h1>Misc API</h1>
+</a>
+
+<a href="#color-conversion" id="color-conversion" style="color: inherit; text-decoration: none;">
+  <h2>Color Conversion</h2>
+</a>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="modules/conversion.html#lab2rgb">lab2rgb</a></td>
+<td align="left">CIE L*a*b* =&gt; CIE RGB</td>
+</tr>
+<tr>
+<td><a href="modules/conversion.html#lab2xyz">lab2xyz</a></td>
+<td align="left">CIE L*a*b* =&gt; CIE XYZ</td>
+</tr>
+<tr>
+<td><a href="modules/conversion.html#rgb2hsl">rgb2hsl</a></td>
+<td align="left">CIE RGB =&gt; HSL</td>
+</tr>
+<tr>
+<td><a href="modules/conversion.html#rgb2lab">rgb2lab</a></td>
+<td align="left">CIE RGB =&gt; CIE L*a*b*</td>
+</tr>
+<tr>
+<td><a href="modules/conversion.html#rgb2xyz">rgb2xyz</a></td>
+<td align="left">CIE RGB =&gt; CIE XYZ</td>
+</tr>
+<tr>
+<td><a href="modules/conversion.html#xyz2lab">xyz2lab</a></td>
+<td align="left">CIE XYZ =&gt; CIE L*a*b*</td>
+</tr>
+<tr>
+<td><a href="modules/conversion.html#xyz2rgb">xyz2rgb</a></td>
+<td align="left">CIE XYZ =&gt; CIE RGB</td>
+</tr>
+</tbody></table>
+<p><a href="https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/">https://wolfcrow.com/blog/what-is-the-difference-between-cie-lab-cie-rgb-cie-xyy-and-cie-xyz/</a></p>
+
+<a href="#structural-similarity" id="structural-similarity" style="color: inherit; text-decoration: none;">
+  <h2>Structural Similarity</h2>
+</a>
+<ul>
+<li><p><a href="modules/quality.html#ssim">ssim</a> - <a href="https://en.wikipedia.org/wiki/Structural_similarity">https://en.wikipedia.org/wiki/Structural_similarity</a></p>
+<p>Usage:</p>
+<pre><code class="language-ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">similarity</span><span class="hl-1"> = </span><span class="hl-7">ssim</span><span class="hl-1">(</span><span class="hl-2">pointContainer1</span><span class="hl-1">, </span><span class="hl-2">pointContainer2</span><span class="hl-1">);</span>
+</code></pre>
+</li>
+</ul>
+<p>Have fun! Any problems or queries let me know!</p>
+<p>-- Igor</p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li><li class=" tsd-kind-namespace"><a href="modules/constants.html">constants</a></li><li class=" tsd-kind-namespace"><a href="modules/conversion.html">conversion</a></li><li class=" tsd-kind-namespace"><a href="modules/distance.html">distance</a></li><li class=" tsd-kind-namespace"><a href="modules/image.html">image</a></li><li class=" tsd-kind-namespace"><a href="modules/palette.html">palette</a></li><li class=" tsd-kind-namespace"><a href="modules/quality.html">quality</a></li><li class=" tsd-kind-namespace"><a href="modules/utils.html">utils</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-type-alias"><a href="modules.html#ColorDistanceFormula" class="tsd-kind-icon">Color<wbr/>Distance<wbr/>Formula</a></li><li class="tsd-kind-type-alias"><a href="modules.html#ImageQuantization" class="tsd-kind-icon">Image<wbr/>Quantization</a></li><li class="tsd-kind-type-alias"><a href="modules.html#PaletteQuantization" class="tsd-kind-icon">Palette<wbr/>Quantization</a></li><li class="tsd-kind-function"><a href="modules.html#applyPalette" class="tsd-kind-icon">apply<wbr/>Palette</a></li><li class="tsd-kind-function"><a href="modules.html#applyPaletteSync" class="tsd-kind-icon">apply<wbr/>Palette<wbr/>Sync</a></li><li class="tsd-kind-function"><a href="modules.html#buildPalette" class="tsd-kind-icon">build<wbr/>Palette</a></li><li class="tsd-kind-function"><a href="modules.html#buildPaletteSync" class="tsd-kind-icon">build<wbr/>Palette<wbr/>Sync</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
