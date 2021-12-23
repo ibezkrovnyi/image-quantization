@@ -8,7 +8,7 @@ Complete Image Quantization Library in **TypeScript** _(MIT License)_
 [![API)](https://img.shields.io/badge/API-Available-blue.svg)](http://ibezkrovnyi.github.io/image-quantization/)
 [![NPM License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-![quantization](quantization.png)
+![quantization](packages/image-q/quantization.png)
 
 ## Table of Contents
 
