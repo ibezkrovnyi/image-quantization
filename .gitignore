@@ -10,3 +10,4 @@ reports
 
 node_modules
 
+/packages/image-q/README.md

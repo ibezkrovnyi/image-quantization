@@ -1,0 +1,13 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "./docs",
+  "theme": "default",
+  "tsconfig": "tsconfig.build-esm.json",
+  "exclude": "**/*.spec.ts",
+
+  "excludePrivate": true,
+  "excludeExternals": true,
+  "listInvalidSymbolLinks": true,
+
+  "readme": "API-README.md"
+}
