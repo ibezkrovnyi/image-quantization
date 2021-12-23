@@ -10,7 +10,8 @@ jobs:
       matrix:
         node-version: [14]
     steps:
-      - uses: actions/checkout@v2
+      # actions/checkout@v1 has bug with tags, see https://github.com/actions/checkout/issues/290
+      - uses: actions/checkout@v1
 
       - name: '[nodejs] Use Node.js ${{ matrix.node-version }}'
         uses: actions/setup-node@v2

@@ -10,7 +10,8 @@ jobs:
       matrix:
         node-version: [12, 14, 16]
     steps:
-      - uses: actions/checkout@v2
+      # actions/checkout@v1 has bug with tags, see https://github.com/actions/checkout/issues/290
+      - uses: actions/checkout@v1
         with:
           fetch-depth: 0
 
