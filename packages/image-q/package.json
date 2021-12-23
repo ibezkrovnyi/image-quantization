@@ -17,7 +17,7 @@
     "clean": "shx rm -rf ./node_modules/.cache",
     "build": "tsc -p tsconfig.build-esm.json && webpack",
     "test": "jest",
-    "gh-pages-DISABLED": "shx rm -rf ./docs && typedoc.cmd src && gh-pages -d docs"
+    "gh-pages": "shx rm -rf ./docs && typedoc && gh-pages -d docs"
   },
   "files": [
     "dist",
@@ -50,7 +50,7 @@
     "@types/pngjs": "3.3.0",
     "gh-pages": "3.2.3",
     "pngjs": "3.3.3",
-    "typedoc": "0.22.2"
+    "typedoc": "0.22.10"
   },
   "dependencies": {
     "@types/node": "16.9.1"
