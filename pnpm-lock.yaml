@@ -28,6 +28,16 @@ importers:
       webpack: 5.65.0_webpack-cli@4.9.1
       webpack-cli: 4.9.1_webpack@5.65.0
 
+  examples/HTMLImageElement:
+    specifiers:
+      http-server: ^13.0.1
+      image-q: workspace:*
+      typescript: 4.5.4
+    devDependencies:
+      http-server: 13.0.1
+      image-q: link:../../packages/image-q
+      typescript: 4.5.4
+
   examples/apply-palette-from-file:
     specifiers:
       image-q: workspace:*

@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "htmlimageelement",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "server": "http-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^13.0.1",
+    "image-q": "workspace:*",
+    "typescript": "4.5.4"
+  }
+}

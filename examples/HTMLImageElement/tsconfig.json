@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "tsBuildInfoFile": "./node_modules/.cache/tsc/tsconfig.tsbuildinfo",
+    "target": "ES2020",
+    "noEmitOnError": false
+  },
+  "include": ["src/**/*", "tests/**/*"]
+}
