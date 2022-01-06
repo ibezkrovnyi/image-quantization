@@ -149,6 +149,15 @@ Please refer to [API Documentation and Usage](http://ibezkrovnyi.github.io/image
 
 ## Changelog
 
+##### 3.0.7
+    + Fixes #96: Fix minimumColorDistanceToDither (PR #97 by @pixelplanetdev)
+
+##### 3.0.6
+    + Fixes #95: "Always empty result in certain webpack / babel configs" (PR #98)
+
+##### 3.0.0
+    + pnpm monorepo, esbuild for faster builds, typescript upgraded
+
 ##### 2.1.1
 
     + Basic (Simple) API implemented

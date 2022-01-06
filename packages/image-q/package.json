@@ -1,6 +1,6 @@
 {
   "name": "image-q",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
@@ -38,7 +38,6 @@
     "dithering",
     "floyd-steinberg"
   ],
-  "author": "Igor Bezkrovny",
   "repository": {
     "type": "git",
     "url": "https://github.com/ibezkrovnyi/image-quantization"
