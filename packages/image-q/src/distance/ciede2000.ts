@@ -9,9 +9,6 @@ import { AbstractDistanceCalculator } from './distanceCalculator';
 import { rgb2lab } from '../conversion/rgb2lab';
 import { degrees2radians, inRange0to255 } from '../utils/arithmetic';
 
-// tslint:disable:variable-name
-// tslint:disable:naming-convention
-
 /**
  * CIEDE2000 algorithm - Adapted from Sharma et al's MATLAB implementation at
  * http://www.ece.rochester.edu/~gsharma/ciede2000/
@@ -23,7 +20,7 @@ export class CIEDE2000 extends AbstractDistanceCalculator {
    * Max DeltaA: 255
    */
   private static readonly _kA = (0.25 * 100) / 255;
-  private static readonly _pow25to7 = 25 ** 7; // 1Math.pow(25, 7);
+  private static readonly _pow25to7 = 25 ** 7;
   private static readonly _deg360InRad = degrees2radians(360);
   private static readonly _deg180InRad = degrees2radians(180);
   private static readonly _deg30InRad = degrees2radians(30);

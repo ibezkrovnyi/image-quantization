@@ -999,7 +999,6 @@ export class WuQuant extends AbstractPaletteQuantizer {
     second.alphaMaximum = first.alphaMaximum;
 
     // cuts in a certain direction
-    // eslint-disable-next-line default-case
     switch (direction) {
       case WuQuant._red:
         second.redMinimum = first.redMaximum = red.position;

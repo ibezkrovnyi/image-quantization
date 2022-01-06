@@ -58,11 +58,10 @@ export class ColorHistogram {
       this._minHueCols,
     );
 
-    this._histogram = Object.create(null); // tslint:disable-line:no-null-keyword
+    this._histogram = Object.create(null);
   }
 
   sample(pointContainer: PointContainer) {
-    // eslint-disable-next-line default-case
     switch (this._method) {
       case 1:
         this._colorStats1D(pointContainer);

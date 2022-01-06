@@ -149,6 +149,12 @@ Please refer to [API Documentation and Usage](http://ibezkrovnyi.github.io/image
 
 ## Changelog
 
+##### 3.0.6
+    + Fixed: "Always empty result in certain webpack / babel configs" (#95)
+
+##### 3.0.0
+    + pnpm monorepo, esbuild for faster builds, typescript upgraded
+
 ##### 2.1.1
 
     + Basic (Simple) API implemented

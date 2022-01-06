@@ -43,7 +43,7 @@ export function stableSort<T>(
   let sorted: T[];
 
   if (type === 'number' || type === 'string') {
-    const ord = Object.create(null); // tslint:disable-line:no-null-keyword
+    const ord = Object.create(null);
     for (let i = 0, l = arrayToSort.length; i < l; i++) {
       const val = arrayToSort[i] as unknown as string;
       if (ord[val] || ord[val] === 0) continue;

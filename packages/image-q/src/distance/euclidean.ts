@@ -12,10 +12,10 @@ import { Y } from '../constants/bt709';
  * Euclidean color distance
  */
 export abstract class AbstractEuclidean extends AbstractDistanceCalculator {
-  protected _kR!: number;
-  protected _kG!: number;
-  protected _kB!: number;
-  protected _kA!: number;
+  declare protected _kR: number;
+  declare protected _kG: number;
+  declare protected _kB: number;
+  declare protected _kA: number;
 
   calculateRaw(
     r1: number,

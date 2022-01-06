@@ -17,7 +17,6 @@ export enum Y {
   WHITE = 1,
 }
 
-// tslint:disable-next-line:naming-convention
 export enum x {
   RED = 0.64,
   GREEN = 0.3,
@@ -25,7 +24,6 @@ export enum x {
   WHITE = 0.3127,
 }
 
-// tslint:disable-next-line:naming-convention
 export enum y {
   RED = 0.33,
   GREEN = 0.6,
