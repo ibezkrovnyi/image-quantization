@@ -19,10 +19,10 @@ export abstract class AbstractCIE94 extends AbstractDistanceCalculator {
    * Max DeltaE: 100
    * Max DeltaA: 255
    */
-  protected _kA!: number;
-  protected _Kl!: number; // tslint:disable-line:naming-convention
-  protected _K1!: number; // tslint:disable-line:naming-convention
-  protected _K2!: number; // tslint:disable-line:naming-convention
+  declare protected _kA: number;
+  declare protected _Kl: number;
+  declare protected _K1: number;
+  declare protected _K2: number;
 
   calculateRaw(
     r1: number,

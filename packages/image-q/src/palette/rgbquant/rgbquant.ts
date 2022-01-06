@@ -106,7 +106,7 @@ export class RGBQuant extends AbstractPaletteQuantizer {
     // build full rgb palette
     const palette = new Palette();
     const colorArray = palette.getPointContainer().getPointArray();
-    const usageArray = new Array(idxi32.length); // tslint:disable-line:prefer-array-literal
+    const usageArray = new Array(idxi32.length);
 
     for (let i = 0; i < idxi32.length; i++) {
       colorArray.push(Point.createByUint32(idxi32[i]));

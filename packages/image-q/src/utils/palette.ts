@@ -102,7 +102,7 @@ export class Palette {
     colorDistanceCalculator: AbstractDistanceCalculator,
     point: Point,
   ) {
-    let idx = this._nearestPointFromCache('' + point.uint32); // eslint-disable-line prefer-template
+    let idx = this._nearestPointFromCache('' + point.uint32);
     if (idx >= 0) return idx;
 
     let minimalDistance = Number.MAX_VALUE;
