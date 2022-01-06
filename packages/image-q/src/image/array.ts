@@ -129,7 +129,10 @@ export class ErrorDiffusionArray extends AbstractImageQuantizer {
 
         // dithering strength
         if (this._minColorDistance) {
-          const dist = this._distance.calculateNormalized(point, palettePoint);
+          const dist = this._distance.calculateNormalized(
+            originalPoint,
+            palettePoint,
+          );
           if (dist < this._minColorDistance) continue;
         }
 
