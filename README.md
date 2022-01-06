@@ -149,6 +149,9 @@ Please refer to [API Documentation and Usage](http://ibezkrovnyi.github.io/image
 
 ## Changelog
 
+##### 3.0.8
+    + Test case for issue #95 added
+
 ##### 3.0.7
     + Fixes #96: Fix minimumColorDistanceToDither (PR #97 by @pixelplanetdev)
 

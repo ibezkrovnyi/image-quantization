@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "test-case-1",
+  "version": "1.0.0",
+  "description": "test case for https://github.com/ibezkrovnyi/image-quantization/issues/95",
+  "scripts": {
+    "test": "webpack && tap --no-coverage --reporter=tap ./dist/main.js"
+  },
+  "keywords": [],
+  "author": "Igor Bezkrovnyi",
+  "license": "MIT",
+  "devDependencies": {
+    "image-q-bad": "npm:image-q@3.0.5",
+    "image-q": "workspace:*",
+    "tap": "^15.1.6",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
