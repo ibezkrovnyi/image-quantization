@@ -155,6 +155,9 @@ Please refer to [API Documentation and Usage](http://ibezkrovnyi.github.io/image
 ##### 3.0.6
     + Fixes #95: "Always empty result in certain webpack / babel configs" (PR #98)
 
+##### 3.0.4
+    + Fixes issue "Module not found: Can't resolve 'core-js/fn/set-immediate' in ..."
+
 ##### 3.0.0
     + pnpm monorepo, esbuild for faster builds, typescript upgraded
 
