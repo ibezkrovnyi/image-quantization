@@ -1,0 +1,5 @@
+webix/** linguist-vendored=true
+packages/demo/** linguist-vendored=true
+packages/examples/** linguist-vendored=true
+packages/test-cases/** linguist-vendored=true
+*.cmd linguist-vendored=true

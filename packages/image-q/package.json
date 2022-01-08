@@ -1,23 +1,27 @@
 {
   "name": "image-q",
-  "version": "3.0.8",
+  "version": "4.0.0-alpha",
   "description": "Image Quantization Library in **TypeScript** *(MIT Licensed)*",
   "license": "MIT",
   "contributors": [],
   "homepage": "https://github.com/ibezkrovnyi/image-quantization/tree/main/packages/image-q",
-  "main": "dist/umd/image-q.js",
-  "module": "dist/esm/src/index.js",
-  "types": "dist/types/src/index.d.ts",
+  "main": "./dist/cjs/image-q.cjs",
+  "module": "./dist/esm/image-q.mjs",
+  "types": "./dist/types/src/index.d.ts",
   "exports": {
-    "import": "./dist/esm/src/index.js",
-    "require": "./dist/umd/image-q.js",
-    "default": "./dist/umd/image-q.js"
+    "types": "./dist/types/src/index.d.ts",
+    "import": "./dist/esm/image-q.mjs",
+    "require": "./dist/cjs/image-q.cjs",
+    "default": "./dist/esm/image-q.mjs"
   },
   "scripts": {
     "clean": "shx rm -rf ./node_modules/.cache",
-    "build": "tsc -p tsconfig.build-esm.json && webpack && shx cp ../../README.md ./",
+    "build": "pnpm compile:types && pnpm compile:esm && pnpm compile:cjs && shx cp ../../README.md ./",
     "test": "jest",
-    "gh-pages": "shx rm -rf ./docs && typedoc && gh-pages -d docs"
+    "gh-pages": "shx rm -rf ./docs && typedoc && gh-pages -d docs",
+    "compile:types": "tsc -p tsconfig.compile.json",
+    "compile:esm": "esbuild src/index.ts --outfile=dist/esm/image-q.mjs --tsconfig=tsconfig.compile.json --format=esm --platform=neutral --sourcemap --target=es2020,chrome58,node12 --bundle",
+    "compile:cjs": "esbuild src/index.ts --outfile=dist/cjs/image-q.cjs --tsconfig=tsconfig.compile.json --format=cjs --platform=node --sourcemap --target=es2020,chrome58,node12 --bundle"
   },
   "files": [
     "dist",

@@ -149,6 +149,9 @@ Please refer to [API Documentation and Usage](http://ibezkrovnyi.github.io/image
 
 ## Changelog
 
+##### 4.0.0-alpha
+    + Try to solve exported bundle types problem. 'umd' bundle removed.
+
 ##### 3.0.8
     + Test case for issue #95 added
 
