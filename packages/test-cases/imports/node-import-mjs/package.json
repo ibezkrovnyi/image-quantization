@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "imports-node-import-mjs",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "tap --no-coverage --reporter=tap ./src/index.mjs"
+  },
+  "keywords": [],
+  "author": "Igor Bezkrovnyi",
+  "license": "MIT",
+  "devDependencies": {
+    "image-q": "workspace:*",
+    "tap": "^15.1.6"
+  }
+}

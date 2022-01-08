@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "imports-webpack-5",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "webpack && tap --no-coverage --reporter=tap ./dist/main.js"
+  },
+  "keywords": [],
+  "author": "Igor Bezkrovnyi",
+  "license": "MIT",
+  "devDependencies": {
+    "image-q": "workspace:*",
+    "tap": "^15.1.6",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}

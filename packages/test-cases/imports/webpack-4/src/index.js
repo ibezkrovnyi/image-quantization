@@ -1,0 +1,5 @@
+import './dynamic-import'
+import './static-import-default'
+import './static-import-named'
+import './static-import-namespace'
+import './static-require'
