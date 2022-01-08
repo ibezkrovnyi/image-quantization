@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "imports-webpack-4",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "webpack && tap --no-coverage --reporter=tap ./dist/main.js"
+  },
+  "keywords": [],
+  "author": "Igor Bezkrovnyi",
+  "license": "MIT",
+  "devDependencies": {
+    "image-q": "workspace:*",
+    "tap": "^15.1.6",
+    "webpack": "4.44.2",
+    "webpack-cli": "^3"
+  }
+}

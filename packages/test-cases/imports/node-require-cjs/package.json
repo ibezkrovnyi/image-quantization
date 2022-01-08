@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "imports-node-require-cjs",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "tap --no-coverage --reporter=tap ./src/index.cjs"
+  },
+  "keywords": [],
+  "author": "Igor Bezkrovnyi",
+  "license": "MIT",
+  "devDependencies": {
+    "image-q": "workspace:*",
+    "tap": "^15.1.6"
+  }
+}

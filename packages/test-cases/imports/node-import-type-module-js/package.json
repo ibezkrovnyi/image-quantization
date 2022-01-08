@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "imports-node-import-type-module-js",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "tap --no-coverage --reporter=tap ./src/index.js"
+  },
+  "keywords": [],
+  "author": "Igor Bezkrovnyi",
+  "license": "MIT",
+  "devDependencies": {
+    "image-q": "workspace:*",
+    "tap": "^15.1.6"
+  }
+}
