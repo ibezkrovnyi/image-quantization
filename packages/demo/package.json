@@ -27,7 +27,7 @@
     "url": "https://github.com/igor-bezkrovny/image-quantization/issues"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "esbuild src/app.ts --outfile=dist/app.js --bundle --format=iife --sourcemap --platform=browser",
     "start": "pnpm build && http-server ./ -c-1"
   },
   "preferGlobal": false,

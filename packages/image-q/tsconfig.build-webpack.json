@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist/umd",
-    "types": ["node"],
-    "tsBuildInfoFile": "./node_modules/.cache/tsc/tsconfig.build-webpack.tsbuildinfo"
-  },
-  "include": ["src"]
-}
