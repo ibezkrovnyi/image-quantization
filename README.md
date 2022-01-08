@@ -149,12 +149,8 @@ Please refer to [API Documentation and Usage](http://ibezkrovnyi.github.io/image
 
 ## Changelog
 
-##### 4.0.0
-    + Try to solve exported bundle types problem. Will add back the following fields if there will be demand:
-      "module": "./dist/esm/image-q.mjs",
-      "browser": "./dist/browser/image-q.js",
-      "unpkg": "./dist/browser/image-q.js",
-
+##### 4.0.0-alpha
+    + Try to solve exported bundle types problem. 'umd' bundle removed.
 
 ##### 3.0.8
     + Test case for issue #95 added
